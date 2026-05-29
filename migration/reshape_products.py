@@ -9,6 +9,26 @@ with open("variations.json", "r", encoding="utf-8") as f:
     variations_by_parent = json.load(f)
 
 
+def slugify(text):
+    text = text.lower().strip()
+    text = re.sub(r"[^\w\s-]", "", text)
+    text = re.sub(r"\s+", "-", text)
+    return text
+
+
+def parse_variation_attributes(variation_string, stub_attrs):
+    if variation_string:
+        parts = variation_string.split(", ")
+        result = []
+        for part in parts:
+            if ": " in part:
+                value = part.split(": ", 1)[1]
+                result.append(slugify(value))
+        if result:
+            return result
+    return [a.get("value", "") for a in stub_attrs if a.get("value")]
+
+
 def strip_html(html):
     if not html:
         return ""
@@ -66,14 +86,17 @@ def reshape_product(product, variation_stubs, full_variations_map):
     variations = []
     for stub in variation_stubs:
         stub_id = stub.get("id")
-        stub_attrs = [a.get("value") for a in stub.get("attributes", []) if a.get("value")]
+        stub_attrs = stub.get("attributes", [])
 
         full_var = full_variations_map.get(stub_id)
         if not full_var:
             continue
 
+        variation_string = full_var.get("variation", "")
+        attributes = parse_variation_attributes(variation_string, stub_attrs)
+
         variations.append({
-            "attributes": stub_attrs,
+            "attributes": attributes,
             "variation": reshape_variation(full_var),
         })
 
@@ -162,7 +185,7 @@ def reshape_variation(v):
         "name": v.get("name"),
         "slug": v.get("slug"),
         "sku": v.get("sku") or None,
-        "variation": v.get("variation") or "",
+        "variation": parse_variation_attributes(v.get("variation", ""), []),
         "wpUrl": v.get("permalink"),
         "productUrl": product_url,
         "description": strip_html(v.get("description") or ""),
