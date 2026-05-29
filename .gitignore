@@ -1,0 +1,8 @@
+migration/products.json
+migration/variations.json
+migration/clean_products.json
+migration/images/
+migration/venv/
+__pycache__/
+*.pyc
+.DS_Store
