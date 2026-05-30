@@ -258,6 +258,7 @@ missing_attributes_products = []
 no_image_products = []
 duplicate_name_products = []
 no_weight_products = []
+multiple_variation_images_products = []
 
 for product in products:
     prices = product.get("prices") or {}
@@ -283,6 +284,11 @@ for product in products:
         for v in clean_product.get("variations", [])
     )
 
+    has_multiple_variation_images = any(
+        len(v.get("variation", {}).get("images", [])) > 1
+        for v in clean_product.get("variations", [])
+    )
+
     if not is_valid_sku(clean_product.get("sku")):
         invalid_sku_products.append(clean_product)
     elif has_missing_attrs:
@@ -293,6 +299,8 @@ for product in products:
         duplicate_name_products.append(clean_product)
     elif not clean_product.get("weight"):
         no_weight_products.append(clean_product)
+    elif has_multiple_variation_images:
+        multiple_variation_images_products.append(clean_product)
     else:
         clean_products.append(clean_product)
 
@@ -317,10 +325,14 @@ with open("reshaped/duplicate_name_products_shape.json", "w", encoding="utf-8") 
 with open("reshaped/no_weight_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(no_weight_products, f, indent=2, ensure_ascii=False)
 
+with open("reshaped/multiple_variation_images_products_shape.json", "w", encoding="utf-8") as f:
+    json.dump(multiple_variation_images_products, f, indent=2, ensure_ascii=False)
+
 print(f"Zero-price products: {len(zero_price_products)} → zero_price_products.json")
 print(f"Invalid SKU products: {len(invalid_sku_products)} → invalid_sku_products.json")
 print(f"Missing attributes products: {len(missing_attributes_products)} → missing_attributes_products.json")
 print(f"No image products: {len(no_image_products)} → no_image_products.json")
 print(f"Duplicate name products: {len(duplicate_name_products)} → duplicate_name_products.json")
 print(f"No weight products: {len(no_weight_products)} → no_weight_products.json")
+print(f"Multiple variation images products: {len(multiple_variation_images_products)} → multiple_variation_images_products.json")
 print(f"Clean products: {len(clean_products)} → clean_products.json")

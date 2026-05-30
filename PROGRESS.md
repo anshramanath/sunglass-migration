@@ -26,13 +26,14 @@ bikershades-migration/
       variations/
         variations.json            ← per-variation data (6,064 variations)
     reshaped/
-      clean_products_shape.json         ← 589 clean products
-      zero_price_products_shape.json    ← 8 internal/service products
-      invalid_sku_products_shape.json   ← 22 products with invalid SKUs
-      missing_attributes_shape.json     ← 7 products with unrecoverable variation attributes
-      no_image_products_shape.json      ← 3 products with no images
-      duplicate_name_products_shape.json← 6 products with duplicate names
-      no_weight_products_shape.json     ← 12 products with no weight
+      clean_products_shape.json                    ← 588 clean products
+      zero_price_products_shape.json               ← 8 internal/service products
+      invalid_sku_products_shape.json              ← 22 products with invalid SKUs
+      missing_attributes_shape.json                ← 7 products with unrecoverable variation attributes
+      no_image_products_shape.json                 ← 3 products with no images
+      duplicate_name_products_shape.json           ← 6 products with duplicate names
+      no_weight_products_shape.json                ← 14 products with no/zero weight
+      multiple_variation_images_products_shape.json← 1 product with variations having >1 image
     images/
       clean-products/
         url_map.json               ← old URL → local path mapping + checkpoint
@@ -318,9 +319,8 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 | `categories` | `id`, `brand_id`, `name` |
 | `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `regular_price_cents`, `sale_price_cents`, `average_rating`, `review_count`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
 | `product_categories` | `product_id`, `category_id` (junction) |
-| `variations` | `id`, `product_id`, `name`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
 | `product_images` | `id`, `product_id`, `src`, `name`, `sort_order` |
-| `variation_images` | `id`, `variation_id`, `src`, `name`, `sort_order` |
 | `description_images` | `id`, `product_id`, `src`, `sort_order` |
 | `admins` | `user_id` → `auth.users(id)` |
 
@@ -329,6 +329,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - `categories` is just `id` + `brand_id` + `name` — 63 unique category pages exist on the site, but brand/lens-type/head-size filtering comes from `attributes[]` not categories. Categories used only for top-level nav grouping
 - `attributes` is `jsonb` — stores `[{name, terms[]}]` grouped by attribute type for efficient listing-page queries without joining variations
 - `variation[]` on variations table is `text[]` — flat slug array of the specific combo e.g. `["black-clear", "1-00"]`
+- `image_src` / `image_name` on variations — variations have at most 1 image; flattened onto the row instead of a separate table. Having more than 1 variation image in WooCommerce is a misconfiguration (only 6 variations across 1 product had this, all sharing identical images). First image is used; frontend falls back to parent product images when null.
 - `summary[]` is `text[]` — parsed from `<li>` tags
 - Dimensions stored as flat columns (`length`, `width`, `height`) not jsonb
 - Separate image tables for product, variation, and description images — all have `src`, `name`, `sort_order`
@@ -347,7 +348,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Write `download_images.py` — download all product/variation images locally (2,785 images)
 - [x] Decide database schema — finalized (see below)
 - [x] Upload images to Supabase Storage — 2,559 unique images uploaded to `product-images` bucket (public). 1 timed out on first run, retried successfully. `upload_map.json` written: `local_path → storage_url`.
-- [x] Write import script — `import_products.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → variation_images → description_images. Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
+- [x] Write import script — `import_products.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → description_images. Variation image inserted inline on the variation row (`image_src`, `image_name`). Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
 - [x] Run import — 589 products, 63 categories, 1 brand inserted successfully. Exit code 0.
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image)
 

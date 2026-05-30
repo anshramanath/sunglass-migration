@@ -114,13 +114,14 @@ python import_products.py
 
 | File | Count | Reason |
 |---|---|---|
-| `clean_products_shape.json` | 589 | ✅ Ready for import |
+| `clean_products_shape.json` | 588 | ✅ Ready for import |
 | `invalid_sku_products_shape.json` | 22 | ⚠️ SKU is null or contains a space |
-| `no_weight_products_shape.json` | 12 | ⚠️ Missing weight (needed for shipping) |
+| `no_weight_products_shape.json` | 14 | ⚠️ Missing or zero weight (needed for shipping) |
 | `zero_price_products_shape.json` | 8 | ⚠️ Price is zero — internal/service products |
 | `missing_attributes_products_shape.json` | 7 | ⚠️ Variations with no attribute data |
 | `duplicate_name_products_shape.json` | 6 | ⚠️ Same name as another product |
 | `no_image_products_shape.json` | 3 | ⚠️ No images at all |
+| `multiple_variation_images_products_shape.json` | 1 | ⚠️ Variation has more than 1 image — likely WooCommerce misconfiguration |
 
 ---
 
@@ -195,9 +196,8 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 | `categories` | Nav/filter categories, scoped per brand |
 | `products` | Core product catalog |
 | `product_categories` | Many-to-many junction |
-| `variations` | Per-color/option variation data |
+| `variations` | Per-color/option variation data — includes `image_src` and `image_name` directly on the row (variations have at most 1 image) |
 | `product_images` | Product gallery images |
-| `variation_images` | Variation-specific images |
 | `description_images` | Images embedded in description HTML |
 | `admins` | Gates admin dashboard access via Supabase Auth |
 
