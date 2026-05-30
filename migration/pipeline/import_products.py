@@ -13,7 +13,7 @@ load_dotenv(dotenv_path=BASE.parent / ".env")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-IMAGES_DIR = BASE / "images/clean-products"
+IMAGES_DIR = BASE / "images"
 
 with open(IMAGES_DIR / "url_map.json") as f:
     url_map = json.load(f)
