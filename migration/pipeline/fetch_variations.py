@@ -66,7 +66,7 @@ for product in variable_products:
         except Exception as e:
             print(f"  Error fetching {var_id}: {e}")
 
-        time.sleep(0.3)
+        time.sleep(0.05)
 
     print(f"  Done. ({fetched_count}/{total_variations} total fetched)\n")
 

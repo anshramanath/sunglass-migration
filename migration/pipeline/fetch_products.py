@@ -36,7 +36,7 @@ while True:
     print(f"Fetched {len(products)} products from page {page}.")
 
     page += 1
-    time.sleep(0.5)
+    time.sleep(0.05)
 
 (BASE / "products").mkdir(exist_ok=True)
 with open(BASE / "products/products.json", "w", encoding="utf-8") as file:
