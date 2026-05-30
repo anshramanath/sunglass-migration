@@ -6,6 +6,7 @@ from pathlib import Path
 BASE = Path(__file__).parent.parent  # migration/
 BASE_URL = "https://bikershades.com/wp-json/wc/store/products"
 OUTPUT_FILE = BASE / "products/variations/variations.json"
+(BASE / "products/variations").mkdir(parents=True, exist_ok=True)
 
 with open(BASE / "products/products.json", "r", encoding="utf-8") as f:
     products = json.load(f)

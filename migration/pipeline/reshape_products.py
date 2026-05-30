@@ -4,6 +4,7 @@ from html import unescape
 from pathlib import Path
 
 BASE = Path(__file__).parent.parent  # migration/
+(BASE / "reshaped").mkdir(exist_ok=True)
 
 with open(BASE / "products/products.json", "r", encoding="utf-8") as f:
     products = json.load(f)
