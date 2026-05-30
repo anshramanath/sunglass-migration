@@ -2,10 +2,12 @@ import json
 import os
 import time
 from urllib.parse import urlparse
+from pathlib import Path
 import requests
 
-RESHAPED_DIR = "reshaped"
-IMAGES_DIR = "images"
+BASE = Path(__file__).parent.parent  # migration/
+RESHAPED_DIR = str(BASE / "reshaped")
+IMAGES_DIR = str(BASE / "images")
 
 SHAPE_MAP = {
     "clean_products_shape.json": "clean-products",

@@ -1,11 +1,14 @@
 import json
 import re
 from html import unescape
+from pathlib import Path
 
-with open("products/products.json", "r", encoding="utf-8") as f:
+BASE = Path(__file__).parent.parent  # migration/
+
+with open(BASE / "products/products.json", "r", encoding="utf-8") as f:
     products = json.load(f)
 
-with open("products/variations/variations.json", "r", encoding="utf-8") as f:
+with open(BASE / "products/variations/variations.json", "r", encoding="utf-8") as f:
     variations_by_parent = json.load(f)
 
 
@@ -304,28 +307,28 @@ for product in products:
     else:
         clean_products.append(clean_product)
 
-with open("reshaped/clean_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/clean_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(clean_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/invalid_sku_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/invalid_sku_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(invalid_sku_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/zero_price_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/zero_price_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(zero_price_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/missing_attributes_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/missing_attributes_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(missing_attributes_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/no_image_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/no_image_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(no_image_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/duplicate_name_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/duplicate_name_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(duplicate_name_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/no_weight_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/no_weight_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(no_weight_products, f, indent=2, ensure_ascii=False)
 
-with open("reshaped/multiple_variation_images_products_shape.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/multiple_variation_images_products_shape.json", "w", encoding="utf-8") as f:
     json.dump(multiple_variation_images_products, f, indent=2, ensure_ascii=False)
 
 print(f"Zero-price products: {len(zero_price_products)} → zero_price_products.json")

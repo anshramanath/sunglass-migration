@@ -4,21 +4,28 @@
 Migrating product data from bikershades.com (WordPress/WooCommerce) into a new multi-brand Supabase-backed app. All scripts live in `migration/`.
 
 ## Pipeline (in order)
-1. `fetch_products.py` — fetches 647 products from WooCommerce Store API
-2. `fetch_variations.py` — fetches 6,064 variations (crash-safe, resumes)
-3. `reshape_products.py` — normalizes data, buckets by issue type into `reshaped/`
-4. `download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
-5. `upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
-6. `import_products.py` — inserts clean products into Supabase DB
+All scripts runnable from repo root — paths are resolved relative to `__file__`.
+
+1. `migration/pipeline/fetch_products.py` — fetches 647 products from WooCommerce Store API
+2. `migration/pipeline/fetch_variations.py` — fetches 6,064 variations (crash-safe, resumes)
+3. `migration/pipeline/reshape_products.py` — normalizes data, buckets by issue type into `migration/reshaped/`
+4. `migration/pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
+5. `migration/pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
+6. `migration/pipeline/import_products.py` — inserts clean products into Supabase DB
+
+## QA scripts
+- `migration/qa/audit_clean_products.py` — validates all fields in clean bucket
+- `migration/qa/verify_reshape.py` — cross-references reshaped output against raw data
+- `migration/qa/verify_no_data_loss.py` — checks no field present in raw was dropped
 
 ## Key files
 - `migration/db/001_initial_schema.sql` — source of truth for DB schema
 - `migration/db/drop_schema.sql` — wipe all tables (dev only)
 - `migration/images/clean-products/url_map.json` — bikershades URL → local path
 - `migration/images/clean-products/upload_map.json` — local path → Supabase storage URL
-- `reshaped-problems/` — triage notes for the 58 flagged products
+- `migration/reshaped-problems/` — triage notes for the 58 flagged products
+- `docs/AUDIT_REPORT.md` — full field-level audit results
 - `PROGRESS.md` — full decision log
-- `BACKEND_HANDOFF.md` — handoff doc for the Next.js admin/API/MCP app (moved by user)
 
 ## Image pipeline
 Images are deduplicated by URL — `url_map.json` keys by full URL so the same image referenced across many products is only downloaded and uploaded once. Folder structure under `images/` is cosmetic; the map is the source of truth.

@@ -6,23 +6,42 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 
 ## 📦 What's in here
 
+**Pipeline** (`migration/pipeline/`)
 | File | Description |
 |---|---|
-| `migration/fetch_products.py` | Fetches all 647 products from the WooCommerce API |
-| `migration/fetch_variations.py` | Fetches all 6,064 product variations |
-| `migration/reshape_products.py` | Cleans and normalizes raw data, buckets by issue type |
-| `migration/download_images.py` | Downloads all product, variation, and description images locally |
-| `migration/upload_images.py` | Uploads local images to Supabase Storage, outputs `upload_map.json` |
-| `migration/import_products.py` | Inserts clean products into Supabase DB |
-| `migration/audit_clean_products.py` | Validates all fields in clean bucket for existence and correct values |
-| `migration/verify_reshape.py` | Cross-references reshaped output against raw data — counts, slugs, SKUs, prices, variation counts |
-| `migration/verify_no_data_loss.py` | Checks that every field present in raw still exists in reshaped output |
-| `migration/db/001_initial_schema.sql` | Source of truth for the Supabase database schema |
+| `fetch_products.py` | Fetches all 647 products from the WooCommerce API |
+| `fetch_variations.py` | Fetches all 6,064 product variations |
+| `reshape_products.py` | Cleans and normalizes raw data, buckets by issue type |
+| `download_images.py` | Downloads all product, variation, and description images locally |
+| `upload_images.py` | Uploads local images to Supabase Storage, outputs `upload_map.json` |
+| `import_products.py` | Inserts clean products into Supabase DB |
+
+**QA** (`migration/qa/`)
+| File | Description |
+|---|---|
+| `audit_clean_products.py` | Validates all fields in clean bucket for existence and correct values |
+| `verify_reshape.py` | Cross-references reshaped output against raw — counts, slugs, SKUs, prices, variation counts |
+| `verify_no_data_loss.py` | Checks every field present in raw still exists in reshaped output |
+
+**Schema** (`migration/db/`)
+| File | Description |
+|---|---|
+| `001_initial_schema.sql` | Source of truth for the Supabase database schema |
+| `drop_schema.sql` | Wipes all tables for clean schema re-apply (dev only) |
+
+**Docs** (`docs/`)
+| File | Description |
+|---|---|
+| `AUDIT_REPORT.md` | Full field-level audit results for clean products |
+| `bikershades_migration_guide.md` | Original migration guide |
+
+**Root**
+| File | Description |
+|---|---|
 | `PROGRESS.md` | Full migration log — decisions, findings, field mappings |
 | `CLAUDE.md` | Claude Code context file — auto-loaded each session |
 | `.env.example` | Template showing required environment variables |
 | `migration/requirements.txt` | Python dependencies |
-| `migration/db/drop_schema.sql` | Wipes all tables for clean schema re-apply (dev only) |
 | `reshaped-problems/` | Manual review notes for flagged reshaped buckets |
 
 ---
@@ -54,7 +73,7 @@ import_products.py      → 589 clean products inserted into Supabase DB
 pip install -r migration/requirements.txt
 ```
 
-**2. Set up `.env`** in the project root:
+**2. Set up `.env`** in the project root (see `.env.example`):
 ```env
 DATABASE_URL=postgresql://postgres:<password>@db.<project>.supabase.co:5432/postgres
 SUPABASE_URL=https://<project>.supabase.co
@@ -68,36 +87,35 @@ migration/db/001_initial_schema.sql
 
 **4. Fetch all products**
 ```bash
-cd migration
-python fetch_products.py
+python migration/pipeline/fetch_products.py
 ```
 
 **5. Fetch all variations**
 ```bash
-python fetch_variations.py
+python migration/pipeline/fetch_variations.py
 ```
 ✅ Crash-safe — resumes exactly where it left off if interrupted.
 
 **6. Reshape into clean schema**
 ```bash
-python reshape_products.py
+python migration/pipeline/reshape_products.py
 ```
 
 **7. Download images**
 ```bash
-python download_images.py
+python migration/pipeline/download_images.py
 ```
 ✅ Crash-safe — checkpoints after every image via `url_map.json`.
 
 **8. Upload images to Supabase Storage**
 ```bash
-python upload_images.py
+python migration/pipeline/upload_images.py
 ```
 ✅ Crash-safe — checkpoints after every upload via `upload_map.json`. Creates `product-images` bucket automatically.
 
 **9. Import products into DB**
 ```bash
-python import_products.py
+python migration/pipeline/import_products.py
 ```
 ⚠️ Wipes all existing product data first (`TRUNCATE brands CASCADE`), then inserts fresh.
 

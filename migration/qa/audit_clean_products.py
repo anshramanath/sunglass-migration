@@ -1,7 +1,10 @@
 import json
 from collections import defaultdict
+from pathlib import Path
 
-with open("reshaped/clean_products_shape.json") as f:
+BASE = Path(__file__).parent.parent  # migration/
+
+with open(BASE / "reshaped/clean_products_shape.json") as f:
     products = json.load(f)
 
 total = len(products)

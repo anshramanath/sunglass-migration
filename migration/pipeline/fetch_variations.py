@@ -1,11 +1,13 @@
 import json
 import time
 import requests
+from pathlib import Path
 
+BASE = Path(__file__).parent.parent  # migration/
 BASE_URL = "https://bikershades.com/wp-json/wc/store/products"
-OUTPUT_FILE = "products/variations/variations.json"
+OUTPUT_FILE = BASE / "products/variations/variations.json"
 
-with open("products/products.json", "r", encoding="utf-8") as f:
+with open(BASE / "products/products.json", "r", encoding="utf-8") as f:
     products = json.load(f)
 
 variable_products = [p for p in products if p.get("variations")]

@@ -8,11 +8,12 @@ from pathlib import Path
 sys.stdout.reconfigure(line_buffering=True)
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
+BASE = Path(__file__).parent.parent  # migration/
+load_dotenv(dotenv_path=BASE.parent / ".env")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-IMAGES_DIR = Path("images/clean-products")
+IMAGES_DIR = BASE / "images/clean-products"
 
 with open(IMAGES_DIR / "url_map.json") as f:
     url_map = json.load(f)
@@ -20,7 +21,7 @@ with open(IMAGES_DIR / "url_map.json") as f:
 with open(IMAGES_DIR / "upload_map.json") as f:
     upload_map = json.load(f)
 
-with open("reshaped/clean_products_shape.json") as f:
+with open(BASE / "reshaped/clean_products_shape.json") as f:
     products = json.load(f)
 
 

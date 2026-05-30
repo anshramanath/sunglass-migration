@@ -1,22 +1,25 @@
 import json
 import re
 from collections import defaultdict
+from pathlib import Path
 
-with open("products/products.json") as f:
+BASE = Path(__file__).parent.parent  # migration/
+
+with open(BASE / "products/products.json") as f:
     raw_products = json.load(f)
 
-with open("products/variations/variations.json") as f:
+with open(BASE / "products/variations/variations.json") as f:
     raw_variations_by_parent = json.load(f)
 
 BUCKETS = [
-    "reshaped/clean_products_shape.json",
-    "reshaped/zero_price_products_shape.json",
-    "reshaped/invalid_sku_products_shape.json",
-    "reshaped/missing_attributes_products_shape.json",
-    "reshaped/no_image_products_shape.json",
-    "reshaped/duplicate_name_products_shape.json",
-    "reshaped/no_weight_products_shape.json",
-    "reshaped/multiple_variation_images_products_shape.json",
+    BASE / "reshaped/clean_products_shape.json",
+    BASE / "reshaped/zero_price_products_shape.json",
+    BASE / "reshaped/invalid_sku_products_shape.json",
+    BASE / "reshaped/missing_attributes_products_shape.json",
+    BASE / "reshaped/no_image_products_shape.json",
+    BASE / "reshaped/duplicate_name_products_shape.json",
+    BASE / "reshaped/no_weight_products_shape.json",
+    BASE / "reshaped/multiple_variation_images_products_shape.json",
 ]
 
 all_reshaped = []

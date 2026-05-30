@@ -1,7 +1,9 @@
 import json
 import time
 import requests
+from pathlib import Path
 
+BASE = Path(__file__).parent.parent  # migration/
 BASE_URL = "https://bikershades.com/wp-json/wc/store/products"
 PER_PAGE = 100
 
@@ -36,7 +38,7 @@ while True:
     page += 1
     time.sleep(0.5)
 
-with open("products/products.json", "w", encoding="utf-8") as file:
+with open(BASE / "products/products.json", "w", encoding="utf-8") as file:
     json.dump(all_products, file, indent=2, ensure_ascii=False)
 
 print(f"Saved {len(all_products)} total products to products/products.json")
