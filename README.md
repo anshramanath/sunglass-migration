@@ -1,41 +1,41 @@
-# 🕶️ Bikershades Migration
+# Bikershades Migration
 
-Migrating product data from the bikershades.com WordPress/WooCommerce store into a clean, normalized schema for a new app.
+Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean, normalized schema for a new multi-brand app backed by Supabase.
 
 ---
 
-## 📦 What's in here
+## What's in here
 
 | File | Description |
 |---|---|
 | `migration/fetch_products.py` | Fetches all 647 products from the WooCommerce API |
 | `migration/fetch_variations.py` | Fetches all 6,064 product variations |
-| `migration/reshape_products.py` | Cleans and normalizes the raw data into a lean schema |
+| `migration/reshape_products.py` | Cleans and normalizes raw data, buckets by issue type |
+| `migration/download_images.py` | Downloads all product, variation, and description images locally |
+| `migration/db/001_initial_schema.sql` | Source of truth for the Supabase database schema |
 | `PROGRESS.md` | Full migration log — decisions, findings, field mappings |
 
 ---
 
-## 🔄 Migration Pipeline
+## Migration Pipeline
 
 ```
 WooCommerce Store API
         ↓
-products.json          ← raw backup of all products
+fetch_products.py       → products.json (647 products)
         ↓
-variations.json        ← raw backup of all variations
+fetch_variations.py     → variations.json (6,064 variations)
         ↓
-reshape_products.py    ← normalize, clean, merge
+reshape_products.py     → 7 bucketed JSON files in reshaped/
         ↓
-clean_products.json    ← ready for import
+download_images.py      → 2,785 images downloaded locally
         ↓
-download images        ← rehost to your own storage
-        ↓
-insert into DB         ← your new app reads from here
+[next] upload to storage + insert into Supabase
 ```
 
 ---
 
-## 🚀 Running the scripts
+## Running the scripts
 
 **1. Install dependencies**
 ```bash
@@ -52,16 +52,22 @@ python fetch_products.py
 ```bash
 python fetch_variations.py
 ```
-> ✅ Crash-safe — resumes exactly where it left off if interrupted.
+Crash-safe — resumes exactly where it left off if interrupted.
 
 **4. Reshape into clean schema**
 ```bash
 python reshape_products.py
 ```
 
+**5. Download images**
+```bash
+python download_images.py
+```
+Crash-safe — checkpoints after every image via `url_map.json`. Re-running skips already-downloaded files and retries failures.
+
 ---
 
-## 📊 Catalog Stats
+## Catalog Stats
 
 | | Count |
 |---|---|
@@ -69,12 +75,27 @@ python reshape_products.py
 | Variable products | 489 |
 | Simple products | 157 |
 | Total variations | 6,064 |
-| Clean products (after filtering) | 639 |
-| Products on sale | 524 |
+| Clean products | 589 |
+| Flagged for review | 58 |
+| Images downloaded | 2,785 |
 
 ---
 
-## 🗂️ Clean Product Shape
+## Reshaped Output Buckets
+
+| File | Count | Reason |
+|---|---|---|
+| `clean_products_shape.json` | 589 | Ready for import |
+| `invalid_sku_products_shape.json` | 22 | SKU is null or contains a space |
+| `no_weight_products_shape.json` | 12 | Missing weight (needed for shipping) |
+| `zero_price_products_shape.json` | 8 | Price is zero — internal/service products |
+| `missing_attributes_products_shape.json` | 7 | Variations with no attribute data |
+| `duplicate_name_products_shape.json` | 6 | Same name as another product |
+| `no_image_products_shape.json` | 3 | No images at all |
+
+---
+
+## Clean Product Shape
 
 ```json
 {
@@ -92,13 +113,15 @@ python reshape_products.py
   "averageRating": 4.5,
   "reviewCount": 12,
   "inStock": true,
-  "categories": ["prosport-sunglasses", "smoke-grey"],
+  "categories": [
+    { "name": "prosport-sunglasses", "link": "https://bikershades.com/product-category/..." }
+  ],
   "images": [{ "src": "https://...", "name": "Backspin Front" }],
   "attributes": ["blue-green-smoke", "glossy-black-green-smoke"],
   "variations": [
     {
-      "attributes": ["blue-green-smoke"],
-      "variation": { "...full variation object..." }
+      "attribute": ["blue-green-smoke"],
+      "variation": { "sku": "SP47X96BS-BG", "regularPriceInCents": 1999, "..." }
     }
   ],
   "weight": 2,
@@ -110,11 +133,31 @@ python reshape_products.py
 
 ---
 
-## ✅ Progress
+## Database Schema
 
-- [x] Fetch all products → `products.json`
-- [x] Fetch all variations → `variations.json`
-- [x] Reshape into clean schema → `clean_products.json`
-- [ ] Download images locally
+Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
+
+| Table | Purpose |
+|---|---|
+| `brands` | One row per brand |
+| `categories` | Nav/filter categories, scoped per brand |
+| `products` | Core product catalog |
+| `product_categories` | Many-to-many junction |
+| `variations` | Per-color/option variation data |
+| `product_images` | Product gallery images |
+| `variation_images` | Variation-specific images |
+| `description_images` | Images embedded in description HTML |
+| `admins` | Gates admin dashboard access via Supabase Auth |
+
+---
+
+## Progress
+
+- [x] Fetch all products
+- [x] Fetch all variations
+- [x] Reshape into clean schema
+- [x] Download images locally
+- [x] Design database schema
 - [ ] Upload images to storage
-- [ ] Insert into database
+- [ ] Insert clean products into Supabase
+- [ ] Manually review and fix flagged buckets
