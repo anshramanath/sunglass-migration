@@ -12,6 +12,8 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `migration/fetch_variations.py` | Fetches all 6,064 product variations |
 | `migration/reshape_products.py` | Cleans and normalizes raw data, buckets by issue type |
 | `migration/download_images.py` | Downloads all product, variation, and description images locally |
+| `migration/upload_images.py` | Uploads local images to Supabase Storage, outputs `upload_map.json` |
+| `migration/import_products.py` | Inserts clean products into Supabase DB |
 | `migration/db/001_initial_schema.sql` | Source of truth for the Supabase database schema |
 | `PROGRESS.md` | Full migration log — decisions, findings, field mappings |
 
@@ -30,7 +32,9 @@ reshape_products.py     → 7 bucketed JSON files in reshaped/
         ↓
 download_images.py      → 2,785 images downloaded locally
         ↓
-[next] upload to storage + insert into Supabase
+upload_images.py        → images uploaded to Supabase Storage, upload_map.json written
+        ↓
+import_products.py      → 589 clean products inserted into Supabase DB
 ```
 
 ---
@@ -39,31 +43,55 @@ download_images.py      → 2,785 images downloaded locally
 
 **1. Install dependencies**
 ```bash
-pip install requests
+pip install requests supabase psycopg2-binary python-dotenv
 ```
 
-**2. Fetch all products**
+**2. Set up `.env`** in the project root:
+```env
+DATABASE_URL=postgresql://postgres:<password>@db.<project>.supabase.co:5432/postgres
+SUPABASE_URL=https://<project>.supabase.co
+SUPABASE_SERVICE_KEY=<service_role key>
+```
+
+**3. Run the schema** in Supabase SQL editor:
+```
+migration/db/001_initial_schema.sql
+```
+
+**4. Fetch all products**
 ```bash
 cd migration
 python fetch_products.py
 ```
 
-**3. Fetch all variations**
+**5. Fetch all variations**
 ```bash
 python fetch_variations.py
 ```
 ✅ Crash-safe — resumes exactly where it left off if interrupted.
 
-**4. Reshape into clean schema**
+**6. Reshape into clean schema**
 ```bash
 python reshape_products.py
 ```
 
-**5. Download images**
+**7. Download images**
 ```bash
 python download_images.py
 ```
-✅ Crash-safe — checkpoints after every image via `url_map.json`. Re-running skips already-downloaded files and retries failures.
+✅ Crash-safe — checkpoints after every image via `url_map.json`.
+
+**8. Upload images to Supabase Storage**
+```bash
+python upload_images.py
+```
+✅ Crash-safe — checkpoints after every upload via `upload_map.json`. Creates `product-images` bucket automatically.
+
+**9. Import products into DB**
+```bash
+python import_products.py
+```
+⚠️ Wipes all existing product data first (`TRUNCATE brands CASCADE`), then inserts fresh.
 
 ---
 
@@ -117,11 +145,13 @@ python download_images.py
     { "name": "prosport-sunglasses", "link": "https://bikershades.com/product-category/..." }
   ],
   "images": [{ "src": "https://...", "name": "Backspin Front" }],
-  "attributes": ["blue-green-smoke", "glossy-black-green-smoke"],
+  "attributes": [
+    { "name": "color", "terms": ["blue-green-smoke", "glossy-black-green-smoke"] }
+  ],
   "variations": [
     {
       "attribute": ["blue-green-smoke"],
-      "variation": { "sku": "SP47X96BS-BG", "regularPriceInCents": 1999, "..." }
+      "variation": { "sku": "SP47X96BS-BG", "regularPriceInCents": 1999 }
     }
   ],
   "weight": 2,
@@ -158,6 +188,6 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Reshape into clean schema
 - [x] Download images locally
 - [x] Design database schema
-- [ ] Upload images to storage
-- [ ] Insert clean products into Supabase
+- [x] Upload images to Supabase Storage
+- [x] Insert clean products into Supabase
 - [ ] Manually review and fix flagged buckets

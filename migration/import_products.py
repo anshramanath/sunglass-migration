@@ -1,0 +1,210 @@
+import json
+import os
+import sys
+import psycopg2
+from psycopg2.extras import Json
+from pathlib import Path
+
+sys.stdout.reconfigure(line_buffering=True)
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+IMAGES_DIR = Path("images/clean-products")
+
+with open(IMAGES_DIR / "url_map.json") as f:
+    url_map = json.load(f)
+
+with open(IMAGES_DIR / "upload_map.json") as f:
+    upload_map = json.load(f)
+
+with open("reshaped/clean_products_shape.json") as f:
+    products = json.load(f)
+
+
+def resolve_src(src):
+    local_path = url_map.get(src)
+    if not local_path:
+        return None
+    return upload_map.get(local_path)
+
+
+conn = psycopg2.connect(DATABASE_URL)
+cur = conn.cursor()
+
+# Wipe all product data (cascades to all child tables)
+print("Wiping existing data...")
+cur.execute("TRUNCATE brands CASCADE;")
+conn.commit()
+
+# Brand
+print("Inserting brand...")
+cur.execute("INSERT INTO brands (name) VALUES (%s) RETURNING id;", ("bikershades",))
+brand_id = cur.fetchone()[0]
+conn.commit()
+
+# Collect and insert all unique categories
+all_category_names = {
+    cat["name"]
+    for product in products
+    for cat in product.get("categories", [])
+    if cat.get("name")
+}
+
+print(f"Inserting {len(all_category_names)} categories...")
+category_id_map = {}
+for name in all_category_names:
+    cur.execute(
+        "INSERT INTO categories (brand_id, name) VALUES (%s, %s) RETURNING id;",
+        (brand_id, name),
+    )
+    category_id_map[name] = cur.fetchone()[0]
+conn.commit()
+
+# Products
+print(f"Inserting {len(products)} products...")
+
+for i, product in enumerate(products):
+    dims = product.get("dimensions") or {}
+
+    cur.execute(
+        """
+        INSERT INTO products (
+            brand_id, name, slug, sku, wp_url, product_url,
+            description, summary, attributes,
+            sale, regular_price_cents, sale_price_cents,
+            average_rating, review_count, in_stock,
+            weight, weight_unit, length, width, height, dimension_unit
+        ) VALUES (
+            %s, %s, %s, %s, %s, %s,
+            %s, %s, %s,
+            %s, %s, %s,
+            %s, %s, %s,
+            %s, %s, %s, %s, %s, %s
+        ) RETURNING id;
+        """,
+        (
+            brand_id,
+            product["name"],
+            product["slug"],
+            product["sku"],
+            product.get("wpUrl"),
+            product.get("productUrl"),
+            product.get("description"),
+            product.get("summary"),
+            Json(product.get("attributes", [])),
+            product.get("sale", False),
+            product["regularPriceInCents"],
+            product["salePriceInCents"],
+            product.get("averageRating", 0),
+            product.get("reviewCount", 0),
+            product.get("inStock", True),
+            product.get("weight"),
+            product.get("weightUnit", "oz"),
+            dims.get("length"),
+            dims.get("width"),
+            dims.get("height"),
+            product.get("dimensionUnit", "in"),
+        ),
+    )
+    product_id = cur.fetchone()[0]
+
+    # product_categories
+    for cat in product.get("categories", []):
+        cat_id = category_id_map.get(cat.get("name"))
+        if cat_id:
+            cur.execute(
+                "INSERT INTO product_categories (product_id, category_id) VALUES (%s, %s);",
+                (product_id, cat_id),
+            )
+
+    # product_images
+    for j, img in enumerate(product.get("images", [])):
+        src = resolve_src(img["src"])
+        if src:
+            cur.execute(
+                "INSERT INTO product_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
+                (product_id, src, img.get("name", ""), j),
+            )
+
+    # description_images (product-level)
+    for j, img_url in enumerate(product.get("descriptionImgs", [])):
+        src = resolve_src(img_url)
+        if src:
+            cur.execute(
+                "INSERT INTO description_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
+                (product_id, src, Path(img_url).name, j),
+            )
+
+    # variations
+    for var_entry in product.get("variations", []):
+        var = var_entry.get("variation", {})
+        var_dims = var.get("dimensions") or {}
+
+        cur.execute(
+            """
+            INSERT INTO variations (
+                product_id, slug, sku, variation,
+                wp_url, product_url, description,
+                sale, regular_price_cents, sale_price_cents,
+                in_stock, weight, weight_unit,
+                length, width, height, dimension_unit
+            ) VALUES (
+                %s, %s, %s, %s,
+                %s, %s, %s,
+                %s, %s, %s,
+                %s, %s, %s,
+                %s, %s, %s, %s
+            ) RETURNING id;
+            """,
+            (
+                product_id,
+                var.get("slug"),
+                var.get("sku"),
+                var.get("variation", []),
+                var.get("wpUrl"),
+                var.get("productUrl"),
+                var.get("description"),
+                var.get("sale", False),
+                var.get("regularPriceInCents", 0),
+                var.get("salePriceInCents", 0),
+                var.get("inStock", True),
+                var.get("weight"),
+                var.get("weightUnit", "oz"),
+                var_dims.get("length"),
+                var_dims.get("width"),
+                var_dims.get("height"),
+                var.get("dimensionUnit", "in"),
+            ),
+        )
+        variation_id = cur.fetchone()[0]
+
+        # variation_images
+        for j, img in enumerate(var.get("images", [])):
+            src = resolve_src(img["src"])
+            if src:
+                cur.execute(
+                    "INSERT INTO variation_images (variation_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
+                    (variation_id, src, img.get("name", ""), j),
+                )
+
+        # description_images (variation-level)
+        for j, img_url in enumerate(var.get("descriptionImgs", [])):
+            src = resolve_src(img_url)
+            if src:
+                cur.execute(
+                    "INSERT INTO description_images (variation_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
+                    (variation_id, src, Path(img_url).name, j),
+                )
+
+    if (i + 1) % 50 == 0:
+        conn.commit()
+        print(f"  {i + 1}/{len(products)} committed...")
+
+conn.commit()
+cur.close()
+conn.close()
+
+print(f"\nDone. {len(products)} products imported into Supabase.")

@@ -77,19 +77,47 @@ def parse_summary(html):
     return [text] if text else []
 
 
+ATTRIBUTE_NAME_MAP = {
+    "Choose Color (REQUIRED)": "color",
+    "Choose Color": "color",
+    "Choose Power": "power",
+    "Choose Transition Type": "transition-type",
+    "Filter by Frame Color": "frame-color",
+    "Choose Frame Color (Required)": "frame-color",
+    "Choose Style Color": "style-color",
+    "Choose Bandana Color": "bandana-color",
+    "Filter by Size": "size",
+    "Choose Size": "size",
+    "Choose 7 Eye Style": "7-eye-style",
+    "Filter by Brand": "brand",
+    "Filter by Foam Type": "foam-type",
+    "Shipping Option": "shipping",
+    "Original Sunglass Purchase Price": "original-price",
+    "Qty (packs of 3)": "quantity-packs-3",
+    "LENS - GENUINE TRANSITIONS": "lens-genuine-transition",
+}
+
+
 def reshape_product(product, variation_stubs, full_variations_map):
     prices = product.get("prices") or {}
     regular_price = int(prices.get("regular_price") or 0)
     sale_price = int(prices.get("sale_price") or 0)
     sale = product.get("on_sale", False) and sale_price < regular_price
 
-    # Flatten attribute term slugs
-    attributes = []
+    # Group attributes by mapped name
+    attributes_map = {}
     for attr in product.get("attributes", []):
-        for term in attr.get("terms", []):
-            slug = term.get("slug")
-            if slug:
-                attributes.append(slug)
+        raw_name = attr.get("name", "")
+        mapped = ATTRIBUTE_NAME_MAP.get(raw_name, slugify(raw_name))
+        terms = [t.get("slug") for t in attr.get("terms", []) if t.get("slug")]
+        if terms:
+            if mapped in attributes_map:
+                for t in terms:
+                    if t not in attributes_map[mapped]:
+                        attributes_map[mapped].append(t)
+            else:
+                attributes_map[mapped] = terms
+    attributes = [{"name": k, "terms": v} for k, v in attributes_map.items()]
 
     # Build variations array
     variations = []
@@ -190,7 +218,6 @@ def reshape_variation(v, stub_values=None):
     }
 
     return {
-        "name": clean_name(v.get("name")),
         "slug": v.get("slug"),
         "sku": v.get("sku") or None,
         "variation": stub_values or [],

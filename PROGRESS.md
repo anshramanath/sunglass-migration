@@ -19,6 +19,8 @@ bikershades-migration/
     fetch_products.py              ← step 1: fetch all products
     fetch_variations.py            ← step 2: fetch all variations
     reshape_products.py            ← step 3: reshape into clean schema
+    upload_images.py               ← step 5: upload local images to Supabase Storage
+    import_products.py             ← step 6: insert clean products into Supabase DB
     products/
       products.json                ← raw WooCommerce backup (647 products)
       variations/
@@ -34,6 +36,7 @@ bikershades-migration/
     images/
       clean-products/
         url_map.json               ← old URL → local path mapping + checkpoint
+        upload_map.json            ← local path → Supabase Storage URL mapping + checkpoint
         products/{sku}/            ← product images per SKU
         variations/{sku}/          ← variation images per variation SKU
         descriptions/{sku}/        ← description-embedded images per product SKU
@@ -78,8 +81,8 @@ Key reshape decisions applied:
 - `summary` parsed from `<li>` tags into string array, with plain text fallback
 - `sale` computed from two checks: `on_sale == true AND sale_price < regular_price`
 - `averageRating` normalized to float
-- `categories` as flat slug array
-- `attributes` as flat term slug array
+- `categories` reshaped as `[{name, link}]` objects — name uses slug value, link preserves old WP category URL
+- `attributes` reshaped as `[{name, terms[]}]` grouped by attribute type — e.g. `{name: "color", terms: ["black-clear", "blue-clear"]}`. 17 raw WooCommerce attribute names mapped to clean short keys. Stored as `jsonb` in DB for structured querying on category/listing pages without joining variations
 - `variations` array: each entry `{ attribute: [...raw stub values], variation: {...full variation object} }`
 - Variation `summary`, `averageRating`, `reviewCount` dropped — always empty/zero at variation level
 - Names decoded from HTML entities and tags stripped
@@ -269,7 +272,8 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 ### Key decisions
 - `brands` is just `id` + `name` — slug derivable in code
 - `categories` is just `id` + `brand_id` + `name` — 63 unique category pages exist on the site, but brand/lens-type/head-size filtering comes from `attributes[]` not categories. Categories used only for top-level nav grouping
-- `attributes[]` and `variation[]` are `text[]` — flat slug arrays
+- `attributes` is `jsonb` — stores `[{name, terms[]}]` grouped by attribute type for efficient listing-page queries without joining variations
+- `variation[]` on variations table is `text[]` — flat slug array of the specific combo e.g. `["black-clear", "1-00"]`
 - `summary[]` is `text[]` — parsed from `<li>` tags
 - Dimensions stored as flat columns (`length`, `width`, `height`) not jsonb
 - Separate image tables for product, variation, and description images — all have `src`, `name`, `sort_order`
@@ -287,5 +291,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Write `reshape_products.py` — normalize WooCommerce schema into clean app schema
 - [x] Write `download_images.py` — download all product/variation images locally (2,785 images)
 - [x] Decide database schema — finalized (see below)
-- [ ] Upload images to storage (Supabase / S3 / Cloudinary) — drop image objects with no local file, swap URLs for the rest
-- [ ] Write import script to insert products into DB
+- [x] Upload images to Supabase Storage — 2,559 unique images uploaded to `product-images` bucket (public). 1 timed out on first run, retried successfully. `upload_map.json` written: `local_path → storage_url`.
+- [x] Write import script — `import_products.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → variation_images → description_images. Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
+- [x] Run import — 589 products, 63 categories, 1 brand inserted successfully. Exit code 0.
+- [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image)

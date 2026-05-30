@@ -24,7 +24,7 @@ create table products (
   product_url text,
   description text,
   summary text[],
-  attributes text[],
+  attributes jsonb,
   sale boolean not null default false,
   regular_price_cents int not null,
   sale_price_cents int not null,
@@ -48,7 +48,6 @@ create table product_categories (
 create table variations (
   id uuid primary key default gen_random_uuid(),
   product_id uuid not null references products(id),
-  name text not null,
   slug text not null,
   sku text not null unique,
   variation text[],
