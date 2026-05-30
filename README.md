@@ -14,6 +14,9 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `migration/download_images.py` | Downloads all product, variation, and description images locally |
 | `migration/upload_images.py` | Uploads local images to Supabase Storage, outputs `upload_map.json` |
 | `migration/import_products.py` | Inserts clean products into Supabase DB |
+| `migration/audit_clean_products.py` | Validates all fields in clean bucket for existence and correct values |
+| `migration/verify_reshape.py` | Cross-references reshaped output against raw data — counts, slugs, SKUs, prices, variation counts |
+| `migration/verify_no_data_loss.py` | Checks that every field present in raw still exists in reshaped output |
 | `migration/db/001_initial_schema.sql` | Source of truth for the Supabase database schema |
 | `PROGRESS.md` | Full migration log — decisions, findings, field mappings |
 | `reshaped-problems/` | Manual review notes for flagged reshaped buckets |
@@ -212,4 +215,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Design database schema
 - [x] Upload images to Supabase Storage
 - [x] Insert clean products into Supabase
+- [x] Audit and verify reshape accuracy
+- [x] Schema update — variation image flattened onto variations row, variation_images table removed
+- [ ] Re-run import against updated schema
 - [ ] Manually review and fix flagged buckets
