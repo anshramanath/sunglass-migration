@@ -291,7 +291,7 @@ for product in products:
         no_image_products.append(clean_product)
     elif clean_product.get("name") in duplicate_names:
         duplicate_name_products.append(clean_product)
-    elif clean_product.get("weight") is None:
+    elif not clean_product.get("weight"):
         no_weight_products.append(clean_product)
     else:
         clean_products.append(clean_product)

@@ -1,0 +1,176 @@
+import json
+from collections import defaultdict
+
+with open("reshaped/clean_products_shape.json") as f:
+    products = json.load(f)
+
+total = len(products)
+total_variations = sum(len(p.get("variations", [])) for p in products)
+
+# ── helpers ──────────────────────────────────────────────────────────────────
+
+def is_blank(v):
+    if v is None: return True
+    if isinstance(v, str) and not v.strip(): return True
+    if isinstance(v, list) and len(v) == 0: return True
+    return False
+
+issues = defaultdict(list)  # field → list of (sku, detail)
+
+def flag(field, sku, detail=""):
+    issues[field].append((sku, detail))
+
+# ── product-level audit ───────────────────────────────────────────────────────
+
+for p in products:
+    sku = p.get("sku", "UNKNOWN")
+
+    # Required non-blank strings
+    for field in ["name", "slug", "sku", "wpUrl", "productUrl"]:
+        if is_blank(p.get(field)):
+            flag(f"product.{field}", sku)
+
+    # Price integrity
+    reg = p.get("regularPriceInCents", 0)
+    sale = p.get("salePriceInCents", 0)
+    if not reg or reg <= 0:
+        flag("product.regularPriceInCents", sku, f"value={reg}")
+    if p.get("sale") and (sale <= 0 or sale >= reg):
+        flag("product.salePriceInCents[sale=true]", sku, f"sale={sale} reg={reg}")
+
+    # Rating range
+    rating = p.get("averageRating", 0)
+    if not (0 <= rating <= 5):
+        flag("product.averageRating", sku, f"value={rating}")
+
+    # Optional but tracked
+    if is_blank(p.get("description")):
+        flag("product.description[empty]", sku)
+    if is_blank(p.get("summary")):
+        flag("product.summary[empty]", sku)
+    if is_blank(p.get("categories")):
+        flag("product.categories[empty]", sku)
+    if is_blank(p.get("descriptionImgs")):
+        flag("product.descriptionImgs[empty]", sku)
+
+    # Weight (should be set — this is the clean bucket)
+    if p.get("weight") is None:
+        flag("product.weight[null]", sku)
+    elif p.get("weight") <= 0:
+        flag("product.weight[zero]", sku, f"value={p.get('weight')}")
+
+    # Dimensions
+    dims = p.get("dimensions") or {}
+    for axis in ["length", "width", "height"]:
+        if dims.get(axis) is None:
+            flag(f"product.dimensions.{axis}[null]", sku)
+
+    # Images
+    if is_blank(p.get("images")):
+        flag("product.images[empty]", sku)
+    else:
+        for img in p.get("images", []):
+            if is_blank(img.get("src")):
+                flag("product.images[].src[blank]", sku)
+            if is_blank(img.get("name")):
+                flag("product.images[].name[blank]", sku)
+
+    # Attributes
+    if is_blank(p.get("attributes")):
+        flag("product.attributes[empty]", sku)
+    else:
+        for attr in p.get("attributes", []):
+            if is_blank(attr.get("name")):
+                flag("product.attributes[].name[blank]", sku)
+            if is_blank(attr.get("terms")):
+                flag("product.attributes[].terms[empty]", sku)
+
+    # ── variation-level audit ─────────────────────────────────────────────────
+
+    for ve in p.get("variations", []):
+        v = ve.get("variation", {})
+        vsku = v.get("sku") or f"{sku}[no-vsku]"
+
+        if is_blank(ve.get("attribute")):
+            flag("variation.attribute[empty]", vsku, f"parent={sku}")
+
+        for field in ["slug", "sku", "wpUrl", "productUrl"]:
+            if is_blank(v.get(field)):
+                flag(f"variation.{field}", vsku, f"parent={sku}")
+
+        vreg = v.get("regularPriceInCents", 0)
+        vsale = v.get("salePriceInCents", 0)
+        if not vreg or vreg <= 0:
+            flag("variation.regularPriceInCents", vsku, f"value={vreg} parent={sku}")
+        if v.get("sale") and (vsale <= 0 or vsale >= vreg):
+            flag("variation.salePriceInCents[sale=true]", vsku, f"sale={vsale} reg={vreg} parent={sku}")
+
+        if v.get("weight") is None:
+            flag("variation.weight[null]", vsku, f"parent={sku}")
+
+        vdims = v.get("dimensions") or {}
+        for axis in ["length", "width", "height"]:
+            if vdims.get(axis) is None:
+                flag(f"variation.dimensions.{axis}[null]", vsku, f"parent={sku}")
+
+        if is_blank(v.get("images")):
+            flag("variation.images[empty]", vsku, f"parent={sku}")
+
+        if is_blank(v.get("description")):
+            flag("variation.description[empty]", vsku, f"parent={sku}")
+
+# ── report ────────────────────────────────────────────────────────────────────
+
+print(f"{'='*60}")
+print(f"  CLEAN PRODUCTS AUDIT")
+print(f"{'='*60}")
+print(f"  Products:   {total}")
+print(f"  Variations: {total_variations}")
+print()
+
+# Separate critical (required fields) from informational (optional/empty)
+critical_keywords = [
+    "product.name", "product.slug", "product.sku", "product.wpUrl", "product.productUrl",
+    "product.regularPriceInCents", "product.salePriceInCents[sale=true]",
+    "product.averageRating", "product.weight[null]", "product.weight[zero]",
+    "variation.slug", "variation.sku", "variation.wpUrl", "variation.productUrl",
+    "variation.regularPriceInCents", "variation.salePriceInCents[sale=true]",
+    "variation.attribute[empty]",
+]
+
+critical = {k: v for k, v in issues.items() if any(k.startswith(c) for c in critical_keywords)}
+informational = {k: v for k, v in issues.items() if k not in critical}
+
+print("── CRITICAL ISSUES (required fields missing or invalid) ──")
+if not critical:
+    print("  ✓ None")
+else:
+    for field, entries in sorted(critical.items()):
+        pct = len(entries) / (total_variations if "variation." in field else total) * 100
+        print(f"\n  {field}")
+        print(f"  {len(entries)} affected ({pct:.1f}%)")
+        for sku, detail in entries[:5]:
+            print(f"    · {sku}" + (f"  {detail}" if detail else ""))
+        if len(entries) > 5:
+            print(f"    ... and {len(entries) - 5} more")
+
+print()
+print("── INFORMATIONAL (empty optional fields) ──")
+for field, entries in sorted(informational.items()):
+    base = total_variations if "variation." in field else total
+    pct = len(entries) / base * 100
+    print(f"  {field:<50}  {len(entries):>5} / {base}  ({pct:.1f}%)")
+
+print()
+print("── SUMMARY TABLE ──")
+print(f"  {'Field':<50}  {'Missing':>7}  {'/ Total':>8}  {'%':>6}")
+print(f"  {'-'*50}  {'-'*7}  {'-'*8}  {'-'*6}")
+all_issues = {**critical, **informational}
+for field, entries in sorted(all_issues.items()):
+    base = total_variations if "variation." in field else total
+    pct = len(entries) / base * 100
+    marker = " !" if field in critical else "  "
+    print(f"{marker} {field:<50}  {len(entries):>7}  / {base:<6}  {pct:>5.1f}%")
+
+print()
+print("  ! = critical field")
