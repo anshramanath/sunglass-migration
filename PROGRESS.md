@@ -19,10 +19,30 @@ bikershades-migration/
     fetch_products.py              ← step 1: fetch all products
     fetch_variations.py            ← step 2: fetch all variations
     reshape_products.py            ← step 3: reshape into clean schema
-    products.json                  ← raw WooCommerce backup (647 products)
-    variations.json                ← per-variation data (6,064 variations)
-    clean_products.json            ← reshaped output (639 products)
-    images/                        ← empty, for step 4
+    products/
+      products.json                ← raw WooCommerce backup (647 products)
+      variations/
+        variations.json            ← per-variation data (6,064 variations)
+    reshaped/
+      clean_products_shape.json         ← 589 clean products
+      zero_price_products_shape.json    ← 8 internal/service products
+      invalid_sku_products_shape.json   ← 22 products with invalid SKUs
+      missing_attributes_shape.json     ← 7 products with unrecoverable variation attributes
+      no_image_products_shape.json      ← 3 products with no images
+      duplicate_name_products_shape.json← 6 products with duplicate names
+      no_weight_products_shape.json     ← 12 products with no weight
+    images/
+      clean-products/
+        url_map.json               ← old URL → local path mapping + checkpoint
+        products/{sku}/            ← product images per SKU
+        variations/{sku}/          ← variation images per variation SKU
+        descriptions/{sku}/        ← description-embedded images per product SKU
+      zero-price/
+      invalid-sku/
+      missing-attributes/
+      no-image/
+      duplicate-name/
+      no-weight/
 ```
 
 ---
@@ -38,9 +58,20 @@ bikershades-migration/
 **Result:** `variations.json` — complete (6,064/6,064 variations, 486/486 parents)
 **Total variations:** 6,064 across 486 variable products
 
+### Step 4 — Download images
+**Script:** `download_images.py`
+**Result:** 2,785 images downloaded across all 7 shape folders
+
+- Folder structure: `images/{shape}/products/{sku}/`, `variations/{sku}/`, `descriptions/{sku}/`
+- Folders keyed by SKU (falls back to slug if SKU missing)
+- `url_map.json` per shape folder: maps old bikershades.com URL → local file path. Acts as both checkpoint and the translation layer for future upload step
+- Some 404s logged and skipped — 86 variation images + 10 description images from 2018 that no longer exist on the server. Zero product-level images lost.
+- All failed URLs written to `images/skipped.json` keyed by shape folder
+- Crash-safe: checkpoints after every individual download via `url_map.json`
+
 ### Step 3 — Reshape products
 **Script:** `reshape_products.py`
-**Result:** `clean_products.json` — 639 products (8 zero-price internal products filtered out)
+**Result:** 7 output files in `reshaped/` — 589 clean, 647 total split by issue type
 
 Key reshape decisions applied:
 - Descriptions stripped to plain text, embedded image URLs extracted into `descriptionImgs[]`
@@ -49,8 +80,10 @@ Key reshape decisions applied:
 - `averageRating` normalized to float
 - `categories` as flat slug array
 - `attributes` as flat term slug array
-- `variations` array: each entry `{ attributes: [...slugs], variation: {...full variation object} }`
+- `variations` array: each entry `{ attribute: [...raw stub values], variation: {...full variation object} }`
 - Variation `summary`, `averageRating`, `reviewCount` dropped — always empty/zero at variation level
+- Names decoded from HTML entities and tags stripped
+- Products split into separate files by issue type: zero price, invalid SKU, missing attributes, no images, duplicate names, no weight
 
 ---
 
@@ -146,7 +179,7 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `images[].src` | `images[].src` | full res original only |
 | `images[].name` | `images[].name` | |
 | `attributes[].terms[].slug` | `attributes[]` | flat array of term slugs, all attributes kept regardless of `has_variations` |
-| `variations` (merged with variations.json) | `variations[]` | each entry: `{ attributes: ["black-clear", "1-00"], variation: {...full variation object} }` |
+| `variations` (merged with variations.json) | `variations[]` | each entry: `{ attribute: ["black-clear", "1-00"], variation: {...full variation object} }` — `attribute` uses raw stub values as-is |
 | `weight` | `weight` | string → number |
 | `dimensions` | `dimensions` | all strings → numbers |
 | — | `weightUnit` | hardcoded `"oz"` |
@@ -158,7 +191,7 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `name` | `name` | |
 | `slug` | `slug` | |
 | `sku` | `sku` | |
-| `variation` | `variation` | human-readable combo string e.g. `"Choose Color: Black, Choose Power: 1.50"` |
+| `variation` | `variation` | raw stub attribute values array e.g. `["black-clear", "1-00"]` |
 | `permalink` | `wpUrl` | |
 | `_links.self.href` | `productUrl` | |
 | `description` | `description` | stripped to plain text |
@@ -188,8 +221,8 @@ Each variation stub in `products.json` looks like:
 In the reshape, replace `id` with the full variation object from `variations.json`, and simplify `attributes` to just values (drop `name` — order matches parent attribute keys, and the variation string on the full object has names if ever needed):
 ```json
 {
-  "attributes": ["black-clear", "1-00"],
-  "variation": { ...full variation object with same field cleanup as parent... }
+  "attribute": ["black-clear", "1-00"],
+  "variation": { ...full variation object, `variation` field is raw stub values array... }
 }
 ```
 
@@ -207,11 +240,44 @@ Whether a product is variable is determined solely by whether `variations` is no
 
 2. ~~**`short_description` parsing fallback**~~ — resolved. Plain text fallback implemented in `reshape_products.py`.
 
-3. **990 description image URLs across 587 products + 4 variations** — must be downloaded and rehosted. `descriptionImgs[]` field captures all URLs.
+3. ~~**990 description image URLs across 587 products + 4 variations**~~ — downloaded. Some 404 (old deleted files). `url_map.json` per shape tracks what was successfully saved.
 
-4. **11 products with no images and no variations** — mostly resolved by zero-price filter. Check remaining after download step.
+4. **86 variation images + 10 description images 404** — old files deleted from WordPress server (~2018 era). Not recoverable. Upload step will drop image objects whose `src` wasn't downloaded rather than inserting broken URLs. Frontend falls back to parent product images for variations with no images.
 
 5. **56 variations with no images** — low priority. Frontend falls back to parent product images naturally.
+
+---
+
+## Database Schema
+
+Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users`), admin access gated by `admins` table.
+
+### Tables
+
+| Table | Key fields |
+|---|---|
+| `brands` | `id`, `name` |
+| `categories` | `id`, `brand_id`, `name` |
+| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `regular_price_cents`, `sale_price_cents`, `average_rating`, `review_count`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `product_categories` | `product_id`, `category_id` (junction) |
+| `variations` | `id`, `product_id`, `name`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `product_images` | `id`, `product_id`, `src`, `name`, `sort_order` |
+| `variation_images` | `id`, `variation_id`, `src`, `name`, `sort_order` |
+| `description_images` | `id`, `product_id`, `src`, `sort_order` |
+| `admins` | `user_id` → `auth.users(id)` |
+
+### Key decisions
+- `brands` is just `id` + `name` — slug derivable in code
+- `categories` is just `id` + `brand_id` + `name` — 63 unique category pages exist on the site, but brand/lens-type/head-size filtering comes from `attributes[]` not categories. Categories used only for top-level nav grouping
+- `attributes[]` and `variation[]` are `text[]` — flat slug arrays
+- `summary[]` is `text[]` — parsed from `<li>` tags
+- Dimensions stored as flat columns (`length`, `width`, `height`) not jsonb
+- Separate image tables for product, variation, and description images — all have `src`, `name`, `sort_order`
+- `description_images` has nullable `product_id` and `variation_id` with a check constraint enforcing exactly one is set — a description image belongs to either a product or a variation, not both
+- `description_images.name` derived from filename in the import script (last path segment of `src`)
+- No signup — `admins` table gates admin access since Supabase Auth signup endpoint is publicly accessible
+- RLS enabled on all tables, frontend never hits Supabase directly — goes through backend API with `service_role` key
+- Source of truth for schema: `migration/db/001_initial_schema.sql`
 
 ---
 
@@ -219,7 +285,7 @@ Whether a product is variable is determined solely by whether `variations` is no
 
 - [x] Wait for `variations.json` to complete
 - [x] Write `reshape_products.py` — normalize WooCommerce schema into clean app schema
-- [ ] Write `download_images.py` — download all product/variation images locally
-- [ ] Decide database schema
-- [ ] Upload images to storage (Supabase / S3 / Cloudinary)
+- [x] Write `download_images.py` — download all product/variation images locally (2,785 images)
+- [x] Decide database schema — finalized (see below)
+- [ ] Upload images to storage (Supabase / S3 / Cloudinary) — drop image objects with no local file, swap URLs for the rest
 - [ ] Write import script to insert products into DB

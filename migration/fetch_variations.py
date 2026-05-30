@@ -3,9 +3,9 @@ import time
 import requests
 
 BASE_URL = "https://bikershades.com/wp-json/wc/store/products"
-OUTPUT_FILE = "variations.json"
+OUTPUT_FILE = "products/variations/variations.json"
 
-with open("products.json", "r", encoding="utf-8") as f:
+with open("products/products.json", "r", encoding="utf-8") as f:
     products = json.load(f)
 
 variable_products = [p for p in products if p.get("variations")]

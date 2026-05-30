@@ -36,7 +36,7 @@ while True:
     page += 1
     time.sleep(0.5)
 
-with open("products.json", "w", encoding="utf-8") as file:
+with open("products/products.json", "w", encoding="utf-8") as file:
     json.dump(all_products, file, indent=2, ensure_ascii=False)
 
-print(f"Saved {len(all_products)} total products to products.json")
+print(f"Saved {len(all_products)} total products to products/products.json")
