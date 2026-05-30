@@ -19,6 +19,10 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `migration/verify_no_data_loss.py` | Checks that every field present in raw still exists in reshaped output |
 | `migration/db/001_initial_schema.sql` | Source of truth for the Supabase database schema |
 | `PROGRESS.md` | Full migration log — decisions, findings, field mappings |
+| `CLAUDE.md` | Claude Code context file — auto-loaded each session |
+| `.env.example` | Template showing required environment variables |
+| `migration/requirements.txt` | Python dependencies |
+| `migration/db/drop_schema.sql` | Wipes all tables for clean schema re-apply (dev only) |
 | `reshaped-problems/` | Manual review notes for flagged reshaped buckets |
 
 ---
@@ -47,7 +51,7 @@ import_products.py      → 589 clean products inserted into Supabase DB
 
 **1. Install dependencies**
 ```bash
-pip install requests supabase psycopg2-binary python-dotenv
+pip install -r migration/requirements.txt
 ```
 
 **2. Set up `.env`** in the project root:

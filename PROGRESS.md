@@ -357,6 +357,12 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [ ] Re-run import against updated schema
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images)
 
+### Formality files added
+- `migration/requirements.txt` — Python dependencies (`requests`, `supabase`, `psycopg2-binary`, `python-dotenv`)
+- `.env.example` — committed template showing required env vars without real values
+- `migration/db/drop_schema.sql` — wipes all tables in FK order for clean schema re-apply (dev only)
+- `CLAUDE.md` — auto-loaded by Claude Code each session; covers pipeline, key decisions, image dedup, current state
+
 ### Flagged Bucket Review
 **Folder:** `reshaped-problems/`
 
