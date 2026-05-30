@@ -13,40 +13,47 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a new a
 
 ```
 bikershades-migration/
-  bikershades_migration_guide.md   ← original migration guide
-  PROGRESS.md                      ← this file
+  README.md / PROGRESS.md / CLAUDE.md
+  .env / .env.example / .gitignore
+  docs/
+    AUDIT_REPORT.md
+    bikershades_migration_guide.md
   migration/
-    fetch_products.py              ← step 1: fetch all products
-    fetch_variations.py            ← step 2: fetch all variations
-    reshape_products.py            ← step 3: reshape into clean schema
-    upload_images.py               ← step 5: upload local images to Supabase Storage
-    import_products.py             ← step 6: insert clean products into Supabase DB
+    requirements.txt
+    pipeline/
+      fetch_products.py              ← step 1
+      fetch_variations.py            ← step 2
+      reshape_products.py            ← step 3
+      download_images.py             ← step 4
+      upload_images.py               ← step 5
+      import_products.py             ← step 6
+    qa/
+      audit_clean_products.py
+      verify_reshape.py
+      verify_no_data_loss.py
+    db/
+      001_initial_schema.sql
+      drop_schema.sql
     products/
-      products.json                ← raw WooCommerce backup (647 products)
+      products.json                  ← raw WooCommerce backup (647 products)
       variations/
-        variations.json            ← per-variation data (6,064 variations)
+        variations.json              ← per-variation data (6,064 variations)
     reshaped/
-      clean_products_shape.json                    ← 588 clean products
-      zero_price_products_shape.json               ← 8 internal/service products
-      invalid_sku_products_shape.json              ← 22 products with invalid SKUs
-      missing_attributes_shape.json                ← 7 products with unrecoverable variation attributes
-      no_image_products_shape.json                 ← 3 products with no images
-      duplicate_name_products_shape.json           ← 6 products with duplicate names
-      no_weight_products_shape.json                ← 14 products with no/zero weight
-      multiple_variation_images_products_shape.json← 1 product with variations having >1 image
+      clean_products_shape.json                     ← 586 clean products
+      zero_price_products_shape.json                ← 8 internal/service products
+      invalid_sku_products_shape.json               ← 22 products with invalid SKUs
+      missing_attributes_products_shape.json        ← 7 products with unrecoverable variation attributes
+      no_image_products_shape.json                  ← 3 products with no images
+      duplicate_name_products_shape.json            ← 6 products with duplicate names
+      no_weight_products_shape.json                 ← 14 products with no/zero weight
+      multiple_variation_images_products_shape.json ← 1 product with variations having >1 image
+    reshaped-problems/
+      diagnosis.md / treatment.md / *_review.md
     images/
-      clean-products/
-        url_map.json               ← old URL → local path mapping + checkpoint
-        upload_map.json            ← local path → Supabase Storage URL mapping + checkpoint
-        products/{sku}/            ← product images per SKU
-        variations/{sku}/          ← variation images per variation SKU
-        descriptions/{sku}/        ← description-embedded images per product SKU
-      zero-price/
-      invalid-sku/
-      missing-attributes/
-      no-image/
-      duplicate-name/
-      no-weight/
+      url_map.json                   ← bikershades URL → local path (dedup + checkpoint)
+      upload_map.json                ← local path → Supabase storage URL (checkpoint)
+      skipped.json                   ← URLs that 404'd during download
+      local/                         ← flat folder of all downloaded images
 ```
 
 ---
@@ -146,6 +153,9 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 - **Checkpoint per variation** — crash-safe, resumes exactly where it left off
 - **Descriptions stripped to plain text** — both product and variation descriptions stripped of HTML. Embedded image URLs extracted separately into `descriptionImgs[]`
 - **`descriptionImgs[]`** — array of image URLs extracted from description HTML. 587 products have them (990 total URLs), 4 variations have them. Must be downloaded and rehosted
+- **Image folder structure is flat** — all images downloaded to `images/local/` with unique filenames (deduplicated via `_1`, `_2` suffix). No SKU subfolders. `url_map.json` is the source of truth, not the folder structure
+- **Per-brand storage buckets** — Supabase Storage bucket named after the brand (`bikershades`). When new brands are added, each gets its own bucket. Images sit flat inside the bucket
+- **Download only clean products** — flagged buckets skipped during download. When a flagged product is fixed and moved to clean, re-running download/upload only fetches what's new
 - **`on_sale` computed from two checks** — `on_sale == true AND sale_price < regular_price`. Owner intent (`on_sale`) + price validation both must be true. `sale_price` can exist without the product being actively on sale (owner may have it staged for future use)
 - **Sale page is manually curated** — the site's sale page is not an automatic filter of all `on_sale` products. For the new app, use the `on_sale` flag for badges/pricing; build the sale page view with whatever logic fits
 - **`permalink` kept as `wpUrl`** — useful for 301 redirects from old Google-indexed URLs and for debugging by comparing against the live site
@@ -347,7 +357,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Write `reshape_products.py` — normalize WooCommerce schema into clean app schema
 - [x] Write `download_images.py` — download all product/variation images locally (2,785 images)
 - [x] Decide database schema — finalized (see below)
-- [x] Upload images to Supabase Storage — 2,559 unique images uploaded to `product-images` bucket (public). 1 timed out on first run, retried successfully. `upload_map.json` written: `local_path → storage_url`.
+- [x] Upload images to Supabase Storage — 2,559 unique images uploaded to `bikershades` bucket (public, per-brand bucket model). 1 timed out on first run, retried successfully. `upload_map.json` written: `local_path → storage_url`.
 - [x] Write import script — `import_products.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → description_images. Variation image inserted inline on the variation row (`image_src`, `image_name`). Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
 - [x] Run import — 589 products, 63 categories, 1 brand inserted successfully. Exit code 0.
 - [x] Audit clean products — all fields validated for existence and correct values. Only issue: 2 products (`PL46X10AP-0`, `PL46X10AP-BK-DRO`) had `weight = 0.0`. Fixed: reshape now catches `weight = 0.0` alongside `null`, both moved to `no_weight` bucket. Clean bucket now 586.

@@ -105,13 +105,13 @@ python migration/pipeline/reshape_products.py
 ```bash
 python migration/pipeline/download_images.py
 ```
-✅ Crash-safe — checkpoints after every image via `url_map.json`.
+✅ Crash-safe — checkpoints after every image via `url_map.json`. Downloads clean products only into `migration/images/local/` (flat folder, deduplicated filenames).
 
 **8. Upload images to Supabase Storage**
 ```bash
 python migration/pipeline/upload_images.py
 ```
-✅ Crash-safe — checkpoints after every upload via `upload_map.json`. Creates `product-images` bucket automatically.
+✅ Crash-safe — checkpoints after every upload via `upload_map.json`. Creates a `bikershades` bucket automatically (per-brand bucket model).
 
 **9. Import products into DB**
 ```bash
