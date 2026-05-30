@@ -189,7 +189,7 @@ Current direction:
   "reviewCount": 12,
   "inStock": true,
   "categories": [
-    { "name": "prosport-sunglasses", "link": "https://bikershades.com/product-category/..." }
+    { "name": "ProSport", "slug": "prosport-sunglasses", "link": "https://bikershades.com/product-category/motorcycle-sunglasses/brands/prosport-sunglasses/" }
   ],
   "images": [{ "src": "https://...", "name": "Backspin Front" }],
   "attributes": [
@@ -240,3 +240,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Schema update — variation image flattened onto variations row, variation_images table removed
 - [ ] Re-run import against updated schema
 - [ ] Manually review and fix flagged buckets
+
+### Pending before import
+- **DB schema** — `categories` table needs `slug` and `link` columns (currently only has `name`)
+- **Import script** — category dedup/lookup must key on `slug` (not `name`) since display names are not unique (e.g. "See All" appears twice under different parent paths)

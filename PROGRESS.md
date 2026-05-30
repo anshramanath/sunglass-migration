@@ -188,7 +188,7 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `average_rating` | `averageRating` | normalized to float, seed data for new review system |
 | `review_count` | `reviewCount` | seed data for new review system |
 | `is_in_stock` | `inStock` | |
-| `categories[].slug` | `categories[]` | flat array of slugs only — for filtering |
+| `categories[].name/slug/link` | `categories[]` | array of `{name, slug, link}` objects — link is the source of truth for hierarchy; slug is the unique identifier per node; name is the display label |
 | `images[].src` | `images[].src` | full res original only |
 | `images[].name` | `images[].name` | |
 | `attributes[].terms[].slug` | `attributes[]` | flat array of term slugs, all attributes kept regardless of `has_variations` |
@@ -364,6 +364,8 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Schema update — `variation_images` table removed. Variation image flattened to `image_src` + `image_name` columns on `variations` row. Variations have at most 1 image; >1 is a WooCommerce misconfiguration and now bucketed separately (`multiple_variation_images`).
 - [ ] Re-run import against updated schema
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images)
+- [ ] Update DB schema — add `slug text` and `link text` columns to `categories` table
+- [ ] Update import script — key category dedup/lookup on `slug` instead of `name` (display names are not unique; e.g. "See All" exists under both `motorcycle-sunglasses/brands/` and `try-before-you-buy/`)
 
 ### Formality files added
 - `migration/requirements.txt` — Python dependencies (`requests`, `supabase`, `psycopg2-binary`, `python-dotenv`)

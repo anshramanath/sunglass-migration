@@ -5,7 +5,8 @@
 
 create table brands (
   id uuid primary key default gen_random_uuid(),
-  name text not null unique
+  name text not null unique,
+  slug text not null unique
 );
 
 create table categories (

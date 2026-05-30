@@ -147,9 +147,9 @@ def reshape_product(product, variation_stubs, full_variations_map):
         if img.get("src")
     ]
 
-    # Categories as objects with name (slug value) and link
+    # Categories as objects with all three fields
     categories = [
-        {"name": c.get("slug"), "link": c.get("link")}
+        {"name": c.get("name"), "slug": c.get("slug"), "link": c.get("link")}
         for c in product.get("categories", [])
         if c.get("slug")
     ]

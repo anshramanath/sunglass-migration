@@ -25,6 +25,7 @@ def get_filename(url, used_filenames):
         candidate = f"{base}_{i}.{ext}" if ext else f"{base}_{i}"
         if candidate not in used_filenames:
             used_filenames.add(candidate)
+            print(f"  COLLISION {name} → {candidate}  ({url})")
             return candidate
         i += 1
 

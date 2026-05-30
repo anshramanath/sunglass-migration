@@ -42,7 +42,7 @@ conn.commit()
 
 # Brand
 print("Inserting brand...")
-cur.execute("INSERT INTO brands (name) VALUES (%s) RETURNING id;", ("bikershades",))
+cur.execute("INSERT INTO brands (name, slug) VALUES (%s, %s) RETURNING id;", ("BikerShades", "bikershades"))
 brand_id = cur.fetchone()[0]
 conn.commit()
 
