@@ -1,10 +1,10 @@
-# Bikershades Migration
+# 🕶️ Bikershades Migration
 
 Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean, normalized schema for a new multi-brand app backed by Supabase.
 
 ---
 
-## What's in here
+## 📦 What's in here
 
 | File | Description |
 |---|---|
@@ -17,7 +17,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 
 ---
 
-## Migration Pipeline
+## 🔄 Migration Pipeline
 
 ```
 WooCommerce Store API
@@ -35,7 +35,7 @@ download_images.py      → 2,785 images downloaded locally
 
 ---
 
-## Running the scripts
+## 🚀 Running the scripts
 
 **1. Install dependencies**
 ```bash
@@ -52,7 +52,7 @@ python fetch_products.py
 ```bash
 python fetch_variations.py
 ```
-Crash-safe — resumes exactly where it left off if interrupted.
+✅ Crash-safe — resumes exactly where it left off if interrupted.
 
 **4. Reshape into clean schema**
 ```bash
@@ -63,11 +63,11 @@ python reshape_products.py
 ```bash
 python download_images.py
 ```
-Crash-safe — checkpoints after every image via `url_map.json`. Re-running skips already-downloaded files and retries failures.
+✅ Crash-safe — checkpoints after every image via `url_map.json`. Re-running skips already-downloaded files and retries failures.
 
 ---
 
-## Catalog Stats
+## 📊 Catalog Stats
 
 | | Count |
 |---|---|
@@ -81,21 +81,21 @@ Crash-safe — checkpoints after every image via `url_map.json`. Re-running skip
 
 ---
 
-## Reshaped Output Buckets
+## 🗂️ Reshaped Output Buckets
 
 | File | Count | Reason |
 |---|---|---|
-| `clean_products_shape.json` | 589 | Ready for import |
-| `invalid_sku_products_shape.json` | 22 | SKU is null or contains a space |
-| `no_weight_products_shape.json` | 12 | Missing weight (needed for shipping) |
-| `zero_price_products_shape.json` | 8 | Price is zero — internal/service products |
-| `missing_attributes_products_shape.json` | 7 | Variations with no attribute data |
-| `duplicate_name_products_shape.json` | 6 | Same name as another product |
-| `no_image_products_shape.json` | 3 | No images at all |
+| `clean_products_shape.json` | 589 | ✅ Ready for import |
+| `invalid_sku_products_shape.json` | 22 | ⚠️ SKU is null or contains a space |
+| `no_weight_products_shape.json` | 12 | ⚠️ Missing weight (needed for shipping) |
+| `zero_price_products_shape.json` | 8 | ⚠️ Price is zero — internal/service products |
+| `missing_attributes_products_shape.json` | 7 | ⚠️ Variations with no attribute data |
+| `duplicate_name_products_shape.json` | 6 | ⚠️ Same name as another product |
+| `no_image_products_shape.json` | 3 | ⚠️ No images at all |
 
 ---
 
-## Clean Product Shape
+## 🧼 Clean Product Shape
 
 ```json
 {
@@ -133,7 +133,7 @@ Crash-safe — checkpoints after every image via `url_map.json`. Re-running skip
 
 ---
 
-## Database Schema
+## 🗄️ Database Schema
 
 Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
@@ -151,7 +151,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
 ---
 
-## Progress
+## ✅ Progress
 
 - [x] Fetch all products
 - [x] Fetch all variations
