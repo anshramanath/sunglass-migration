@@ -15,8 +15,7 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 
 ## QA scripts
 - `migration/qa/audit_clean_products.py` — validates all fields in clean bucket
-- `migration/qa/verify_reshape.py` — cross-references reshaped output against raw data
-- `migration/qa/verify_no_data_loss.py` — checks no field present in raw was dropped
+- `migration/qa/verify_reshape.py` — cross-references reshaped output against raw data + checks no field was dropped
 
 ## Key files
 - `migration/db/001_initial_schema.sql` — source of truth for DB schema

@@ -20,8 +20,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | File | Description |
 |---|---|
 | `audit_clean_products.py` | Validates all fields in clean bucket for existence and correct values |
-| `verify_reshape.py` | Cross-references reshaped output against raw — counts, slugs, SKUs, prices, variation counts |
-| `verify_no_data_loss.py` | Checks every field present in raw still exists in reshaped output |
+| `verify_reshape.py` | Cross-references reshaped output against raw + checks no field was dropped (merged) |
 
 **Schema** (`migration/db/`)
 | File | Description |

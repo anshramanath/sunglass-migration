@@ -1,4 +1,5 @@
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -15,14 +16,14 @@ with open(BASE / "products/variations/variations.json") as f:
 # ── load all reshaped buckets ─────────────────────────────────────────────────
 
 BUCKETS = {
-    "clean":                      BASE / "reshaped/clean_products_shape.json",
-    "zero_price":                 BASE / "reshaped/zero_price_products_shape.json",
-    "invalid_sku":                BASE / "reshaped/invalid_sku_products_shape.json",
-    "missing_attributes":         BASE / "reshaped/missing_attributes_products_shape.json",
-    "no_image":                   BASE / "reshaped/no_image_products_shape.json",
-    "duplicate_name":             BASE / "reshaped/duplicate_name_products_shape.json",
-    "no_weight":                  BASE / "reshaped/no_weight_products_shape.json",
-    "multiple_variation_images":  BASE / "reshaped/multiple_variation_images_products_shape.json",
+    "clean":                     BASE / "reshaped/clean_products_shape.json",
+    "zero_price":                BASE / "reshaped/zero_price_products_shape.json",
+    "invalid_sku":               BASE / "reshaped/invalid_sku_products_shape.json",
+    "missing_attributes":        BASE / "reshaped/missing_attributes_products_shape.json",
+    "no_image":                  BASE / "reshaped/no_image_products_shape.json",
+    "duplicate_name":            BASE / "reshaped/duplicate_name_products_shape.json",
+    "no_weight":                 BASE / "reshaped/no_weight_products_shape.json",
+    "multiple_variation_images": BASE / "reshaped/multiple_variation_images_products_shape.json",
 }
 
 reshaped = {}
@@ -31,13 +32,7 @@ for bucket, path in BUCKETS.items():
         reshaped[bucket] = json.load(f)
 
 all_reshaped = [p for bucket in reshaped.values() for p in bucket]
-
-# ── build lookup maps ─────────────────────────────────────────────────────────
-
-raw_by_slug = {p["slug"]: p for p in raw_products}
 reshaped_by_slug = {p["slug"]: p for p in all_reshaped}
-
-# ── checks ────────────────────────────────────────────────────────────────────
 
 errors = []
 warnings = []
@@ -45,32 +40,38 @@ warnings = []
 def err(msg): errors.append(msg)
 def warn(msg): warnings.append(msg)
 
-# 1. Total count
+def had(v):
+    if v is None: return False
+    if isinstance(v, str) and not v.strip(): return False
+    if isinstance(v, list) and len(v) == 0: return False
+    return True
+
+def has(v):
+    return had(v)
+
+# ── SECTION 1: reshape integrity ──────────────────────────────────────────────
+
 total_reshaped = sum(len(v) for v in reshaped.values())
 if total_reshaped != len(raw_products):
-    err(f"COUNT MISMATCH: raw={len(raw_products)}, reshaped total={total_reshaped}")
+    err(f"COUNT MISMATCH: raw={len(raw_products)}, reshaped={total_reshaped}")
 else:
     print(f"✓ Count: all {len(raw_products)} products accounted for across buckets")
 
-# 2. No duplicates across buckets
-all_slugs = [p["slug"] for p in all_reshaped]
 slug_counts = defaultdict(int)
-for s in all_slugs:
-    slug_counts[s] += 1
+for p in all_reshaped:
+    slug_counts[p["slug"]] += 1
 dupes = {s: c for s, c in slug_counts.items() if c > 1}
 if dupes:
     err(f"DUPLICATE SLUGS across buckets: {dupes}")
 else:
-    print(f"✓ No duplicates: every product appears in exactly one bucket")
+    print("✓ No duplicates: every product appears in exactly one bucket")
 
-# 3. Every raw slug present in reshaped
-missing_from_reshaped = [p["slug"] for p in raw_products if p["slug"] not in reshaped_by_slug]
-if missing_from_reshaped:
-    err(f"MISSING FROM RESHAPED ({len(missing_from_reshaped)}): {missing_from_reshaped[:5]}")
+missing = [p["slug"] for p in raw_products if p["slug"] not in reshaped_by_slug]
+if missing:
+    err(f"MISSING FROM RESHAPED ({len(missing)}): {missing[:5]}")
 else:
-    print(f"✓ Coverage: every raw product present in reshaped output")
+    print("✓ Coverage: every raw product present in reshaped output")
 
-# 4. Field-level spot check: name, slug, sku, price
 field_errors = 0
 for raw in raw_products:
     slug = raw["slug"]
@@ -78,100 +79,71 @@ for raw in raw_products:
     if not r:
         continue
 
-    # name — cleaned version should still contain key words
     raw_name_core = raw.get("name", "").replace("&amp;", "&").strip()
     if r.get("name", "").lower() not in raw_name_core.lower() and raw_name_core.lower() not in r.get("name", "").lower():
         warn(f"Name drift: slug={slug} raw='{raw_name_core}' reshaped='{r.get('name')}'")
 
-    # slug — must match exactly
     if r.get("slug") != raw.get("slug"):
-        err(f"Slug mismatch: raw={raw.get('slug')} reshaped={r.get('slug')}")
+        err(f"Slug mismatch: {raw.get('slug')} → {r.get('slug')}")
         field_errors += 1
 
-    # sku
-    raw_sku = raw.get("sku") or None
-    if r.get("sku") != raw_sku:
-        err(f"SKU mismatch: slug={slug} raw={raw_sku} reshaped={r.get('sku')}")
+    if r.get("sku") != (raw.get("sku") or None):
+        err(f"SKU mismatch: slug={slug} raw={raw.get('sku')} reshaped={r.get('sku')}")
         field_errors += 1
 
-    # price
     raw_price = int((raw.get("prices") or {}).get("regular_price") or 0)
     if r.get("regularPriceInCents") != raw_price:
         err(f"Price mismatch: slug={slug} raw={raw_price} reshaped={r.get('regularPriceInCents')}")
         field_errors += 1
 
-    # sale flag integrity
-    raw_sale_price = int((raw.get("prices") or {}).get("sale_price") or 0)
-    if r.get("sale") and (r.get("salePriceInCents", 0) >= r.get("regularPriceInCents", 0)):
+    if r.get("sale") and r.get("salePriceInCents", 0) >= r.get("regularPriceInCents", 0):
         err(f"Sale price >= regular price: slug={slug}")
         field_errors += 1
 
 if field_errors == 0:
-    print(f"✓ Field mapping: name, slug, SKU, price all match raw data")
+    print("✓ Field mapping: slug, SKU, price all match raw data")
 
-# 5. Variation count per product
 var_count_errors = 0
 for raw in raw_products:
     slug = raw["slug"]
     r = reshaped_by_slug.get(slug)
     if not r:
         continue
-
     raw_var_count = len(raw.get("variations", []))
     reshaped_var_count = len(r.get("variations", []))
-
-    parent_id = str(raw.get("id"))
-    full_vars = raw_variations_by_parent.get(parent_id, [])
-
-    # Reshaped only includes variations that had a matching full_var entry
-    # so reshaped count <= raw stub count is expected; they should be equal
-    # unless some variation IDs weren't fetched
     if reshaped_var_count != raw_var_count:
-        warn(f"Variation count: slug={slug} raw_stubs={raw_var_count} reshaped={reshaped_var_count} full_fetched={len(full_vars)}")
+        full_vars = raw_variations_by_parent.get(str(raw.get("id")), [])
+        warn(f"Variation count: slug={slug} raw={raw_var_count} reshaped={reshaped_var_count} fetched={len(full_vars)}")
         var_count_errors += 1
 
 if var_count_errors == 0:
-    print(f"✓ Variation counts: all products have correct number of variations")
+    print("✓ Variation counts: all products have correct number of variations")
 else:
-    print(f"⚠ Variation counts: {var_count_errors} products have variation count mismatches (see warnings)")
+    print(f"⚠ Variation counts: {var_count_errors} mismatches (see warnings)")
 
-# 6. Variation field spot check: sku and price
 var_field_errors = 0
 for raw in raw_products:
-    parent_id = str(raw.get("id"))
-    full_vars = raw_variations_by_parent.get(parent_id, [])
-    if not full_vars:
-        continue
-
-    full_vars_by_id = {v["id"]: v for v in full_vars}
-    slug = raw["slug"]
-    r = reshaped_by_slug.get(slug)
+    full_vars = raw_variations_by_parent.get(str(raw.get("id")), [])
+    full_vars_by_slug = {v["slug"]: v for v in full_vars}
+    r = reshaped_by_slug.get(raw["slug"])
     if not r:
         continue
-
     for ve in r.get("variations", []):
         v = ve.get("variation", {})
-        vslug = v.get("slug")
-
-        # Find matching raw variation by slug
-        raw_var = next((fv for fv in full_vars if fv.get("slug") == vslug), None)
-        if not raw_var:
+        rv = full_vars_by_slug.get(v.get("slug"))
+        if not rv:
             continue
-
-        raw_vsku = raw_var.get("sku") or None
-        if v.get("sku") != raw_vsku:
-            err(f"Variation SKU mismatch: parent={slug} vslug={vslug} raw={raw_vsku} reshaped={v.get('sku')}")
+        if v.get("sku") != (rv.get("sku") or None):
+            err(f"Variation SKU mismatch: parent={raw['slug']} vslug={v.get('slug')}")
             var_field_errors += 1
-
-        raw_vprice = int((raw_var.get("prices") or {}).get("regular_price") or 0)
+        raw_vprice = int((rv.get("prices") or {}).get("regular_price") or 0)
         if v.get("regularPriceInCents") != raw_vprice:
-            err(f"Variation price mismatch: parent={slug} vslug={vslug} raw={raw_vprice} reshaped={v.get('regularPriceInCents')}")
+            err(f"Variation price mismatch: parent={raw['slug']} vslug={v.get('slug')}")
             var_field_errors += 1
 
 if var_field_errors == 0:
-    print(f"✓ Variation fields: SKU and price match raw data across all variations")
+    print("✓ Variation fields: SKU and price match raw data")
 
-# 7. Bucket assignment sanity checks
 for p in reshaped["clean"]:
     if not p.get("sku") or " " in (p.get("sku") or ""):
         err(f"Clean bucket has invalid SKU: {p.get('sku')}")
@@ -182,7 +154,97 @@ for p in reshaped["clean"]:
     if any(len(ve.get("variation", {}).get("images", [])) > 1 for ve in p.get("variations", [])):
         err(f"Clean bucket has variation with >1 image: {p.get('sku')}")
 
-print(f"✓ Bucket assignment: clean bucket passes all invariant checks")
+print("✓ Bucket assignment: clean bucket passes all invariant checks")
+
+# ── SECTION 2: data loss ──────────────────────────────────────────────────────
+
+print()
+print("── DATA LOSS CHECK ──")
+
+losses = defaultdict(list)
+
+for raw in raw_products:
+    slug = raw["slug"]
+    r = reshaped_by_slug.get(slug)
+    if not r:
+        continue
+
+    prices = raw.get("prices") or {}
+
+    for field, raw_val, reshaped_val in [
+        ("name",               raw.get("name"),        r.get("name")),
+        ("slug",               raw.get("slug"),         r.get("slug")),
+        ("sku",                raw.get("sku"),          r.get("sku")),
+        ("wpUrl",              raw.get("permalink"),    r.get("wpUrl")),
+        ("regularPriceInCents",prices.get("regular_price"), r.get("regularPriceInCents")),
+        ("summary",            raw.get("short_description"), r.get("summary")),
+        ("categories",         raw.get("categories"),  r.get("categories")),
+        ("images",             raw.get("images"),       r.get("images")),
+        ("weight",             raw.get("weight"),       r.get("weight")),
+    ]:
+        if had(raw_val) and not has(reshaped_val):
+            losses[field].append(slug)
+
+    self_links = (raw.get("_links") or {}).get("self") or []
+    raw_product_url = self_links[0].get("href") if self_links else None
+    if had(raw_product_url) and not has(r.get("productUrl")):
+        losses["productUrl"].append(slug)
+
+    raw_desc_imgs = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw.get("description") or "")
+    if had(raw_desc_imgs) and not has(r.get("descriptionImgs")):
+        losses["descriptionImgs"].append(slug)
+
+    raw_attrs = raw.get("attributes") or []
+    if any(len(a.get("terms") or []) > 0 for a in raw_attrs) and not has(r.get("attributes")):
+        losses["attributes"].append(slug)
+
+    raw_dims = raw.get("dimensions") or {}
+    for axis in ["length", "width", "height"]:
+        if had(raw_dims.get(axis)) and not (r.get("dimensions") or {}).get(axis):
+            losses[f"dimensions.{axis}"].append(slug)
+
+    if had(raw.get("average_rating")) and float(raw.get("average_rating") or 0) > 0 and not r.get("averageRating"):
+        losses["averageRating"].append(slug)
+
+    if (raw.get("review_count") or 0) > 0 and not r.get("reviewCount"):
+        losses["reviewCount"].append(slug)
+
+    full_vars = raw_variations_by_parent.get(str(raw.get("id")), [])
+    full_vars_by_slug = {v["slug"]: v for v in full_vars}
+
+    for ve in r.get("variations", []):
+        v = ve.get("variation", {})
+        rv = full_vars_by_slug.get(v.get("slug"))
+        if not rv:
+            continue
+        vprices = rv.get("prices") or {}
+        for field, raw_val, reshaped_val in [
+            ("variation.slug",               rv.get("slug"),                    v.get("slug")),
+            ("variation.sku",                rv.get("sku"),                     v.get("sku")),
+            ("variation.wpUrl",              rv.get("permalink"),               v.get("wpUrl")),
+            ("variation.regularPriceInCents",vprices.get("regular_price"),      v.get("regularPriceInCents")),
+            ("variation.weight",             rv.get("weight"),                  v.get("weight")),
+        ]:
+            if had(raw_val) and not has(reshaped_val):
+                losses[field].append(v.get("slug"))
+
+        rv_dims = rv.get("dimensions") or {}
+        for axis in ["length", "width", "height"]:
+            if had(rv_dims.get(axis)) and not (v.get("dimensions") or {}).get(axis):
+                losses[f"variation.dimensions.{axis}"].append(v.get("slug"))
+
+        if had(rv.get("images")) and not has(v.get("images")):
+            losses["variation.images"].append(v.get("slug"))
+
+if not losses:
+    print("✓ No data loss detected across any field.")
+else:
+    for field, slugs in sorted(losses.items()):
+        print(f"  ✗ {field}: {len(slugs)} affected")
+        for s in slugs[:3]:
+            print(f"      · {s}")
+        if len(slugs) > 3:
+            print(f"      ... and {len(slugs) - 3} more")
 
 # ── results ───────────────────────────────────────────────────────────────────
 
