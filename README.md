@@ -16,6 +16,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `migration/import_products.py` | Inserts clean products into Supabase DB |
 | `migration/db/001_initial_schema.sql` | Source of truth for the Supabase database schema |
 | `PROGRESS.md` | Full migration log — decisions, findings, field mappings |
+| `reshaped-problems/` | Manual review notes for flagged reshaped buckets |
 
 ---
 
@@ -120,6 +121,27 @@ python import_products.py
 | `missing_attributes_products_shape.json` | 7 | ⚠️ Variations with no attribute data |
 | `duplicate_name_products_shape.json` | 6 | ⚠️ Same name as another product |
 | `no_image_products_shape.json` | 3 | ⚠️ No images at all |
+
+---
+
+## 📝 Manual Review Notes
+
+Detailed review sheets for flagged buckets now live in `reshaped-problems/`.
+
+Current files:
+- `reshaped-problems/diagnosis.md` — high-level overview
+- `reshaped-problems/zero_price_review.md`
+- `reshaped-problems/no_weight_review.md`
+- `reshaped-problems/no_image_review.md`
+- `reshaped-problems/invalid_sku_review.md`
+- `reshaped-problems/missing_attributes_review.md`
+- `reshaped-problems/duplicate_name_review.md`
+
+Current direction:
+- All 6 buckets triaged with per-product notes
+- `diagnosis.md` — high-level summary of every bucket and what's blocking it
+- `treatment.md` — owner-facing action doc with every question + live site links
+- Next step: share `treatment.md` with the owner to unblock the remaining 57 products
 
 ---
 

@@ -251,6 +251,61 @@ Whether a product is variable is determined solely by whether `variations` is no
 
 ---
 
+## Reshaped Problems Review
+
+Detailed manual review notes now live in `reshaped-problems/`.
+
+### Review files
+
+- `reshaped-problems/diagnosis.md` — high-level summary of all reviewed buckets
+- `reshaped-problems/zero_price_review.md`
+- `reshaped-problems/no_weight_review.md`
+- `reshaped-problems/no_image_review.md`
+- `reshaped-problems/invalid_sku_review.md`
+- `reshaped-problems/missing_attributes_review.md`
+- `reshaped-problems/duplicate_name_review.md`
+
+### Current bucket status
+
+| Bucket | Count | Status | Direction |
+|---|---:|---|---|
+| zero_price | 8 products | reviewed | mostly owner review; mix of excludes, form/workflow items, unavailable products, and at least one real product that needs price |
+| no_weight | 12 products | reviewed | mostly owner review; some real products just need confirmed weight |
+| no_image | 3 products | reviewed | ask owner for real images; only use placeholders with explicit approval |
+| invalid_sku | 22 products | reviewed | mostly owner review; many are real products that need canonical SKU cleanup |
+| missing_attributes | 7 products | built / owner escalation | take entire bucket to owner; variation option metadata is not safe to reconstruct blindly |
+| duplicate_name | 6 products | built / owner escalation | take entire bucket to owner; distinct products collapsed to duplicate reshaped names |
+
+### High-level findings
+
+- **Owner review is now the main blocker** for `duplicate_name`, `missing_attributes`, and most of `invalid_sku`
+- **`missing_attributes` means both sources are bad** for the affected variations: the reshaped variation `attribute` field is empty and the nested Woo variation `variation` field is also empty
+- **38 variations are affected in `missing_attributes`** across 7 products:
+  - `Magnum – Clear` → 2 / 36
+  - `Locs Impala 91025` → 4 / 4
+  - `Seaway` → 2 / 4
+  - `Aruba Polarized Sunglasses` → 1 / 10
+  - `Taxi Polarized Bifocal [Fits MEDIUM -XLARGE Heads]` → 1 / 22
+  - `Starlet Over Sized Fashion Bifocal` → 16 / 16
+  - `Finish Line Bifocal [Fits MEDIUM – XLARGE Heads]` → 12 / 12
+- **`duplicate_name` has 6 products** but only 2 duplicated reshaped names:
+  - `BikerArmour Angel Chrome with Rhinestones [MED – LG]`
+  - `BikerArmour Barricade [MED – XLG]`
+- **`no_image` is fully triaged** and mostly comes down to recovering missing media from the owner
+- **`zero_price` and `no_weight` contain the clearest “fix and migrate” candidates** once the owner answers a short list of questions
+
+### Practical next step
+
+After the owner review, the likely execution order is:
+
+1. Resolve `zero_price` keep/exclude/price questions
+2. Fill missing weights for products we intend to keep
+3. Clean canonical SKUs for valid products in `invalid_sku`
+4. Recover missing images where available
+5. Decide how to handle duplicate names and unrecoverable variation metadata
+
+---
+
 ## Database Schema
 
 Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users`), admin access gated by `admins` table.
@@ -295,3 +350,21 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Write import script — `import_products.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → variation_images → description_images. Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
 - [x] Run import — 589 products, 63 categories, 1 brand inserted successfully. Exit code 0.
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image)
+
+### Flagged Bucket Review
+**Folder:** `reshaped-problems/`
+
+All 6 buckets triaged. Per-product review files written for each. Key findings:
+- **Zero price (8)** — 2 safe excludes, rest need owner (Rx flows + 2 real products missing price)
+- **No weight (12)** — service/shipping items don't need weight; 7 real products just need weight value from owner
+- **No image (3)** — all need owner to provide or confirm missing assets
+- **Invalid SKU (22)** — split between service items (need owner on whether they exist on new site) and real accessories (need clean canonical SKU)
+- **Missing attributes (7)** — variation option data missing from API; owner must check live site dropdowns
+- **Duplicate name (6)** — Angel Chrome (×4) and Barricade (×2); owner decides merge/rename/split
+
+Files:
+- `diagnosis.md` — high-level summary of all 6 buckets and blockers
+- `treatment.md` — owner-facing action doc with all questions + live site links
+- `*_review.md` — per-product notes for each bucket
+
+**Next step:** Share `treatment.md` with owner to unblock the remaining 57 products.
