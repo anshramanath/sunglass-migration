@@ -1,5 +1,4 @@
 import json
-import time
 import requests
 from pathlib import Path
 
@@ -66,7 +65,7 @@ for product in variable_products:
         except Exception as e:
             print(f"  Error fetching {var_id}: {e}")
 
-        time.sleep(0.05)
+        # no sleep — network latency is the bottleneck
 
     print(f"  Done. ({fetched_count}/{total_variations} total fetched)\n")
 
