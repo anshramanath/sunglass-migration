@@ -2,7 +2,7 @@ migration/products/
 migration/reshaped/
 migration/images/
 migration/venv/
-__pycache__/
+**/__pycache__/
 *.pyc
 .DS_Store
 .env

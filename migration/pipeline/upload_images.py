@@ -11,7 +11,7 @@ load_dotenv(dotenv_path=BASE.parent / ".env")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
-BUCKET = "product-images"
+BUCKET = "bikershades"
 
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
@@ -21,7 +21,7 @@ try:
 except Exception:
     print(f"Bucket: {BUCKET} (already exists)")
 
-IMAGES_DIR = BASE / "images/clean-products"
+IMAGES_DIR = BASE / "images"
 URL_MAP_PATH = IMAGES_DIR / "url_map.json"
 UPLOAD_MAP_PATH = IMAGES_DIR / "upload_map.json"
 
@@ -54,8 +54,7 @@ for local_path in unique_paths:
         already_done += 1
         continue
 
-    # Strip migration/images/ prefix for the storage path
-    storage_path = Path(local_path).relative_to(BASE / "images").__str__()
+    storage_path = Path(local_path).name
 
     content_type, _ = mimetypes.guess_type(local_path)
     if not content_type:
