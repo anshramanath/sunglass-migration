@@ -216,8 +216,8 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
 | Table | Purpose |
 |---|---|
-| `brands` | One row per brand |
-| `categories` | Nav/filter categories, scoped per brand |
+| `brands` | One row per brand — `name` + `slug` (matches Storage bucket name) |
+| `categories` | Nav categories, scoped per brand — self-referential `parent_id` forms a tree the owner can edit, create, and restructure through the admin |
 | `products` | Core product catalog |
 | `product_categories` | Many-to-many junction |
 | `variations` | Per-color/option variation data — includes `image_src` and `image_name` directly on the row (variations have at most 1 image) |
@@ -242,5 +242,4 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [ ] Manually review and fix flagged buckets
 
 ### Pending before import
-- **DB schema** — `categories` table needs `slug` and `link` columns (currently only has `name`)
-- **Import script** — category dedup/lookup must key on `slug` (not `name`) since display names are not unique (e.g. "See All" appears twice under different parent paths)
+- **Import script** — needs to populate `brands.slug`, `categories.slug`, and `categories.parent_id`; must key category dedup/lookup on `slug` not `name` (display names not unique — "See All" appears under multiple parent paths)

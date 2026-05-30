@@ -12,7 +12,9 @@ create table brands (
 create table categories (
   id uuid primary key default gen_random_uuid(),
   brand_id uuid not null references brands(id),
-  name text not null
+  parent_id uuid references categories(id),
+  name text not null,
+  slug text not null
 );
 
 create table products (

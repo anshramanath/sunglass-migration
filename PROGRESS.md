@@ -324,8 +324,8 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 
 | Table | Key fields |
 |---|---|
-| `brands` | `id`, `name` |
-| `categories` | `id`, `brand_id`, `name` |
+| `brands` | `id`, `name`, `slug` |
+| `categories` | `id`, `brand_id`, `parent_id`, `name`, `slug` |
 | `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `regular_price_cents`, `sale_price_cents`, `average_rating`, `review_count`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
 | `product_categories` | `product_id`, `category_id` (junction) |
 | `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
@@ -334,8 +334,9 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 | `admins` | `user_id` → `auth.users(id)` |
 
 ### Key decisions
-- `brands` is just `id` + `name` — slug derivable in code
-- `categories` is just `id` + `brand_id` + `name` — 63 unique category pages exist on the site, but brand/lens-type/head-size filtering comes from `attributes[]` not categories. Categories used only for top-level nav grouping
+- `brands` has `slug` — lowercase version of name (e.g. `"BikerShades"` → `"bikershades"`). Matches the Supabase Storage bucket name
+- `categories` uses a self-referential `parent_id` FK to form a tree — null = top level. Enables the owner to create, rename, and move categories through the admin dashboard without any hardcoding. Category nav is fetched once at the root layout and cached; revalidated on admin changes
+- `categories` has `slug` for URL routing — `link` from WooCommerce is not stored, hierarchy is reconstructed from `parent_id` at import time by parsing the source link paths
 - `attributes` is `jsonb` — stores `[{name, terms[]}]` grouped by attribute type for efficient listing-page queries without joining variations
 - `variation[]` on variations table is `text[]` — flat slug array of the specific combo e.g. `["black-clear", "1-00"]`
 - `image_src` / `image_name` on variations — variations have at most 1 image; flattened onto the row instead of a separate table. Having more than 1 variation image in WooCommerce is a misconfiguration (only 6 variations across 1 product had this, all sharing identical images). First image is used; frontend falls back to parent product images when null.
@@ -364,8 +365,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Schema update — `variation_images` table removed. Variation image flattened to `image_src` + `image_name` columns on `variations` row. Variations have at most 1 image; >1 is a WooCommerce misconfiguration and now bucketed separately (`multiple_variation_images`).
 - [ ] Re-run import against updated schema
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images)
-- [ ] Update DB schema — add `slug text` and `link text` columns to `categories` table
-- [ ] Update import script — key category dedup/lookup on `slug` instead of `name` (display names are not unique; e.g. "See All" exists under both `motorcycle-sunglasses/brands/` and `try-before-you-buy/`)
+- [ ] Update import script — populate `brands.slug`, `categories.slug`, and `categories.parent_id` (key dedup/lookup on `slug` not `name` — display names are not unique; e.g. "See All" appears under both `motorcycle-sunglasses/brands/` and `try-before-you-buy/`)
 
 ### Formality files added
 - `migration/requirements.txt` — Python dependencies (`requests`, `supabase`, `psycopg2-binary`, `python-dotenv`)
