@@ -1,14 +1,13 @@
-# Shaped Items Verification
+# Shaped Items Verify
 _Last updated: 2026-05-31_
 
-**Source:** `reshaped/shaped_items.json` + all problem buckets
-**Script:** `migration/qa/verify_shaped_items.py`
+**Source:** `items/products.json` cross-referenced against all reshaped buckets
 
 ---
 
 ## Result
 
-**All checks passed.** 647 raw products accounted for across all buckets.
+**All checks passed.** All 647 raw products accounted for. No data loss, no duplicates, all invariants hold.
 
 ---
 
@@ -20,17 +19,17 @@ _Last updated: 2026-05-31_
 | No product missing from output | ✅ |
 | No product in multiple buckets | ✅ |
 | `weight=0.0` not in shaped bucket | ✅ |
-| `weight=0.0` correctly in no_weight bucket (at least 2) | ✅ |
-| Power term slugs normalized — no hyphen format (`1-00`, `2-50`) | ✅ |
+| `weight=0.0` correctly in no_weight bucket | ✅ |
+| Power term slugs normalized — no hyphen format (`1-00`) | ✅ |
 | Categories are flat WooCommerce link arrays | ✅ |
 | Attributes have `{name, terms[{name, slug}]}` structure | ✅ |
-| Shaped bucket passes all invariants (valid SKU, weight > 0, has images, price > 0, stock 0 or 1, no variation with >1 image) | ✅ |
+| Shaped bucket passes all invariants (SKU, weight, images, price, stock 0 or 1, no variation with >1 image) | ✅ |
 | All SKUs unique across all buckets | ✅ |
-| No invalid SKUs (null or containing space) in shaped bucket | ✅ |
+| No invalid SKUs in shaped bucket | ✅ |
 
 ---
 
-## Bucket counts
+## Bucket Counts
 
 | Bucket | Count |
 |--------|------:|

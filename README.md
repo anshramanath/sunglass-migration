@@ -41,13 +41,14 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 **Docs** (`docs/`)
 | File | Description |
 |---|---|
-| `PIPELINE.md` | Pipeline design, image naming scheme, DB schema summary, QA system |
-| `completed.md` | Full pipeline audit — all steps, counts, and QA results in one place |
+| `completed.md` | Full pipeline audit for current run — filled in after each step |
+| `completed_1.md` | Previous run results (pre price/stock schema changes) |
 | `migration_seed.md` | Original migration guide |
-| `shaped-items/` | Field-level audit, attribute analysis, category link counts |
+| `shaped-items/` | Field-level audit, verify, attribute analysis, category link counts |
+| `categorized-items/` | Categorized items audit and verify results |
 | `downloaded-images/` | Download audit and verify results |
 | `uploaded-images/` | Upload audit and verify results |
-| `imported-items/` | Import audit and verify results (post-import) |
+| `imported-items/` | Import audit and verify results |
 
 **Root**
 | File | Description |
@@ -148,8 +149,8 @@ python migration/pipeline/import_items.py
 | | Count |
 |---|---|
 | Total products | 647 |
-| Variable products | 489 |
-| Simple products | 157 |
+| Variable products | 486 |
+| Simple products | 161 |
 | Total variations | 6,064 |
 | Shaped items (post-reshape) | 586 |
 | Categorized items (post-recategorize) | 581 |
@@ -185,7 +186,8 @@ python migration/pipeline/import_items.py
 Detailed review sheets for flagged buckets now live in `reshaped-problems/`.
 
 Current files:
-- `reshaped-problems/diagnosis.md` — high-level overview
+- `reshaped-problems/diagnosis.md` — high-level overview of all buckets and blockers
+- `reshaped-problems/treatment.md` — owner-facing action doc with questions + live site links
 - `reshaped-problems/zero_price_review.md`
 - `reshaped-problems/no_weight_review.md`
 - `reshaped-problems/no_image_review.md`
@@ -273,9 +275,9 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Fetch all variations (6,064)
 - [x] Reshape into clean schema — 586 clean, 61 flagged across 7 buckets
 - [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
-- [x] Design database schema
-- [x] Download images — 2,531 downloaded, 30 confirmed 404s
-- [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket
-- [x] Import into Supabase DB — 581 products, 5,649 variations, 54 categories
-- [x] Audit and verify import — all checks passed
+- [x] Design database schema (price range, stock int, no ratings)
+- [ ] Download images (in progress)
+- [ ] Upload images to Supabase Storage
+- [ ] Drop and re-apply schema in Supabase
+- [ ] Import into Supabase DB
 - [ ] Manually review and fix flagged buckets (66 total)

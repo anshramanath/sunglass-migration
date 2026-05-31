@@ -381,6 +381,12 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Audit and verify import — all checks passed. 0 missing SKUs, 0 field mismatches, 0 products without categories, category leaf slugs match source for all 581 products. Results in `docs/completed.md`.
 - [x] Price range refactor — variable product prices derived from variations: `min_price_cents` = min variation regular price, `max_price_cents` = max. Simple: min = max = regular price. `sale_price_cents` nullable on products only (null for variable); variations keep `regular_price_cents` + `sale_price_cents` not null. `sale` on parent = any variation on sale. Computed in reshape.
 - [x] Stock refactor — `in_stock boolean` → `stock int` on both products and variations. Initialized `true → 1`, `false → 0` from WooCommerce `is_in_stock`. Owner can set real quantities later; frontend treats `stock > 0` as in stock.
+- [x] Rating/review fields dropped — `average_rating` and `review_count` removed from schema, reshape, and import. App builds its own review system.
+- [x] Re-run reshape + recategorize with updated schema — all counts match previous run. All QA passed.
+- [ ] Re-run download (in progress)
+- [ ] Re-upload images to Supabase Storage
+- [ ] Drop and re-apply schema in Supabase
+- [ ] Re-run import
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

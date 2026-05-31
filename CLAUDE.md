@@ -36,10 +36,9 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 - `docs/shaped-items/audit.md` — field-level audit results for clean products (586)
 - `docs/shaped-items/attributes.md` — attribute types and terms across clean products
 - `docs/shaped-items/categories.md` — product counts per category link
-- `docs/shaped-items/category_hierarchy.html` — visual category tree
-- `docs/completed.md` — full pipeline audit for the current run (fill in after each run)
+
+- `docs/completed.md` — full pipeline audit for current run (fill in after each step)
 - `docs/completed_1.md` — previous run results (pre price/stock schema changes)
-- `docs/PIPELINE.md` — pipeline design, image naming, DB schema summary, QA system
 - `PROGRESS.md` — full decision log
 
 ## Image pipeline
@@ -90,12 +89,8 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 `.env` at project root (gitignored). See `.env.example` for required variables. Scripts load it via `load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")`.
 
 ## Current state
-- Reshape + recategorize complete. Categories are `[[{level, name, slug}]]` — array of tree paths, each a root-to-leaf sequence. All 581 categorized items land only at leaf nodes.
-- 8 category trees, max depth 2 hops from root to leaf. Products only live at leaves so nav nodes never conflict between opening a submenu and going to a product page.
-- Schema updated: `brands` has `slug`, `categories` has `slug` + `parent_id` (self-referential tree)
-- Import script updated: reads from `categorized_items.json`, builds category tree lazily with `parent_id` + `slug`
-- Download complete: 2,531 images downloaded, 30 confirmed 404s. Images named using path after `/uploads/` or `/gallery/` with `/` → `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. `failed.json` tracks `{failed_to_download: [{sku, src}], collisions: []}`.
-- Upload complete: 2,531 images uploaded to `bikershades` Supabase Storage bucket. Full chain resolvable — 0 broken.
-- Import complete: 581 products, 5,649 variations, 54 categories inserted. All QA checks passed.
-- **Pipeline complete for the 581 clean items. Remaining work: owner review of 66 flagged items.**
+- Schema updated: price range (`min_price_cents`, `max_price_cents`), `sale_price_cents` nullable on products, `stock int` replaces `in_stock boolean`, `average_rating`/`review_count` dropped.
+- Reshape + recategorize re-run with new schema. All counts match previous run: 586 clean, 581 categorized, 2 no-category, 3 single-leaf. All QA passed.
+- Download in progress — previous run: 2,531 images, 30 permanent 404s. Images named using path after `/uploads/` or `/gallery/` with `/` → `_`. `failed.json` tracks `{failed_to_download: [{sku, src}], collisions: []}`.
+- **Next: finish download → upload → drop and re-apply schema → import.**
 - 66 flagged items pending owner review: 61 from reshape + 2 no-category + 3 single-leaf
