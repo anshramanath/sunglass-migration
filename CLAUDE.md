@@ -71,5 +71,6 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - Schema updated: `brands` has `slug`, `categories` has `slug` + `parent_id` (self-referential tree)
 - Import script updated: reads from `categorized_items.json`, builds category tree lazily with `parent_id` + `slug`
 - Download complete: 2,531 images downloaded, 30 confirmed 404s. Images named using path after `/uploads/` or `/gallery/` with `/` → `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. `failed.json` tracks `{failed_to_download: [{sku, src}], collisions: []}`.
-- **Next: run upload (step 6) then import (step 7)**
+- Upload complete: 2,531 images uploaded to `bikershades` Supabase Storage bucket. Full chain resolvable — 0 broken.
+- **Next: run import (step 7)**
 - 66 flagged items pending owner review: 61 from reshape + 2 no-category + 3 single-leaf

@@ -41,8 +41,12 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 **Docs** (`docs/`)
 | File | Description |
 |---|---|
-| `AUDIT_REPORT.md` | Full field-level audit results for clean products |
-| `bikershades_migration_guide.md` | Original migration guide |
+| `PIPELINE.md` | Pipeline design, image naming scheme, DB schema summary, QA system |
+| `migration_seed.md` | Original migration guide |
+| `shaped-items/` | Field-level audit, attribute analysis, category link counts |
+| `downloaded-images/` | Download audit and verify results |
+| `uploaded-images/` | Upload audit and verify results |
+| `imported-items/` | Import audit and verify results (post-import) |
 
 **Root**
 | File | Description |
@@ -271,7 +275,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
 - [x] Design database schema
 - [x] Download images — 2,531 downloaded, 30 confirmed 404s
-- [ ] Upload images to Supabase Storage
+- [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket
 - [ ] Import into Supabase DB
 - [ ] Audit and verify import
 - [ ] Manually review and fix flagged buckets (66 total)

@@ -374,7 +374,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Re-run download (fresh) — 2,531 downloaded, 30 confirmed 404s (old deleted files). New naming scheme: path after `/uploads/` or `/gallery/` with `/` → `_` (e.g. `2024_05_image.jpg`). All product images successful. 24 variation images + 6 description images are permanent 404s.
 - [x] QA system expanded — audit/verify scripts added for download, upload, and import. All pipeline scripts print QA reminders. Results written to `docs/`.
 - [x] Gitignore fixed — `migration/products/` → `migration/items/`, added `migration/recategorized/`
-- [ ] Upload images to Supabase Storage
+- [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket. 1 temporary 503 retried successfully. Full resolution chain intact.
 - [ ] Import into Supabase DB
 - [ ] Audit and verify import
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
