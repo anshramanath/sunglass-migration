@@ -266,7 +266,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 | `variations` | Per-color/option variation data — `attribute text[]` stores the selection combo |
 | `product_images` | Product gallery images |
 | `variation_images` | Variation-specific images (unique shots not already in product gallery) |
-| `description_images` | Images embedded in description HTML |
+| `description_images` | Images embedded in product description HTML (product-only, not variations) |
 | `admins` | Gates admin dashboard access via Supabase Auth |
 
 ---
@@ -278,8 +278,8 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Reshape into clean schema — 564 clean, 83 flagged across 8 buckets
 - [x] Recategorize — 559 ready, 2 no-category, 3 single-leaf
 - [x] Design database schema (price range, stock int, no ratings, variation_images table)
-- [x] Download images — 2,531 downloaded, 30 permanent 404s
-- [x] Upload images to Supabase Storage — 2,531 uploaded, 0 broken
-- [x] Drop and re-apply schema in Supabase
-- [x] Import into Supabase DB — 581 products, 5,649 variations, all QA passed
+- [ ] Download images (in progress — run 3 with updated schema/reshape)
+- [ ] Upload images to Supabase Storage
+- [ ] Drop and re-apply schema in Supabase
+- [ ] Import into Supabase DB
 - [ ] Manually review and fix flagged buckets (66 total)

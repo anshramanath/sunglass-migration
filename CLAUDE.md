@@ -92,12 +92,13 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 ## Current state
 - **Run 2 complete.** DB seeded: 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images.
 - **Schema + reshape overhauled (post-run-2):**
-  - `variation.variation` inner array removed — redundant (was always same as `variation.attribute`)
+  - `variation.variation` inner array removed — redundant
   - `variations.variation text[]` → `variations.attribute text[] not null default '{}'`
-  - `variations.image_src/image_name` removed — replaced with `variation_images` table (same pattern as `product_images`)
+  - `variations.image_src/image_name` removed → `variation_images` table added
+  - `description_images` now product-only (`product_id not null`) — variation description images dropped (were always duplicates of parent)
   - 2 new reshape buckets: `missing_attributes` (5) and `mismatched_attr` (22)
   - Attribute cleanup: unused product attribute terms stripped so every color button has a real variation
-  - Variation images that duplicate a parent product image are stripped during reshape — no redundant DB rows or re-renders
-  - Clean bucket: 564
-- **Recategorize re-run:** 559 categorized, 2 no-category, 3 single-leaf. All QA passed. Review docs written in `docs/categorized-items/categorized-problems/`.
-- **Next: drop + re-apply schema → download → upload → import** (reshape + recategorize already done), then owner review of 83 reshape + 5 categorize flagged items.
+  - Variation images that duplicate a parent product image are stripped during reshape
+  - Clean bucket: 564 | Categorized: 559
+- **Download in progress** — fresh run on updated data (559 items, fewer unique URLs due to dedup improvements)
+- **Next: download complete → upload → drop + re-apply schema → import**
