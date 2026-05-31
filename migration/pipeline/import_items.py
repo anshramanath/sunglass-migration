@@ -100,11 +100,11 @@ for i, product in enumerate(products):
             product.get("salePriceCents"),
             product.get("stock", 1),
             product.get("weight"),
-            product.get("weightUnit", "oz"),
+            product.get("weightUnit"),
             dims.get("length"),
             dims.get("width"),
             dims.get("height"),
-            product.get("dimensionUnit", "in"),
+            product.get("dimensionUnit"),
         ),
     )
     product_id = cur.fetchone()[0]
@@ -169,11 +169,11 @@ for i, product in enumerate(products):
                 var.get("salePriceCents", 0),
                 var.get("stock", 1),
                 var.get("weight"),
-                var.get("weightUnit", "oz"),
+                var.get("weightUnit"),
                 var_dims.get("length"),
                 var_dims.get("width"),
                 var_dims.get("height"),
-                var.get("dimensionUnit", "in"),
+                var.get("dimensionUnit"),
             ),
         )
         variation_id = cur.fetchone()[0]
