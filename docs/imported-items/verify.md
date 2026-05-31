@@ -5,4 +5,4 @@ Run: `python migration/qa/verify_import.py`
 
 ## Results
 
-[Paste output here after running]
+[Write a summary here after running — see docs/downloaded-images/verify.md for the style]

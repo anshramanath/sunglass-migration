@@ -5,4 +5,4 @@ Run: `python migration/qa/audit_import.py`
 
 ## Results
 
-[Paste output here after running]
+[Write a summary here after running — see docs/downloaded-images/audit.md for the style]

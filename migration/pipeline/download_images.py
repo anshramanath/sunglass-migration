@@ -12,9 +12,18 @@ FAILED_PATH = IMAGES_DIR / "failed.json"
 
 
 def get_filename(url, sku, used_filenames, collisions, url_to_filename):
-    path = urlparse(url).path
-    after_uploads = path.split("/uploads/", 1)[-1].lstrip("/")
-    name = after_uploads.replace("/", "_").split("?")[0] or "image"
+    parsed = urlparse(url)
+    path = parsed.path
+    for prefix in ("/uploads/", "/gallery/"):
+        if prefix in path:
+            path = path.split(prefix, 1)[1]
+            break
+    base = path.lstrip("/").replace("/", "_") or "image"
+    if parsed.query:
+        stem, _, ext = base.rpartition(".")
+        query = parsed.query.replace("=", "_").replace("&", "_")
+        base = f"{stem}_{query}.{ext}" if stem else f"{base}_{query}"
+    name = base
     if name in used_filenames:
         collisions.append({
             "existing": {"src": url_to_filename[name], "sku": url_to_sku.get(url_to_filename[name], "unknown")},
@@ -111,10 +120,18 @@ for url in all_urls:
         failed_urls[url] = sku
         failed += 1
 
+    seen = set()
+    deduped_collisions = []
+    for c in collisions:
+        key = (c["existing"]["src"], c["tried"]["src"])
+        if key not in seen:
+            seen.add(key)
+            deduped_collisions.append(c)
+
     with open(FAILED_PATH, "w") as f:
         json.dump({
             "failed_to_download": [{"sku": s, "src": u} for u, s in failed_urls.items()],
-            "collisions": collisions,
+            "collisions": deduped_collisions,
         }, f, indent=2, ensure_ascii=False)
 
     time.sleep(0.05)
