@@ -276,6 +276,6 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Design database schema
 - [x] Download images — 2,531 downloaded, 30 confirmed 404s
 - [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket
-- [ ] Import into Supabase DB
-- [ ] Audit and verify import
+- [x] Import into Supabase DB — 581 products, 5,649 variations, 54 categories
+- [x] Audit and verify import — all checks passed
 - [ ] Manually review and fix flagged buckets (66 total)

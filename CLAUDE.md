@@ -72,5 +72,6 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - Import script updated: reads from `categorized_items.json`, builds category tree lazily with `parent_id` + `slug`
 - Download complete: 2,531 images downloaded, 30 confirmed 404s. Images named using path after `/uploads/` or `/gallery/` with `/` → `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. `failed.json` tracks `{failed_to_download: [{sku, src}], collisions: []}`.
 - Upload complete: 2,531 images uploaded to `bikershades` Supabase Storage bucket. Full chain resolvable — 0 broken.
-- **Next: run import (step 7)**
+- Import complete: 581 products, 5,649 variations, 54 categories inserted. All QA checks passed.
+- **Pipeline complete for the 581 clean items. Remaining work: owner review of 66 flagged items.**
 - 66 flagged items pending owner review: 61 from reshape + 2 no-category + 3 single-leaf
