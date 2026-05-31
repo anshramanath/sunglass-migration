@@ -93,9 +93,26 @@ for depth, count in sorted(depth_counts.items()):
     print(f"    depth {depth}: {count} assignments")
 
 print()
+print("── LEAF COUNTS ──")
+from collections import Counter
+leaf_counts = Counter()
+leaf_names = {}
+for item in items:
+    for path in item.get("categories", []):
+        leaf = path[-1]
+        leaf_counts[leaf["slug"]] += 1
+        leaf_names[leaf["slug"]] = leaf["name"]
+for slug, count in sorted(leaf_counts.items(), key=lambda x: -x[1]):
+    print(f"    {leaf_names[slug]:<40}  {count:>4}  ({slug})")
+
+print()
 print("── NO-CATEGORY ITEMS ──")
 if no_cat:
     for item in no_cat:
         print(f"  [{item.get('sku')}] {item.get('name')}")
 else:
     print("  None")
+
+print()
+print("  → Update docs/categorized-items/category-tree.md with leaf counts above")
+print("  → Write a summary of these results in docs/categorized-items/audit.md")

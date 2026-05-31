@@ -183,3 +183,35 @@ for field, entries in sorted(all_issues.items()):
 
 print()
 print("  ! = critical field")
+
+print()
+print("── ATTRIBUTE STATS ──")
+from collections import Counter
+attr_product_counts = Counter()
+attr_term_counts = {}
+for p in products:
+    for attr in p.get("attributes", []):
+        name = attr["name"]
+        attr_product_counts[name] += 1
+        if name not in attr_term_counts:
+            attr_term_counts[name] = set()
+        for t in attr.get("terms", []):
+            attr_term_counts[name].add(t["slug"])
+for name, count in attr_product_counts.most_common():
+    print(f"  {name:<30}  {count:>4} products  {len(attr_term_counts[name]):>4} unique terms")
+
+print()
+print("── CATEGORY LINK COUNTS (pre-recategorize) ──")
+cat_counts = Counter()
+for p in products:
+    for cat in p.get("categories", []):
+        slug = cat.rstrip("/").split("product-category/")[-1]
+        cat_counts[slug] += 1
+print(f"  Unique links: {len(cat_counts)} | Total assignments: {sum(cat_counts.values())} | Items with no categories: {sum(1 for p in products if not p.get('categories'))}")
+for slug, count in cat_counts.most_common():
+    print(f"  {count:>4}  {slug}")
+
+print()
+print("  → Write a summary of these results in docs/shaped-items/audit.md")
+print("  → Update docs/shaped-items/attributes.md with attribute stats above")
+print("  → Update docs/shaped-items/categories.md with category link counts above")

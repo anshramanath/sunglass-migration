@@ -1,5 +1,5 @@
 # Category Tree
-_Last updated: 2026-05-30_
+_Last updated: 2026-05-31_
 
 Counts shown at leaf nodes only. Branch nodes end with `/`.
 
@@ -11,11 +11,11 @@ Accessories/
 └── Tools (3)
 
 Bifocals/
-├── Full Lens Reader (41)
-├── Lined Bifocals (50)
-├── Multifocal Reader (9)
+├── Full Lens Reader (39)
+├── Lined Bifocals (48)
+├── Multifocal Reader (8)
 ├── Polarized Bifocals (12)
-└── Sport Bifocals (30)
+└── Sport Bifocals (29)
 
 Combo Sets (10)
 
@@ -32,30 +32,30 @@ Sale (12)
 Sunglasses/
 ├── Brands/
 │   ├── 7eye (20)
-│   ├── BikerArmour (63)
-│   ├── Locs (16)
-│   ├── ProSport (92)
+│   ├── BikerArmour (59)
+│   ├── Locs (15)
+│   ├── ProSport (87)
 │   ├── Wiley X (17)
 │   └── X-Loop (5)
 ├── Cover Overs (9)
 ├── Goggles (15)
 ├── Head Size/
-│   ├── Large - XLarge (23)
+│   ├── Large - XLarge (22)
 │   ├── Low Nose Bridge Long Lashes (29)
-│   ├── Medium - Large (51)
+│   ├── Medium - Large (47)
 │   ├── One Size Fits All (5)
 │   ├── Small - Medium (25)
 │   └── XSmall - Small (9)
-├── Ladies (18)
+├── Ladies (16)
 └── Lens Type/
     ├── Brown (2)
-    ├── Clear (58)
+    ├── Clear (55)
     ├── Computer Blue Block (8)
-    ├── HD Copper (45)
-    ├── Mirror (13)
+    ├── HD Copper (43)
+    ├── Mirror (12)
     ├── Polarized (53)
-    ├── Smoke Grey (81)
-    ├── Yellow (36)
+    ├── Smoke Grey (78)
+    ├── Yellow (32)
     └── Z87 Safety (12)
 
 Transitions/
@@ -63,7 +63,7 @@ Transitions/
 │   └── BikerArmour Eclipse (15)
 └── Eclipse XT/
     ├── 7eye Eclipse XT (19)
-    ├── BikerArmour Eclipse XT (26)
+    ├── BikerArmour Eclipse XT (25)
     └── WileyX Eclipse XT (25)
 
 Try Before You Buy (7)

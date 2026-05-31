@@ -2,13 +2,13 @@
 _Last updated: 2026-05-31_
 
 **Source:** `recategorized/categorized_items.json`
-**Items:** 581 | **No-category:** 2
+**Items:** 559 | **No-category:** 2
 
 ---
 
 ## Result
 
-**No issues found.** All 581 items have valid category paths ending at leaf nodes only.
+**No issues found.** All 559 items have valid category paths ending at leaf nodes only.
 
 ---
 
@@ -16,10 +16,10 @@ _Last updated: 2026-05-31_
 
 | Root | Assignments |
 |------|------------:|
-| `sunglasses` | 705 |
-| `bifocals` | 142 |
+| `sunglasses` | 675 |
+| `bifocals` | 136 |
 | `prescription` | 109 |
-| `transitions` | 85 |
+| `transitions` | 84 |
 | `sale` | 12 |
 | `accessories` | 12 |
 | `combo-sets` | 10 |
@@ -28,8 +28,8 @@ _Last updated: 2026-05-31_
 | Path Depth | Assignments |
 |-----------|------------:|
 | 1 | 29 |
-| 2 | 216 |
-| 3 | 837 |
+| 2 | 208 |
+| 3 | 808 |
 
 ---
 
@@ -39,3 +39,5 @@ _Last updated: 2026-05-31_
 |-----|------|
 | `BF4X05PC-0` | Pacific Mirror Bifocal |
 | `SRE81X13JS-0` | Jersey Sunglass Reader |
+
+See `categorized-problems/no_category_review.md` for details and blocker.
