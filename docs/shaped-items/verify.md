@@ -1,5 +1,5 @@
 # Shaped Items Verification
-_Last updated: 2026-05-30_
+_Last updated: 2026-05-31_
 
 **Source:** `reshaped/shaped_items.json` + all problem buckets
 **Script:** `migration/qa/verify_shaped_items.py`
@@ -24,7 +24,8 @@ _Last updated: 2026-05-30_
 | Power term slugs normalized — no hyphen format (`1-00`, `2-50`) | ✅ |
 | Categories are flat WooCommerce link arrays | ✅ |
 | Attributes have `{name, terms[{name, slug}]}` structure | ✅ |
-| Shaped bucket passes all invariants (valid SKU, weight > 0, has images, price > 0, no variation with >1 image) | ✅ |
+| Shaped bucket passes all invariants (valid SKU, weight > 0, has images, price > 0, stock 0 or 1, no variation with >1 image) | ✅ |
+| All SKUs unique across all buckets | ✅ |
 | No invalid SKUs (null or containing space) in shaped bucket | ✅ |
 
 ---

@@ -37,7 +37,8 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 - `docs/shaped-items/attributes.md` — attribute types and terms across clean products
 - `docs/shaped-items/categories.md` — product counts per category link
 - `docs/shaped-items/category_hierarchy.html` — visual category tree
-- `docs/completed.md` — full pipeline audit, all steps and QA results in one place
+- `docs/completed.md` — full pipeline audit for the current run (fill in after each run)
+- `docs/completed_1.md` — previous run results (pre price/stock schema changes)
 - `docs/PIPELINE.md` — pipeline design, image naming, DB schema summary, QA system
 - `PROGRESS.md` — full decision log
 

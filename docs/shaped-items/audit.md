@@ -1,7 +1,7 @@
 # Clean Products Audit Report
-_Last updated: 2026-05-30_
+_Last updated: 2026-05-31_
 
-**Source:** `reshaped/clean_products_shape.json`
+**Source:** `reshaped/shaped_items.json`
 **Products:** 586 | **Variations:** 5,771
 
 ---
