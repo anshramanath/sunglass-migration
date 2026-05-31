@@ -89,8 +89,7 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 `.env` at project root (gitignored). See `.env.example` for required variables. Scripts load it via `load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")`.
 
 ## Current state
-- Schema updated: price range (`min_price_cents`, `max_price_cents`), `sale_price_cents` nullable on products, `stock int` replaces `in_stock boolean`, `average_rating`/`review_count` dropped.
-- Reshape + recategorize re-run with new schema. All counts match previous run: 586 clean, 581 categorized, 2 no-category, 3 single-leaf. All QA passed.
-- Download in progress — previous run: 2,531 images, 30 permanent 404s. Images named using path after `/uploads/` or `/gallery/` with `/` → `_`. `failed.json` tracks `{failed_to_download: [{sku, src}], collisions: []}`.
-- **Next: finish download → upload → drop and re-apply schema → import.**
-- 66 flagged items pending owner review: 61 from reshape + 2 no-category + 3 single-leaf
+- **Run 2 complete.** Full pipeline re-run after schema changes. All counts match run 1. All QA passed. Results in `docs/completed_2.md`.
+- DB seeded: 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images.
+- Upload script patched: 409 Duplicate responses now recover gracefully (fetches public URL instead of failing).
+- **Next: owner review of 66 flagged items** (61 from reshape + 2 no-category + 3 single-leaf). Share `reshaped-problems/treatment.md`.

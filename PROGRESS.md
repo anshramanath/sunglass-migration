@@ -383,10 +383,10 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Stock refactor — `in_stock boolean` → `stock int` on both products and variations. Initialized `true → 1`, `false → 0` from WooCommerce `is_in_stock`. Owner can set real quantities later; frontend treats `stock > 0` as in stock.
 - [x] Rating/review fields dropped — `average_rating` and `review_count` removed from schema, reshape, and import. App builds its own review system.
 - [x] Re-run reshape + recategorize with updated schema — all counts match previous run. All QA passed.
-- [ ] Re-run download (in progress)
-- [ ] Re-upload images to Supabase Storage
-- [ ] Drop and re-apply schema in Supabase
-- [ ] Re-run import
+- [x] Re-run download — 2,531 downloaded, 30 permanent 404s. All counts match run 1.
+- [x] Re-upload images to Supabase Storage — 2,531 uploaded. 1 file in-flight at kill recovered via 409 Duplicate patch. Full chain intact.
+- [x] Drop and re-apply schema in Supabase — clean slate with updated schema.
+- [x] Re-run import — 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images. All QA passed. Results in `docs/completed_2.md`.
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

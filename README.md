@@ -276,8 +276,8 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Reshape into clean schema — 586 clean, 61 flagged across 7 buckets
 - [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
 - [x] Design database schema (price range, stock int, no ratings)
-- [ ] Download images (in progress)
-- [ ] Upload images to Supabase Storage
-- [ ] Drop and re-apply schema in Supabase
-- [ ] Import into Supabase DB
+- [x] Download images — 2,531 downloaded, 30 permanent 404s
+- [x] Upload images to Supabase Storage — 2,531 uploaded, 0 broken
+- [x] Drop and re-apply schema in Supabase
+- [x] Import into Supabase DB — 581 products, 5,649 variations, all QA passed
 - [ ] Manually review and fix flagged buckets (66 total)
