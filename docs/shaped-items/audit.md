@@ -42,8 +42,8 @@ Expected gaps, not bugs.
 | `product.descriptionImgs` | 26 | 564 | 4.6% | No images embedded in description HTML — expected |
 | `product.description` | 17 | 564 | 3.0% | No description text — expected |
 | `variation.description` | 2,459 | 5,364 | 45.8% | Most variations have no description — frontend falls back to parent |
+| `variation.images` | 3,471 | 5,364 | 64.7% | Variation images stripped if they duplicate a parent image — frontend falls back to product gallery |
 | `variation.dimensions.length/width/height` | 179 | 5,364 | 3.3% | Variations without dimension data — expected |
-| `variation.images` | 22 | 5,364 | 0.4% | Variations with no image — frontend falls back to parent product images |
 
 ---
 
@@ -53,4 +53,6 @@ Expected gaps, not bugs.
 - `product.attributes` empty (114 products) = simple products with no variants. Correct — they have no `variations[]` either.
 - Variable products have `salePriceCents = null` — price range is `minPriceCents`–`maxPriceCents` derived from variations.
 - Simple products have `minPriceCents = maxPriceCents = regularPrice`.
-- Product attribute terms are trimmed to only what variations actually use — unused terms are silently removed during reshape.
+- Product attribute terms are trimmed to only what variations actually use — unused terms stripped during reshape.
+- `variation.images` empty (64.7%) is expected — variation images that duplicate a parent product image are stripped during reshape. Frontend falls back to product gallery for those variations.
+- Variations no longer have `descriptionImgs` — description images belong to products only. The 4 variation description images that existed were duplicates of the parent's description image.
