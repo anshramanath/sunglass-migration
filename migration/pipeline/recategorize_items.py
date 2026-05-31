@@ -12,25 +12,21 @@ with open(BASE / "reshaped/shaped_items.json", encoding="utf-8") as f:
     items = json.load(f)
 
 # ── Category name map ─────────────────────────────────────────────────────────
-# Maps WooCommerce path slug → (name, new_slug)
-# Key is the WooCommerce leaf slug, value is (display name, slug for new site)
+# WooCommerce leaf slug → (display name, new slug)
 
 CATEGORY_MAP = {
-    # accessories
     "accessories":                              ("Accessories",                   "accessories"),
     "cases":                                    ("Cases",                         "cases"),
     "extra-lenses":                             ("Extra Lenses",                  "extra-lenses"),
     "return-labels":                            ("Return Labels",                 "return-labels"),
     "strings":                                  ("Strings",                       "strings"),
     "tools":                                    ("Tools",                         "tools"),
-    # bifocals
     "bifocal-motorcycle-glasses":               ("Bifocals",                      "bifocals"),
     "bifocals-motorcycle-sport":                ("Sport Bifocals",                "sport-bifocals"),
     "full-lens-reader-bifocal-type":            ("Full Lens Reader",              "full-lens-reader"),
     "lined-bifocals-bifocal-type":              ("Lined Bifocals",                "lined-bifocals"),
     "multifocal-reader":                        ("Multifocal Reader",             "multifocal-reader"),
     "polarized-bifocals":                       ("Polarized Bifocals",            "polarized-bifocals"),
-    # sunglasses
     "motorcycle-sunglasses":                    ("Sunglasses",                    "sunglasses"),
     "brands":                                   ("Brands",                        "brands"),
     "7eye":                                     ("7eye",                          "7eye"),
@@ -59,7 +55,6 @@ CATEGORY_MAP = {
     "one-size-fits-all":                        ("One Size Fits All",             "one-size-fits-all"),
     "small-medium":                             ("Small - Medium",                "small-medium"),
     "xsmall-small":                             ("XSmall - Small",                "xsmall-small"),
-    # prescription
     "prescription-motorcycle-glasses":          ("Prescription",                  "prescription"),
     "high-power-rx":                            ("High Power Rx",                 "high-power-rx"),
     "rx-brands":                                ("Rx Brands",                     "rx-brands"),
@@ -67,11 +62,9 @@ CATEGORY_MAP = {
     "bikerarmour-rx-frames":                    ("BikerArmour Rx Frames",         "bikerarmour-rx-frames"),
     "wileyx-rx-frames":                         ("WileyX Rx Frames",              "wileyx-rx-frames"),
     "ziena-dry-eye-glasses":                    ("Ziena Dry Eye",                 "ziena-dry-eye"),
-    # other roots
     "sales":                                    ("Sale",                          "sale"),
     "see-all-combo-sets":                       ("Combo Sets",                    "combo-sets"),
     "try-before-you-buy":                       ("Try Before You Buy",            "try-before-you-buy"),
-    # transitions
     "transitions-motorcycle-sunglasses":        ("Transitions",                   "transitions"),
     "eclipse-photochromics-motorcycle-sunglasses": ("Eclipse Photochromics",      "eclipse-photochromics"),
     "bikerarmour-eclipse-photochromic-sunglasses": ("BikerArmour Eclipse",        "bikerarmour-eclipse"),
@@ -81,8 +74,6 @@ CATEGORY_MAP = {
     "eclipse_xt_transition_motorcycle_sunglasses_wileyx": ("WileyX Eclipse XT",   "wileyx-eclipse-xt"),
 }
 
-# ── Recategorization rules ────────────────────────────────────────────────────
-
 BASE_URL = "https://bikershades.com/product-category"
 
 DROP_SLUGS = {
@@ -91,62 +82,53 @@ DROP_SLUGS = {
 }
 
 MERGE_SLUGS = {
-    "mirrored":                              "mirror",
-    "small-medium-shop-by-head-size":        "small-medium",
-    "low-nose-bridge-long-lashes-shades":    "long-eyelashes",
-    "bifocal-type":                          None,  # promote to parent
+    "mirrored":                           "mirror",
+    "small-medium-shop-by-head-size":     "small-medium",
+    "low-nose-bridge-long-lashes-shades": "long-eyelashes",
+    "bifocal-type":                       None,  # promote to parent
 }
 
 
-def parse_path_segments(link):
-    """Extract slug segments from a WooCommerce category link."""
+def parse_segments(link):
     path = link.rstrip("/").replace(BASE_URL, "").strip("/")
     return path.split("/") if path else []
 
 
 def apply_drops_merges(link):
-    """
-    Returns the normalised link after applying drops and merges,
-    or None if the link should be removed entirely.
-    """
-    segments = parse_path_segments(link)
+    segments = parse_segments(link)
     if not segments:
         return None
-
     leaf = segments[-1]
-
     if leaf in DROP_SLUGS:
         return None
-
-    target = MERGE_SLUGS.get(leaf)
-    if target is None and leaf in MERGE_SLUGS:
-        # bifocal-type: promote to parent
-        if len(segments) > 1:
-            return BASE_URL + "/" + "/".join(segments[:-1])
-        return None
-    if target:
+    if leaf in MERGE_SLUGS:
+        target = MERGE_SLUGS[leaf]
+        if target is None:
+            return (BASE_URL + "/" + "/".join(segments[:-1])) if len(segments) > 1 else None
         segments[-1] = target
-        return BASE_URL + "/" + "/".join(segments)
-
-    return link
+    return BASE_URL + "/" + "/".join(segments)
 
 
 def build_path(link):
-    """Build [{level, name, slug}, ...] for a surviving link."""
-    segments = parse_path_segments(link)
+    segments = parse_segments(link)
     path = []
     for i, seg in enumerate(segments):
         meta = CATEGORY_MAP.get(seg)
         if not meta:
-            print(f"  WARNING: no category map entry for slug '{seg}' in {link}")
+            print(f"  WARNING: no map entry for slug '{seg}'")
             return None
         path.append({"level": i + 1, "name": meta[0], "slug": meta[1]})
     return path
 
 
-# ── Pass 1: apply drops and merges, count per surviving link ──────────────────
+def get_leaves(all_links):
+    return {l for l in all_links if not any(
+        other.startswith(l + "/") for other in all_links
+    )}
 
-# Map item index → set of surviving links
+
+# ── Pass 1: apply drops and merges ───────────────────────────────────────────
+
 item_links = []
 for item in items:
     surviving = set()
@@ -156,69 +138,74 @@ for item in items:
             surviving.add(result)
     item_links.append(surviving)
 
-# ── Pass 2: iterative collapse of single-item leaves ─────────────────────────
+# ── Pass 2: iteratively remove single-item leaves ────────────────────────────
 
-def get_leaves(all_links_flat):
-    paths_set = set(all_links_flat)
-    return {p for p in paths_set if not any(
-        other.startswith(p + "/") for other in paths_set
-    )}
+active = list(range(len(items)))  # indices of items still in play
+single_leaf_indices = set()
 
 changed = True
 while changed:
     changed = False
-    link_counts = Counter(link for links in item_links for link in links)
-    all_links_flat = set(link_counts.keys())
-    leaves = get_leaves(all_links_flat)
-    single_leaves = {l for l in leaves if link_counts[l] == 1}
+    all_links = {link for i in active for link in item_links[i]}
+    leaves = get_leaves(all_links)
+    leaf_counts = Counter(link for i in active for link in item_links[i] if link in leaves)
 
+    single_leaves = {l for l, c in leaf_counts.items() if c == 1}
     if not single_leaves:
         break
 
-    for i, links in enumerate(item_links):
-        new_links = set()
-        for link in links:
-            if link in single_leaves:
-                segments = parse_path_segments(link)
-                if len(segments) > 1:
-                    parent = BASE_URL + "/" + "/".join(segments[:-1])
-                    new_links.add(parent)
-                    changed = True
-                    print(f"  COLLAPSE: {link.replace(BASE_URL,'')} → {parent.replace(BASE_URL,'')}")
-                else:
-                    # root-level single leaf — keep it, can't collapse further
-                    new_links.add(link)
-            else:
-                new_links.add(link)
-        item_links[i] = new_links
+    new_active = []
+    for i in active:
+        if item_links[i] & single_leaves:
+            single_leaf_indices.add(i)
+            print(f"  SINGLE-LEAF: [{items[i]['sku']}] {items[i]['name']} — {[parse_segments(l) for l in item_links[i] & single_leaves]}")
+            changed = True
+        else:
+            new_active.append(i)
+    active = new_active
 
-# ── Pass 3: build final category paths and split output ──────────────────────
+# ── Pass 3: strip non-leaf paths from remaining items ────────────────────────
 
-clean_out = []
+all_links = {link for i in active for link in item_links[i]}
+leaves = get_leaves(all_links)
+
+stripped_count = 0
+for i in active:
+    before = len(item_links[i])
+    item_links[i] = {l for l in item_links[i] if l in leaves}
+    stripped_count += before - len(item_links[i])
+
+if stripped_count:
+    print(f"  STRIPPED: {stripped_count} non-leaf paths removed")
+
+# ── Pass 4: build output ──────────────────────────────────────────────────────
+
+categorized_out = []
 no_category_out = []
+single_leaf_out = [items[i] for i in single_leaf_indices]
 
-for item, links in zip(items, item_links):
-    if not links:
+for i in active:
+    item = items[i]
+    if not item_links[i]:
         no_category_out.append(item)
         continue
-
-    category_paths = []
-    for link in sorted(links):  # sorted for deterministic output
-        path = build_path(link)
-        if path:
-            category_paths.append(path)
-
-    item["categories"] = category_paths
-    clean_out.append(item)
+    paths = [build_path(l) for l in sorted(item_links[i])]
+    paths = [p for p in paths if p]
+    item["categories"] = paths
+    categorized_out.append(item)
 
 # ── Write output ──────────────────────────────────────────────────────────────
 
 with open(BASE / "recategorized/categorized_items.json", "w", encoding="utf-8") as f:
-    json.dump(clean_out, f, indent=2, ensure_ascii=False)
+    json.dump(categorized_out, f, indent=2, ensure_ascii=False)
 
 with open(BASE / "recategorized/no_category_items.json", "w", encoding="utf-8") as f:
     json.dump(no_category_out, f, indent=2, ensure_ascii=False)
 
+with open(BASE / "recategorized/single_leaf_items.json", "w", encoding="utf-8") as f:
+    json.dump(single_leaf_out, f, indent=2, ensure_ascii=False)
+
 print(f"\nDone.")
-print(f"  Clean items:       {len(clean_out)}")
-print(f"  No category items: {len(no_category_out)} → no_category_items.json")
+print(f"  Categorized items:   {len(categorized_out)}")
+print(f"  No-category items:   {len(no_category_out)} → no_category_items.json")
+print(f"  Single-leaf items:   {len(single_leaf_out)} → single_leaf_items.json")

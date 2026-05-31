@@ -30,8 +30,8 @@ bikershades-migration/
       upload_images.py               ← step 6
       import_items.py                ← step 7
     qa/
-      audit_clean_products.py
-      verify_reshape.py
+      audit_shaped_items.py
+      verify_shaped_items.py
     db/
       001_initial_schema.sql
       drop_schema.sql
@@ -366,7 +366,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Write import script — `import_items.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → description_images. Variation image inserted inline on the variation row (`image_src`, `image_name`). Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
 - [x] Run import — 589 products, 63 categories, 1 brand inserted successfully. Exit code 0.
 - [x] Audit clean products — all fields validated for existence and correct values. Only issue: 2 products (`PL46X10AP-0`, `PL46X10AP-BK-DRO`) had `weight = 0.0`. Fixed: reshape now catches `weight = 0.0` alongside `null`, both moved to `no_weight` bucket. Clean bucket now 586.
-- [x] Verify reshape — `verify_reshape.py` confirms all 647 products accounted for, no duplicates, all slugs/SKUs/prices match raw, no data loss. `verify_no_data_loss.py` merged into this script. 3 apparent description losses confirmed as HTML-only descriptions — correctly captured in `descriptionImgs` instead.
+- [x] Verify reshape — `verify_shaped_items.py` confirms all 647 products accounted for, no duplicates, all slugs/SKUs/prices match raw, no data loss. `verify_no_data_loss.py` merged into this script. 3 apparent description losses confirmed as HTML-only descriptions — correctly captured in `descriptionImgs` instead.
 - [x] Schema update — `variation_images` table removed. Variation image flattened to `image_src` + `image_name` columns on `variations` row. Variations have at most 1 image; >1 is a WooCommerce misconfiguration and now bucketed separately (`multiple_variation_images`).
 - [x] Write `recategorize_items.py` — applies drops, merges, single-item leaf collapses; outputs `recategorized/categorized_items.json` (584) and `recategorized/no_category_items.json` (2). Categories now stored as `[[{level, name, slug}]]` — array of paths, each path an array of tree nodes from root to leaf.
 - [ ] Re-run import against updated schema — import script reads from `recategorized/categorized_items.json`; needs updating for new category structure, `brands.slug`, and `categories` tree (`parent_id`, `slug`)

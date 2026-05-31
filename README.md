@@ -13,6 +13,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `fetch_products.py` | Fetches all 647 products from the WooCommerce API |
 | `fetch_variations.py` | Fetches all 6,064 product variations |
 | `reshape_items.py` | Cleans and normalizes raw data, buckets by issue type |
+| `recategorize_items.py` | Applies drops, merges, collapses to category links; outputs `recategorized/` |
 | `download_images.py` | Downloads all product, variation, and description images locally |
 | `upload_images.py` | Uploads local images to Supabase Storage, outputs `upload_map.json` |
 | `import_items.py` | Inserts clean products into Supabase DB |
@@ -20,8 +21,10 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 **QA** (`migration/qa/`)
 | File | Description |
 |---|---|
-| `audit_clean_products.py` | Validates all fields in clean bucket for existence and correct values |
-| `verify_reshape.py` | Cross-references reshaped output against raw + checks no field was dropped (merged) |
+| `audit_shaped_items.py` | Validates all fields in shaped items for existence and correct values |
+| `verify_shaped_items.py` | Cross-references reshaped output against raw + checks no field was dropped |
+| `audit_categorized_items.py` | Validates category path structure in categorized items; reports tree stats per root |
+| `verify_categorized_items.py` | Cross-references categorized against shaped — no items lost, counts match, no dropped/merged slugs survived |
 
 **Schema** (`migration/db/`)
 | File | Description |

@@ -16,8 +16,10 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 7. `migration/pipeline/import_items.py` — inserts categorized items into Supabase DB
 
 ## QA scripts
-- `migration/qa/audit_clean_products.py` — validates all fields in clean bucket
-- `migration/qa/verify_reshape.py` — cross-references reshaped output against raw data + checks no field was dropped
+- `migration/qa/audit_shaped_items.py` — validates all fields in shaped items (post-reshape)
+- `migration/qa/verify_shaped_items.py` — cross-references reshaped output against raw data + checks no field was dropped
+- `migration/qa/audit_categorized_items.py` — validates category structure in categorized items (post-recategorize); checks levels, slugs, path integrity; reports tree stats per root
+- `migration/qa/verify_categorized_items.py` — cross-references categorized against shaped: no items lost, counts match, no-category fields unchanged, no dropped/merged slugs survived
 
 ## Key files
 - `migration/db/001_initial_schema.sql` — source of truth for DB schema
