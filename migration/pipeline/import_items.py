@@ -207,3 +207,6 @@ cur.close()
 conn.close()
 
 print(f"\nDone. {len(products)} products imported into Supabase.")
+print()
+print("  → Run QA: python migration/qa/audit_import.py")
+print("  → Run QA: python migration/qa/verify_import.py")

@@ -363,3 +363,6 @@ print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate
 print(f"No weight items:               {len(no_weight_items)} → no_weight_items.json")
 print(f"Multiple variation image items:{len(multiple_variation_images_items)} → multiple_variation_images_items.json")
 print(f"Shaped items:                  {len(clean_items)} → shaped_items.json")
+print()
+print("  → Run QA: python migration/qa/audit_shaped_items.py")
+print("  → Run QA: python migration/qa/verify_shaped_items.py")
