@@ -16,7 +16,9 @@ _Last updated: 2026-05-31_
 | `no_image_review.md` | Per-product notes for the 3 no-image products |
 | `invalid_sku_review.md` | Per-product notes for the 22 invalid-SKU products |
 | `missing_attributes_review.md` | Per-product notes for the missing-attributes products |
+| `mismatched_attr_review.md` | Per-product notes for the 22 mismatched-attribute products |
 | `duplicate_name_review.md` | Per-product notes for the 6 duplicate-name products |
+| `multiple_variation_images_review.md` | Per-product notes for the 1 multiple-variation-images product |
 
 ---
 

@@ -52,7 +52,7 @@ create table variations (
   product_id uuid not null references products(id),
   slug text not null,
   sku text not null unique,
-  variation text[],
+  attribute text[] not null default '{}',
   wp_url text,
   product_url text,
   description text,

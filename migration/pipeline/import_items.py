@@ -147,7 +147,7 @@ for i, product in enumerate(products):
         cur.execute(
             """
             INSERT INTO variations (
-                product_id, slug, sku, variation,
+                product_id, slug, sku, attribute,
                 wp_url, product_url, description,
                 sale, regular_price_cents, sale_price_cents,
                 stock, weight, weight_unit,
@@ -166,7 +166,7 @@ for i, product in enumerate(products):
                 product_id,
                 var.get("slug"),
                 var.get("sku"),
-                var.get("variation", []),
+                var_entry.get("attribute", []),
                 var.get("wpUrl"),
                 var.get("productUrl"),
                 var.get("description"),

@@ -148,7 +148,7 @@ def reshape_product(product, variation_stubs, full_variations_map):
 
         variations.append({
             "attribute": stub_values,
-            "variation": reshape_variation(full_var, stub_values),
+            "variation": reshape_variation(full_var),
         })
 
     # Images
@@ -221,7 +221,7 @@ def reshape_product(product, variation_stubs, full_variations_map):
     }
 
 
-def reshape_variation(v, stub_values=None):
+def reshape_variation(v):
     prices = v.get("prices") or {}
     regular_price = int(prices.get("regular_price") or 0)
     sale_price = int(prices.get("sale_price") or 0)
@@ -250,7 +250,6 @@ def reshape_variation(v, stub_values=None):
     return {
         "slug": v.get("slug"),
         "sku": v.get("sku") or None,
-        "variation": stub_values or [],
         "wpUrl": v.get("permalink"),
         "productUrl": product_url,
         "description": strip_html(v.get("description") or ""),
