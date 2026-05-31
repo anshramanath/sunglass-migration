@@ -75,13 +75,13 @@ for i, product in enumerate(products):
         INSERT INTO products (
             brand_id, name, slug, sku, wp_url, product_url,
             description, summary, attributes,
-            sale, regular_price_cents, sale_price_cents,
+            sale, min_price_cents, max_price_cents, sale_price_cents,
             average_rating, review_count, in_stock,
             weight, weight_unit, length, width, height, dimension_unit
         ) VALUES (
             %s, %s, %s, %s, %s, %s,
             %s, %s, %s,
-            %s, %s, %s,
+            %s, %s, %s, %s,
             %s, %s, %s,
             %s, %s, %s, %s, %s, %s
         ) RETURNING id;
@@ -97,8 +97,9 @@ for i, product in enumerate(products):
             product.get("summary"),
             Json(product.get("attributes", [])),
             product.get("sale", False),
-            product["regularPriceInCents"],
-            product["salePriceInCents"],
+            product["minPriceCents"],
+            product["maxPriceCents"],
+            product.get("salePriceCents"),
             product.get("averageRating", 0),
             product.get("reviewCount", 0),
             product.get("inStock", True),
@@ -174,8 +175,8 @@ for i, product in enumerate(products):
                 var.get("productUrl"),
                 var.get("description"),
                 var.get("sale", False),
-                var.get("regularPriceInCents", 0),
-                var.get("salePriceInCents", 0),
+                var.get("regularPriceCents", 0),
+                var.get("salePriceCents", 0),
                 var.get("inStock", True),
                 var.get("weight"),
                 var.get("weightUnit", "oz"),

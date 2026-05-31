@@ -214,8 +214,9 @@ Current direction:
   "descriptionImgs": ["https://bikershades.com/wp-content/uploads/diagram.jpg"],
   "summary": ["Fits Large to X-Large heads", "Impact resistant lenses"],
   "sale": true,
-  "regularPriceInCents": 2599,
-  "salePriceInCents": 1999,
+  "minPriceCents": 1999,
+  "maxPriceCents": 3499,
+  "salePriceCents": null,
   "averageRating": 4.5,
   "reviewCount": 12,
   "inStock": true,
@@ -239,7 +240,7 @@ Current direction:
   "variations": [
     {
       "attribute": ["blue-green-smoke"],
-      "variation": { "sku": "SP47X96BS-BG", "regularPriceInCents": 1999 }
+      "variation": { "sku": "SP47X96BS-BG", "regularPriceCents": 1999, "salePriceCents": 1599 }
     }
   ],
   "weight": 2,

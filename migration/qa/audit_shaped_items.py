@@ -34,12 +34,16 @@ for p in products:
             flag(f"product.{field}", sku)
 
     # Price integrity
-    reg = p.get("regularPriceInCents", 0)
-    sale = p.get("salePriceInCents", 0)
-    if not reg or reg <= 0:
-        flag("product.regularPriceInCents", sku, f"value={reg}")
-    if p.get("sale") and (sale <= 0 or sale >= reg):
-        flag("product.salePriceInCents[sale=true]", sku, f"sale={sale} reg={reg}")
+    is_variable = bool(p.get("variations"))
+    min_p = p.get("minPriceCents", 0)
+    max_p = p.get("maxPriceCents", 0)
+    sale_p = p.get("salePriceCents")
+    if not min_p or min_p <= 0:
+        flag("product.minPriceCents", sku, f"value={min_p}")
+    if max_p < min_p:
+        flag("product.maxPriceCents", sku, f"max={max_p} < min={min_p}")
+    if not is_variable and p.get("sale") and (not sale_p or sale_p <= 0 or sale_p >= min_p):
+        flag("product.salePriceCents[sale=true]", sku, f"sale={sale_p} min={min_p}")
 
     # Rating range
     rating = p.get("averageRating", 0)
@@ -101,12 +105,12 @@ for p in products:
             if is_blank(v.get(field)):
                 flag(f"variation.{field}", vsku, f"parent={sku}")
 
-        vreg = v.get("regularPriceInCents", 0)
-        vsale = v.get("salePriceInCents", 0)
+        vreg = v.get("regularPriceCents", 0)
+        vsale = v.get("salePriceCents", 0)
         if not vreg or vreg <= 0:
-            flag("variation.regularPriceInCents", vsku, f"value={vreg} parent={sku}")
+            flag("variation.regularPriceCents", vsku, f"value={vreg} parent={sku}")
         if v.get("sale") and (vsale <= 0 or vsale >= vreg):
-            flag("variation.salePriceInCents[sale=true]", vsku, f"sale={vsale} reg={vreg} parent={sku}")
+            flag("variation.salePriceCents[sale=true]", vsku, f"sale={vsale} reg={vreg} parent={sku}")
 
         if v.get("weight") is None:
             flag("variation.weight[null]", vsku, f"parent={sku}")
@@ -134,10 +138,10 @@ print()
 # Separate critical (required fields) from informational (optional/empty)
 critical_keywords = [
     "product.name", "product.slug", "product.sku", "product.wpUrl", "product.productUrl",
-    "product.regularPriceInCents", "product.salePriceInCents[sale=true]",
+    "product.minPriceCents", "product.maxPriceCents", "product.salePriceCents[sale=true]",
     "product.averageRating", "product.weight[null]", "product.weight[zero]",
     "variation.slug", "variation.sku", "variation.wpUrl", "variation.productUrl",
-    "variation.regularPriceInCents", "variation.salePriceInCents[sale=true]",
+    "variation.regularPriceCents", "variation.salePriceCents[sale=true]",
     "variation.attribute[empty]",
 ]
 

@@ -103,11 +103,6 @@ ATTRIBUTE_NAME_MAP = {
 
 
 def reshape_product(product, variation_stubs, full_variations_map):
-    prices = product.get("prices") or {}
-    regular_price = int(prices.get("regular_price") or 0)
-    sale_price = int(prices.get("sale_price") or 0)
-    sale = product.get("on_sale", False) and sale_price < regular_price
-
     # Group attributes by mapped slug, carry name+slug for both attribute and terms
     attributes_map = {}
     for attr in product.get("attributes", []):
@@ -185,6 +180,22 @@ def reshape_product(product, variation_stubs, full_variations_map):
     self_links = links.get("self") or []
     product_url = self_links[0].get("href") if self_links else None
 
+    # Price range — derived from variations for variable products, direct for simple
+    if variations:
+        var_prices = [ve["variation"]["regularPriceCents"] for ve in variations]
+        min_price = min(var_prices)
+        max_price = max(var_prices)
+        sale_price = None
+        sale = any(ve["variation"]["sale"] for ve in variations)
+    else:
+        prices = product.get("prices") or {}
+        regular_price = int(prices.get("regular_price") or 0)
+        raw_sale_price = int(prices.get("sale_price") or 0)
+        min_price = regular_price
+        max_price = regular_price
+        sale_price = raw_sale_price
+        sale = sale_price > 0 and sale_price < min_price
+
     return {
         "name": clean_name(product.get("name")),
         "slug": product.get("slug"),
@@ -195,8 +206,9 @@ def reshape_product(product, variation_stubs, full_variations_map):
         "descriptionImgs": extract_description_images(product.get("description") or ""),
         "summary": parse_summary(product.get("short_description") or ""),
         "sale": sale,
-        "regularPriceInCents": regular_price,
-        "salePriceInCents": sale_price,
+        "minPriceCents": min_price,
+        "maxPriceCents": max_price,
+        "salePriceCents": sale_price,
         "averageRating": float(product.get("average_rating") or 0),
         "reviewCount": product.get("review_count") or 0,
         "inStock": product.get("is_in_stock", False),
@@ -215,7 +227,7 @@ def reshape_variation(v, stub_values=None):
     prices = v.get("prices") or {}
     regular_price = int(prices.get("regular_price") or 0)
     sale_price = int(prices.get("sale_price") or 0)
-    sale = v.get("on_sale", False) and sale_price < regular_price
+    sale = sale_price > 0 and sale_price < regular_price
 
     links = v.get("_links") or {}
     self_links = links.get("self") or []
@@ -246,8 +258,8 @@ def reshape_variation(v, stub_values=None):
         "description": strip_html(v.get("description") or ""),
         "descriptionImgs": extract_description_images(v.get("description") or ""),
         "sale": sale,
-        "regularPriceInCents": regular_price,
-        "salePriceInCents": sale_price,
+        "regularPriceCents": regular_price,
+        "salePriceCents": sale_price,
         "inStock": v.get("is_in_stock", False),
         "images": images,
         "weight": weight,

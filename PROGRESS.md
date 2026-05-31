@@ -161,7 +161,7 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 - **Image folder structure is flat** — all images downloaded to `images/local/` with unique filenames (deduplicated via `_1`, `_2` suffix). No SKU subfolders. `url_map.json` is the source of truth, not the folder structure
 - **Per-brand storage buckets** — Supabase Storage bucket named after the brand (`bikershades`). When new brands are added, each gets its own bucket. Images sit flat inside the bucket
 - **Download only clean products** — flagged buckets skipped during download. When a flagged product is fixed and moved to clean, re-running download/upload only fetches what's new
-- **`on_sale` computed from two checks** — `on_sale == true AND sale_price < regular_price`. Owner intent (`on_sale`) + price validation both must be true. `sale_price` can exist without the product being actively on sale (owner may have it staged for future use)
+- **`sale` flag logic** — Variable products: `true` if any variation has `sale = true`. Simple products: `sale_price > 0 AND sale_price < regular_price`. WooCommerce's `on_sale` field is ignored — price comparison is the source of truth.
 - **Sale page is manually curated** — the site's sale page is not an automatic filter of all `on_sale` products. For the new app, use the `on_sale` flag for badges/pricing; build the sale page view with whatever logic fits
 - **`permalink` kept as `wpUrl`** — useful for 301 redirects from old Google-indexed URLs and for debugging by comparing against the live site
 - **Drop entire currency block** — all 647 products are USD only. `currency_symbol`, `currency_code`, `currency_minor_unit`, separators, prefix/suffix are all redundant. Frontend hardcodes `$` and cents division
@@ -189,8 +189,9 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `description` (img tags) | `descriptionImgs[]` | extracted image URLs for download/rehost |
 | `short_description` | `summary` | parse `<li>` tags into string array, plain text fallback |
 | `on_sale` | `sale` | only true if `on_sale == true AND sale_price < regular_price` |
-| `prices.regular_price` | `regularPriceInCents` | string → integer |
-| `prices.sale_price` | `salePriceInCents` | string → integer |
+| `prices.regular_price` | `minPriceCents` / `maxPriceCents` | string → integer. Variable products: min/max across all variation prices. Simple products: min = max = product price. |
+| `prices.sale_price` | `salePriceCents` | null for variable products (use variation prices). Simple products: sale price if on sale. |
+| `on_sale` + variations | `sale` | Variable: true if any variation has `sale=true`. Simple: `on_sale == true AND sale_price < regular_price`. |
 | `average_rating` | `averageRating` | normalized to float, seed data for new review system |
 | `review_count` | `reviewCount` | seed data for new review system |
 | `is_in_stock` | `inStock` | |
@@ -216,8 +217,8 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `description` | `description` | stripped to plain text |
 | `description` (img tags) | `descriptionImgs[]` | extracted image URLs (only 4 variations have these) |
 | `on_sale` | `sale` | same two-check logic as product |
-| `prices.regular_price` | `regularPriceInCents` | string → integer |
-| `prices.sale_price` | `salePriceInCents` | string → integer |
+| `prices.regular_price` | `regularPriceCents` | string → integer |
+| `prices.sale_price` | `salePriceCents` | string → integer |
 | `is_in_stock` | `inStock` | |
 | `images[].src` | `images[].src` | |
 | `images[].name` | `images[].name` | |
@@ -332,7 +333,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 |---|---|
 | `brands` | `id`, `name`, `slug` |
 | `categories` | `id`, `brand_id`, `parent_id`, `name`, `slug` |
-| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `regular_price_cents`, `sale_price_cents`, `average_rating`, `review_count`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable), `average_rating`, `review_count`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
 | `product_categories` | `product_id`, `category_id` (junction) |
 | `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
 | `product_images` | `id`, `product_id`, `src`, `name`, `sort_order` |
@@ -377,6 +378,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket. 1 temporary 503 retried successfully. Full resolution chain intact.
 - [x] Import into Supabase DB — 581 products, 5,649 variations, 54 categories, 1 brand. Exit code 0.
 - [x] Audit and verify import — all checks passed. 0 missing SKUs, 0 field mismatches, 0 products without categories, category leaf slugs match source for all 581 products. Results in `docs/completed.md`.
+- [x] Price range refactor — variable product prices now derived from variations. Schema: `regular_price_cents` → `min_price_cents` + `max_price_cents`; `sale_price_cents` nullable (null for variable). `sale` on product = true if any variation on sale. Computed in reshape, not import.
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

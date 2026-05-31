@@ -46,6 +46,11 @@ Images are deduplicated by URL — `url_map.json` keys by full URL so the same i
 
 Image resolution chain in import: `bikershades URL → url_map → local path → upload_map → storage URL`. If either lookup fails the image is dropped (no broken URLs in DB).
 
+## Price model
+- Variable products (have variations): `minPriceCents` / `maxPriceCents` derived from variation prices in reshape. `salePriceCents = null`. `sale = true` if any variation has `sale = true`.
+- Simple products (no variations): `minPriceCents = maxPriceCents = regularPrice`. `salePriceCents` = actual sale price. `sale = salePriceCents > 0 AND salePriceCents < minPriceCents`.
+- DB columns: `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable). Variation rows still have `regular_price_cents` and `sale_price_cents` — those are the source of truth for per-variation pricing.
+
 ## Database
 - Supabase/Postgres, multi-brand schema
 - `service_role` key used by backend — bypasses RLS

@@ -112,16 +112,47 @@ check("Attributes have {name, terms[{name, slug}]} structure", not attr_structur
 shaped_violations = []
 for p in reshaped["shaped"]:
     sku = p.get("sku", "")
+    variations = p.get("variations", [])
+    is_variable = bool(variations)
+    min_p = p.get("minPriceCents", 0)
+    max_p = p.get("maxPriceCents", 0)
+    sale_p = p.get("salePriceCents")
+    sale = p.get("sale", False)
+
     if not sku or " " in sku:
         shaped_violations.append(f"invalid sku: {sku}")
     if not p.get("weight") or p.get("weight") == 0.0:
         shaped_violations.append(f"missing/zero weight: {sku}")
     if not p.get("images"):
         shaped_violations.append(f"no images: {sku}")
-    if not p.get("regularPriceInCents"):
-        shaped_violations.append(f"zero price: {sku}")
-    if any(len(ve.get("variation", {}).get("images", [])) > 1 for ve in p.get("variations", [])):
+    if not min_p:
+        shaped_violations.append(f"zero min price: {sku}")
+
+    if is_variable:
+        var_prices = [ve["variation"].get("regularPriceCents", 0) for ve in variations]
+        expected_min = min(var_prices) if var_prices else 0
+        expected_max = max(var_prices) if var_prices else 0
+        if min_p != expected_min:
+            shaped_violations.append(f"minPriceCents {min_p} != variation min {expected_min}: {sku}")
+        if max_p != expected_max:
+            shaped_violations.append(f"maxPriceCents {max_p} != variation max {expected_max}: {sku}")
+        if sale_p is not None:
+            shaped_violations.append(f"variable product has non-null salePriceCents: {sku}")
+        expected_sale = any(ve["variation"].get("sale", False) for ve in variations)
+        if sale != expected_sale:
+            shaped_violations.append(f"sale {sale} != expected {expected_sale} (from variations): {sku}")
+    else:
+        if min_p != max_p:
+            shaped_violations.append(f"simple product min {min_p} != max {max_p}: {sku}")
+        if sale_p is None:
+            shaped_violations.append(f"simple product has null salePriceCents: {sku}")
+        expected_sale = bool(sale_p and sale_p > 0 and sale_p < min_p)
+        if sale != expected_sale:
+            shaped_violations.append(f"sale {sale} != expected {expected_sale} (salePriceCents={sale_p} min={min_p}): {sku}")
+
+    if any(len(ve.get("variation", {}).get("images", [])) > 1 for ve in variations):
         shaped_violations.append(f"variation >1 image: {sku}")
+
 check("Shaped bucket passes all invariants (sku, weight, images, price)", not shaped_violations,
       f"{shaped_violations[:3]}")
 
