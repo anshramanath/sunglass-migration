@@ -370,7 +370,13 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Verify reshape — `verify_shaped_items.py` confirms all 647 products accounted for, no duplicates, all slugs/SKUs/prices match raw, no data loss. `verify_no_data_loss.py` merged into this script. 3 apparent description losses confirmed as HTML-only descriptions — correctly captured in `descriptionImgs` instead.
 - [x] Schema update — `variation_images` table removed. Variation image flattened to `image_src` + `image_name` columns on `variations` row. Variations have at most 1 image; >1 is a WooCommerce misconfiguration and now bucketed separately (`multiple_variation_images`).
 - [x] Write `recategorize_items.py` — applies drops and merges; iteratively removes single-item leaves (→ `single_leaf_items.json`); strips non-leaf paths so products only land at leaf nodes. Outputs: `categorized_items.json` (581), `no_category_items.json` (2), `single_leaf_items.json` (3). Categories stored as `[[{level, name, slug}]]` — array of root-to-leaf paths. Result: 8 trees, max depth 2 hops from root to leaf, products only at leaves so nav buttons never conflict between submenu and product page.
-- [ ] Re-run import against updated schema — import script reads from `recategorized/categorized_items.json`; needs updating for new category structure, `brands.slug`, and `categories` tree (`parent_id`, `slug`)
+- [x] Import script updated — reads from `recategorized/categorized_items.json`; builds category tree lazily with `parent_id` + `slug`; ON CONFLICT DO NOTHING on product_categories
+- [x] Re-run download (fresh) — 2,531 downloaded, 30 confirmed 404s (old deleted files). New naming scheme: path after `/uploads/` or `/gallery/` with `/` → `_` (e.g. `2024_05_image.jpg`). All product images successful. 24 variation images + 6 description images are permanent 404s.
+- [x] QA system expanded — audit/verify scripts added for download, upload, and import. All pipeline scripts print QA reminders. Results written to `docs/`.
+- [x] Gitignore fixed — `migration/products/` → `migration/items/`, added `migration/recategorized/`
+- [ ] Upload images to Supabase Storage
+- [ ] Import into Supabase DB
+- [ ] Audit and verify import
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

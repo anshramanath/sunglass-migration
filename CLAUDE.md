@@ -69,6 +69,7 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - Reshape + recategorize complete. Categories are `[[{level, name, slug}]]` — array of tree paths, each a root-to-leaf sequence. All 581 categorized items land only at leaf nodes.
 - 8 category trees, max depth 2 hops from root to leaf. Products only live at leaves so nav nodes never conflict between opening a submenu and going to a product page.
 - Schema updated: `brands` has `slug`, `categories` has `slug` + `parent_id` (self-referential tree)
-- Import script needs updating to read from `recategorized/categorized_items.json` and build category tree from path arrays
-- Images not yet downloaded/uploaded in this session — need to run steps 5-6 before import
+- Import script updated: reads from `categorized_items.json`, builds category tree lazily with `parent_id` + `slug`
+- Download complete: 2,531 images downloaded, 30 confirmed 404s. Images named using path after `/uploads/` or `/gallery/` with `/` → `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. `failed.json` tracks `{failed_to_download: [{sku, src}], collisions: []}`.
+- **Next: run upload (step 6) then import (step 7)**
 - 66 flagged items pending owner review: 61 from reshape + 2 no-category + 3 single-leaf

@@ -25,6 +25,12 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `verify_shaped_items.py` | Cross-references reshaped output against raw — all 647 accounted for, no data loss |
 | `audit_categorized_items.py` | Validates category path structure — leaf-only assignments, valid levels/slugs, tree stats |
 | `verify_categorized_items.py` | Cross-references all three recategorized outputs — 586 total accounted for, no dropped/merged slugs |
+| `audit_downloaded_images.py` | Checks url_map coverage, file integrity, failed/collision counts, coverage by image type |
+| `verify_downloaded_images.py` | Cross-references all image URLs in items against url_map and failed.json — no URLs lost |
+| `audit_uploaded_images.py` | Checks upload_map coverage, URL validity, missing files |
+| `verify_uploaded_images.py` | Verifies every downloaded file resolves to a Supabase URL end-to-end |
+| `audit_import.py` | Checks DB row counts, brands, category tree depth, duplicate SKUs, products with no images |
+| `verify_import.py` | Cross-references DB against source — SKUs, field values, variation counts, category leaf slugs |
 
 **Schema** (`migration/db/`)
 | File | Description |
@@ -60,7 +66,7 @@ fetch_variations.py       → items/variations/variations.json (6,064 variations
         ↓
 reshape_items.py          → reshaped/ — shaped_items.json (586) + 7 problem buckets
         ↓
-recategorize_items.py     → recategorized/ — categorized_items.json (584) + no_category_items.json (2)
+recategorize_items.py     → recategorized/ — categorized_items.json (581) + no_category_items.json (2) + single_leaf_items.json (3)
         ↓
 download_images.py        → images downloaded locally
         ↓
@@ -116,7 +122,7 @@ Applies drops and merges, removes single-item leaves, strips non-leaf paths. Res
 ```bash
 python migration/pipeline/download_images.py
 ```
-✅ Crash-safe — checkpoints after every image via `url_map.json`. Downloads clean products only into `migration/images/local/` (flat folder, deduplicated filenames).
+✅ Crash-safe — checkpoints after every image via `url_map.json`. Images named using the path after `/uploads/` or `/gallery/` with `/` replaced by `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. Failed downloads tracked in `failed.json` with `{sku, src}`.
 
 **9. Upload images to Supabase Storage**
 ```bash
@@ -259,17 +265,13 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
 ## ✅ Progress
 
-- [x] Fetch all products
-- [x] Fetch all variations
-- [x] Reshape into clean schema
-- [x] Download images locally
+- [x] Fetch all products (647)
+- [x] Fetch all variations (6,064)
+- [x] Reshape into clean schema — 586 clean, 61 flagged across 7 buckets
+- [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
 - [x] Design database schema
-- [x] Upload images to Supabase Storage
-- [x] Insert clean products into Supabase
-- [x] Audit and verify reshape accuracy
-- [x] Schema update — variation image flattened onto variations row, variation_images table removed
-- [ ] Re-run import against updated schema
-- [ ] Manually review and fix flagged buckets
-
-### Pending before import
-- **Import script** — needs to populate `brands.slug`, `categories.slug`, and `categories.parent_id`; must key category dedup/lookup on `slug` not `name` (display names not unique — "See All" appears under multiple parent paths)
+- [x] Download images — 2,531 downloaded, 30 confirmed 404s
+- [ ] Upload images to Supabase Storage
+- [ ] Import into Supabase DB
+- [ ] Audit and verify import
+- [ ] Manually review and fix flagged buckets (66 total)
