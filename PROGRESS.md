@@ -194,7 +194,7 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `on_sale` + variations | `sale` | Variable: true if any variation has `sale=true`. Simple: `on_sale == true AND sale_price < regular_price`. |
 | `average_rating` | `averageRating` | normalized to float, seed data for new review system |
 | `review_count` | `reviewCount` | seed data for new review system |
-| `is_in_stock` | `inStock` | |
+| `is_in_stock` | `stock` | `true → 1`, `false → 0`. Owner can update to real quantity later. |
 | `categories[].link` | `categories[]` | flat array of link URLs — name and slug derived during recategorization; link is the source of truth for hierarchy |
 | `images[].src` | `images[].src` | full res original only |
 | `images[].name` | `images[].name` | |
@@ -219,7 +219,7 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `on_sale` | `sale` | same two-check logic as product |
 | `prices.regular_price` | `regularPriceCents` | string → integer |
 | `prices.sale_price` | `salePriceCents` | string → integer |
-| `is_in_stock` | `inStock` | |
+| `is_in_stock` | `stock` | `true → 1`, `false → 0` |
 | `images[].src` | `images[].src` | |
 | `images[].name` | `images[].name` | |
 | `weight` | `weight` | string → number |
@@ -333,9 +333,9 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 |---|---|
 | `brands` | `id`, `name`, `slug` |
 | `categories` | `id`, `brand_id`, `parent_id`, `name`, `slug` |
-| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable), `average_rating`, `review_count`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable — null for variable), `average_rating`, `review_count`, `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
 | `product_categories` | `product_id`, `category_id` (junction) |
-| `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents`, `in_stock`, `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
+| `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents` (not null — source of truth for per-variation pricing), `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
 | `product_images` | `id`, `product_id`, `src`, `name`, `sort_order` |
 | `description_images` | `id`, `product_id`, `src`, `sort_order` |
 | `admins` | `user_id` → `auth.users(id)` |
@@ -378,7 +378,8 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket. 1 temporary 503 retried successfully. Full resolution chain intact.
 - [x] Import into Supabase DB — 581 products, 5,649 variations, 54 categories, 1 brand. Exit code 0.
 - [x] Audit and verify import — all checks passed. 0 missing SKUs, 0 field mismatches, 0 products without categories, category leaf slugs match source for all 581 products. Results in `docs/completed.md`.
-- [x] Price range refactor — variable product prices now derived from variations. Schema: `regular_price_cents` → `min_price_cents` + `max_price_cents`; `sale_price_cents` nullable (null for variable). `sale` on product = true if any variation on sale. Computed in reshape, not import.
+- [x] Price range refactor — variable product prices derived from variations: `min_price_cents` = min variation regular price, `max_price_cents` = max. Simple: min = max = regular price. `sale_price_cents` nullable on products only (null for variable); variations keep `regular_price_cents` + `sale_price_cents` not null. `sale` on parent = any variation on sale. Computed in reshape.
+- [x] Stock refactor — `in_stock boolean` → `stock int` on both products and variations. Initialized `true → 1`, `false → 0` from WooCommerce `is_in_stock`. Owner can set real quantities later; frontend treats `stock > 0` as in stock.
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

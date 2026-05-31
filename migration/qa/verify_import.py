@@ -58,9 +58,9 @@ check("All variation SKUs present in DB", not missing_vars,
 
 # ── 5. Key fields match across all products ───────────────────────────────────
 
-cur.execute("SELECT sku, name, min_price_cents, max_price_cents, sale_price_cents, sale, in_stock, slug FROM products;")
+cur.execute("SELECT sku, name, min_price_cents, max_price_cents, sale_price_cents, sale, stock, slug FROM products;")
 field_mismatches = []
-for sku, name, min_p, max_p, sale_cents, sale_flag, in_stock, slug in cur.fetchall():
+for sku, name, min_p, max_p, sale_cents, sale_flag, stock, slug in cur.fetchall():
     src = source_by_sku.get(sku)
     if not src:
         continue
@@ -74,8 +74,8 @@ for sku, name, min_p, max_p, sale_cents, sale_flag, in_stock, slug in cur.fetcha
         field_mismatches.append(f"{sku}: sale_price_cents")
     if sale_flag != src.get("sale", False):
         field_mismatches.append(f"{sku}: sale")
-    if in_stock != src.get("inStock", True):
-        field_mismatches.append(f"{sku}: in_stock")
+    if stock != src.get("stock", 1):
+        field_mismatches.append(f"{sku}: stock")
     if slug != src["slug"]:
         field_mismatches.append(f"{sku}: slug")
 check("All product fields match source (name, price, sale, stock, slug)", not field_mismatches,

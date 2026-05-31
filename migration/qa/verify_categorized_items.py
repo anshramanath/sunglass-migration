@@ -136,7 +136,7 @@ for item in categorized:
     original = shaped_map.get(item["sku"])
     if not original:
         continue
-    for field in ["name","slug","minPriceCents","maxPriceCents","salePriceCents","sale","inStock","weight"]:
+    for field in ["name","slug","minPriceCents","maxPriceCents","salePriceCents","sale","stock","weight"]:
         if item.get(field) != original.get(field):
             field_changes.append(f"{item['sku']}.{field}")
 check("Non-category fields unchanged during recategorization", not field_changes,

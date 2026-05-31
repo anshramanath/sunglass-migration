@@ -76,7 +76,7 @@ for i, product in enumerate(products):
             brand_id, name, slug, sku, wp_url, product_url,
             description, summary, attributes,
             sale, min_price_cents, max_price_cents, sale_price_cents,
-            average_rating, review_count, in_stock,
+            average_rating, review_count, stock,
             weight, weight_unit, length, width, height, dimension_unit
         ) VALUES (
             %s, %s, %s, %s, %s, %s,
@@ -102,7 +102,7 @@ for i, product in enumerate(products):
             product.get("salePriceCents"),
             product.get("averageRating", 0),
             product.get("reviewCount", 0),
-            product.get("inStock", True),
+            product.get("stock", 1),
             product.get("weight"),
             product.get("weightUnit", "oz"),
             dims.get("length"),
@@ -154,7 +154,7 @@ for i, product in enumerate(products):
                 product_id, slug, sku, variation,
                 wp_url, product_url, description,
                 sale, regular_price_cents, sale_price_cents,
-                in_stock, weight, weight_unit,
+                stock, weight, weight_unit,
                 length, width, height, dimension_unit,
                 image_src, image_name
             ) VALUES (
@@ -177,7 +177,7 @@ for i, product in enumerate(products):
                 var.get("sale", False),
                 var.get("regularPriceCents", 0),
                 var.get("salePriceCents", 0),
-                var.get("inStock", True),
+                var.get("stock", 1),
                 var.get("weight"),
                 var.get("weightUnit", "oz"),
                 var_dims.get("length"),

@@ -45,6 +45,10 @@ for p in products:
     if not is_variable and p.get("sale") and (not sale_p or sale_p <= 0 or sale_p >= min_p):
         flag("product.salePriceCents[sale=true]", sku, f"sale={sale_p} min={min_p}")
 
+    # Stock value must be 0 or 1
+    if p.get("stock") not in (0, 1):
+        flag("product.stock", sku, f"value={p.get('stock')}")
+
     # Rating range
     rating = p.get("averageRating", 0)
     if not (0 <= rating <= 5):
@@ -104,6 +108,9 @@ for p in products:
         for field in ["slug", "sku", "wpUrl", "productUrl"]:
             if is_blank(v.get(field)):
                 flag(f"variation.{field}", vsku, f"parent={sku}")
+
+        if v.get("stock") not in (0, 1):
+            flag("variation.stock", vsku, f"value={v.get('stock')} parent={sku}")
 
         vreg = v.get("regularPriceCents", 0)
         vsale = v.get("salePriceCents", 0)

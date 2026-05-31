@@ -219,7 +219,7 @@ Current direction:
   "salePriceCents": null,
   "averageRating": 4.5,
   "reviewCount": 12,
-  "inStock": true,
+  "stock": 1,
   "categories": [
     [
       {"level": 1, "name": "Sunglasses", "slug": "sunglasses"},
