@@ -187,14 +187,6 @@ for i, product in enumerate(products):
                     (variation_id, src, img.get("name", ""), j),
                 )
 
-        # description_images (variation-level)
-        for j, img_url in enumerate(var.get("descriptionImgs", [])):
-            src = resolve_src(img_url)
-            if src:
-                cur.execute(
-                    "INSERT INTO description_images (variation_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                    (variation_id, src, Path(img_url).name, j),
-                )
 
     if (i + 1) % 50 == 0:
         conn.commit()

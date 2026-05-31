@@ -128,6 +128,9 @@ for p in products:
         if is_blank(v.get("description")):
             flag("variation.description[empty]", vsku, f"parent={sku}")
 
+        if "descriptionImgs" in v:
+            flag("variation.descriptionImgs[should_not_exist]", vsku, f"parent={sku}")
+
 # ── report ────────────────────────────────────────────────────────────────────
 
 print(f"{'='*60}")

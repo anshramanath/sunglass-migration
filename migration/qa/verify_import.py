@@ -110,6 +110,16 @@ db_var_imgs = cur.fetchone()[0]
 check(f"Variation image count matches ({db_var_imgs} in DB, {expected_var_imgs} expected)",
       db_var_imgs == expected_var_imgs)
 
+# No variation in source should have descriptionImgs
+stray_desc_imgs = [
+    ve["variation"].get("sku")
+    for i in items
+    for ve in i.get("variations", [])
+    if ve["variation"].get("descriptionImgs")
+]
+check("No variation has descriptionImgs in source", not stray_desc_imgs,
+      f"{len(stray_desc_imgs)} found: {stray_desc_imgs[:3]}")
+
 # ── 9. Category leaf slugs match source paths ─────────────────────────────────
 
 cur.execute("""

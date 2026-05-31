@@ -261,7 +261,6 @@ def reshape_variation(v):
         "wpUrl": v.get("permalink"),
         "productUrl": product_url,
         "description": strip_html(v.get("description") or ""),
-        "descriptionImgs": extract_description_images(v.get("description") or ""),
         "sale": sale,
         "regularPriceCents": regular_price,
         "salePriceCents": sale_price,

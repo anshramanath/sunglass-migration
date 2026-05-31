@@ -86,15 +86,10 @@ create table variation_images (
 
 create table description_images (
   id uuid primary key default gen_random_uuid(),
-  product_id uuid references products(id),
-  variation_id uuid references variations(id),
+  product_id uuid not null references products(id),
   src text not null,
   name text not null,
-  sort_order int not null default 0,
-  check (
-    (product_id is not null and variation_id is null) or
-    (product_id is null and variation_id is not null)
-  )
+  sort_order int not null default 0
 );
 
 create table admins (
