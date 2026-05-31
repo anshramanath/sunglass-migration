@@ -173,9 +173,11 @@ def reshape_product(product, variation_stubs, full_variations_map):
         if c.get("link")
     ]
 
-    # Weight and dimensions
+    # Weight and dimensions — parse units from formatted fields
     weight_str = product.get("weight") or ""
     weight = float(weight_str) if weight_str else None
+    fw = (product.get("formatted_weight") or "").strip()
+    weight_unit = fw.split()[-1] if fw else None
 
     dims = product.get("dimensions") or {}
     dimensions = {
@@ -183,6 +185,8 @@ def reshape_product(product, variation_stubs, full_variations_map):
         "width": float(dims.get("width")) if dims.get("width") else None,
         "height": float(dims.get("height")) if dims.get("height") else None,
     }
+    fd = (product.get("formatted_dimensions") or "").strip()
+    dimension_unit = fd.split()[-1] if fd else None
 
     links = product.get("_links") or {}
     self_links = links.get("self") or []
@@ -223,9 +227,9 @@ def reshape_product(product, variation_stubs, full_variations_map):
         "attributes": attributes,
         "variations": variations,
         "weight": weight,
-        "weightUnit": "oz",
+        "weightUnit": weight_unit,
         "dimensions": dimensions,
-        "dimensionUnit": "in",
+        "dimensionUnit": dimension_unit,
     }
 
 
@@ -247,6 +251,8 @@ def reshape_variation(v):
 
     weight_str = v.get("weight") or ""
     weight = float(weight_str) if weight_str else None
+    fw = (v.get("formatted_weight") or "").strip()
+    weight_unit = fw.split()[-1] if fw else None
 
     dims = v.get("dimensions") or {}
     dimensions = {
@@ -254,6 +260,8 @@ def reshape_variation(v):
         "width": float(dims.get("width")) if dims.get("width") else None,
         "height": float(dims.get("height")) if dims.get("height") else None,
     }
+    fd = (v.get("formatted_dimensions") or "").strip()
+    dimension_unit = fd.split()[-1] if fd else None
 
     return {
         "slug": v.get("slug"),
@@ -267,14 +275,22 @@ def reshape_variation(v):
         "stock": 1 if v.get("is_in_stock", False) else 0,
         "images": images,
         "weight": weight,
-        "weightUnit": "oz",
+        "weightUnit": weight_unit,
         "dimensions": dimensions,
-        "dimensionUnit": "in",
+        "dimensionUnit": dimension_unit,
     }
 
 
 def is_valid_sku(sku):
     return sku and " " not in sku
+
+
+def is_valid_unit(unit):
+    return bool(unit) and unit != "N/A"
+
+
+def is_valid_measurement(v):
+    return v is not None
 
 
 def normalize_power_slug(slug):
@@ -301,6 +317,8 @@ missing_attributes_items = []
 no_image_items = []
 duplicate_name_items = []
 no_weight_items = []
+invalid_dimensions_items = []
+missing_unit_items = []
 multiple_variation_images_items = []
 mismatched_attr_items = []
 
@@ -349,6 +367,15 @@ for product in raw_products:
         for v in clean_product.get("variations", [])
     )
 
+    dims = clean_product.get("dimensions") or {}
+    has_any_dim = any(is_valid_measurement(dims.get(k)) for k in ("length", "width", "height"))
+    has_all_dims = all(is_valid_measurement(dims.get(k)) for k in ("length", "width", "height"))
+    has_invalid_dimensions = has_any_dim and not has_all_dims
+    has_missing_unit = (
+        not is_valid_unit(clean_product.get("weightUnit"))
+        or (has_all_dims and not is_valid_unit(clean_product.get("dimensionUnit")))
+    )
+
     if not is_valid_sku(clean_product.get("sku")):
         invalid_sku_items.append(clean_product)
     elif clean_product.get("minPriceCents", 0) == 0:
@@ -361,8 +388,12 @@ for product in raw_products:
         no_image_items.append(clean_product)
     elif clean_product.get("name") in duplicate_names:
         duplicate_name_items.append(clean_product)
-    elif not clean_product.get("weight"):
+    elif not is_valid_measurement(clean_product.get("weight")):
         no_weight_items.append(clean_product)
+    elif has_invalid_dimensions:
+        invalid_dimensions_items.append(clean_product)
+    elif has_missing_unit:
+        missing_unit_items.append(clean_product)
     elif has_multiple_variation_images:
         multiple_variation_images_items.append(clean_product)
     else:
@@ -389,6 +420,12 @@ with open(BASE / "reshaped/duplicate_name_items.json", "w", encoding="utf-8") as
 with open(BASE / "reshaped/no_weight_items.json", "w", encoding="utf-8") as f:
     json.dump(no_weight_items, f, indent=2, ensure_ascii=False)
 
+with open(BASE / "reshaped/invalid_dimensions_items.json", "w", encoding="utf-8") as f:
+    json.dump(invalid_dimensions_items, f, indent=2, ensure_ascii=False)
+
+with open(BASE / "reshaped/missing_unit_items.json", "w", encoding="utf-8") as f:
+    json.dump(missing_unit_items, f, indent=2, ensure_ascii=False)
+
 with open(BASE / "reshaped/multiple_variation_images_items.json", "w", encoding="utf-8") as f:
     json.dump(multiple_variation_images_items, f, indent=2, ensure_ascii=False)
 
@@ -401,6 +438,8 @@ print(f"Missing attributes items:      {len(missing_attributes_items)} → missi
 print(f"No image items:                {len(no_image_items)} → no_image_items.json")
 print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate_name_items.json")
 print(f"No weight items:               {len(no_weight_items)} → no_weight_items.json")
+print(f"Invalid dimensions items:      {len(invalid_dimensions_items)} → invalid_dimensions_items.json")
+print(f"Missing unit items:            {len(missing_unit_items)} → missing_unit_items.json")
 print(f"Multiple variation image items:{len(multiple_variation_images_items)} → multiple_variation_images_items.json")
 print(f"Mismatched attr items:         {len(mismatched_attr_items)} → mismatched_attr_items.json")
 print(f"Shaped items:                  {len(clean_items)} → shaped_items.json")

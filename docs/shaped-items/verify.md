@@ -19,7 +19,7 @@ _Last updated: 2026-05-31_
 | No product missing from output | ✅ |
 | No product in multiple buckets | ✅ |
 | `weight=0.0` not in shaped bucket | ✅ |
-| `weight=0.0` correctly in no_weight bucket | ✅ |
+| `weight=0.0` not in no_weight bucket | ✅ |
 | Power term slugs normalized — no hyphen format (`1-00`) | ✅ |
 | Categories are flat WooCommerce link arrays | ✅ |
 | Attributes have `{name, terms[{name, slug}]}` structure | ✅ |
@@ -34,13 +34,15 @@ _Last updated: 2026-05-31_
 
 | Bucket | Count |
 |--------|------:|
-| `shaped_items.json` | 564 |
+| `shaped_items.json` | 563 |
 | `zero_price_items.json` | 10 |
 | `invalid_sku_items.json` | 22 |
 | `missing_attributes_items.json` | 5 |
 | `no_image_items.json` | 3 |
 | `duplicate_name_items.json` | 6 |
-| `no_weight_items.json` | 14 |
+| `no_weight_items.json` | 12 |
+| `invalid_dimensions_items.json` | 1 |
+| `missing_unit_items.json` | 2 |
 | `multiple_variation_images_items.json` | 1 |
 | `mismatched_attr_items.json` | 22 |
 | **Total** | **647** |

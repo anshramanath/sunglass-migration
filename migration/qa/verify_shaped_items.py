@@ -18,8 +18,10 @@ BUCKETS = {
     "no_image":                  BASE / "reshaped/no_image_items.json",
     "duplicate_name":            BASE / "reshaped/duplicate_name_items.json",
     "no_weight":                 BASE / "reshaped/no_weight_items.json",
+    "invalid_dimensions":        BASE / "reshaped/invalid_dimensions_items.json",
+    "missing_unit":              BASE / "reshaped/missing_unit_items.json",
     "multiple_variation_images": BASE / "reshaped/multiple_variation_images_items.json",
-    "mismatched_attr":         BASE / "reshaped/mismatched_attr_items.json",
+    "mismatched_attr":           BASE / "reshaped/mismatched_attr_items.json",
 }
 
 reshaped = {k: json.load(open(p)) for k, p in BUCKETS.items()}
@@ -67,8 +69,8 @@ zero_weight_in_no_weight = [
     p["sku"] for p in reshaped["no_weight"]
     if p.get("weight") == 0.0
 ]
-check("weight=0.0 correctly in no_weight bucket", len(zero_weight_in_no_weight) >= 2,
-      f"found {len(zero_weight_in_no_weight)} (expected at least 2)")
+check("weight=0.0 not in no_weight bucket (goes to missing_unit)", not zero_weight_in_no_weight,
+      f"found {zero_weight_in_no_weight}")
 
 # ── 4. Power slugs normalized — no hyphen format (1-00, 2-50) ────────────────
 
@@ -122,8 +124,8 @@ for p in reshaped["shaped"]:
 
     if not sku or " " in sku:
         shaped_violations.append(f"invalid sku: {sku}")
-    if not p.get("weight") or p.get("weight") == 0.0:
-        shaped_violations.append(f"missing/zero weight: {sku}")
+    if p.get("weight") is None:
+        shaped_violations.append(f"missing weight: {sku}")
     if not p.get("images"):
         shaped_violations.append(f"no images: {sku}")
     if not min_p:
