@@ -140,10 +140,6 @@ for i, product in enumerate(products):
         var = var_entry.get("variation", {})
         var_dims = var.get("dimensions") or {}
 
-        var_image = var.get("images", [])[0] if var.get("images") else None
-        var_image_src = resolve_src(var_image["src"]) if var_image else None
-        var_image_name = var_image.get("name", "") if var_image else None
-
         cur.execute(
             """
             INSERT INTO variations (
@@ -151,15 +147,13 @@ for i, product in enumerate(products):
                 wp_url, product_url, description,
                 sale, regular_price_cents, sale_price_cents,
                 stock, weight, weight_unit,
-                length, width, height, dimension_unit,
-                image_src, image_name
+                length, width, height, dimension_unit
             ) VALUES (
                 %s, %s, %s, %s,
                 %s, %s, %s,
                 %s, %s, %s,
                 %s, %s, %s,
-                %s, %s, %s, %s,
-                %s, %s
+                %s, %s, %s, %s
             ) RETURNING id;
             """,
             (
@@ -180,11 +174,18 @@ for i, product in enumerate(products):
                 var_dims.get("width"),
                 var_dims.get("height"),
                 var.get("dimensionUnit", "in"),
-                var_image_src,
-                var_image_name,
             ),
         )
         variation_id = cur.fetchone()[0]
+
+        # variation_images
+        for j, img in enumerate(var.get("images", [])):
+            src = resolve_src(img["src"])
+            if src:
+                cur.execute(
+                    "INSERT INTO variation_images (variation_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
+                    (variation_id, src, img.get("name", ""), j),
+                )
 
         # description_images (variation-level)
         for j, img_url in enumerate(var.get("descriptionImgs", [])):

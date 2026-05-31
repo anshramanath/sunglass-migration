@@ -25,6 +25,7 @@ db_variations = count("variations")
 db_categories = count("categories")
 db_prod_cats  = count("product_categories")
 db_prod_imgs  = count("product_images")
+db_var_imgs   = count("variation_images")
 db_desc_imgs  = count("description_images")
 
 # ── Products with no images ───────────────────────────────────────────────────
@@ -55,7 +56,10 @@ dup_var_skus = cur.fetchall()
 
 # ── Variations with no image ──────────────────────────────────────────────────
 
-cur.execute("SELECT COUNT(*) FROM variations WHERE image_src IS NULL;")
+cur.execute("""
+    SELECT COUNT(*) FROM variations v
+    WHERE NOT EXISTS (SELECT 1 FROM variation_images vi WHERE vi.variation_id = v.id);
+""")
 vars_no_img = cur.fetchone()[0]
 
 # ── Category tree depth distribution ─────────────────────────────────────────
@@ -90,6 +94,7 @@ print(f"  {'variations':<25} {db_variations:>8}  {expected_variations:>10}  {'�
 print(f"  {'categories':<25} {db_categories:>8}")
 print(f"  {'product_categories':<25} {db_prod_cats:>8}")
 print(f"  {'product_images':<25} {db_prod_imgs:>8}")
+print(f"  {'variation_images':<25} {db_var_imgs:>8}")
 print(f"  {'description_images':<25} {db_desc_imgs:>8}")
 
 print()

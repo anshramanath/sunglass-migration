@@ -66,7 +66,7 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - `service_role` key used by backend — bypasses RLS
 - Frontends never hit Supabase directly — go through Next.js backend
 - `admins` table gates admin access (no public signup)
-- Variation image stored inline on `variations` row (`image_src`, `image_name`) — variations have at most 1 image. More than 1 is a WooCommerce misconfiguration and gets bucketed separately.
+- Variation images stored in `variation_images` table (same pattern as `product_images`) — `variation_id`, `src`, `name`, `sort_order`. Allows multiple images per variation in the future. WooCommerce only had 1; >1 gets bucketed to `multiple_variation_images`.
 
 ## Output buckets
 

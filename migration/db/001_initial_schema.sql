@@ -66,13 +66,19 @@ create table variations (
   width float,
   height float,
   dimension_unit text not null default 'in',
-  image_src text,
-  image_name text
 );
 
 create table product_images (
   id uuid primary key default gen_random_uuid(),
   product_id uuid not null references products(id),
+  src text not null,
+  name text not null,
+  sort_order int not null default 0
+);
+
+create table variation_images (
+  id uuid primary key default gen_random_uuid(),
+  variation_id uuid not null references variations(id),
   src text not null,
   name text not null,
   sort_order int not null default 0
