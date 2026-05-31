@@ -71,11 +71,12 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 ## Output buckets
 
 ### reshaped/ (step 3)
-- `shaped_items.json` — 586 ✅
+- `shaped_items.json` — 564 ✅
 - `invalid_sku_items.json` — 22
 - `no_weight_items.json` — 14 (includes weight=0.0)
-- `zero_price_items.json` — 8
-- `missing_attributes_items.json` — 7
+- `zero_price_items.json` — 10 (includes variable products with all-zero variation prices)
+- `missing_attributes_items.json` — 5 (variations with completely empty attribute list)
+- `mismatched_attr_items.json` — 22 (variation slugs not in product attribute terms)
 - `duplicate_name_items.json` — 6
 - `no_image_items.json` — 3
 - `multiple_variation_images_items.json` — 1
@@ -89,7 +90,6 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 `.env` at project root (gitignored). See `.env.example` for required variables. Scripts load it via `load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")`.
 
 ## Current state
-- **Run 2 complete.** Full pipeline re-run after schema changes. All counts match run 1. All QA passed. Results in `docs/completed_2.md`.
-- DB seeded: 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images.
-- Upload script patched: 409 Duplicate responses now recover gracefully (fetches public URL instead of failing).
-- **Next: owner review of 66 flagged items** (61 from reshape + 2 no-category + 3 single-leaf). Share `reshaped-problems/treatment.md`.
+- **Run 2 complete.** DB seeded: 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images.
+- **Reshape improved (post-run-2):** 2 new buckets added — `missing_attributes` (5, variations with empty attribute list) and `mismatched_attr` (22, variation slugs not in product terms). Attribute cleanup: unused product attribute terms silently stripped so every color button shown has a real variation behind it. Clean bucket now 564.
+- **Next: re-run full pipeline** (reshape → recategorize → download → upload → re-import) with improved reshape, then owner review of 83 flagged items.

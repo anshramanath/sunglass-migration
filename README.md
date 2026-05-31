@@ -152,9 +152,9 @@ python migration/pipeline/import_items.py
 | Variable products | 486 |
 | Simple products | 161 |
 | Total variations | 6,064 |
-| Shaped items (post-reshape) | 586 |
+| Shaped items (post-reshape) | 564 |
 | Categorized items (post-recategorize) | 581 |
-| Flagged for review | 66 |
+| Flagged for review | 83 |
 
 ---
 
@@ -163,12 +163,13 @@ python migration/pipeline/import_items.py
 ### `reshaped/` — output of `reshape_items.py`
 | File | Count | Reason |
 |---|---|---|
-| `shaped_items.json` | 586 | ✅ Passes to recategorize |
+| `shaped_items.json` | 564 | ✅ Passes to recategorize |
 | `invalid_sku_items.json` | 22 | ⚠️ SKU is null or contains a space |
+| `mismatched_attr_items.json` | 22 | ⚠️ Variation slugs not in product attribute terms |
 | `no_weight_items.json` | 14 | ⚠️ Missing or zero weight |
-| `zero_price_items.json` | 8 | ⚠️ Price is zero |
-| `missing_attributes_items.json` | 7 | ⚠️ Variations with no attribute data |
+| `zero_price_items.json` | 10 | ⚠️ Price is zero (product or all variations) |
 | `duplicate_name_items.json` | 6 | ⚠️ Same name as another item |
+| `missing_attributes_items.json` | 5 | ⚠️ Variations with completely empty attribute list |
 | `no_image_items.json` | 3 | ⚠️ No images at all |
 | `multiple_variation_images_items.json` | 1 | ⚠️ Variation has more than 1 image |
 
@@ -273,7 +274,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
 - [x] Fetch all products (647)
 - [x] Fetch all variations (6,064)
-- [x] Reshape into clean schema — 586 clean, 61 flagged across 7 buckets
+- [x] Reshape into clean schema — 564 clean, 83 flagged across 8 buckets
 - [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
 - [x] Design database schema (price range, stock int, no ratings)
 - [x] Download images — 2,531 downloaded, 30 permanent 404s

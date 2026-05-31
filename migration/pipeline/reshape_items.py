@@ -296,6 +296,7 @@ no_image_items = []
 duplicate_name_items = []
 no_weight_items = []
 multiple_variation_images_items = []
+mismatched_attr_items = []
 
 for product in raw_products:
     prices = product.get("prices") or {}
@@ -316,9 +317,25 @@ for product in raw_products:
 
     clean_product = reshape_product(product, variation_stubs, full_variations_map)
 
+    # Check: all variation attribute slugs exist in product terms
+    all_product_terms = {t["slug"] for a in clean_product.get("attributes", []) for t in a.get("terms", [])}
+    has_attr_mismatch = any(
+        any(s not in all_product_terms for s in ve.get("attribute", []) if s)
+        for ve in clean_product.get("variations", [])
+    )
+
+    # Step 3: if checks pass, remove product attribute terms unused by any variation
+    if not has_attr_mismatch and clean_product.get("variations"):
+        used_slugs = {s for ve in clean_product["variations"] for s in ve["attribute"] if s}
+        clean_product["attributes"] = [
+            {**a, "terms": [t for t in a["terms"] if t["slug"] in used_slugs]}
+            for a in clean_product.get("attributes", [])
+            if any(t["slug"] in used_slugs for t in a["terms"])
+        ]
+
     has_missing_attrs = any(
-        not v.get("attribute") and not v.get("variation", {}).get("variation")
-        for v in clean_product.get("variations", [])
+        not ve.get("attribute")
+        for ve in clean_product.get("variations", [])
     )
 
     has_multiple_variation_images = any(
@@ -328,8 +345,12 @@ for product in raw_products:
 
     if not is_valid_sku(clean_product.get("sku")):
         invalid_sku_items.append(clean_product)
+    elif clean_product.get("minPriceCents", 0) == 0:
+        zero_price_items.append(clean_product)
     elif has_missing_attrs:
         missing_attributes_items.append(clean_product)
+    elif has_attr_mismatch:
+        mismatched_attr_items.append(clean_product)
     elif not clean_product.get("images"):
         no_image_items.append(clean_product)
     elif clean_product.get("name") in duplicate_names:
@@ -365,6 +386,9 @@ with open(BASE / "reshaped/no_weight_items.json", "w", encoding="utf-8") as f:
 with open(BASE / "reshaped/multiple_variation_images_items.json", "w", encoding="utf-8") as f:
     json.dump(multiple_variation_images_items, f, indent=2, ensure_ascii=False)
 
+with open(BASE / "reshaped/mismatched_attr_items.json", "w", encoding="utf-8") as f:
+    json.dump(mismatched_attr_items, f, indent=2, ensure_ascii=False)
+
 print(f"Zero-price items:              {len(zero_price_items)} → zero_price_items.json")
 print(f"Invalid SKU items:             {len(invalid_sku_items)} → invalid_sku_items.json")
 print(f"Missing attributes items:      {len(missing_attributes_items)} → missing_attributes_items.json")
@@ -372,6 +396,7 @@ print(f"No image items:                {len(no_image_items)} → no_image_items.
 print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate_name_items.json")
 print(f"No weight items:               {len(no_weight_items)} → no_weight_items.json")
 print(f"Multiple variation image items:{len(multiple_variation_images_items)} → multiple_variation_images_items.json")
+print(f"Mismatched attr items:         {len(mismatched_attr_items)} → mismatched_attr_items.json")
 print(f"Shaped items:                  {len(clean_items)} → shaped_items.json")
 print()
 print("  → Run QA: python migration/qa/audit_shaped_items.py")

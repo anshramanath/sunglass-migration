@@ -19,6 +19,7 @@ BUCKETS = {
     "duplicate_name":            BASE / "reshaped/duplicate_name_items.json",
     "no_weight":                 BASE / "reshaped/no_weight_items.json",
     "multiple_variation_images": BASE / "reshaped/multiple_variation_images_items.json",
+    "mismatched_attr":         BASE / "reshaped/mismatched_attr_items.json",
 }
 
 reshaped = {k: json.load(open(p)) for k, p in BUCKETS.items()}
@@ -167,6 +168,42 @@ check("All SKUs unique across all buckets", not duplicate_skus,
 
 invalid_in_shaped = [p["sku"] for p in reshaped["shaped"] if not p.get("sku") or " " in (p.get("sku") or "")]
 check("No invalid SKUs in shaped bucket", not invalid_in_shaped, f"{invalid_in_shaped}")
+
+# ── 10. Variation attributes consistent with product attributes ───────────────
+
+attr_consistency_errors = []
+for p in reshaped["shaped"]:
+    sku = p.get("sku", "")
+    variations = p.get("variations", [])
+    attributes = p.get("attributes", [])
+
+    if not variations:
+        continue  # simple product
+
+    power_slugs = {t["slug"] for a in attributes if a["name"] == "power" for t in a.get("terms", [])}
+    non_power_attrs = [a for a in attributes if a["name"] != "power"]
+    product_term_slugs = {term["slug"] for attr in non_power_attrs for term in attr.get("terms", [])}
+    variation_slugs_used = {slug for ve in variations for slug in ve.get("attribute", []) if slug} - power_slugs
+
+    # Product defines terms no variation uses (clicking that option finds nothing)
+    extra_in_product = product_term_slugs - variation_slugs_used
+    if extra_in_product:
+        attr_consistency_errors.append(f"{sku}: product has terms unused by any variation: {sorted(extra_in_product)}")
+
+    # Variation uses slugs not in product terms (orphaned variation)
+    missing_from_product = variation_slugs_used - product_term_slugs
+    if missing_from_product:
+        attr_consistency_errors.append(f"{sku}: variation uses slugs not in product attrs: {sorted(missing_from_product)}")
+
+    # Every slug in variation.attribute must exist in product attribute terms
+    all_product_terms = {t["slug"] for a in attributes for t in a.get("terms", [])}
+    for ve in variations:
+        invalid = [s for s in ve.get("attribute", []) if s and s not in all_product_terms]
+        if invalid:
+            attr_consistency_errors.append(f"{sku}: variation slugs not in product terms: {invalid}")
+
+check("Variation attributes consistent with product attributes", not attr_consistency_errors,
+      f"{attr_consistency_errors[:3]}")
 
 # ── Report ────────────────────────────────────────────────────────────────────
 

@@ -387,7 +387,9 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Re-upload images to Supabase Storage — 2,531 uploaded. 1 file in-flight at kill recovered via 409 Duplicate patch. Full chain intact.
 - [x] Drop and re-apply schema in Supabase — clean slate with updated schema.
 - [x] Re-run import — 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images. All QA passed. Results in `docs/completed_2.md`.
-- [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
+- [x] Reshape improved — 2 new buckets: `missing_attributes` (5, empty variation attribute list) and `mismatched_attr` (22, variation slugs not in product terms). Attribute cleanup: unused product terms stripped so every color button has a real variation. Also: zero price now caught post-reshape (variable products with all-zero variation prices). Clean bucket: 564, total flagged: 83.
+- [ ] Re-run full pipeline with improved reshape (recategorize → download → upload → re-import)
+- [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing/mismatched attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 
 ### Formality files added
