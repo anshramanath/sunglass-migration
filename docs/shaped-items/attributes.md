@@ -1,13 +1,15 @@
 # Attributes — Clean Products
-_Last updated: 2026-05-30_
+_Last updated: 2026-05-31_
 
-9 attribute types across 586 clean products.
+9 attribute types across 564 clean products.
+
+**Note:** Product attribute terms are now trimmed to only what variations actually use. Unused terms are stripped during reshape — so counts here reflect what's actually selectable on the frontend.
 
 ---
 
 ## color
 
-**Products:** 459 | **Unique terms:** 467
+**Products:** 437 | **Unique terms:** 420
 
 The primary variation attribute — nearly every variable product. Drives color swatches on listing and product pages.
 
@@ -25,48 +27,23 @@ Two distinct concept types are mixed together:
   - `Silver HD` → `silver-hd-2`
   - `Gloss Black HD` → `gloss-black-hd-2`
 
-*(467 terms — full list in `clean_products_shape.json`. Too large to reproduce here.)*
+*(420 terms — full list in `shaped_items.json`. Too large to reproduce here.)*
 
 ---
 
 ## power
 
-**Products:** 96 | **Unique terms:** 22
+**Products:** 90 | **Unique terms:** 16
 
 Bifocal/reading lens power in diopter increments from +1.00 to +6.00, plus "No Power". Used on all bifocal and reader products.
 
-Previously 28 terms due to WooCommerce storing the same values with two slug formats (`1-00` and `1.00`). **Resolved in reshape** — all normalized to decimal format.
-
-| Name | Slug |
-|------|------|
-| 1.00 | `1.00` |
-| 1.25 | `1.25` |
-| 1.50 | `1.50` |
-| 1.75 | `1.75` |
-| 2.00 | `2.00` |
-| 2.25 | `2.25` |
-| 2.50 | `2.50` |
-| 2.75 | `2.75` |
-| 3.00 | `3.00` |
-| 3.25 | `3.25` |
-| 3.50 | `3.50` |
-| 3.75 | `3.75` |
-| 4.00 | `4.00` |
-| 4.25 | `4.25` |
-| 4.50 | `4.50` |
-| 4.75 | `4.75` |
-| 5.00 | `5.00` |
-| 5.25 | `5.25` |
-| 5.50 | `5.50` |
-| 5.75 | `5.75` |
-| 6.00 | `6.00` |
-| No Power | `no-power` |
+Previously 28 terms due to WooCommerce storing the same values with two slug formats (`1-00` and `1.00`). **Resolved in reshape** — all normalized to decimal format. Term count is now 16 (down from 22) because unused power strengths are stripped per-product during attribute cleanup — each product only lists the powers that have actual variations.
 
 ---
 
 ## transition-type
 
-**Products:** 70 | **Unique terms:** 11
+**Products:** 69 | **Unique terms:** 11
 
 Photochromic lens transition options for Eclipse XT products. All "Clear to X" variants — some include anti-reflective coating or flash mirror finishes.
 
@@ -107,7 +84,7 @@ Frame color options for a small set of prescription frame products.
 
 ## size
 
-**Products:** 6 | **Unique terms:** 2
+**Products:** 4 | **Unique terms:** 2
 
 Head size variants used on a small number of products. Overlaps conceptually with the `shop-by-head-size` categories.
 
