@@ -35,8 +35,8 @@ if files_missing:
 if failed_urls:
     print()
     print("── FAILED DOWNLOADS ──")
-    for url in failed_urls[:10]:
-        print(f"  {url}")
+    for entry in failed_urls[:10]:
+        print(f"  [{entry['sku']}] {entry['src']}")
     if len(failed_urls) > 10:
         print(f"  ... and {len(failed_urls) - 10} more")
 

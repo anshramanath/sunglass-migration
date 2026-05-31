@@ -125,7 +125,14 @@ for p in reshaped["shaped"]:
 check("Shaped bucket passes all invariants (sku, weight, images, price)", not shaped_violations,
       f"{shaped_violations[:3]}")
 
-# ── 8. Invalid SKU items correctly bucketed ───────────────────────────────────
+# ── 8. All SKUs unique across all buckets ────────────────────────────────────
+
+sku_counts = Counter(p["sku"] for p in all_items if p.get("sku"))
+duplicate_skus = {s: c for s, c in sku_counts.items() if c > 1}
+check("All SKUs unique across all buckets", not duplicate_skus,
+      f"{len(duplicate_skus)} duplicates: {list(duplicate_skus)[:3]}")
+
+# ── 9. Invalid SKU items correctly bucketed ───────────────────────────────────
 
 invalid_in_shaped = [p["sku"] for p in reshaped["shaped"] if not p.get("sku") or " " in (p.get("sku") or "")]
 check("No invalid SKUs in shaped bucket", not invalid_in_shaped, f"{invalid_in_shaped}")

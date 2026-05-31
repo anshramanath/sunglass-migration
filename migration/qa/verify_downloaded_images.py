@@ -11,7 +11,7 @@ with open(IMAGES_DIR / "url_map.json") as f:
     url_map = json.load(f)
 
 failed_data = json.load(open(IMAGES_DIR / "failed.json")) if (IMAGES_DIR / "failed.json").exists() else {}
-failed_set = set(failed_data.get("failed_to_download", []))
+failed_set = {e["src"] for e in failed_data.get("failed_to_download", [])}
 
 # Collect all image URLs referenced in items
 all_urls = set()
