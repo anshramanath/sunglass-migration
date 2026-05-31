@@ -67,7 +67,7 @@ WooCommerce Store API
         ↓
 fetch_products.py         → items/products.json (647 products)
         ↓
-fetch_variations.py       → items/variations/variations.json (6,064 variations)
+fetch_variations.py       → items/variations.json (6,064 variations)
         ↓
 reshape_items.py          → reshaped/ — shaped_items.json (586) + 7 problem buckets
         ↓

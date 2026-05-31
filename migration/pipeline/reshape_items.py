@@ -9,7 +9,7 @@ BASE = Path(__file__).parent.parent  # migration/
 with open(BASE / "items/products.json", "r", encoding="utf-8") as f:
     raw_products = json.load(f)
 
-with open(BASE / "items/variations/variations.json", "r", encoding="utf-8") as f:
+with open(BASE / "items/variations.json", "r", encoding="utf-8") as f:
     variations_by_parent = json.load(f)
 
 

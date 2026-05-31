@@ -41,7 +41,7 @@ Overall health check across all 7 pipeline steps. See linked docs for step-level
 
 ## Step 3 — Reshape
 
-**Source:** `items/products.json` + `items/variations/variations.json`
+**Source:** `items/products.json` + `items/variations.json`
 **QA:** [audit](shaped-items/audit.md) · [verify](shaped-items/verify.md)
 
 | Bucket | Count | Status |
