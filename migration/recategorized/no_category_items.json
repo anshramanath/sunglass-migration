@@ -1,0 +1,4068 @@
+[
+  {
+    "name": "Pacific Mirror Bifocal",
+    "slug": "pacific-mirror-bifocal",
+    "sku": "BF4X05PC-0",
+    "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/",
+    "productUrl": "https://bikershades.com/wp-json/wc/store/products/55670",
+    "description": "Lens Width: 56 mm Bridge Width: 20 mm Temple Length: 121 mm Lens Height: 51 mm Frame Width: 135 mm",
+    "descriptionImgs": [
+      "https://www.sunglassmonster.com/wp-content/uploads/2019/03/Diagram-pSD-2.jpg"
+    ],
+    "summary": [],
+    "sale": true,
+    "regularPriceInCents": 2699,
+    "salePriceInCents": 2000,
+    "averageRating": 0.0,
+    "reviewCount": 0,
+    "inStock": true,
+    "categories": [
+      "https://bikershades.com/product-category/all-products/"
+    ],
+    "images": [
+      {
+        "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+        "name": "Pacific Silver Mirror Blue Front"
+      },
+      {
+        "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Angle.jpg",
+        "name": "Pacific Silver Mirror Blue Angle"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "color",
+        "terms": [
+          {
+            "name": "Gold Mirror Green",
+            "slug": "gold-mirror-green"
+          },
+          {
+            "name": "Gold Mirror Pink",
+            "slug": "gold-mirror-pink"
+          },
+          {
+            "name": "Silver Light Mirror Blue",
+            "slug": "silver-light-mirror-blue"
+          },
+          {
+            "name": "Silver Mirror Blue",
+            "slug": "silver-mirror-blue"
+          }
+        ]
+      },
+      {
+        "name": "power",
+        "terms": [
+          {
+            "name": "1.00",
+            "slug": "1.00"
+          },
+          {
+            "name": "1.25",
+            "slug": "1.25"
+          },
+          {
+            "name": "1.50",
+            "slug": "1.50"
+          },
+          {
+            "name": "1.75",
+            "slug": "1.75"
+          },
+          {
+            "name": "2.00",
+            "slug": "2.00"
+          },
+          {
+            "name": "2.25",
+            "slug": "2.25"
+          },
+          {
+            "name": "2.50",
+            "slug": "2.50"
+          },
+          {
+            "name": "2.75",
+            "slug": "2.75"
+          },
+          {
+            "name": "3.00",
+            "slug": "3.00"
+          },
+          {
+            "name": "3.25",
+            "slug": "3.25"
+          },
+          {
+            "name": "3.50",
+            "slug": "3.50"
+          },
+          {
+            "name": "3.75",
+            "slug": "3.75"
+          },
+          {
+            "name": "4.00",
+            "slug": "4.00"
+          },
+          {
+            "name": "4.25",
+            "slug": "4.25"
+          },
+          {
+            "name": "4.50",
+            "slug": "4.50"
+          },
+          {
+            "name": "4.75",
+            "slug": "4.75"
+          },
+          {
+            "name": "5.00",
+            "slug": "5.00"
+          },
+          {
+            "name": "5.25",
+            "slug": "5.25"
+          },
+          {
+            "name": "5.50",
+            "slug": "5.50"
+          },
+          {
+            "name": "5.75",
+            "slug": "5.75"
+          },
+          {
+            "name": "6.00",
+            "slug": "6.00"
+          }
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "attribute": [
+          "gold-mirror-green",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal",
+          "sku": "BF4X05PC-GD-MGR-150",
+          "variation": [
+            "gold-mirror-green",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-green&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55671",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-green",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-2",
+          "sku": "BF4X05PC-GD-MGR-200",
+          "variation": [
+            "gold-mirror-green",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-green&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55672",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-green",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-3",
+          "sku": "BF4X05PC-GD-MGR-250",
+          "variation": [
+            "gold-mirror-green",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-green&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55673",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-green",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-4",
+          "sku": "BF4X05PC-GD-MGR-300",
+          "variation": [
+            "gold-mirror-green",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-green&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55674",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-pink",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-5",
+          "sku": "BF4X05PC-GD-MPK-150",
+          "variation": [
+            "gold-mirror-pink",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-pink&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55675",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-pink",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-6",
+          "sku": "BF4X05PC-GD-MPK-200",
+          "variation": [
+            "gold-mirror-pink",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-pink&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55676",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-pink",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-7",
+          "sku": "BF4X05PC-GD-MPK-250",
+          "variation": [
+            "gold-mirror-pink",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-pink&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55677",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "gold-mirror-pink",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-8",
+          "sku": "BF4X05PC-GD-MPK-300",
+          "variation": [
+            "gold-mirror-pink",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=gold-mirror-pink&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55678",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-mirror-blue",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-9",
+          "sku": "BF4X05PC-SIL-MBL-150",
+          "variation": [
+            "silver-mirror-blue",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-mirror-blue&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55679",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-light-mirror-blue",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-13",
+          "sku": "BF4X05PC-SIL-LMBL-150",
+          "variation": [
+            "silver-light-mirror-blue",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-light-mirror-blue&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/58787",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-light-mirror-blue",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-14",
+          "sku": "BF4X05PC-SIL-LMBL-200",
+          "variation": [
+            "silver-light-mirror-blue",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-light-mirror-blue&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/58802",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-mirror-blue",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-10",
+          "sku": "BF4X05PC-SIL-MBL-200",
+          "variation": [
+            "silver-mirror-blue",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-mirror-blue&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55680",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-light-mirror-blue",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-15",
+          "sku": "BF4X05PC-SIL-LMBL-250",
+          "variation": [
+            "silver-light-mirror-blue",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-light-mirror-blue&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/58804",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-mirror-blue",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-11",
+          "sku": "BF4X05PC-SIL-MBL-250",
+          "variation": [
+            "silver-mirror-blue",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-mirror-blue&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55681",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-light-mirror-blue",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-16",
+          "sku": "BF4X05PC-SIL-LMBL-300",
+          "variation": [
+            "silver-light-mirror-blue",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-light-mirror-blue&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/58805",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "silver-mirror-blue",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "pacific-mirror-bifocal-12",
+          "sku": "BF4X05PC-SIL-MBL-300",
+          "variation": [
+            "silver-mirror-blue",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/pacific-mirror-bifocal/?attribute_pa_choose-color=silver-mirror-blue&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/55682",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 2699,
+          "salePriceInCents": 2000,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2021/04/Pacific-Silver-Mirror-Blue-Front.jpg",
+              "name": "Pacific Silver Mirror Blue Front"
+            }
+          ],
+          "weight": 2.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      }
+    ],
+    "weight": 2.0,
+    "weightUnit": "oz",
+    "dimensions": {
+      "length": 6.0,
+      "width": 3.0,
+      "height": 3.0
+    },
+    "dimensionUnit": "in"
+  },
+  {
+    "name": "Jersey Sunglass Reader",
+    "slug": "jersey-sun-reader",
+    "sku": "SRE81X13JS-0",
+    "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/",
+    "productUrl": "https://bikershades.com/wp-json/wc/store/products/47429",
+    "description": "Jersey Lens Width: 45 mm Bridge Width: 19 mm Temple Length: 135 mm Lens Height: 42 mm Frame Width: 134 mm",
+    "descriptionImgs": [
+      "https://bikershades.com/wp-content/uploads/2021/05/Diagram-pSD-with-lens-height-notes.jpg"
+    ],
+    "summary": [],
+    "sale": true,
+    "regularPriceInCents": 1749,
+    "salePriceInCents": 1399,
+    "averageRating": 0.0,
+    "reviewCount": 0,
+    "inStock": true,
+    "categories": [
+      "https://bikershades.com/product-category/all-products/"
+    ],
+    "images": [
+      {
+        "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+        "name": "Jersey Black Front"
+      },
+      {
+        "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Angle.jpg",
+        "name": "Jersey Black Angle"
+      }
+    ],
+    "attributes": [
+      {
+        "name": "color",
+        "terms": [
+          {
+            "name": "Black Smoke",
+            "slug": "black-smoke"
+          },
+          {
+            "name": "Black Smoke x Black Smoke",
+            "slug": "black-smoke-x-black-smoke"
+          },
+          {
+            "name": "Black Smoke x Sienna Smoke",
+            "slug": "black-smoke-x-sienna-smoke"
+          },
+          {
+            "name": "Black Smoke x Tortoise Smoke",
+            "slug": "black-smoke-x-tortoise-smoke"
+          },
+          {
+            "name": "Black Smoke x Yellow Smoke",
+            "slug": "black-smoke-x-yellow-smoke"
+          },
+          {
+            "name": "Sienna Smoke",
+            "slug": "sienna-smoke"
+          },
+          {
+            "name": "Tortoise Smoke",
+            "slug": "tortoise-smoke"
+          },
+          {
+            "name": "Yellow Smoke",
+            "slug": "yellow-smoke"
+          }
+        ]
+      },
+      {
+        "name": "power",
+        "terms": [
+          {
+            "name": "1.00",
+            "slug": "1.00"
+          },
+          {
+            "name": "1.25",
+            "slug": "1.25"
+          },
+          {
+            "name": "1.50",
+            "slug": "1.50"
+          },
+          {
+            "name": "1.75",
+            "slug": "1.75"
+          },
+          {
+            "name": "2.00",
+            "slug": "2.00"
+          },
+          {
+            "name": "2.25",
+            "slug": "2.25"
+          },
+          {
+            "name": "2.50",
+            "slug": "2.50"
+          },
+          {
+            "name": "2.75",
+            "slug": "2.75"
+          },
+          {
+            "name": "3.00",
+            "slug": "3.00"
+          },
+          {
+            "name": "3.25",
+            "slug": "3.25"
+          },
+          {
+            "name": "3.50",
+            "slug": "3.50"
+          },
+          {
+            "name": "3.75",
+            "slug": "3.75"
+          },
+          {
+            "name": "4.00",
+            "slug": "4.00"
+          },
+          {
+            "name": "4.25",
+            "slug": "4.25"
+          },
+          {
+            "name": "4.50",
+            "slug": "4.50"
+          },
+          {
+            "name": "4.75",
+            "slug": "4.75"
+          },
+          {
+            "name": "5.00",
+            "slug": "5.00"
+          },
+          {
+            "name": "5.25",
+            "slug": "5.25"
+          },
+          {
+            "name": "5.50",
+            "slug": "5.50"
+          },
+          {
+            "name": "5.75",
+            "slug": "5.75"
+          },
+          {
+            "name": "6.00",
+            "slug": "6.00"
+          }
+        ]
+      }
+    ],
+    "variations": [
+      {
+        "attribute": [
+          "black-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader",
+          "sku": "SRE81X13JS-BK-SM-100-MFB",
+          "variation": [
+            "black-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47430",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-2",
+          "sku": "SRE81X13JS-BK-SM-125-MFB",
+          "variation": [
+            "black-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47431",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-3",
+          "sku": "SRE81X13JS-BK-SM-150-MFB",
+          "variation": [
+            "black-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47432",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-4",
+          "sku": "SRE81X13JS-BK-SM-175-MFB",
+          "variation": [
+            "black-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47433",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-5",
+          "sku": "SRE81X13JS-BK-SM-200-MFB",
+          "variation": [
+            "black-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47434",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-6",
+          "sku": "SRE81X13JS-BK-SM-225-MFB",
+          "variation": [
+            "black-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47435",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-7",
+          "sku": "SRE81X13JS-BK-SM-250-MFB",
+          "variation": [
+            "black-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47436",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-8",
+          "sku": "SRE81X13JS-BK-SM-275-MFB",
+          "variation": [
+            "black-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47437",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-9",
+          "sku": "SRE81X13JS-BK-SM-300-MFB",
+          "variation": [
+            "black-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47438",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-10",
+          "sku": "SRE81X13JS-BK-SM-350-MFB",
+          "variation": [
+            "black-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47439",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-11",
+          "sku": "SRE81X13JS-BK-SM-400-MFB",
+          "variation": [
+            "black-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47440",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-12",
+          "sku": "SRE81X13JS-Sienna-SM-100-MFB",
+          "variation": [
+            "sienna-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47441",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-13",
+          "sku": "SRE81X13JS-Sienna-SM-125-MFB",
+          "variation": [
+            "sienna-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47442",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-14",
+          "sku": "SRE81X13JS-Sienna-SM-150-MFB",
+          "variation": [
+            "sienna-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47443",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-15",
+          "sku": "SRE81X13JS-Sienna-SM-175-MFB",
+          "variation": [
+            "sienna-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47444",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-16",
+          "sku": "SRE81X13JS-Sienna-SM-200-MFB",
+          "variation": [
+            "sienna-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47445",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-17",
+          "sku": "SRE81X13JS-Sienna-SM-225-MFB",
+          "variation": [
+            "sienna-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47446",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-18",
+          "sku": "SRE81X13JS-Sienna-SM-250-MFB",
+          "variation": [
+            "sienna-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47447",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-19",
+          "sku": "SRE81X13JS-Sienna-SM-275-MFB",
+          "variation": [
+            "sienna-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47448",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-20",
+          "sku": "SRE81X13JS-Sienna-SM-300-MFB",
+          "variation": [
+            "sienna-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47449",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-21",
+          "sku": "SRE81X13JS-Sienna-SM-350-MFB",
+          "variation": [
+            "sienna-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47450",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "sienna-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-22",
+          "sku": "SRE81X13JS-Sienna-SM-400-MFB",
+          "variation": [
+            "sienna-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=sienna-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47451",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-23",
+          "sku": "SRE81X13JS-TO-SM-100-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47452",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-24",
+          "sku": "SRE81X13JS-TO-SM-125-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47453",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-25",
+          "sku": "SRE81X13JS-TO-SM-150-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47454",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-26",
+          "sku": "SRE81X13JS-TO-SM-175-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47455",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-27",
+          "sku": "SRE81X13JS-TO-SM-200-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47456",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-28",
+          "sku": "SRE81X13JS-TO-SM-225-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47457",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-29",
+          "sku": "SRE81X13JS-TO-SM-250-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47458",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-30",
+          "sku": "SRE81X13JS-TO-SM-275-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47459",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-31",
+          "sku": "SRE81X13JS-TO-SM-300-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47460",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-32",
+          "sku": "SRE81X13JS-TO-SM-350-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47461",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "tortoise-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-33",
+          "sku": "SRE81X13JS-TO-SM-400-MFB",
+          "variation": [
+            "tortoise-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=tortoise-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47462",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-34",
+          "sku": "SRE81X13JS-YL-SM-100-MFB",
+          "variation": [
+            "yellow-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47463",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-35",
+          "sku": "SRE81X13JS-YL-SM-125-MFB",
+          "variation": [
+            "yellow-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47464",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-36",
+          "sku": "SRE81X13JS-YL-SM-150-MFB",
+          "variation": [
+            "yellow-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47465",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-37",
+          "sku": "SRE81X13JS-YL-SM-175-MFB",
+          "variation": [
+            "yellow-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47466",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-38",
+          "sku": "SRE81X13JS-YL-SM-200-MFB",
+          "variation": [
+            "yellow-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47467",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-39",
+          "sku": "SRE81X13JS-YL-SM-225-MFB",
+          "variation": [
+            "yellow-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47468",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-40",
+          "sku": "SRE81X13JS-YL-SM-250-MFB",
+          "variation": [
+            "yellow-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47469",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-41",
+          "sku": "SRE81X13JS-YL-SM-275-MFB",
+          "variation": [
+            "yellow-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47470",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-42",
+          "sku": "SRE81X13JS-YL-SM-300-MFB",
+          "variation": [
+            "yellow-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47471",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": false,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-43",
+          "sku": "SRE81X13JS-YL-SM-350-MFB",
+          "variation": [
+            "yellow-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47472",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "yellow-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-44",
+          "sku": "SRE81X13JS-YL-SM-400-MFB",
+          "variation": [
+            "yellow-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=yellow-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/47473",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 3.0,
+            "height": 3.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-45",
+          "sku": "SRE81X13JS-BKSMXBKSM-100-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52967",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-46",
+          "sku": "SRE81X13JS-BKSMXBKSM-125-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52968",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-47",
+          "sku": "SRE81X13JS-BKSMXBKSM-150-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52969",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-48",
+          "sku": "SRE81X13JS-BKSMXBKSM-175-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52970",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-49",
+          "sku": "SRE81X13JS-BKSMXBKSM-200-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52971",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-50",
+          "sku": "SRE81X13JS-BKSMXBKSM-225-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52972",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-51",
+          "sku": "SRE81X13JS-BKSMXBKSM-250-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52973",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-52",
+          "sku": "SRE81X13JS-BKSMXBKSM-275-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52974",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-53",
+          "sku": "SRE81X13JS-BKSMXBKSM-300-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52975",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-54",
+          "sku": "SRE81X13JS-BKSMXBKSM-350-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52976",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-black-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-55",
+          "sku": "SRE81X13JS-BKSMXBKSM-400-MFS",
+          "variation": [
+            "black-smoke-x-black-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-black-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52977",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-56",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-100-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52978",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-57",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-125-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52979",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-58",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-150-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52980",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-59",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-175-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52981",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-60",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-200-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52982",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-61",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-225-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52983",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-62",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-250-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52984",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-63",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-275-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52985",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-64",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-300-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52986",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-65",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-350-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52987",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-sienna-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-66",
+          "sku": "SRE81X13JS-BKSMXSIENNASM-400-MFS",
+          "variation": [
+            "black-smoke-x-sienna-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-sienna-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52988",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-67",
+          "sku": "SRE81X13JS-BKSMXTOSM-100-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52989",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-68",
+          "sku": "SRE81X13JS-BKSMXTOSM-125-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52990",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-69",
+          "sku": "SRE81X13JS-BKSMXTOSM-150-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52991",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-70",
+          "sku": "SRE81X13JS-BKSMXTOSM-175-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52992",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-71",
+          "sku": "SRE81X13JS-BKSMXTOSM-200-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52993",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-72",
+          "sku": "SRE81X13JS-BKSMXTOSM-225-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52994",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-73",
+          "sku": "SRE81X13JS-BKSMXTOSM-250-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52995",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-74",
+          "sku": "SRE81X13JS-BKSMXTOSM-275-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52996",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-75",
+          "sku": "SRE81X13JS-BKSMXTOSM-300-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52997",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-76",
+          "sku": "SRE81X13JS-BKSMXTOSM-350-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52998",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-tortoise-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-77",
+          "sku": "SRE81X13JS-BKSMXTOSM-400-MFS",
+          "variation": [
+            "black-smoke-x-tortoise-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-tortoise-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/52999",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "1.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-78",
+          "sku": "SRE81X13JS-BKSMXYLSM-100-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "1.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=1-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53000",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "1.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-79",
+          "sku": "SRE81X13JS-BKSMXYLSM-125-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "1.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=1-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53001",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "1.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-80",
+          "sku": "SRE81X13JS-BKSMXYLSM-150-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "1.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=1-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53002",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "1.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-81",
+          "sku": "SRE81X13JS-BKSMXYLSM-175-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "1.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=1-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53003",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "2.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-82",
+          "sku": "SRE81X13JS-BKSMXYLSM-200-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "2.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=2-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53004",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "2.25"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-83",
+          "sku": "SRE81X13JS-BKSMXYLSM-225-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "2.25"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=2-25",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53005",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "2.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-84",
+          "sku": "SRE81X13JS-BKSMXYLSM-250-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "2.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=2-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53006",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "2.75"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-85",
+          "sku": "SRE81X13JS-BKSMXYLSM-275-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "2.75"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=2-75",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53007",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "3.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-86",
+          "sku": "SRE81X13JS-BKSMXYLSM-300-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "3.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=3-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53008",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "3.50"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-87",
+          "sku": "SRE81X13JS-BKSMXYLSM-350-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "3.50"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=3-50",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53009",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      },
+      {
+        "attribute": [
+          "black-smoke-x-yellow-smoke",
+          "4.00"
+        ],
+        "variation": {
+          "slug": "jersey-sun-reader-88",
+          "sku": "SRE81X13JS-BKSMXYLSM-400-MFS",
+          "variation": [
+            "black-smoke-x-yellow-smoke",
+            "4.00"
+          ],
+          "wpUrl": "https://bikershades.com/shop/all-products/jersey-sun-reader/?attribute_pa_choose-color=black-smoke-x-yellow-smoke&attribute_pa_choose-power=4-00",
+          "productUrl": "https://bikershades.com/wp-json/wc/store/products/53010",
+          "description": "",
+          "descriptionImgs": [],
+          "sale": true,
+          "regularPriceInCents": 1749,
+          "salePriceInCents": 1399,
+          "inStock": true,
+          "images": [
+            {
+              "src": "https://bikershades.com/wp-content/uploads/2020/03/Jersey-Black-Front.jpg",
+              "name": "Jersey Black Front"
+            }
+          ],
+          "weight": 1.0,
+          "weightUnit": "oz",
+          "dimensions": {
+            "length": 6.0,
+            "width": 4.0,
+            "height": 4.0
+          },
+          "dimensionUnit": "in"
+        }
+      }
+    ],
+    "weight": 1.0,
+    "weightUnit": "oz",
+    "dimensions": {
+      "length": 6.0,
+      "width": 3.0,
+      "height": 3.0
+    },
+    "dimensionUnit": "in"
+  }
+]

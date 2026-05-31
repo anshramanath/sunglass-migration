@@ -24,10 +24,11 @@ bikershades-migration/
     pipeline/
       fetch_products.py              ← step 1
       fetch_variations.py            ← step 2
-      reshape_items.py            ← step 3
-      download_images.py             ← step 4
-      upload_images.py               ← step 5
-      import_items.py             ← step 6
+      reshape_items.py               ← step 3
+      recategorize_items.py          ← step 4
+      download_images.py             ← step 5
+      upload_images.py               ← step 6
+      import_items.py                ← step 7
     qa/
       audit_clean_products.py
       verify_reshape.py
@@ -39,7 +40,7 @@ bikershades-migration/
       variations/
         variations.json              ← per-variation data (6,064 variations)
     reshaped/
-      clean_items.json                     ← 586 clean products
+      shaped_items.json                     ← 586 clean products
       zero_price_items.json                ← 8 internal/service products
       invalid_sku_items.json               ← 22 products with invalid SKUs
       missing_attributes_items.json        ← 7 products with unrecoverable variation attributes
@@ -47,6 +48,9 @@ bikershades-migration/
       duplicate_name_items.json            ← 6 products with duplicate names
       no_weight_items.json                 ← 14 products with no/zero weight
       multiple_variation_images_items.json ← 1 product with variations having >1 image
+    recategorized/
+      categorized_items.json         ← 584 items ready for import
+      no_category_items.json         ← 2 items with all categories dropped (owner review)
     reshaped-problems/
       diagnosis.md / treatment.md / *_review.md
     images/
@@ -364,9 +368,10 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Audit clean products — all fields validated for existence and correct values. Only issue: 2 products (`PL46X10AP-0`, `PL46X10AP-BK-DRO`) had `weight = 0.0`. Fixed: reshape now catches `weight = 0.0` alongside `null`, both moved to `no_weight` bucket. Clean bucket now 586.
 - [x] Verify reshape — `verify_reshape.py` confirms all 647 products accounted for, no duplicates, all slugs/SKUs/prices match raw, no data loss. `verify_no_data_loss.py` merged into this script. 3 apparent description losses confirmed as HTML-only descriptions — correctly captured in `descriptionImgs` instead.
 - [x] Schema update — `variation_images` table removed. Variation image flattened to `image_src` + `image_name` columns on `variations` row. Variations have at most 1 image; >1 is a WooCommerce misconfiguration and now bucketed separately (`multiple_variation_images`).
-- [ ] Re-run import against updated schema
-- [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images)
-- [ ] Update import script — populate `brands.slug`, `categories.slug`, and `categories.parent_id` (key dedup/lookup on `slug` not `name` — display names are not unique; e.g. "See All" appears under both `motorcycle-sunglasses/brands/` and `try-before-you-buy/`)
+- [x] Write `recategorize_items.py` — applies drops, merges, single-item leaf collapses; outputs `recategorized/categorized_items.json` (584) and `recategorized/no_category_items.json` (2). Categories now stored as `[[{level, name, slug}]]` — array of paths, each path an array of tree nodes from root to leaf.
+- [ ] Re-run import against updated schema — import script reads from `recategorized/categorized_items.json`; needs updating for new category structure, `brands.slug`, and `categories` tree (`parent_id`, `slug`)
+- [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
+- [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 
 ### Formality files added
 - `migration/requirements.txt` — Python dependencies (`requests`, `supabase`, `psycopg2-binary`, `python-dotenv`)

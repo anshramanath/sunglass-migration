@@ -51,17 +51,19 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 ```
 WooCommerce Store API
         ↓
-fetch_products.py       → products.json (647 products)
+fetch_products.py         → items/products.json (647 products)
         ↓
-fetch_variations.py     → variations.json (6,064 variations)
+fetch_variations.py       → items/variations/variations.json (6,064 variations)
         ↓
-reshape_items.py     → 7 bucketed JSON files in reshaped/
+reshape_items.py          → reshaped/ — shaped_items.json (586) + 7 problem buckets
         ↓
-download_images.py      → 2,785 images downloaded locally
+recategorize_items.py     → recategorized/ — categorized_items.json (584) + no_category_items.json (2)
         ↓
-upload_images.py        → images uploaded to Supabase Storage, upload_map.json written
+download_images.py        → images downloaded locally
         ↓
-import_items.py      → 589 clean products inserted into Supabase DB
+upload_images.py          → images uploaded to Supabase Storage
+        ↓
+import_items.py           → inserts categorized items into Supabase DB
 ```
 
 ---
@@ -101,19 +103,25 @@ python migration/pipeline/fetch_variations.py
 python migration/pipeline/reshape_items.py
 ```
 
-**7. Download images**
+**7. Recategorize**
+```bash
+python migration/pipeline/recategorize_items.py
+```
+Applies drops, merges, collapses. Outputs `recategorized/categorized_items.json` (clean) and `recategorized/no_category_items.json` (flagged for owner review).
+
+**8. Download images**
 ```bash
 python migration/pipeline/download_images.py
 ```
 ✅ Crash-safe — checkpoints after every image via `url_map.json`. Downloads clean products only into `migration/images/local/` (flat folder, deduplicated filenames).
 
-**8. Upload images to Supabase Storage**
+**9. Upload images to Supabase Storage**
 ```bash
 python migration/pipeline/upload_images.py
 ```
 ✅ Crash-safe — checkpoints after every upload via `upload_map.json`. Creates a `bikershades` bucket automatically (per-brand bucket model).
 
-**9. Import products into DB**
+**10. Import into DB**
 ```bash
 python migration/pipeline/import_items.py
 ```
@@ -129,24 +137,31 @@ python migration/pipeline/import_items.py
 | Variable products | 489 |
 | Simple products | 157 |
 | Total variations | 6,064 |
-| Clean products | 589 |
-| Flagged for review | 58 |
-| Images downloaded | 2,785 |
+| Shaped items (post-reshape) | 586 |
+| Categorized items (post-recategorize) | 584 |
+| Flagged for review | 63 |
 
 ---
 
-## 🗂️ Reshaped Output Buckets
+## 🗂️ Output Buckets
 
+### `reshaped/` — output of `reshape_items.py`
 | File | Count | Reason |
 |---|---|---|
-| `clean_items.json` | 588 | ✅ Ready for import |
+| `shaped_items.json` | 586 | ✅ Passes to recategorize |
 | `invalid_sku_items.json` | 22 | ⚠️ SKU is null or contains a space |
-| `no_weight_items.json` | 14 | ⚠️ Missing or zero weight (needed for shipping) |
-| `zero_price_items.json` | 8 | ⚠️ Price is zero — internal/service products |
+| `no_weight_items.json` | 14 | ⚠️ Missing or zero weight |
+| `zero_price_items.json` | 8 | ⚠️ Price is zero |
 | `missing_attributes_items.json` | 7 | ⚠️ Variations with no attribute data |
-| `duplicate_name_items.json` | 6 | ⚠️ Same name as another product |
+| `duplicate_name_items.json` | 6 | ⚠️ Same name as another item |
 | `no_image_items.json` | 3 | ⚠️ No images at all |
-| `multiple_variation_images_items.json` | 1 | ⚠️ Variation has more than 1 image — likely WooCommerce misconfiguration |
+| `multiple_variation_images_items.json` | 1 | ⚠️ Variation has more than 1 image |
+
+### `recategorized/` — output of `recategorize_items.py`
+| File | Count | Reason |
+|---|---|---|
+| `categorized_items.json` | 584 | ✅ Ready for import |
+| `no_category_items.json` | 2 | ⚠️ All category links were dropped — owner review needed |
 
 ---
 
@@ -190,7 +205,11 @@ Current direction:
   "reviewCount": 12,
   "inStock": true,
   "categories": [
-    "https://bikershades.com/product-category/motorcycle-sunglasses/brands/prosport-sunglasses/"
+    [
+      {"level": 1, "name": "Sunglasses", "slug": "sunglasses"},
+      {"level": 2, "name": "Brands", "slug": "brands"},
+      {"level": 3, "name": "ProSport", "slug": "prosport"}
+    ]
   ],
   "images": [{ "src": "https://...", "name": "Backspin Front" }],
   "attributes": [

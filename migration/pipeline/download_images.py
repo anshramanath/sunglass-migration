@@ -63,7 +63,7 @@ def collect_urls(items):
                     yield url
 
 
-with open(BASE / "reshaped/clean_items.json") as f:
+with open(BASE / "reshaped/shaped_items.json") as f:
     products = json.load(f)
 
 IMAGES_DIR.mkdir(exist_ok=True)

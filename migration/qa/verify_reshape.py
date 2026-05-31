@@ -16,7 +16,7 @@ with open(BASE / "items/variations/variations.json") as f:
 # ── load all reshaped buckets ─────────────────────────────────────────────────
 
 BUCKETS = {
-    "clean":                     BASE / "reshaped/clean_items.json",
+    "clean":                     BASE / "reshaped/shaped_items.json",
     "zero_price":                BASE / "reshaped/zero_price_items.json",
     "invalid_sku":               BASE / "reshaped/invalid_sku_items.json",
     "missing_attributes":        BASE / "reshaped/missing_attributes_items.json",

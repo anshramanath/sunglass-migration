@@ -21,7 +21,7 @@ with open(IMAGES_DIR / "url_map.json") as f:
 with open(IMAGES_DIR / "upload_map.json") as f:
     upload_map = json.load(f)
 
-with open(BASE / "reshaped/clean_items.json") as f:
+with open(BASE / "reshaped/shaped_items.json") as f:
     products = json.load(f)
 
 

@@ -331,7 +331,7 @@ for product in raw_products:
     else:
         clean_items.append(clean_product)
 
-with open(BASE / "reshaped/clean_items.json", "w", encoding="utf-8") as f:
+with open(BASE / "reshaped/shaped_items.json", "w", encoding="utf-8") as f:
     json.dump(clean_items, f, indent=2, ensure_ascii=False)
 
 with open(BASE / "reshaped/invalid_sku_items.json", "w", encoding="utf-8") as f:
@@ -362,4 +362,4 @@ print(f"No image items:                {len(no_image_items)} → no_image_items.
 print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate_name_items.json")
 print(f"No weight items:               {len(no_weight_items)} → no_weight_items.json")
 print(f"Multiple variation image items:{len(multiple_variation_images_items)} → multiple_variation_images_items.json")
-print(f"Clean items:                   {len(clean_items)} → clean_items.json")
+print(f"Shaped items:                  {len(clean_items)} → shaped_items.json")
