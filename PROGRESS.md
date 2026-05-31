@@ -40,13 +40,14 @@ bikershades-migration/
       variations/
         variations.json              ← per-variation data (6,064 variations)
     reshaped/
-      shaped_items.json                     ← 586 clean products
-      zero_price_items.json                ← 8 internal/service products
+      shaped_items.json                     ← 564 clean products
+      zero_price_items.json                ← 10 internal/service products
       invalid_sku_items.json               ← 22 products with invalid SKUs
-      missing_attributes_items.json        ← 7 products with unrecoverable variation attributes
+      missing_attributes_items.json        ← 5 products with unrecoverable variation attributes
+      mismatched_attr_items.json           ← 22 products with variation slugs not in product terms
       no_image_items.json                  ← 3 products with no images
       duplicate_name_items.json            ← 6 products with duplicate names
-      no_weight_items.json                 ← 14 products with no/zero weight
+      invalid_weight_items.json            ← 14 products with null weight or weight missing unit
       multiple_variation_images_items.json ← 1 product with variations having >1 image
     recategorized/
       categorized_items.json         ← 581 items ready for import (all paths end at leaf nodes)
@@ -201,9 +202,9 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `attributes[]` | `attributes[]` | array of `{name, terms[]}` — name is the mapped attribute key (e.g. "color"); terms are `{name, slug}` objects. Power term slugs normalized: `1-00` → `1.00` (WooCommerce stored the same diopter values under two inconsistent slug formats) |
 | `variations` (merged with variations.json) | `variations[]` | each entry: `{ attribute: ["black-clear", "1-00"], variation: {...full variation object} }` — `attribute` uses raw stub values as-is |
 | `weight` | `weight` | string → number |
-| `dimensions` | `dimensions` | all strings → numbers |
-| — | `weightUnit` | hardcoded `"oz"` |
-| — | `dimensionUnit` | hardcoded `"in"` |
+| `formatted_weight` | `weightUnit` | last word of formatted string (e.g. `"6 oz"` → `"oz"`). `N/A` → flagged to `invalid_weight_items` |
+| `dimensions` | `dimensions` | all strings → numbers. Partial or bad-unit dimensions silently nulled (all three set to null, `dimensionUnit` null) — dimensions are optional |
+| `formatted_dimensions` | `dimensionUnit` | last word of formatted string (e.g. `"4 × 2 × 1 in"` → `"in"`). `N/A` or partial dims → nulled |
 
 ### Variation fields
 | WooCommerce field | Renamed to | Notes |
@@ -223,9 +224,9 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `images[].src` | `images[].src` | |
 | `images[].name` | `images[].name` | |
 | `weight` | `weight` | string → number |
-| `dimensions` | `dimensions` | all strings → numbers |
-| — | `weightUnit` | hardcoded `"oz"` |
-| — | `dimensionUnit` | hardcoded `"in"` |
+| `formatted_weight` | `weightUnit` | last word of formatted string. `N/A` → flagged to `invalid_weight_items` |
+| `dimensions` | `dimensions` | all strings → numbers. Partial or bad-unit dims silently nulled |
+| `formatted_dimensions` | `dimensionUnit` | last word of formatted string. `N/A` or partial → nulled |
 
 **Dropped from variations only:** `summary` (always empty), `categories`, `attributes`
 **Dropped entirely:** `averageRating`, `reviewCount` — app builds its own review system
@@ -287,11 +288,12 @@ Detailed manual review notes now live in `reshaped-problems/`.
 
 | Bucket | Count | Status | Direction |
 |---|---:|---|---|
-| zero_price | 8 products | reviewed | mostly owner review; mix of excludes, form/workflow items, unavailable products, and at least one real product that needs price |
-| no_weight | 12 products | reviewed | mostly owner review; some real products just need confirmed weight |
+| zero_price | 10 products | reviewed | mostly owner review; mix of excludes, form/workflow items, unavailable products, and at least one real product that needs price |
+| invalid_weight | 14 products | reviewed | 12 null weight (service/shipping items + real products needing weight), 2 with weight=0.0 but no unit — all need owner review |
 | no_image | 3 products | reviewed | ask owner for real images; only use placeholders with explicit approval |
 | invalid_sku | 22 products | reviewed | mostly owner review; many are real products that need canonical SKU cleanup |
-| missing_attributes | 7 products | built / owner escalation | take entire bucket to owner; variation option metadata is not safe to reconstruct blindly |
+| missing_attributes | 5 products | built / owner escalation | take entire bucket to owner; variation option metadata is not safe to reconstruct blindly |
+| mismatched_attr | 22 products | built / owner escalation | variation slugs not found in product attribute terms; may indicate data drift |
 | duplicate_name | 6 products | built / owner escalation | take entire bucket to owner; distinct products collapsed to duplicate reshaped names |
 
 ### High-level findings
@@ -393,6 +395,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Re-run recategorize with improved reshape — 559 categorized, 2 no-category, 3 single-leaf. All QA passed. Review docs in `docs/categorized-items/categorized-problems/`.
 - [x] Schema further updated — `description_images` now product-only (`product_id not null`, `variation_id` and check constraint removed). Variation `descriptionImgs` field dropped from reshape — description images belong to products only.
 - [x] QA scripts updated — audit flags stray `descriptionImgs` on variations; verify checks variation image count and no stray variation description images.
+- [x] Reshape weight/unit overhaul — `weightUnit`/`dimensionUnit` now derived from `formatted_weight`/`formatted_dimensions` (last word), not hardcoded. `invalid_weight_items` bucket replaces `no_weight_items` + `missing_unit_items`: catches null weight and weight with bad/missing unit (14 total). Partial or bad-unit dimensions silently nulled — dimensions are optional. Clean bucket: 564.
 - [ ] Drop and re-apply schema in Supabase
 - [ ] Re-run download (in progress) → upload → import
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing/mismatched attributes, zero price, no image, multiple variation images, no category)

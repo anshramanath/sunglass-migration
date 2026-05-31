@@ -17,9 +17,7 @@ BUCKETS = {
     "missing_attributes":        BASE / "reshaped/missing_attributes_items.json",
     "no_image":                  BASE / "reshaped/no_image_items.json",
     "duplicate_name":            BASE / "reshaped/duplicate_name_items.json",
-    "no_weight":                 BASE / "reshaped/no_weight_items.json",
-    "invalid_dimensions":        BASE / "reshaped/invalid_dimensions_items.json",
-    "missing_unit":              BASE / "reshaped/missing_unit_items.json",
+    "invalid_weight":            BASE / "reshaped/invalid_weight_items.json",
     "multiple_variation_images": BASE / "reshaped/multiple_variation_images_items.json",
     "mismatched_attr":           BASE / "reshaped/mismatched_attr_items.json",
 }
@@ -56,21 +54,14 @@ dupes = {s: c for s, c in slug_counts.items() if c > 1}
 check("No product in multiple buckets", not dupes,
       f"{len(dupes)} duplicates: {list(dupes)[:3]}")
 
-# ── 3. weight=0.0 goes to no_weight, not shaped ──────────────────────────────
+# ── 3. weight=0.0 not in shaped (goes to invalid_weight if unit is bad) ──────
 
 zero_weight_in_shaped = [
     p["sku"] for p in reshaped["shaped"]
-    if p.get("weight") is not None and p.get("weight") == 0.0
+    if p.get("weight") == 0.0
 ]
 check("weight=0.0 not in shaped bucket", not zero_weight_in_shaped,
       f"{zero_weight_in_shaped}")
-
-zero_weight_in_no_weight = [
-    p["sku"] for p in reshaped["no_weight"]
-    if p.get("weight") == 0.0
-]
-check("weight=0.0 not in no_weight bucket (goes to missing_unit)", not zero_weight_in_no_weight,
-      f"found {zero_weight_in_no_weight}")
 
 # ── 4. Power slugs normalized — no hyphen format (1-00, 2-50) ────────────────
 
@@ -124,8 +115,8 @@ for p in reshaped["shaped"]:
 
     if not sku or " " in sku:
         shaped_violations.append(f"invalid sku: {sku}")
-    if p.get("weight") is None:
-        shaped_violations.append(f"missing weight: {sku}")
+    if p.get("weight") is None or not p.get("weightUnit"):
+        shaped_violations.append(f"invalid weight: {sku}")
     if not p.get("images"):
         shaped_violations.append(f"no images: {sku}")
     if not min_p:
