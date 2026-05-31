@@ -1,5 +1,5 @@
 # Bikershades Migration Progress
-_Last updated: 2026-05-30_
+_Last updated: 2026-05-31_
 
 ## Overview
 
@@ -376,7 +376,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Gitignore fixed — `migration/products/` → `migration/items/`, added `migration/recategorized/`
 - [x] Upload images to Supabase Storage — 2,531 uploaded to `bikershades` bucket. 1 temporary 503 retried successfully. Full resolution chain intact.
 - [x] Import into Supabase DB — 581 products, 5,649 variations, 54 categories, 1 brand. Exit code 0.
-- [x] Audit and verify import — all checks passed. 0 missing SKUs, 0 field mismatches, 0 products without categories, category leaf slugs match source for all 581 products.
+- [x] Audit and verify import — all checks passed. 0 missing SKUs, 0 field mismatches, 0 products without categories, category leaf slugs match source for all 581 products. Results in `docs/completed.md`.
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

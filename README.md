@@ -42,6 +42,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | File | Description |
 |---|---|
 | `PIPELINE.md` | Pipeline design, image naming scheme, DB schema summary, QA system |
+| `completed.md` | Full pipeline audit — all steps, counts, and QA results in one place |
 | `migration_seed.md` | Original migration guide |
 | `shaped-items/` | Field-level audit, attribute analysis, category link counts |
 | `downloaded-images/` | Download audit and verify results |

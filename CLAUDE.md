@@ -1,5 +1,5 @@
 # Bikershades Migration — Claude Context
-_Last updated: 2026-05-30_
+_Last updated: 2026-05-31_
 
 ## What this is
 Migrating product data from bikershades.com (WordPress/WooCommerce) into a new multi-brand Supabase-backed app. All scripts live in `migration/`.
@@ -20,6 +20,12 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 - `migration/qa/verify_shaped_items.py` — cross-references reshaped output against raw data + checks no field was dropped
 - `migration/qa/audit_categorized_items.py` — validates category structure in categorized items (post-recategorize); checks levels, slugs, path integrity; reports tree stats per root
 - `migration/qa/verify_categorized_items.py` — cross-references categorized against shaped: no items lost, counts match, no-category fields unchanged, no dropped/merged slugs survived
+- `migration/qa/audit_downloaded_images.py` — checks url_map coverage, file integrity, failed/collision counts, coverage by type
+- `migration/qa/verify_downloaded_images.py` — all image URLs accounted for (in map or failed), no items left imageless
+- `migration/qa/audit_uploaded_images.py` — checks upload_map coverage, URL validity, missing files
+- `migration/qa/verify_uploaded_images.py` — full chain resolvable end-to-end for all images
+- `migration/qa/audit_import.py` — DB row counts, brands, category tree depth, duplicate SKUs, products with no images
+- `migration/qa/verify_import.py` — SKUs, field values, variation counts, category leaf slugs all match source
 
 ## Key files
 - `migration/db/001_initial_schema.sql` — source of truth for DB schema
@@ -31,6 +37,8 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 - `docs/shaped-items/attributes.md` — attribute types and terms across clean products
 - `docs/shaped-items/categories.md` — product counts per category link
 - `docs/shaped-items/category_hierarchy.html` — visual category tree
+- `docs/completed.md` — full pipeline audit, all steps and QA results in one place
+- `docs/PIPELINE.md` — pipeline design, image naming, DB schema summary, QA system
 - `PROGRESS.md` — full decision log
 
 ## Image pipeline
