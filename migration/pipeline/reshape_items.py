@@ -157,6 +157,14 @@ def reshape_product(product, variation_stubs, full_variations_map):
         for img in product.get("images", [])
         if img.get("src")
     ]
+    parent_srcs = {img["src"] for img in images}
+
+    # Strip variation images that duplicate a parent image — frontend falls back anyway
+    for ve in variations:
+        ve["variation"]["images"] = [
+            img for img in ve["variation"].get("images", [])
+            if img.get("src") not in parent_srcs
+        ]
 
     # Keep only link — name and slug derived during recategorization
     categories = [
