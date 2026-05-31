@@ -44,8 +44,8 @@ if collisions:
     print()
     print("── COLLISIONS ──")
     for c in collisions:
-        print(f"  existing: {c['existing']['name']} (sku={c['existing']['sku']})")
-        print(f"  tried:    {c['tried']['name']} (sku={c['tried']['sku']})")
+        print(f"  existing: [{c['existing']['sku']}] {c['existing']['src']}")
+        print(f"  tried:    [{c['tried']['sku']}] {c['tried']['src']}")
         print()
 
 print()
