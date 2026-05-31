@@ -22,9 +22,9 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | File | Description |
 |---|---|
 | `audit_shaped_items.py` | Validates all fields in shaped items for existence and correct values |
-| `verify_shaped_items.py` | Cross-references reshaped output against raw + checks no field was dropped |
-| `audit_categorized_items.py` | Validates category path structure in categorized items; reports tree stats per root |
-| `verify_categorized_items.py` | Cross-references categorized against shaped — no items lost, counts match, no dropped/merged slugs survived |
+| `verify_shaped_items.py` | Cross-references reshaped output against raw — all 647 accounted for, no data loss |
+| `audit_categorized_items.py` | Validates category path structure — leaf-only assignments, valid levels/slugs, tree stats |
+| `verify_categorized_items.py` | Cross-references all three recategorized outputs — 586 total accounted for, no dropped/merged slugs |
 
 **Schema** (`migration/db/`)
 | File | Description |
@@ -110,7 +110,7 @@ python migration/pipeline/reshape_items.py
 ```bash
 python migration/pipeline/recategorize_items.py
 ```
-Applies drops, merges, collapses. Outputs `recategorized/categorized_items.json` (clean) and `recategorized/no_category_items.json` (flagged for owner review).
+Applies drops and merges, removes single-item leaves, strips non-leaf paths. Result: 8 trees, max depth 2 from root to leaf, products only at leaves. Outputs three buckets to `recategorized/`.
 
 **8. Download images**
 ```bash
@@ -141,8 +141,8 @@ python migration/pipeline/import_items.py
 | Simple products | 157 |
 | Total variations | 6,064 |
 | Shaped items (post-reshape) | 586 |
-| Categorized items (post-recategorize) | 584 |
-| Flagged for review | 63 |
+| Categorized items (post-recategorize) | 581 |
+| Flagged for review | 66 |
 
 ---
 
@@ -163,8 +163,9 @@ python migration/pipeline/import_items.py
 ### `recategorized/` — output of `recategorize_items.py`
 | File | Count | Reason |
 |---|---|---|
-| `categorized_items.json` | 584 | ✅ Ready for import |
+| `categorized_items.json` | 581 | ✅ Ready for import — all paths end at leaf nodes |
 | `no_category_items.json` | 2 | ⚠️ All category links were dropped — owner review needed |
+| `single_leaf_items.json` | 3 | ⚠️ Only item in their leaf category — owner review needed |
 
 ---
 

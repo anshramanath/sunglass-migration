@@ -10,7 +10,7 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 1. `migration/pipeline/fetch_products.py` — fetches 647 products from WooCommerce Store API
 2. `migration/pipeline/fetch_variations.py` — fetches 6,064 variations (crash-safe, resumes)
 3. `migration/pipeline/reshape_items.py` — normalizes data, buckets by issue type into `migration/reshaped/`
-4. `migration/pipeline/recategorize_items.py` — applies drops/merges/collapses, outputs `migration/recategorized/`
+4. `migration/pipeline/recategorize_items.py` — applies drops/merges, removes single-item leaves, strips non-leaf paths; outputs `migration/recategorized/`
 5. `migration/pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
 6. `migration/pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
 7. `migration/pipeline/import_items.py` — inserts categorized items into Supabase DB
@@ -58,15 +58,17 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - `multiple_variation_images_items.json` — 1
 
 ### recategorized/ (step 4)
-- `categorized_items.json` — 584 ✅ ready for import
+- `categorized_items.json` — 581 ✅ ready for import (all paths end at leaf nodes only)
 - `no_category_items.json` — 2 (all categories dropped — owner review)
+- `single_leaf_items.json` — 3 (only item in their leaf category — owner review)
 
 ## Environment
 `.env` at project root (gitignored). See `.env.example` for required variables. Scripts load it via `load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")`.
 
 ## Current state
-- Reshape + recategorize complete. Categories now `[[{level, name, slug}]]` — array of tree paths, each node has level, display name, and new slug
+- Reshape + recategorize complete. Categories are `[[{level, name, slug}]]` — array of tree paths, each a root-to-leaf sequence. All 581 categorized items land only at leaf nodes.
+- 8 category trees, max depth 2 hops from root to leaf. Products only live at leaves so nav nodes never conflict between opening a submenu and going to a product page.
 - Schema updated: `brands` has `slug`, `categories` has `slug` + `parent_id` (self-referential tree)
-- Import script needs updating to read from `recategorized/categorized_items.json` and handle new category structure
+- Import script needs updating to read from `recategorized/categorized_items.json` and build category tree from path arrays
 - Images not yet downloaded/uploaded in this session — need to run steps 5-6 before import
-- 63 flagged items pending owner review — see `reshaped-problems/treatment.md` and `recategorized/no_category_items.json`
+- 66 flagged items pending owner review: 61 from reshape + 2 no-category + 3 single-leaf

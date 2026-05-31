@@ -49,8 +49,9 @@ bikershades-migration/
       no_weight_items.json                 ← 14 products with no/zero weight
       multiple_variation_images_items.json ← 1 product with variations having >1 image
     recategorized/
-      categorized_items.json         ← 584 items ready for import
+      categorized_items.json         ← 581 items ready for import (all paths end at leaf nodes)
       no_category_items.json         ← 2 items with all categories dropped (owner review)
+      single_leaf_items.json         ← 3 items that were sole occupant of their leaf category (owner review)
     reshaped-problems/
       diagnosis.md / treatment.md / *_review.md
     images/
@@ -368,7 +369,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Audit clean products — all fields validated for existence and correct values. Only issue: 2 products (`PL46X10AP-0`, `PL46X10AP-BK-DRO`) had `weight = 0.0`. Fixed: reshape now catches `weight = 0.0` alongside `null`, both moved to `no_weight` bucket. Clean bucket now 586.
 - [x] Verify reshape — `verify_shaped_items.py` confirms all 647 products accounted for, no duplicates, all slugs/SKUs/prices match raw, no data loss. `verify_no_data_loss.py` merged into this script. 3 apparent description losses confirmed as HTML-only descriptions — correctly captured in `descriptionImgs` instead.
 - [x] Schema update — `variation_images` table removed. Variation image flattened to `image_src` + `image_name` columns on `variations` row. Variations have at most 1 image; >1 is a WooCommerce misconfiguration and now bucketed separately (`multiple_variation_images`).
-- [x] Write `recategorize_items.py` — applies drops, merges, single-item leaf collapses; outputs `recategorized/categorized_items.json` (584) and `recategorized/no_category_items.json` (2). Categories now stored as `[[{level, name, slug}]]` — array of paths, each path an array of tree nodes from root to leaf.
+- [x] Write `recategorize_items.py` — applies drops and merges; iteratively removes single-item leaves (→ `single_leaf_items.json`); strips non-leaf paths so products only land at leaf nodes. Outputs: `categorized_items.json` (581), `no_category_items.json` (2), `single_leaf_items.json` (3). Categories stored as `[[{level, name, slug}]]` — array of root-to-leaf paths. Result: 8 trees, max depth 2 hops from root to leaf, products only at leaves so nav buttons never conflict between submenu and product page.
 - [ ] Re-run import against updated schema — import script reads from `recategorized/categorized_items.json`; needs updating for new category structure, `brands.slug`, and `categories` tree (`parent_id`, `slug`)
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items

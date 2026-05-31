@@ -49,7 +49,7 @@ Raw category link assignments across 586 clean items before recategorization.
 | 15 | `motorcycle-sunglasses/motorcycle-goggles` | Motorcycle Goggles | keep | Goggles | `goggles` |
 | 10 | `motorcycle-sunglasses/shop-by-head-size` | Shop By Head Size | keep | Head Size | `head-size` |
 | 23 | `motorcycle-sunglasses/shop-by-head-size/large-xlarge` | Large - XLarge | keep | Large - XLarge | `large-xlarge` |
-| 29 | `motorcycle-sunglasses/shop-by-head-size/long-eyelashes` | Low Nose Bridge/Long Lashes | keep | Low Nose Bridge / Long Lashes | `low-nose-bridge-long-lashes` |
+| 29 | `motorcycle-sunglasses/shop-by-head-size/long-eyelashes` | Low Nose Bridge/Long Lashes | keep | Low Nose Bridge Long Lashes | `low-nose-bridge-long-lashes` |
 | 1 | `motorcycle-sunglasses/shop-by-head-size/low-nose-bridge-long-lashes-shades` | Low Nose Bridge/Long Lashes. SHADES | merge → long-eyelashes | — | — |
 | 51 | `motorcycle-sunglasses/shop-by-head-size/medium-large` | Medium - Large | keep | Medium - Large | `medium-large` |
 | 5 | `motorcycle-sunglasses/shop-by-head-size/one-size-fits-all` | One Size Fits All | keep | One Size Fits All | `one-size-fits-all` |

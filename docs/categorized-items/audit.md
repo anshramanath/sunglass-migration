@@ -8,7 +8,7 @@ _Last updated: 2026-05-30_
 
 ## Result
 
-**Zero issues.** All 584 categorized items have valid category paths. All path levels, names, and slugs are well-formed.
+**Zero issues.** All 581 categorized items have valid category paths. All paths end at leaf nodes only — no item is assigned to a branch node. All path levels, names, and slugs are well-formed.
 
 ---
 
@@ -17,9 +17,10 @@ _Last updated: 2026-05-30_
 | | Count |
 |---|---:|
 | Shaped items (input) | 586 |
-| Categorized items | 584 |
+| Categorized items | 581 |
 | No-category items | 2 |
-| Total category assignments | 1,316 |
+| Single-leaf items | 3 |
+| Total category assignments | 1,082 |
 
 Items can appear in multiple root categories — total assignments exceed item count.
 
@@ -31,12 +32,12 @@ Items can appear in multiple root categories — total assignments exceed item c
 
 | Root | Display Name | Height | Unique Items | Total Assignments |
 |------|-------------|-------:|-------------:|------------------:|
-| `sunglasses` | Sunglasses | 3 | 315 | 775 |
-| `prescription` | Prescription | 3 | 94 | 204 |
-| `transitions` | Transitions | 3 | 85 | 92 |
-| `bifocals` | Bifocals | 2 | 92 | 192 |
-| `accessories` | Accessories | 2 | 13 | 24 |
+| `sunglasses` | Sunglasses | 3 | 310 | 705 |
+| `prescription` | Prescription | 3 | 94 | 109 |
+| `bifocals` | Bifocals | 2 | 92 | 142 |
+| `transitions` | Transitions | 3 | 85 | 85 |
 | `sale` | Sale | 1 | 12 | 12 |
+| `accessories` | Accessories | 2 | 12 | 12 |
 | `combo-sets` | Combo Sets | 1 | 10 | 10 |
 | `try-before-you-buy` | Try Before You Buy | 1 | 7 | 7 |
 
@@ -46,9 +47,9 @@ Items can appear in multiple root categories — total assignments exceed item c
 
 | Depth | Assignments | Notes |
 |------:|------------:|-------|
-| 1 | 225 | Root-level only (e.g. `sale`, `combo-sets`, parent-level assignments) |
-| 2 | 246 | Two levels deep (e.g. `sunglasses → lens-type`) |
-| 3 | 845 | Three levels deep (e.g. `sunglasses → brands → prosport`) |
+| 1 | 29 | Root-level only — these roots have no children (`sale`, `combo-sets`, `try-before-you-buy`) |
+| 2 | 216 | Two levels deep (e.g. `sunglasses → lens-type`, `bifocals → lined-bifocals`) |
+| 3 | 837 | Three levels deep (e.g. `sunglasses → brands → prosport`) |
 
 ---
 

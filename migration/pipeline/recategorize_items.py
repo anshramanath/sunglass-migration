@@ -50,7 +50,7 @@ CATEGORY_MAP = {
     "motorcycle-goggles":                       ("Goggles",                       "goggles"),
     "shop-by-head-size":                        ("Head Size",                     "head-size"),
     "large-xlarge":                             ("Large - XLarge",                "large-xlarge"),
-    "long-eyelashes":                           ("Low Nose Bridge / Long Lashes", "low-nose-bridge-long-lashes"),
+    "long-eyelashes":                           ("Low Nose Bridge Long Lashes",   "low-nose-bridge-long-lashes"),
     "medium-large":                             ("Medium - Large",                "medium-large"),
     "one-size-fits-all":                        ("One Size Fits All",             "one-size-fits-all"),
     "small-medium":                             ("Small - Medium",                "small-medium"),
