@@ -79,8 +79,15 @@ for local_path in unique_paths:
             print(f"  {uploaded} uploaded...")
 
     except Exception as e:
-        print(f"  FAIL {local_path}: {e}")
-        failed += 1
+        if "Duplicate" in str(e):
+            public_url = supabase.storage.from_(BUCKET).get_public_url(storage_path)
+            upload_map[local_path] = public_url
+            with open(UPLOAD_MAP_PATH, "w") as f:
+                json.dump(upload_map, f)
+            uploaded += 1
+        else:
+            print(f"  FAIL {local_path}: {e}")
+            failed += 1
 
     time.sleep(0.02)
 
