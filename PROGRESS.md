@@ -390,7 +390,9 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Reshape improved — 2 new buckets: `missing_attributes` (5, empty variation attribute list) and `mismatched_attr` (22, variation slugs not in product terms). Attribute cleanup: unused product terms stripped so every color button has a real variation. Zero price now caught post-reshape too. Clean bucket: 564, total flagged: 83.
 - [x] Schema overhauled — `variation.variation` inner array removed (redundant); `variations.variation` column renamed to `attribute text[] not null`; `image_src/image_name` removed from variations; new `variation_images` table added (same pattern as `product_images`).
 - [x] Variation image dedup in reshape — variation images that duplicate a parent product image are stripped. Reduces DB rows and prevents re-rendering the same image. Download count unchanged (url_map already deduplicates by URL).
-- [ ] Drop and re-apply schema in Supabase, then re-run full pipeline (reshape → recategorize → download → upload → import)
+- [x] Re-run recategorize with improved reshape — 559 categorized, 2 no-category, 3 single-leaf. All QA passed. Review docs in `docs/categorized-items/categorized-problems/`.
+- [ ] Drop and re-apply schema in Supabase
+- [ ] Re-run download → upload → import (reshape + recategorize complete)
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing/mismatched attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

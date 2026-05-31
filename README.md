@@ -45,7 +45,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `completed_1.md` | Previous run results (pre price/stock schema changes) |
 | `migration_seed.md` | Original migration guide |
 | `shaped-items/` | Field-level audit, verify, attribute analysis, category link counts |
-| `categorized-items/` | Categorized items audit and verify results |
+| `categorized-items/` | Categorized items audit, verify, and per-bucket review notes |
 | `downloaded-images/` | Download audit and verify results |
 | `uploaded-images/` | Upload audit and verify results |
 | `imported-items/` | Import audit and verify results |
@@ -153,7 +153,7 @@ python migration/pipeline/import_items.py
 | Simple products | 161 |
 | Total variations | 6,064 |
 | Shaped items (post-reshape) | 564 |
-| Categorized items (post-recategorize) | 581 |
+| Categorized items (post-recategorize) | 559 |
 | Flagged for review | 83 |
 
 ---
@@ -276,7 +276,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Fetch all products (647)
 - [x] Fetch all variations (6,064)
 - [x] Reshape into clean schema — 564 clean, 83 flagged across 8 buckets
-- [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
+- [x] Recategorize — 559 ready, 2 no-category, 3 single-leaf
 - [x] Design database schema (price range, stock int, no ratings, variation_images table)
 - [x] Download images — 2,531 downloaded, 30 permanent 404s
 - [x] Upload images to Supabase Storage — 2,531 uploaded, 0 broken
