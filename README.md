@@ -217,8 +217,6 @@ Current direction:
   "minPriceCents": 1999,
   "maxPriceCents": 3499,
   "salePriceCents": null,
-  "averageRating": 4.5,
-  "reviewCount": 12,
   "stock": 1,
   "categories": [
     [

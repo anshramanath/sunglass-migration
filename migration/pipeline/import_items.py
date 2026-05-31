@@ -76,14 +76,12 @@ for i, product in enumerate(products):
             brand_id, name, slug, sku, wp_url, product_url,
             description, summary, attributes,
             sale, min_price_cents, max_price_cents, sale_price_cents,
-            average_rating, review_count, stock,
-            weight, weight_unit, length, width, height, dimension_unit
+            stock, weight, weight_unit, length, width, height, dimension_unit
         ) VALUES (
             %s, %s, %s, %s, %s, %s,
             %s, %s, %s,
             %s, %s, %s, %s,
-            %s, %s, %s,
-            %s, %s, %s, %s, %s, %s
+            %s, %s, %s, %s, %s, %s, %s
         ) RETURNING id;
         """,
         (
@@ -100,8 +98,6 @@ for i, product in enumerate(products):
             product["minPriceCents"],
             product["maxPriceCents"],
             product.get("salePriceCents"),
-            product.get("averageRating", 0),
-            product.get("reviewCount", 0),
             product.get("stock", 1),
             product.get("weight"),
             product.get("weightUnit", "oz"),

@@ -93,7 +93,7 @@ Key reshape decisions applied:
 - Descriptions stripped to plain text, embedded image URLs extracted into `descriptionImgs[]`
 - `summary` parsed from `<li>` tags into string array, with plain text fallback
 - `sale` computed from two checks: `on_sale == true AND sale_price < regular_price`
-- `averageRating` normalized to float
+- `averageRating` and `reviewCount` dropped — app builds its own review system
 - `categories` reshaped as `[{name, link}]` objects — name uses slug value, link preserves old WP category URL
 - `attributes` reshaped as `[{name, terms[]}]` grouped by attribute type — e.g. `{name: "color", terms: ["black-clear", "blue-clear"]}`. 17 raw WooCommerce attribute names mapped to clean short keys. Stored as `jsonb` in DB for structured querying on category/listing pages without joining variations
 - `variations` array: each entry `{ attribute: [...raw stub values], variation: {...full variation object} }`
@@ -192,8 +192,8 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `prices.regular_price` | `minPriceCents` / `maxPriceCents` | string → integer. Variable products: min/max across all variation prices. Simple products: min = max = product price. |
 | `prices.sale_price` | `salePriceCents` | null for variable products (use variation prices). Simple products: sale price if on sale. |
 | `on_sale` + variations | `sale` | Variable: true if any variation has `sale=true`. Simple: `on_sale == true AND sale_price < regular_price`. |
-| `average_rating` | `averageRating` | normalized to float, seed data for new review system |
-| `review_count` | `reviewCount` | seed data for new review system |
+| `average_rating` | — | dropped — app builds its own review system |
+| `review_count` | — | dropped |
 | `is_in_stock` | `stock` | `true → 1`, `false → 0`. Owner can update to real quantity later. |
 | `categories[].link` | `categories[]` | flat array of link URLs — name and slug derived during recategorization; link is the source of truth for hierarchy |
 | `images[].src` | `images[].src` | full res original only |
@@ -227,7 +227,8 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | — | `weightUnit` | hardcoded `"oz"` |
 | — | `dimensionUnit` | hardcoded `"in"` |
 
-**Dropped from variations only:** `summary` (always empty), `averageRating` (always 0), `reviewCount` (always 0), `categories`, `attributes`
+**Dropped from variations only:** `summary` (always empty), `categories`, `attributes`
+**Dropped entirely:** `averageRating`, `reviewCount` — app builds its own review system
 
 ### Fields to drop
 `id` (new DB generates its own), `parent` (redundant — already in `productUrl`), `type` (inferable from whether `variations` is non-empty), `variation`, `price_html`, `price_range`, `tags`, `brands`, `grouped_products`, `has_options`, `is_purchasable`, `is_on_backorder` (never true across all products and variations), `low_stock_remaining` (keep stock binary), `stock_availability` (both `text` and `class`), `sold_individually`, `is_password_protected`, `extensions`, `add_to_cart`, `_links`, `formatted_weight`, `formatted_dimensions`, all currency fields, `srcset`/`sizes`/`thumbnail`/`thumbnail_srcset`/`thumbnail_sizes` from images, image `alt` (only 5% populated)
@@ -333,7 +334,7 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 |---|---|
 | `brands` | `id`, `name`, `slug` |
 | `categories` | `id`, `brand_id`, `parent_id`, `name`, `slug` |
-| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable — null for variable), `average_rating`, `review_count`, `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable — null for variable), `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
 | `product_categories` | `product_id`, `category_id` (junction) |
 | `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents` (not null — source of truth for per-variation pricing), `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
 | `product_images` | `id`, `product_id`, `src`, `name`, `sort_order` |

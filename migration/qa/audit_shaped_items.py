@@ -49,11 +49,6 @@ for p in products:
     if p.get("stock") not in (0, 1):
         flag("product.stock", sku, f"value={p.get('stock')}")
 
-    # Rating range
-    rating = p.get("averageRating", 0)
-    if not (0 <= rating <= 5):
-        flag("product.averageRating", sku, f"value={rating}")
-
     # Optional but tracked
     if is_blank(p.get("description")):
         flag("product.description[empty]", sku)
@@ -146,7 +141,7 @@ print()
 critical_keywords = [
     "product.name", "product.slug", "product.sku", "product.wpUrl", "product.productUrl",
     "product.minPriceCents", "product.maxPriceCents", "product.salePriceCents[sale=true]",
-    "product.averageRating", "product.weight[null]", "product.weight[zero]",
+    "product.weight[null]", "product.weight[zero]",
     "variation.slug", "variation.sku", "variation.wpUrl", "variation.productUrl",
     "variation.regularPriceCents", "variation.salePriceCents[sale=true]",
     "variation.attribute[empty]",

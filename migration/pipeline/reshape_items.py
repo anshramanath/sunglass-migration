@@ -209,8 +209,6 @@ def reshape_product(product, variation_stubs, full_variations_map):
         "minPriceCents": min_price,
         "maxPriceCents": max_price,
         "salePriceCents": sale_price,
-        "averageRating": float(product.get("average_rating") or 0),
-        "reviewCount": product.get("review_count") or 0,
         "stock": 1 if product.get("is_in_stock", False) else 0,
         "categories": categories,
         "images": images,

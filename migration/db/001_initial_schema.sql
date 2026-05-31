@@ -32,8 +32,6 @@ create table products (
   min_price_cents int not null,
   max_price_cents int not null,
   sale_price_cents int,
-  average_rating float not null default 0,
-  review_count int not null default 0,
   stock int not null default 1,
   weight float,
   weight_unit text not null default 'oz',

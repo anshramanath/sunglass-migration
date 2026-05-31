@@ -58,6 +58,9 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - Initialized from WooCommerce `is_in_stock`: `true → 1`, `false → 0`.
 - Owner can update to real quantities later. Frontend treats `stock > 0` as in stock.
 
+## Dropped fields
+- `average_rating` and `review_count` — dropped entirely. App builds its own review system from scratch.
+
 ## Database
 - Supabase/Postgres, multi-brand schema
 - `service_role` key used by backend — bypasses RLS
