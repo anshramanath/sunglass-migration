@@ -1,5 +1,6 @@
-migration/products/
+migration/items/
 migration/reshaped/
+migration/recategorized/
 migration/images/
 migration/venv/
 **/__pycache__/

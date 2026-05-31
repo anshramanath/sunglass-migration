@@ -21,7 +21,7 @@ with open(IMAGES_DIR / "url_map.json") as f:
 with open(IMAGES_DIR / "upload_map.json") as f:
     upload_map = json.load(f)
 
-with open(BASE / "reshaped/shaped_items.json") as f:
+with open(BASE / "recategorized/categorized_items.json") as f:
     products = json.load(f)
 
 
@@ -46,23 +46,23 @@ cur.execute("INSERT INTO brands (name, slug) VALUES (%s, %s) RETURNING id;", ("B
 brand_id = cur.fetchone()[0]
 conn.commit()
 
-# Collect and insert all unique categories
-all_category_names = {
-    cat["name"]
-    for product in products
-    for cat in product.get("categories", [])
-    if cat.get("name")
-}
-
-print(f"Inserting {len(all_category_names)} categories...")
+# Category tree: (parent_id, slug) → uuid
+# Built lazily as products are processed
 category_id_map = {}
-for name in all_category_names:
-    cur.execute(
-        "INSERT INTO categories (brand_id, name) VALUES (%s, %s) RETURNING id;",
-        (brand_id, name),
-    )
-    category_id_map[name] = cur.fetchone()[0]
-conn.commit()
+
+def ensure_category(path):
+    """Walk a root-to-leaf path, insert any missing nodes, return leaf id."""
+    parent_id = None
+    for node in path:
+        key = (parent_id, node["slug"])
+        if key not in category_id_map:
+            cur.execute(
+                "INSERT INTO categories (brand_id, parent_id, name, slug) VALUES (%s, %s, %s, %s) RETURNING id;",
+                (brand_id, parent_id, node["name"], node["slug"]),
+            )
+            category_id_map[key] = cur.fetchone()[0]
+        parent_id = category_id_map[key]
+    return parent_id
 
 # Products
 print(f"Inserting {len(products)} products...")
@@ -112,14 +112,13 @@ for i, product in enumerate(products):
     )
     product_id = cur.fetchone()[0]
 
-    # product_categories
-    for cat in product.get("categories", []):
-        cat_id = category_id_map.get(cat.get("name"))
-        if cat_id:
-            cur.execute(
-                "INSERT INTO product_categories (product_id, category_id) VALUES (%s, %s);",
-                (product_id, cat_id),
-            )
+    # product_categories — categories is [[{level, name, slug}]]
+    for path in product.get("categories", []):
+        leaf_id = ensure_category(path)
+        cur.execute(
+            "INSERT INTO product_categories (product_id, category_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
+            (product_id, leaf_id),
+        )
 
     # product_images
     for j, img in enumerate(product.get("images", [])):

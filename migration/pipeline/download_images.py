@@ -1,5 +1,4 @@
 import json
-import os
 import time
 from urllib.parse import urlparse
 from pathlib import Path
@@ -9,13 +8,14 @@ BASE = Path(__file__).parent.parent  # migration/
 IMAGES_DIR = BASE / "images"
 LOCAL_DIR = IMAGES_DIR / "local"
 URL_MAP_PATH = IMAGES_DIR / "url_map.json"
-SKIPPED_PATH = IMAGES_DIR / "skipped.json"
+FAILED_PATH = IMAGES_DIR / "failed.json"
 
 
-def get_filename(url, used_filenames):
+def get_filename(url, sku, used_filenames, filename_to_sku, collisions):
     name = (urlparse(url).path.rstrip("/").split("/")[-1] or "image").split("?")[0]
     if name not in used_filenames:
         used_filenames.add(name)
+        filename_to_sku[name] = sku
         return name
     base, _, ext = name.rpartition(".")
     if not base:
@@ -25,7 +25,11 @@ def get_filename(url, used_filenames):
         candidate = f"{base}_{i}.{ext}" if ext else f"{base}_{i}"
         if candidate not in used_filenames:
             used_filenames.add(candidate)
-            print(f"  COLLISION {name} → {candidate}  ({url})")
+            collisions.append({
+                "existing": {"name": name, "sku": filename_to_sku.get(name, "unknown")},
+                "tried": {"name": candidate, "sku": sku},
+            })
+            filename_to_sku[candidate] = sku
             return candidate
         i += 1
 
@@ -46,25 +50,27 @@ def download_image(url, local_path):
 
 
 def collect_urls(items):
-    for product in products:
-        for img in product.get("images", []):
+    for item in items:
+        sku = item.get("sku", "unknown")
+        for img in item.get("images", []):
             if img.get("src"):
-                yield img["src"]
-        for url in product.get("descriptionImgs", []):
+                yield sku, img["src"]
+        for url in item.get("descriptionImgs", []):
             if url:
-                yield url
-        for var_entry in product.get("variations", []):
+                yield sku, url
+        for var_entry in item.get("variations", []):
             var = var_entry.get("variation", {})
+            vsku = var.get("sku") or sku
             for img in var.get("images", []):
                 if img.get("src"):
-                    yield img["src"]
+                    yield vsku, img["src"]
             for url in var.get("descriptionImgs", []):
                 if url:
-                    yield url
+                    yield vsku, url
 
 
-with open(BASE / "reshaped/shaped_items.json") as f:
-    products = json.load(f)
+with open(BASE / "recategorized/categorized_items.json") as f:
+    items = json.load(f)
 
 IMAGES_DIR.mkdir(exist_ok=True)
 LOCAL_DIR.mkdir(exist_ok=True)
@@ -75,42 +81,55 @@ if URL_MAP_PATH.exists():
 else:
     url_map = {}
 
+if FAILED_PATH.exists():
+    with open(FAILED_PATH) as f:
+        failed_data = json.load(f)
+    failed_urls = set(failed_data.get("failed_to_download", []))
+    collisions = failed_data.get("collisions", [])
+else:
+    failed_urls = set()
+    collisions = []
+
+# Build url → sku for all URLs (needed for collision reporting on cached files too)
+url_to_sku = {}
+for sku, url in collect_urls(items):
+    if url not in url_to_sku:
+        url_to_sku[url] = sku
+
+# Filenames already claimed by cached downloads
 used_filenames = set(Path(p).name for p in url_map.values())
+filename_to_sku = {Path(local).name: url_to_sku.get(url, "unknown") for url, local in url_map.items()}
 
-total = downloaded = skipped = failed = 0
-skipped_urls = []
+# URLs not yet downloaded, preserving first-seen order
+all_urls = [url for url in url_to_sku if url not in url_map]
 
-all_urls = list(dict.fromkeys(collect_urls(items)))  # dedupe, preserve order
+total = downloaded = failed = 0
 
-print(f"Downloading images for {len(items)} clean products...\n")
-print(f"{len(all_urls)} unique image URLs found\n")
+print(f"Downloading images for {len(items)} items...")
+print(f"{len(url_to_sku)} unique URLs ({len(url_map)} already cached, {len(all_urls)} to download)\n")
 
 for url in all_urls:
     total += 1
-
-    if url in url_map and os.path.exists(url_map[url]):
-        skipped += 1
-        continue
-
-    filename = get_filename(url, used_filenames)  # only reached for new URLs
+    sku = url_to_sku[url]
+    filename = get_filename(url, sku, used_filenames, filename_to_sku, collisions)
     local_path = str(LOCAL_DIR / filename)
 
     if download_image(url, local_path):
         url_map[url] = local_path
+        failed_urls.discard(url)
         downloaded += 1
         with open(URL_MAP_PATH, "w") as f:
             json.dump(url_map, f, indent=2, ensure_ascii=False)
     else:
-        skipped_urls.append(url)
+        failed_urls.add(url)
         failed += 1
+
+    with open(FAILED_PATH, "w") as f:
+        json.dump({"failed_to_download": sorted(failed_urls), "collisions": collisions}, f, indent=2, ensure_ascii=False)
 
     time.sleep(0.05)
 
-with open(SKIPPED_PATH, "w") as f:
-    json.dump(skipped_urls, f, indent=2, ensure_ascii=False)
-
 print(f"Done.")
 print(f"  {downloaded} downloaded")
-print(f"  {skipped} already cached")
-print(f"  {failed} failed → {SKIPPED_PATH}")
+print(f"  {failed} failed → {FAILED_PATH}")
 print(f"  {total} total")
