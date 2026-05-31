@@ -65,7 +65,7 @@ create table variations (
   length float,
   width float,
   height float,
-  dimension_unit text not null default 'in',
+  dimension_unit text not null default 'in'
 );
 
 create table product_images (
