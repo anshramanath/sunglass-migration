@@ -7,23 +7,23 @@ BASE = Path(__file__).parent.parent  # migration/
 
 # ── load raw data ─────────────────────────────────────────────────────────────
 
-with open(BASE / "products/products.json") as f:
+with open(BASE / "items/products.json") as f:
     raw_products = json.load(f)
 
-with open(BASE / "products/variations/variations.json") as f:
+with open(BASE / "items/variations/variations.json") as f:
     raw_variations_by_parent = json.load(f)
 
 # ── load all reshaped buckets ─────────────────────────────────────────────────
 
 BUCKETS = {
-    "clean":                     BASE / "reshaped/clean_products_shape.json",
-    "zero_price":                BASE / "reshaped/zero_price_products_shape.json",
-    "invalid_sku":               BASE / "reshaped/invalid_sku_products_shape.json",
-    "missing_attributes":        BASE / "reshaped/missing_attributes_products_shape.json",
-    "no_image":                  BASE / "reshaped/no_image_products_shape.json",
-    "duplicate_name":            BASE / "reshaped/duplicate_name_products_shape.json",
-    "no_weight":                 BASE / "reshaped/no_weight_products_shape.json",
-    "multiple_variation_images": BASE / "reshaped/multiple_variation_images_products_shape.json",
+    "clean":                     BASE / "reshaped/clean_items.json",
+    "zero_price":                BASE / "reshaped/zero_price_items.json",
+    "invalid_sku":               BASE / "reshaped/invalid_sku_items.json",
+    "missing_attributes":        BASE / "reshaped/missing_attributes_items.json",
+    "no_image":                  BASE / "reshaped/no_image_items.json",
+    "duplicate_name":            BASE / "reshaped/duplicate_name_items.json",
+    "no_weight":                 BASE / "reshaped/no_weight_items.json",
+    "multiple_variation_images": BASE / "reshaped/multiple_variation_images_items.json",
 }
 
 reshaped = {}

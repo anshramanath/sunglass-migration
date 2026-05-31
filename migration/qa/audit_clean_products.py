@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE = Path(__file__).parent.parent  # migration/
 
-with open(BASE / "reshaped/clean_products_shape.json") as f:
+with open(BASE / "reshaped/clean_items.json") as f:
     products = json.load(f)
 
 total = len(products)

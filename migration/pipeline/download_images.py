@@ -45,7 +45,7 @@ def download_image(url, local_path):
         return False
 
 
-def collect_urls(products):
+def collect_urls(items):
     for product in products:
         for img in product.get("images", []):
             if img.get("src"):
@@ -63,7 +63,7 @@ def collect_urls(products):
                     yield url
 
 
-with open(BASE / "reshaped/clean_products_shape.json") as f:
+with open(BASE / "reshaped/clean_items.json") as f:
     products = json.load(f)
 
 IMAGES_DIR.mkdir(exist_ok=True)
@@ -80,9 +80,9 @@ used_filenames = set(Path(p).name for p in url_map.values())
 total = downloaded = skipped = failed = 0
 skipped_urls = []
 
-all_urls = list(dict.fromkeys(collect_urls(products)))  # dedupe, preserve order
+all_urls = list(dict.fromkeys(collect_urls(items)))  # dedupe, preserve order
 
-print(f"Downloading images for {len(products)} clean products...\n")
+print(f"Downloading images for {len(items)} clean products...\n")
 print(f"{len(all_urls)} unique image URLs found\n")
 
 for url in all_urls:

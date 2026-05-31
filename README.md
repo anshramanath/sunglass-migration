@@ -1,4 +1,5 @@
 # 🕶️ Bikershades Migration
+_Last updated: 2026-05-30_
 
 Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean, normalized schema for a new multi-brand app backed by Supabase.
 
@@ -11,10 +12,10 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 |---|---|
 | `fetch_products.py` | Fetches all 647 products from the WooCommerce API |
 | `fetch_variations.py` | Fetches all 6,064 product variations |
-| `reshape_products.py` | Cleans and normalizes raw data, buckets by issue type |
+| `reshape_items.py` | Cleans and normalizes raw data, buckets by issue type |
 | `download_images.py` | Downloads all product, variation, and description images locally |
 | `upload_images.py` | Uploads local images to Supabase Storage, outputs `upload_map.json` |
-| `import_products.py` | Inserts clean products into Supabase DB |
+| `import_items.py` | Inserts clean products into Supabase DB |
 
 **QA** (`migration/qa/`)
 | File | Description |
@@ -54,13 +55,13 @@ fetch_products.py       → products.json (647 products)
         ↓
 fetch_variations.py     → variations.json (6,064 variations)
         ↓
-reshape_products.py     → 7 bucketed JSON files in reshaped/
+reshape_items.py     → 7 bucketed JSON files in reshaped/
         ↓
 download_images.py      → 2,785 images downloaded locally
         ↓
 upload_images.py        → images uploaded to Supabase Storage, upload_map.json written
         ↓
-import_products.py      → 589 clean products inserted into Supabase DB
+import_items.py      → 589 clean products inserted into Supabase DB
 ```
 
 ---
@@ -97,7 +98,7 @@ python migration/pipeline/fetch_variations.py
 
 **6. Reshape into clean schema**
 ```bash
-python migration/pipeline/reshape_products.py
+python migration/pipeline/reshape_items.py
 ```
 
 **7. Download images**
@@ -114,7 +115,7 @@ python migration/pipeline/upload_images.py
 
 **9. Import products into DB**
 ```bash
-python migration/pipeline/import_products.py
+python migration/pipeline/import_items.py
 ```
 ⚠️ Wipes all existing product data first (`TRUNCATE brands CASCADE`), then inserts fresh.
 
@@ -138,14 +139,14 @@ python migration/pipeline/import_products.py
 
 | File | Count | Reason |
 |---|---|---|
-| `clean_products_shape.json` | 588 | ✅ Ready for import |
-| `invalid_sku_products_shape.json` | 22 | ⚠️ SKU is null or contains a space |
-| `no_weight_products_shape.json` | 14 | ⚠️ Missing or zero weight (needed for shipping) |
-| `zero_price_products_shape.json` | 8 | ⚠️ Price is zero — internal/service products |
-| `missing_attributes_products_shape.json` | 7 | ⚠️ Variations with no attribute data |
-| `duplicate_name_products_shape.json` | 6 | ⚠️ Same name as another product |
-| `no_image_products_shape.json` | 3 | ⚠️ No images at all |
-| `multiple_variation_images_products_shape.json` | 1 | ⚠️ Variation has more than 1 image — likely WooCommerce misconfiguration |
+| `clean_items.json` | 588 | ✅ Ready for import |
+| `invalid_sku_items.json` | 22 | ⚠️ SKU is null or contains a space |
+| `no_weight_items.json` | 14 | ⚠️ Missing or zero weight (needed for shipping) |
+| `zero_price_items.json` | 8 | ⚠️ Price is zero — internal/service products |
+| `missing_attributes_items.json` | 7 | ⚠️ Variations with no attribute data |
+| `duplicate_name_items.json` | 6 | ⚠️ Same name as another product |
+| `no_image_items.json` | 3 | ⚠️ No images at all |
+| `multiple_variation_images_items.json` | 1 | ⚠️ Variation has more than 1 image — likely WooCommerce misconfiguration |
 
 ---
 
@@ -189,11 +190,17 @@ Current direction:
   "reviewCount": 12,
   "inStock": true,
   "categories": [
-    { "name": "ProSport", "slug": "prosport-sunglasses", "link": "https://bikershades.com/product-category/motorcycle-sunglasses/brands/prosport-sunglasses/" }
+    "https://bikershades.com/product-category/motorcycle-sunglasses/brands/prosport-sunglasses/"
   ],
   "images": [{ "src": "https://...", "name": "Backspin Front" }],
   "attributes": [
-    { "name": "color", "terms": ["blue-green-smoke", "glossy-black-green-smoke"] }
+    {
+      "name": "color",
+      "terms": [
+        { "name": "Blue Green Smoke", "slug": "blue-green-smoke" },
+        { "name": "Glossy Black Green Smoke", "slug": "glossy-black-green-smoke" }
+      ]
+    }
   ],
   "variations": [
     {

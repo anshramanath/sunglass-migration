@@ -1,4 +1,5 @@
 # Bikershades WooCommerce Product Migration Guide
+_Last updated: 2026-05-30_
 
 This guide walks through how to migrate product data from the current WordPress/WooCommerce site into your own app/database.
 

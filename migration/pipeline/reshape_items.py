@@ -6,10 +6,10 @@ from pathlib import Path
 BASE = Path(__file__).parent.parent  # migration/
 (BASE / "reshaped").mkdir(exist_ok=True)
 
-with open(BASE / "products/products.json", "r", encoding="utf-8") as f:
-    products = json.load(f)
+with open(BASE / "items/products.json", "r", encoding="utf-8") as f:
+    raw_products = json.load(f)
 
-with open(BASE / "products/variations/variations.json", "r", encoding="utf-8") as f:
+with open(BASE / "items/variations/variations.json", "r", encoding="utf-8") as f:
     variations_by_parent = json.load(f)
 
 
@@ -108,20 +108,28 @@ def reshape_product(product, variation_stubs, full_variations_map):
     sale_price = int(prices.get("sale_price") or 0)
     sale = product.get("on_sale", False) and sale_price < regular_price
 
-    # Group attributes by mapped name
+    # Group attributes by mapped slug, carry name+slug for both attribute and terms
     attributes_map = {}
     for attr in product.get("attributes", []):
         raw_name = attr.get("name", "")
-        mapped = ATTRIBUTE_NAME_MAP.get(raw_name, slugify(raw_name))
-        terms = [t.get("slug") for t in attr.get("terms", []) if t.get("slug")]
+        mapped_slug = ATTRIBUTE_NAME_MAP.get(raw_name, slugify(raw_name))
+        terms = []
+        for t in attr.get("terms", []):
+            if not t.get("slug"):
+                continue
+            slug = t["slug"]
+            if mapped_slug == "power":
+                slug = normalize_power_slug(slug)
+            terms.append({"name": t.get("name", ""), "slug": slug})
         if terms:
-            if mapped in attributes_map:
+            if mapped_slug in attributes_map:
+                existing_slugs = {t["slug"] for t in attributes_map[mapped_slug]["terms"]}
                 for t in terms:
-                    if t not in attributes_map[mapped]:
-                        attributes_map[mapped].append(t)
+                    if t["slug"] not in existing_slugs:
+                        attributes_map[mapped_slug]["terms"].append(t)
             else:
-                attributes_map[mapped] = terms
-    attributes = [{"name": k, "terms": v} for k, v in attributes_map.items()]
+                attributes_map[mapped_slug] = {"name": mapped_slug, "terms": terms}
+    attributes = list(attributes_map.values())
 
     # Build variations array
     variations = []
@@ -133,7 +141,15 @@ def reshape_product(product, variation_stubs, full_variations_map):
         if not full_var:
             continue
 
-        stub_values = [a.get("value") for a in stub_attrs if a.get("value")]
+        stub_values = []
+        for a in stub_attrs:
+            val = a.get("value")
+            if not val:
+                continue
+            attr_name = ATTRIBUTE_NAME_MAP.get(a.get("name", ""), slugify(a.get("name", "")))
+            if attr_name == "power":
+                val = normalize_power_slug(val)
+            stub_values.append(val)
 
         variations.append({
             "attribute": stub_values,
@@ -147,11 +163,11 @@ def reshape_product(product, variation_stubs, full_variations_map):
         if img.get("src")
     ]
 
-    # Categories as objects with all three fields
+    # Keep only link — name and slug derived during recategorization
     categories = [
-        {"name": c.get("name"), "slug": c.get("slug"), "link": c.get("link")}
+        c.get("link")
         for c in product.get("categories", [])
-        if c.get("slug")
+        if c.get("link")
     ]
 
     # Weight and dimensions
@@ -245,26 +261,33 @@ def is_valid_sku(sku):
     return sku and " " not in sku
 
 
+def normalize_power_slug(slug):
+    m = re.match(r'^(\d+)-(\d+)$', slug)
+    if m:
+        return '%s.%s' % (m.group(1), m.group(2))
+    return slug
+
+
 from collections import Counter
 
 # Pre-compute duplicate cleaned names across all non-zero-price products
 all_names = []
-for product in products:
+for product in raw_products:
     prices = product.get("prices") or {}
     if int(prices.get("regular_price") or 0) > 0:
         all_names.append(clean_name(product.get("name", "")))
 duplicate_names = {name for name, count in Counter(all_names).items() if count > 1}
 
-clean_products = []
-zero_price_products = []
-invalid_sku_products = []
-missing_attributes_products = []
-no_image_products = []
-duplicate_name_products = []
-no_weight_products = []
-multiple_variation_images_products = []
+clean_items = []
+zero_price_items = []
+invalid_sku_items = []
+missing_attributes_items = []
+no_image_items = []
+duplicate_name_items = []
+no_weight_items = []
+multiple_variation_images_items = []
 
-for product in products:
+for product in raw_products:
     prices = product.get("prices") or {}
     regular_price = int(prices.get("regular_price") or 0)
 
@@ -273,7 +296,7 @@ for product in products:
         variation_stubs = product.get("variations", [])
         full_variations = variations_by_parent.get(parent_id, [])
         full_variations_map = {v["id"]: v for v in full_variations}
-        zero_price_products.append(reshape_product(product, variation_stubs, full_variations_map))
+        zero_price_items.append(reshape_product(product, variation_stubs, full_variations_map))
         continue
 
     parent_id = str(product.get("id"))
@@ -294,49 +317,49 @@ for product in products:
     )
 
     if not is_valid_sku(clean_product.get("sku")):
-        invalid_sku_products.append(clean_product)
+        invalid_sku_items.append(clean_product)
     elif has_missing_attrs:
-        missing_attributes_products.append(clean_product)
+        missing_attributes_items.append(clean_product)
     elif not clean_product.get("images"):
-        no_image_products.append(clean_product)
+        no_image_items.append(clean_product)
     elif clean_product.get("name") in duplicate_names:
-        duplicate_name_products.append(clean_product)
+        duplicate_name_items.append(clean_product)
     elif not clean_product.get("weight"):
-        no_weight_products.append(clean_product)
+        no_weight_items.append(clean_product)
     elif has_multiple_variation_images:
-        multiple_variation_images_products.append(clean_product)
+        multiple_variation_images_items.append(clean_product)
     else:
-        clean_products.append(clean_product)
+        clean_items.append(clean_product)
 
-with open(BASE / "reshaped/clean_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(clean_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/clean_items.json", "w", encoding="utf-8") as f:
+    json.dump(clean_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/invalid_sku_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(invalid_sku_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/invalid_sku_items.json", "w", encoding="utf-8") as f:
+    json.dump(invalid_sku_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/zero_price_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(zero_price_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/zero_price_items.json", "w", encoding="utf-8") as f:
+    json.dump(zero_price_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/missing_attributes_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(missing_attributes_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/missing_attributes_items.json", "w", encoding="utf-8") as f:
+    json.dump(missing_attributes_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/no_image_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(no_image_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/no_image_items.json", "w", encoding="utf-8") as f:
+    json.dump(no_image_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/duplicate_name_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(duplicate_name_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/duplicate_name_items.json", "w", encoding="utf-8") as f:
+    json.dump(duplicate_name_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/no_weight_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(no_weight_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/no_weight_items.json", "w", encoding="utf-8") as f:
+    json.dump(no_weight_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/multiple_variation_images_products_shape.json", "w", encoding="utf-8") as f:
-    json.dump(multiple_variation_images_products, f, indent=2, ensure_ascii=False)
+with open(BASE / "reshaped/multiple_variation_images_items.json", "w", encoding="utf-8") as f:
+    json.dump(multiple_variation_images_items, f, indent=2, ensure_ascii=False)
 
-print(f"Zero-price products: {len(zero_price_products)} → zero_price_products.json")
-print(f"Invalid SKU products: {len(invalid_sku_products)} → invalid_sku_products.json")
-print(f"Missing attributes products: {len(missing_attributes_products)} → missing_attributes_products.json")
-print(f"No image products: {len(no_image_products)} → no_image_products.json")
-print(f"Duplicate name products: {len(duplicate_name_products)} → duplicate_name_products.json")
-print(f"No weight products: {len(no_weight_products)} → no_weight_products.json")
-print(f"Multiple variation images products: {len(multiple_variation_images_products)} → multiple_variation_images_products.json")
-print(f"Clean products: {len(clean_products)} → clean_products.json")
+print(f"Zero-price items:              {len(zero_price_items)} → zero_price_items.json")
+print(f"Invalid SKU items:             {len(invalid_sku_items)} → invalid_sku_items.json")
+print(f"Missing attributes items:      {len(missing_attributes_items)} → missing_attributes_items.json")
+print(f"No image items:                {len(no_image_items)} → no_image_items.json")
+print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate_name_items.json")
+print(f"No weight items:               {len(no_weight_items)} → no_weight_items.json")
+print(f"Multiple variation image items:{len(multiple_variation_images_items)} → multiple_variation_images_items.json")
+print(f"Clean items:                   {len(clean_items)} → clean_items.json")

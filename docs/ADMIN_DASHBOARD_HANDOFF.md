@@ -1,4 +1,5 @@
 # Admin Dashboard — Handoff
+_Last updated: 2026-05-30_
 
 Everything needed to build the backend admin dashboard server.
 

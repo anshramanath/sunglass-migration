@@ -1,4 +1,5 @@
 # Bikershades Migration Progress
+_Last updated: 2026-05-30_
 
 ## Overview
 
@@ -16,36 +17,36 @@ bikershades-migration/
   README.md / PROGRESS.md / CLAUDE.md
   .env / .env.example / .gitignore
   docs/
-    AUDIT_REPORT.md
+    AUDIT_CLEAN_PRODUCTS.md
     bikershades_migration_guide.md
   migration/
     requirements.txt
     pipeline/
       fetch_products.py              ← step 1
       fetch_variations.py            ← step 2
-      reshape_products.py            ← step 3
+      reshape_items.py            ← step 3
       download_images.py             ← step 4
       upload_images.py               ← step 5
-      import_products.py             ← step 6
+      import_items.py             ← step 6
     qa/
       audit_clean_products.py
       verify_reshape.py
     db/
       001_initial_schema.sql
       drop_schema.sql
-    products/
+    items/
       products.json                  ← raw WooCommerce backup (647 products)
       variations/
         variations.json              ← per-variation data (6,064 variations)
     reshaped/
-      clean_products_shape.json                     ← 586 clean products
-      zero_price_products_shape.json                ← 8 internal/service products
-      invalid_sku_products_shape.json               ← 22 products with invalid SKUs
-      missing_attributes_products_shape.json        ← 7 products with unrecoverable variation attributes
-      no_image_products_shape.json                  ← 3 products with no images
-      duplicate_name_products_shape.json            ← 6 products with duplicate names
-      no_weight_products_shape.json                 ← 14 products with no/zero weight
-      multiple_variation_images_products_shape.json ← 1 product with variations having >1 image
+      clean_items.json                     ← 586 clean products
+      zero_price_items.json                ← 8 internal/service products
+      invalid_sku_items.json               ← 22 products with invalid SKUs
+      missing_attributes_items.json        ← 7 products with unrecoverable variation attributes
+      no_image_items.json                  ← 3 products with no images
+      duplicate_name_items.json            ← 6 products with duplicate names
+      no_weight_items.json                 ← 14 products with no/zero weight
+      multiple_variation_images_items.json ← 1 product with variations having >1 image
     reshaped-problems/
       diagnosis.md / treatment.md / *_review.md
     images/
@@ -80,7 +81,7 @@ bikershades-migration/
 - Crash-safe: checkpoints after every individual download via `url_map.json`
 
 ### Step 3 — Reshape products
-**Script:** `reshape_products.py`
+**Script:** `reshape_items.py`
 **Result:** 7 output files in `reshaped/` — 589 clean, 647 total split by issue type
 
 Key reshape decisions applied:
@@ -188,10 +189,10 @@ Fetches full variation data for every variation ID found in `products.json`. Sav
 | `average_rating` | `averageRating` | normalized to float, seed data for new review system |
 | `review_count` | `reviewCount` | seed data for new review system |
 | `is_in_stock` | `inStock` | |
-| `categories[].name/slug/link` | `categories[]` | array of `{name, slug, link}` objects — link is the source of truth for hierarchy; slug is the unique identifier per node; name is the display label |
+| `categories[].link` | `categories[]` | flat array of link URLs — name and slug derived during recategorization; link is the source of truth for hierarchy |
 | `images[].src` | `images[].src` | full res original only |
 | `images[].name` | `images[].name` | |
-| `attributes[].terms[].slug` | `attributes[]` | flat array of term slugs, all attributes kept regardless of `has_variations` |
+| `attributes[]` | `attributes[]` | array of `{name, terms[]}` — name is the mapped attribute key (e.g. "color"); terms are `{name, slug}` objects. Power term slugs normalized: `1-00` → `1.00` (WooCommerce stored the same diopter values under two inconsistent slug formats) |
 | `variations` (merged with variations.json) | `variations[]` | each entry: `{ attribute: ["black-clear", "1-00"], variation: {...full variation object} }` — `attribute` uses raw stub values as-is |
 | `weight` | `weight` | string → number |
 | `dimensions` | `dimensions` | all strings → numbers |
@@ -251,7 +252,7 @@ Whether a product is variable is determined solely by whether `variations` is no
 
 1. ~~**Filter out zero-price products**~~ — resolved. 8 products filtered in reshape.
 
-2. ~~**`short_description` parsing fallback**~~ — resolved. Plain text fallback implemented in `reshape_products.py`.
+2. ~~**`short_description` parsing fallback**~~ — resolved. Plain text fallback implemented in `reshape_items.py`.
 
 3. ~~**990 description image URLs across 587 products + 4 variations**~~ — downloaded. Some 404 (old deleted files). `url_map.json` per shape tracks what was successfully saved.
 
@@ -354,11 +355,11 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 ## Up Next
 
 - [x] Wait for `variations.json` to complete
-- [x] Write `reshape_products.py` — normalize WooCommerce schema into clean app schema
+- [x] Write `reshape_items.py` — normalize WooCommerce schema into clean app schema
 - [x] Write `download_images.py` — download all product/variation images locally (2,785 images)
 - [x] Decide database schema — finalized (see below)
 - [x] Upload images to Supabase Storage — 2,559 unique images uploaded to `bikershades` bucket (public, per-brand bucket model). 1 timed out on first run, retried successfully. `upload_map.json` written: `local_path → storage_url`.
-- [x] Write import script — `import_products.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → description_images. Variation image inserted inline on the variation row (`image_src`, `image_name`). Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
+- [x] Write import script — `import_items.py`. Wipes DB (TRUNCATE brands CASCADE), inserts in FK order: brands → categories → products → product_categories → variations → product_images → description_images. Variation image inserted inline on the variation row (`image_src`, `image_name`). Resolves image srcs via `url_map + upload_map` chain; drops any image not in both maps.
 - [x] Run import — 589 products, 63 categories, 1 brand inserted successfully. Exit code 0.
 - [x] Audit clean products — all fields validated for existence and correct values. Only issue: 2 products (`PL46X10AP-0`, `PL46X10AP-BK-DRO`) had `weight = 0.0`. Fixed: reshape now catches `weight = 0.0` alongside `null`, both moved to `no_weight` bucket. Clean bucket now 586.
 - [x] Verify reshape — `verify_reshape.py` confirms all 647 products accounted for, no duplicates, all slugs/SKUs/prices match raw, no data loss. `verify_no_data_loss.py` merged into this script. 3 apparent description losses confirmed as HTML-only descriptions — correctly captured in `descriptionImgs` instead.
