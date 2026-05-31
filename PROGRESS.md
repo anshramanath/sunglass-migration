@@ -387,8 +387,10 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Re-upload images to Supabase Storage — 2,531 uploaded. 1 file in-flight at kill recovered via 409 Duplicate patch. Full chain intact.
 - [x] Drop and re-apply schema in Supabase — clean slate with updated schema.
 - [x] Re-run import — 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images. All QA passed. Results in `docs/completed_2.md`.
-- [x] Reshape improved — 2 new buckets: `missing_attributes` (5, empty variation attribute list) and `mismatched_attr` (22, variation slugs not in product terms). Attribute cleanup: unused product terms stripped so every color button has a real variation. Also: zero price now caught post-reshape (variable products with all-zero variation prices). Clean bucket: 564, total flagged: 83.
-- [ ] Re-run full pipeline with improved reshape (recategorize → download → upload → re-import)
+- [x] Reshape improved — 2 new buckets: `missing_attributes` (5, empty variation attribute list) and `mismatched_attr` (22, variation slugs not in product terms). Attribute cleanup: unused product terms stripped so every color button has a real variation. Zero price now caught post-reshape too. Clean bucket: 564, total flagged: 83.
+- [x] Schema overhauled — `variation.variation` inner array removed (redundant); `variations.variation` column renamed to `attribute text[] not null`; `image_src/image_name` removed from variations; new `variation_images` table added (same pattern as `product_images`).
+- [x] Variation image dedup in reshape — variation images that duplicate a parent product image are stripped. Reduces DB rows and prevents re-rendering the same image. Download count unchanged (url_map already deduplicates by URL).
+- [ ] Drop and re-apply schema in Supabase, then re-run full pipeline (reshape → recategorize → download → upload → import)
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing/mismatched attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

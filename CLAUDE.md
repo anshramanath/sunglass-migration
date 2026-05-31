@@ -91,5 +91,12 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 
 ## Current state
 - **Run 2 complete.** DB seeded: 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images.
-- **Reshape improved (post-run-2):** 2 new buckets added — `missing_attributes` (5, variations with empty attribute list) and `mismatched_attr` (22, variation slugs not in product terms). Attribute cleanup: unused product attribute terms silently stripped so every color button shown has a real variation behind it. Clean bucket now 564.
-- **Next: re-run full pipeline** (reshape → recategorize → download → upload → re-import) with improved reshape, then owner review of 83 flagged items.
+- **Schema + reshape overhauled (post-run-2):**
+  - `variation.variation` inner array removed — redundant (was always same as `variation.attribute`)
+  - `variations.variation text[]` → `variations.attribute text[] not null default '{}'`
+  - `variations.image_src/image_name` removed — replaced with `variation_images` table (same pattern as `product_images`)
+  - 2 new reshape buckets: `missing_attributes` (5) and `mismatched_attr` (22)
+  - Attribute cleanup: unused product attribute terms stripped so every color button has a real variation
+  - Variation images that duplicate a parent product image are stripped during reshape — no redundant DB rows or re-renders
+  - Clean bucket: 564
+- **Next: drop + re-apply schema → re-run full pipeline** (reshape → recategorize → download → upload → import), then owner review of 83 flagged items.

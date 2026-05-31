@@ -98,7 +98,19 @@ dup_slugs = cur.fetchall()
 check("No duplicate product slugs", not dup_slugs,
       f"{[s for s, _ in dup_slugs[:3]]}")
 
-# ── 8. Category leaf slugs match source paths ─────────────────────────────────
+# ── 8. Variation image count matches source (after parent dedup) ──────────────
+
+expected_var_imgs = sum(
+    len(ve["variation"].get("images", []))
+    for i in items
+    for ve in i.get("variations", [])
+)
+cur.execute("SELECT COUNT(*) FROM variation_images;")
+db_var_imgs = cur.fetchone()[0]
+check(f"Variation image count matches ({db_var_imgs} in DB, {expected_var_imgs} expected)",
+      db_var_imgs == expected_var_imgs)
+
+# ── 9. Category leaf slugs match source paths ─────────────────────────────────
 
 cur.execute("""
     SELECT p.sku, c.slug FROM products p

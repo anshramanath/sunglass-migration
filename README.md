@@ -263,8 +263,9 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 | `categories` | Nav categories, scoped per brand — self-referential `parent_id` forms a tree the owner can edit, create, and restructure through the admin |
 | `products` | Core product catalog |
 | `product_categories` | Many-to-many junction |
-| `variations` | Per-color/option variation data — includes `image_src` and `image_name` directly on the row (variations have at most 1 image) |
+| `variations` | Per-color/option variation data — `attribute text[]` stores the selection combo |
 | `product_images` | Product gallery images |
+| `variation_images` | Variation-specific images (unique shots not already in product gallery) |
 | `description_images` | Images embedded in description HTML |
 | `admins` | Gates admin dashboard access via Supabase Auth |
 
@@ -276,7 +277,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 - [x] Fetch all variations (6,064)
 - [x] Reshape into clean schema — 564 clean, 83 flagged across 8 buckets
 - [x] Recategorize — 581 ready, 2 no-category, 3 single-leaf
-- [x] Design database schema (price range, stock int, no ratings)
+- [x] Design database schema (price range, stock int, no ratings, variation_images table)
 - [x] Download images — 2,531 downloaded, 30 permanent 404s
 - [x] Upload images to Supabase Storage — 2,531 uploaded, 0 broken
 - [x] Drop and re-apply schema in Supabase
