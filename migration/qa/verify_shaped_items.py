@@ -103,12 +103,14 @@ for p in reshaped["shaped"]:
     sale_p = p.get("salePriceCents")
     sale = p.get("sale", False)
 
-    if not sku or " " in sku:
-        shaped_violations.append(f"invalid sku: {sku}")
+    if is_variable and sku is not None:
+        shaped_violations.append(f"variable product has non-null sku: {sku}")
+    if not is_variable and (not sku or " " in sku):
+        shaped_violations.append(f"simple product has invalid sku: {sku}")
     if not p.get("images"):
-        shaped_violations.append(f"no images: {sku}")
+        shaped_violations.append(f"no images: {sku or p.get('slug')}")
     if not min_p:
-        shaped_violations.append(f"zero min price: {sku}")
+        shaped_violations.append(f"zero min price: {sku or p.get('slug')}")
 
     if is_variable:
         var_prices = [ve["variation"].get("regularPriceCents", 0) for ve in variations]
@@ -169,8 +171,12 @@ check("All SKUs globally unique (product + variation) within shaped bucket", not
 
 # ── 9. Invalid SKU items correctly bucketed ───────────────────────────────────
 
-invalid_in_shaped = [p["sku"] for p in reshaped["shaped"] if not p.get("sku") or " " in (p.get("sku") or "")]
-check("No invalid SKUs in shaped bucket", not invalid_in_shaped, f"{invalid_in_shaped}")
+invalid_in_shaped = [
+    p.get("sku") or p["slug"]
+    for p in reshaped["shaped"]
+    if not p.get("variations") and (not p.get("sku") or " " in (p.get("sku") or ""))
+]
+check("No invalid SKUs in shaped bucket (simple products)", not invalid_in_shaped, f"{invalid_in_shaped}")
 
 # ── 10. Variation attributes consistent with product attributes ───────────────
 

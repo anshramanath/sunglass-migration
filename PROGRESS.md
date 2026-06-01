@@ -19,18 +19,27 @@ Full results in `docs/completed_3.md`.
 - Global SKU uniqueness enforced in reshape: post-processing pass over all buckets, maintains `seen_skus` set, moves any product with a collision (product vs variation, or vs another product) to `duplicate_sku_items` bucket. 5 products caught.
 - `verify_import.py` updated: variation image expected count filters to only resolvable images (in url_map + upload_map). 10 variation image URLs are permanent 404s — never downloaded, never uploaded, correctly dropped at import. Same failure class as the other 11 in `failed.json`.
 
-### Reshape buckets (run 3)
+### Reshape buckets (run 3, post-SKU-nullification)
 
 | Bucket | Count |
 |--------|------:|
-| `shaped_items.json` | 577 ✅ |
+| `shaped_items.json` | 582 ✅ |
 | `mismatched_attr_items.json` | 22 |
-| `invalid_sku_items.json` | 21 |
+| `invalid_sku_items.json` | 17 |
 | `duplicate_name_items.json` | 6 |
-| `duplicate_sku_items.json` | 5 |
 | `missing_attributes_items.json` | 5 |
-| `zero_price_items.json` | 8 |
+| `zero_price_items.json` | 9 |
 | `no_image_items.json` | 3 |
+| `duplicate_sku_items.json` | 3 |
+
+### Post-run-3 reshape change: variable product SKU nullification
+
+Variable products now have `sku: null` in the reshaped output. The product SKU on a variable product is meaningless — the sellable units are the variations, each with their own SKU. Keeping the parent SKU caused false `duplicate_sku` collisions (parent SKU == variation SKU on some products) and was never used in the DB.
+
+- `invalid_sku` dropped from 21 → 17: variable products with null/bad parent SKUs no longer flagged
+- `duplicate_sku` dropped from 5 → 3: parent-vs-variation collisions resolved
+- `shaped` increased from 577 → 582
+- `verify_shaped_items.py` updated: invariant now asserts variable products have `sku: null`, simple products have a valid non-space SKU
 
 ---
 

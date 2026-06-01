@@ -161,14 +161,14 @@ python migration/pipeline/import_items.py
 ### `reshaped/` — output of `reshape_items.py`
 | File | Count | Reason |
 |---|---|---|
-| `shaped_items.json` | 577 | ✅ Passes to recategorize |
+| `shaped_items.json` | 582 | ✅ Passes to recategorize |
 | `mismatched_attr_items.json` | 22 | ⚠️ Variation slugs not in product attribute terms |
-| `invalid_sku_items.json` | 21 | ⚠️ SKU is null or contains a space |
+| `invalid_sku_items.json` | 17 | ⚠️ Simple product SKU is null or contains a space |
 | `duplicate_name_items.json` | 6 | ⚠️ Same name as another item |
-| `duplicate_sku_items.json` | 5 | ⚠️ Global SKU collision — product or variation SKU appears in another product |
 | `missing_attributes_items.json` | 5 | ⚠️ Variations with completely empty attribute list |
-| `zero_price_items.json` | 8 | ⚠️ Price is zero (product or all variations) |
+| `zero_price_items.json` | 9 | ⚠️ Price is zero (product or all variations) |
 | `no_image_items.json` | 3 | ⚠️ No images at all |
+| `duplicate_sku_items.json` | 3 | ⚠️ Global variation SKU collision across products |
 
 > Products with null/invalid weight or dimensions pass through to shaped with those fields nulled. Surfaced in the admin dashboard for the owner to fill in.
 
@@ -266,7 +266,7 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
 - [x] Fetch all products (647)
 - [x] Fetch all variations (6,064)
-- [x] Reshape into clean schema — 577 clean, 70 flagged across 8 buckets
+- [x] Reshape into clean schema — 582 clean, 65 flagged across 8 buckets
 - [x] Recategorize — 573 ready, 2 no-category, 2 single-leaf
 - [x] Design database schema (price range, stock int, no ratings, variation_images table, nullable weight/dimensions/sale)
 - [x] Download images (2,465 downloaded, 11 permanent 404s)

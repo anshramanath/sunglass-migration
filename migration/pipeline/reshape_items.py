@@ -219,7 +219,7 @@ def reshape_product(product, variation_stubs, full_variations_map):
     return {
         "name": clean_name(product.get("name")),
         "slug": product.get("slug"),
-        "sku": product.get("sku") or None,
+        "sku": None if variations else (product.get("sku") or None),
         "wpUrl": product.get("permalink"),
         "productUrl": product_url,
         "description": strip_html(product.get("description") or ""),
@@ -376,7 +376,8 @@ for product in raw_products:
         for ve in clean_product.get("variations", [])
     )
 
-    if not is_valid_sku(clean_product.get("sku")):
+    is_variable = bool(clean_product.get("variations"))
+    if not is_variable and not is_valid_sku(clean_product.get("sku")):
         invalid_sku_items.append(clean_product)
     elif clean_product.get("minPriceCents", 0) == 0:
         zero_price_items.append(clean_product)

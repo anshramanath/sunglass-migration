@@ -81,9 +81,11 @@ Taken directly from WooCommerce — already URL-safe and unique. Used for fronte
 
 ### `sku`
 
-`null` if missing or blank. Invalid SKUs (null or containing spaces) go to `invalid_sku_items` bucket — not imported. Global uniqueness enforced via post-processing pass in reshape: product SKU and all variation SKUs are pooled into a global set. If any collide, the whole product goes to `duplicate_sku_items`.
+**Variable products:** always `null`. The product-level SKU on a variable product is meaningless — the sellable units are the variations, each with their own SKU. Keeping it caused false collisions (when a parent SKU matched one of its own variation SKUs) and was never used in the DB or frontend.
 
-**Why global uniqueness matters:** the DB has a `UNIQUE` constraint on `variations.sku`. If two products share a variation SKU, the import fails. Enforcing this at reshape time surfaces the problem before import rather than crashing mid-run.
+**Simple products:** taken from WooCommerce, `null` if missing or blank. Invalid SKUs (null or containing spaces) go to `invalid_sku_items`.
+
+Global uniqueness enforced via post-processing pass across all buckets: all variation SKUs (and simple product SKUs) are pooled into a global set. Any collision moves the whole product to `duplicate_sku_items`. The DB has a `UNIQUE` constraint on `variations.sku` — enforcing this at reshape time surfaces collisions before import rather than crashing mid-run.
 
 ---
 

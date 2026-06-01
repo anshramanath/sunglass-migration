@@ -73,14 +73,14 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 ## Output buckets
 
 ### reshaped/ (step 3)
-- `shaped_items.json` — 577 ✅
+- `shaped_items.json` — 582 ✅
 - `mismatched_attr_items.json` — 22 (variation slugs not in product attribute terms)
-- `invalid_sku_items.json` — 21
+- `invalid_sku_items.json` — 17 (simple products only — variable products never have a product SKU)
 - `duplicate_name_items.json` — 6
-- `duplicate_sku_items.json` — 5 (global SKU collision — product or variation SKU seen in another product)
+- `duplicate_sku_items.json` — 3 (global SKU collision — variation SKU seen in another product)
 - `missing_attributes_items.json` — 5 (variations with completely empty attribute list)
 - `no_image_items.json` — 3
-- `zero_price_items.json` — 8 (includes variable products with all-zero variation prices)
+- `zero_price_items.json` — 9 (includes variable products with all-zero variation prices)
 
 ### recategorized/ (step 4)
 - `categorized_items.json` — 573 ✅ ready for import (all paths end at leaf nodes only)
@@ -92,6 +92,5 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 
 ## Current state
 - **Run 3 complete.** DB seeded: 573 products, 5,296 variations, 56 categories, 2,530 product images, 1,899 variation images, 912 description images.
-- **Clean bucket: 577 | Categorized: 573**
-- **74 products pending owner review** across 9 flagged buckets (see `docs/completed_3.md` for breakdown)
-- **Next: share flagged buckets with owner for review → fix + re-import as needed**
+- **Post-run-3 reshape change:** Variable products now have `sku: null` — only variation SKUs matter for variable products. Simple products retain their SKU. Clean bucket: 582.
+- **Next: re-run full pipeline with updated reshape → re-import, or share flagged buckets with owner first
