@@ -333,7 +333,6 @@ invalid_sku_items = []
 missing_attributes_items = []
 no_image_items = []
 duplicate_name_items = []
-multiple_variation_images_items = []
 mismatched_attr_items = []
 
 for product in raw_products:
@@ -376,11 +375,6 @@ for product in raw_products:
         for ve in clean_product.get("variations", [])
     )
 
-    has_multiple_variation_images = any(
-        len(v.get("variation", {}).get("images", [])) > 1
-        for v in clean_product.get("variations", [])
-    )
-
     if not is_valid_sku(clean_product.get("sku")):
         invalid_sku_items.append(clean_product)
     elif clean_product.get("minPriceCents", 0) == 0:
@@ -393,8 +387,6 @@ for product in raw_products:
         no_image_items.append(clean_product)
     elif clean_product.get("name") in duplicate_names:
         duplicate_name_items.append(clean_product)
-    elif has_multiple_variation_images:
-        multiple_variation_images_items.append(clean_product)
     else:
         clean_items.append(clean_product)
 
@@ -416,9 +408,6 @@ with open(BASE / "reshaped/no_image_items.json", "w", encoding="utf-8") as f:
 with open(BASE / "reshaped/duplicate_name_items.json", "w", encoding="utf-8") as f:
     json.dump(duplicate_name_items, f, indent=2, ensure_ascii=False)
 
-with open(BASE / "reshaped/multiple_variation_images_items.json", "w", encoding="utf-8") as f:
-    json.dump(multiple_variation_images_items, f, indent=2, ensure_ascii=False)
-
 with open(BASE / "reshaped/mismatched_attr_items.json", "w", encoding="utf-8") as f:
     json.dump(mismatched_attr_items, f, indent=2, ensure_ascii=False)
 
@@ -427,7 +416,6 @@ print(f"Invalid SKU items:             {len(invalid_sku_items)} → invalid_sku_
 print(f"Missing attributes items:      {len(missing_attributes_items)} → missing_attributes_items.json")
 print(f"No image items:                {len(no_image_items)} → no_image_items.json")
 print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate_name_items.json")
-print(f"Multiple variation image items:{len(multiple_variation_images_items)} → multiple_variation_images_items.json")
 print(f"Mismatched attr items:         {len(mismatched_attr_items)} → mismatched_attr_items.json")
 print(f"Shaped items:                  {len(clean_items)} → shaped_items.json")
 print()

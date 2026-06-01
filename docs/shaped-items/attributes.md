@@ -1,7 +1,7 @@
 # Attributes — Clean Products
 _Last updated: 2026-05-31_
 
-10 attribute types across 578 clean products.
+10 attribute types across 579 clean products.
 
 **Note:** Product attribute terms are now trimmed to only what variations actually use. Unused terms are stripped during reshape — so counts here reflect what's actually selectable on the frontend.
 
@@ -9,7 +9,7 @@ _Last updated: 2026-05-31_
 
 ## color
 
-**Products:** 443 | **Unique terms:** 422
+**Products:** 444 | **Unique terms:** 422
 
 The primary variation attribute — nearly every variable product. Drives color swatches on listing and product pages.
 
@@ -43,7 +43,7 @@ Previously 28 terms due to WooCommerce storing the same values with two slug for
 
 ## transition-type
 
-**Products:** 71 | **Unique terms:** 11
+**Products:** 72 | **Unique terms:** 11
 
 Photochromic lens transition options for Eclipse XT products. All "Clear to X" variants — some include anti-reflective coating or flash mirror finishes.
 

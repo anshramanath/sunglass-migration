@@ -17,7 +17,6 @@ BUCKETS = {
     "missing_attributes":        BASE / "reshaped/missing_attributes_items.json",
     "no_image":                  BASE / "reshaped/no_image_items.json",
     "duplicate_name":            BASE / "reshaped/duplicate_name_items.json",
-    "multiple_variation_images": BASE / "reshaped/multiple_variation_images_items.json",
     "mismatched_attr":           BASE / "reshaped/mismatched_attr_items.json",
 }
 
@@ -148,9 +147,6 @@ for p in reshaped["shaped"]:
             shaped_violations.append(f"simple product sale=true but salePriceCents null: {sku}")
         if not sale and sale_p is not None:
             shaped_violations.append(f"simple product sale=false but salePriceCents non-null: {sku}")
-
-    if any(len(ve.get("variation", {}).get("images", [])) > 1 for ve in variations):
-        shaped_violations.append(f"variation >1 image: {sku}")
 
 check("Shaped bucket passes all invariants (sku, weight, images, price)", not shaped_violations,
       f"{shaped_violations[:3]}")
