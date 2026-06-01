@@ -61,11 +61,11 @@ create table variations (
   sale_price_cents int,
   stock int not null default 1,
   weight float,
-  weight_unit text not null default 'oz',
+  weight_unit text,
   length float,
   width float,
   height float,
-  dimension_unit text not null default 'in'
+  dimension_unit text
 );
 
 create table product_images (

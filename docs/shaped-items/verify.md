@@ -22,7 +22,7 @@ _Last updated: 2026-05-31_
 | Power term slugs normalized — no hyphen format (`1-00`) | ✅ |
 | Categories are flat WooCommerce link arrays | ✅ |
 | Attributes have `{name, terms[{name, slug}]}` structure | ✅ |
-| Shaped bucket passes all invariants (SKU, weight, images, price, stock 0 or 1, no variation with >1 image) | ✅ |
+| Shaped bucket passes all invariants (SKU, weight, images, stock 0 or 1, no variation with >1 image, price min/max from variation regulars, variable salePriceCents null, variation/simple sale↔salePriceCents consistent) | ✅ |
 | All SKUs unique across all buckets | ✅ |
 | No invalid SKUs in shaped bucket | ✅ |
 | Variation attributes consistent with product attributes | ✅ |

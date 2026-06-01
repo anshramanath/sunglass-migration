@@ -47,6 +47,6 @@ All 10 failures are permanent 404s — images that no longer exist on bikershade
 
 ## Notes
 
-- Down from 2,561 in previous run — reflects 22 fewer products (new reshape buckets), duplicate variation images stripped, and variation description images removed.
+- Down from 2,531 in run 2 — reflects variation images stripped when they duplicate a parent product image, and variation description images removed entirely (now product-only).
 - Image naming: path after `/uploads/` or `/gallery/` with `/` → `_`. Globally unique — no collisions.
 - `url_map.json` is the source of truth: `bikershades URL → local path`.

@@ -25,7 +25,7 @@ _Last updated: 2026-05-31_
 | `product.weightUnit` (valid, not N/A) | ✅ 564 / 564 |
 | `variation.slug/sku/wpUrl/productUrl` | ✅ 5,364 / 5,364 |
 | `variation.regularPriceCents` (> 0) | ✅ 5,364 / 5,364 |
-| `variation.salePriceCents` (valid when sale=true) | ✅ 5,364 / 5,364 |
+| `variation.salePriceCents` (null ↔ sale=false, non-null and < regular ↔ sale=true) | ✅ 5,364 / 5,364 |
 | `variation.stock` (0 or 1) | ✅ 5,364 / 5,364 |
 | `variation.attribute` (not empty) | ✅ 5,364 / 5,364 |
 
@@ -52,8 +52,9 @@ Expected gaps, not bugs.
 
 - `averageRating` and `reviewCount` are not present — dropped entirely. App builds its own review system.
 - `product.attributes` empty (114 products) = simple products with no variation options. Correct — they have no `variations[]` either.
-- Variable products have `salePriceCents = null` — price range is `minPriceCents`–`maxPriceCents` derived from variations.
-- Simple products have `minPriceCents = maxPriceCents = regularPrice`.
+- Variable products have `salePriceCents = null` — price range is `minPriceCents`–`maxPriceCents` derived from variation regular prices (not effective prices). Frontend needs to query variations for actual sale prices.
+- Simple products have `minPriceCents = maxPriceCents = regularPrice`. `salePriceCents` is null when not on sale, set when on sale.
+- Variation `salePriceCents` is nullable: null when `sale=false`, a value (always < `regularPriceCents`) when `sale=true`. The `sale` bool is always the authoritative flag.
 - Product attribute terms are trimmed to only what variations actually use — unused terms stripped during reshape.
 - `weightUnit` and `dimensionUnit` are derived from the last word of WooCommerce's `formatted_weight` / `formatted_dimensions` fields — not hardcoded. Products with null or `N/A` weight/weightUnit are flagged to `invalid_weight_items`.
 - `product.dimensions` are optional. Partial dimensions or dimensions with a bad/missing unit are silently nulled during reshape (all three set to null, `dimensionUnit` set to null) and the product passes through. 42 products (7.4%) have null dimensions.
