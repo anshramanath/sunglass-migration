@@ -14,6 +14,7 @@ BUCKETS = {
     "shaped":                    BASE / "reshaped/shaped_items.json",
     "zero_price":                BASE / "reshaped/zero_price_items.json",
     "invalid_sku":               BASE / "reshaped/invalid_sku_items.json",
+    "duplicate_sku":             BASE / "reshaped/duplicate_sku_items.json",
     "missing_attributes":        BASE / "reshaped/missing_attributes_items.json",
     "no_image":                  BASE / "reshaped/no_image_items.json",
     "duplicate_name":            BASE / "reshaped/duplicate_name_items.json",

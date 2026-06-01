@@ -330,6 +330,7 @@ duplicate_names = {name for name, count in Counter(all_names).items() if count >
 clean_items = []
 zero_price_items = []
 invalid_sku_items = []
+duplicate_sku_items = []
 missing_attributes_items = []
 no_image_items = []
 duplicate_name_items = []
@@ -390,11 +391,42 @@ for product in raw_products:
     else:
         clean_items.append(clean_product)
 
+# Post-processing: pull any product with a globally duplicate SKU into duplicate_sku_items.
+# Walk every bucket, add SKUs to seen; if any SKU already claimed, move whole product out.
+seen_skus = set()
+all_buckets = [
+    clean_items,
+    zero_price_items,
+    invalid_sku_items,
+    missing_attributes_items,
+    no_image_items,
+    duplicate_name_items,
+    mismatched_attr_items,
+]
+for bucket in all_buckets:
+    keep = []
+    for p in bucket:
+        skus = [p["sku"]] if p.get("sku") else []
+        for ve in p.get("variations", []):
+            v_sku = ve.get("variation", {}).get("sku")
+            if v_sku:
+                skus.append(v_sku)
+        unique = set(skus)
+        if len(unique) < len(skus) or unique & seen_skus:
+            duplicate_sku_items.append(p)
+        else:
+            seen_skus.update(unique)
+            keep.append(p)
+    bucket[:] = keep
+
 with open(BASE / "reshaped/shaped_items.json", "w", encoding="utf-8") as f:
     json.dump(clean_items, f, indent=2, ensure_ascii=False)
 
 with open(BASE / "reshaped/invalid_sku_items.json", "w", encoding="utf-8") as f:
     json.dump(invalid_sku_items, f, indent=2, ensure_ascii=False)
+
+with open(BASE / "reshaped/duplicate_sku_items.json", "w", encoding="utf-8") as f:
+    json.dump(duplicate_sku_items, f, indent=2, ensure_ascii=False)
 
 with open(BASE / "reshaped/zero_price_items.json", "w", encoding="utf-8") as f:
     json.dump(zero_price_items, f, indent=2, ensure_ascii=False)
@@ -413,6 +445,7 @@ with open(BASE / "reshaped/mismatched_attr_items.json", "w", encoding="utf-8") a
 
 print(f"Zero-price items:              {len(zero_price_items)} → zero_price_items.json")
 print(f"Invalid SKU items:             {len(invalid_sku_items)} → invalid_sku_items.json")
+print(f"Duplicate SKU items:           {len(duplicate_sku_items)} → duplicate_sku_items.json")
 print(f"Missing attributes items:      {len(missing_attributes_items)} → missing_attributes_items.json")
 print(f"No image items:                {len(no_image_items)} → no_image_items.json")
 print(f"Duplicate name items:          {len(duplicate_name_items)} → duplicate_name_items.json")

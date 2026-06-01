@@ -1,7 +1,7 @@
 # Uploaded Images Verify
 _Last updated: 2026-05-31_
 
-**Source:** Full chain `bikershades URL → url_map → local path → upload_map → Supabase URL` for all 2,531 files
+**Source:** Full chain `bikershades URL → url_map → local path → upload_map → Supabase URL` for all 2,467 files
 
 ---
 
@@ -26,7 +26,7 @@ _Last updated: 2026-05-31_
 
 | Metric | Value |
 |--------|------:|
-| Local files (url_map) | 2,531 |
-| Uploaded (upload_map) | 2,531 |
-| Full chain resolvable | 2,531 |
+| Local files (url_map) | 2,467 |
+| Uploaded (upload_map) | 2,467 |
+| Full chain resolvable | 2,467 |
 | Broken chain (dropped at import) | 0 |
