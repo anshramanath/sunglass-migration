@@ -1,7 +1,7 @@
 # Attributes — Clean Products
 _Last updated: 2026-05-31_
 
-10 attribute types across 579 clean products.
+8 attribute types across 577 clean products.
 
 **Note:** Product attribute terms are now trimmed to only what variations actually use. Unused terms are stripped during reshape — so counts here reflect what's actually selectable on the frontend.
 
@@ -121,24 +121,6 @@ Same product as `brand`. Removable foam seal option.
 
 ---
 
-## quantity-packs-3
-
-**Products:** 1 | **Unique terms:** 4
-**Product:** [PM 2.5 Medical Face Masks – PACK OF THREE!](https://bikershades.com/shop/accessories/safety-protection/cotton-face-mask/)
-
-Pack quantity selector. Not a color/style attribute — it's a quantity picker.
-
-**Issue:** Slugs are the raw name string with spaces and parentheses — not URL-safe.
-
-| Name | Slug |
-|------|------|
-| 1 pack (3 masks total) | `1 pack (3 masks total)` |
-| 2 packs (6 masks total) | `2 packs (6 masks total)` |
-| 5 packs (15 masks total) | `5 packs (15 masks total)` |
-| 10 packs (30 masks total) | `10 packs (30 masks total)` |
-
----
-
 ## lens-genuine-transition
 
 **Products:** 1 | **Unique terms:** 2
@@ -155,18 +137,6 @@ Genuine Transitions® lens options on a single product.
 
 ---
 
-## original-price
-
-**Products:** 1 | **Unique terms:** 5
-
-Single-product attribute used as a reference price on a try-before-you-buy or return-label type product. Not a selectable variation option in the traditional sense — the slug values are price strings.
-
-**Issue:** Slugs are raw price strings, not URL-safe attribute identifiers.
-
-*(Full term list in `shaped_items.json`.)*
-
----
-
 ## Issues Summary
 
 | Attribute | Issue | Status |
@@ -174,5 +144,4 @@ Single-product attribute used as a reference price on a try-before-you-buy or re
 | `color` | Capitalization duplicates (`black`/`Black`, `tortoise`/`Tortoise`, etc.) and `-2` suffix slugs | Open |
 | `power` | Duplicate terms with two slug formats (`1-00` and `1.00`) | ✅ Resolved in reshape |
 | `frame-color` | `"Matte Black"` slug is un-normalized (`Matte Black` instead of `matte-black`) | Open |
-| `quantity-packs-3` | Slugs are raw name strings with spaces and parentheses | Open |
 | `lens-genuine-transition` | Slugs are internal WooCommerce labels, not derived from names | Open |

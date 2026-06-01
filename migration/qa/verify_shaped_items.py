@@ -152,11 +152,19 @@ for p in reshaped["shaped"]:
 check("Shaped bucket passes all invariants (sku, weight, images, price)", not shaped_violations,
       f"{shaped_violations[:3]}")
 
-# ── 8. All SKUs unique across all buckets ────────────────────────────────────
+# ── 8. All SKUs globally unique (product + variation) within shaped bucket ────
 
-sku_counts = Counter(p["sku"] for p in all_items if p.get("sku"))
+all_sku_list = []
+for p in reshaped["shaped"]:
+    if p.get("sku"):
+        all_sku_list.append(p["sku"])
+    for ve in p.get("variations", []):
+        v_sku = ve.get("variation", {}).get("sku")
+        if v_sku:
+            all_sku_list.append(v_sku)
+sku_counts = Counter(all_sku_list)
 duplicate_skus = {s: c for s, c in sku_counts.items() if c > 1}
-check("All SKUs unique across all buckets", not duplicate_skus,
+check("All SKUs globally unique (product + variation) within shaped bucket", not duplicate_skus,
       f"{len(duplicate_skus)} duplicates: {list(duplicate_skus)[:3]}")
 
 # ── 9. Invalid SKU items correctly bucketed ───────────────────────────────────

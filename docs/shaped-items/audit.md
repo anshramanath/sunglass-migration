@@ -2,13 +2,13 @@
 _Last updated: 2026-05-31_
 
 **Source:** `reshaped/shaped_items.json`
-**Products:** 579 | **Variations:** 5,423
+**Products:** 577 | **Variations:** 5,414
 
 ---
 
 ## Result
 
-**Zero critical issues.** All required fields are present and valid across all 579 products and 5,423 variations.
+**Zero critical issues.** All required fields are present and valid across all 577 products and 5,414 variations.
 
 ---
 
@@ -16,16 +16,16 @@ _Last updated: 2026-05-31_
 
 | Field | Status |
 |-------|--------|
-| `product.name/slug/sku/wpUrl/productUrl` | ✅ 579 / 579 |
-| `product.minPriceCents` (> 0) | ✅ 579 / 579 |
-| `product.maxPriceCents` (≥ minPriceCents) | ✅ 579 / 579 |
-| `product.salePriceCents` (valid when sale=true, null for variable) | ✅ 579 / 579 |
-| `product.stock` (0 or 1) | ✅ 579 / 579 |
-| `variation.slug/sku/wpUrl/productUrl` | ✅ 5,423 / 5,423 |
-| `variation.regularPriceCents` (> 0) | ✅ 5,423 / 5,423 |
-| `variation.salePriceCents` (null ↔ sale=false, non-null and < regular ↔ sale=true) | ✅ 5,423 / 5,423 |
-| `variation.stock` (0 or 1) | ✅ 5,423 / 5,423 |
-| `variation.attribute` (not empty) | ✅ 5,423 / 5,423 |
+| `product.name/slug/sku/wpUrl/productUrl` | ✅ 577 / 577 |
+| `product.minPriceCents` (> 0) | ✅ 577 / 577 |
+| `product.maxPriceCents` (≥ minPriceCents) | ✅ 577 / 577 |
+| `product.salePriceCents` (valid when sale=true, null for variable) | ✅ 577 / 577 |
+| `product.stock` (0 or 1) | ✅ 577 / 577 |
+| `variation.slug/sku/wpUrl/productUrl` | ✅ 5,414 / 5,414 |
+| `variation.regularPriceCents` (> 0) | ✅ 5,414 / 5,414 |
+| `variation.salePriceCents` (null ↔ sale=false, non-null and < regular ↔ sale=true) | ✅ 5,414 / 5,414 |
+| `variation.stock` (0 or 1) | ✅ 5,414 / 5,414 |
+| `variation.attribute` (not empty) | ✅ 5,414 / 5,414 |
 
 ---
 
@@ -35,16 +35,16 @@ Expected gaps, not bugs.
 
 | Field | Missing | Total | % | Notes |
 |-------|--------:|------:|--:|-------|
-| `product.summary` | 183 | 579 | 31.6% | WooCommerce short description was blank — frontend hides this section when empty |
-| `product.attributes` | 121 | 579 | 20.9% | Simple products with no variation options — expected |
-| `product.dimensions.length/width/height` | 51 | 579 | 8.8% | Dimensions are optional — partial or bad-unit dimensions silently nulled |
-| `product.descriptionImgs` | 30 | 579 | 5.2% | No images embedded in description HTML — expected |
-| `product.description` | 21 | 579 | 3.6% | No description text — expected |
-| `product.weight` | 14 | 579 | 2.4% | Missing/0.0/bad-unit weight nulled — owner can fill in via dashboard |
-| `variation.description` | 2,498 | 5,423 | 46.1% | Most variations have no description — frontend falls back to parent |
-| `variation.images` | 3,522 | 5,423 | 64.9% | Variation images stripped if they duplicate a parent image — frontend falls back to product gallery |
-| `variation.dimensions.length/width/height` | 184 | 5,423 | 3.4% | Variations without dimension data — expected |
-| `variation.weight` | 17 | 5,423 | 0.3% | Missing/0.0/bad-unit weight nulled independently per variation |
+| `product.summary` | 183 | 577 | 31.7% | WooCommerce short description was blank — frontend hides this section when empty |
+| `product.attributes` | 121 | 577 | 21.0% | Simple products with no variation options — expected |
+| `product.dimensions.length/width/height` | 49 | 577 | 8.5% | Dimensions are optional — partial or bad-unit dimensions silently nulled |
+| `product.descriptionImgs` | 28 | 577 | 4.9% | No images embedded in description HTML — expected |
+| `product.description` | 21 | 577 | 3.6% | No description text — expected |
+| `product.weight` | 13 | 577 | 2.3% | Missing/0.0/bad-unit weight nulled — owner can fill in via dashboard |
+| `variation.description` | 2,489 | 5,414 | 46.0% | Most variations have no description — frontend falls back to parent |
+| `variation.images` | 3,513 | 5,414 | 64.9% | Variation images stripped if they duplicate a parent image — frontend falls back to product gallery |
+| `variation.dimensions.length/width/height` | 175 | 5,414 | 3.2% | Variations without dimension data — expected |
+| `variation.weight` | 12 | 5,414 | 0.2% | Missing/0.0/bad-unit weight nulled independently per variation |
 
 ---
 
