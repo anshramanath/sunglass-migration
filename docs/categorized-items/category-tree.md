@@ -66,7 +66,7 @@ Transitions/
 └── Eclipse XT/
     ├── 7eye Eclipse XT (19)
     ├── BikerArmour Eclipse XT (26)
-    └── WileyX Eclipse XT (26)
+    └── WileyX Eclipse XT (27)
 
 Try Before You Buy (7)
 
