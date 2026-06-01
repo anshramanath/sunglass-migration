@@ -1,5 +1,5 @@
 # Bikershades Migration — Claude Context
-_Last updated: 2026-05-31_
+_Last updated: 2026-06-01_
 
 ## What this is
 Migrating product data from bikershades.com (WordPress/WooCommerce) into a new multi-brand Supabase-backed app. All scripts live in `migration/`.
@@ -25,7 +25,7 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 - `migration/qa/audit_uploaded_images.py` — checks upload_map coverage, URL validity, missing files
 - `migration/qa/verify_uploaded_images.py` — full chain resolvable end-to-end for all images
 - `migration/qa/audit_import.py` — DB row counts, brands, category tree depth, duplicate SKUs, products with no images
-- `migration/qa/verify_import.py` — SKUs, field values, variation counts, category leaf slugs all match source
+- `migration/qa/verify_import.py` — SKUs, field values, variation counts, category leaf slugs all match source; variation image expected count uses only resolvable images (in url_map + upload_map) — permanent 404s are correctly dropped at import and excluded from the check
 
 ## Key files
 - `migration/db/001_initial_schema.sql` — source of truth for DB schema
@@ -37,6 +37,7 @@ All scripts runnable from repo root — paths are resolved relative to `__file__
 - `docs/shaped-items/attributes.md` — attribute types and terms across clean products
 - `docs/shaped-items/categories.md` — product counts per category link
 - `docs/categorized-items/categorized-problems/` — per-bucket review notes for no-category and single-leaf items
+- `docs/completed_3.md` — run 3 full pipeline results (current)
 - `docs/completed_2.md` — run 2 full pipeline results
 - `docs/completed_1.md` — run 1 results (pre price/stock schema changes)
 - `PROGRESS.md` — full decision log
@@ -66,49 +67,30 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - `service_role` key used by backend — bypasses RLS
 - Frontends never hit Supabase directly — go through Next.js backend
 - `admins` table gates admin access (no public signup)
-- Variation images stored in `variation_images` table (same pattern as `product_images`) — `variation_id`, `src`, `name`, `sort_order`. Allows multiple images per variation in the future. WooCommerce only had 1; >1 gets bucketed to `multiple_variation_images`.
+- Variation images stored in `variation_images` table (same pattern as `product_images`) — `variation_id`, `src`, `name`, `sort_order`. Allows multiple images per variation.
 
 ## Output buckets
 
 ### reshaped/ (step 3)
-- `shaped_items.json` — 578 ✅
-- `invalid_sku_items.json` — 22
-- `zero_price_items.json` — 10 (includes variable products with all-zero variation prices)
-- `missing_attributes_items.json` — 5 (variations with completely empty attribute list)
+- `shaped_items.json` — 577 ✅
 - `mismatched_attr_items.json` — 22 (variation slugs not in product attribute terms)
+- `invalid_sku_items.json` — 21
 - `duplicate_name_items.json` — 6
+- `duplicate_sku_items.json` — 5 (global SKU collision — product or variation SKU seen in another product)
+- `missing_attributes_items.json` — 5 (variations with completely empty attribute list)
 - `no_image_items.json` — 3
-- `multiple_variation_images_items.json` — 1
+- `zero_price_items.json` — 8 (includes variable products with all-zero variation prices)
 
 ### recategorized/ (step 4)
 - `categorized_items.json` — 573 ✅ ready for import (all paths end at leaf nodes only)
 - `no_category_items.json` — 2 (all categories dropped — owner review; see `docs/categorized-items/categorized-problems/no_category_review.md`)
-- `single_leaf_items.json` — 3 (only item in their leaf category — owner review; see `docs/categorized-items/categorized-problems/single_leaf_review.md`)
+- `single_leaf_items.json` — 2 (only item in their leaf category — owner review; see `docs/categorized-items/categorized-problems/single_leaf_review.md`)
 
 ## Environment
 `.env` at project root (gitignored). See `.env.example` for required variables. Scripts load it via `load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")`.
 
 ## Current state
-- **Run 2 complete.** DB seeded: 581 products, 5,649 variations, 54 categories, 2,618 product images, 935 description images.
-- **Schema + reshape overhauled (post-run-2):**
-  - `variation.variation` inner array removed — redundant
-  - `variations.variation text[]` → `variations.attribute text[] not null default '{}'`
-  - `variations.image_src/image_name` removed → `variation_images` table added
-  - `description_images` now product-only (`product_id not null`) — variation description images dropped (were always duplicates of parent)
-  - 2 new reshape buckets: `missing_attributes` (5) and `mismatched_attr` (22)
-  - Attribute cleanup: unused product attribute terms stripped so every color button has a real variation
-  - Variation images that duplicate a parent product image are stripped during reshape
-  - Clean bucket: 564 | Categorized: 559
-- **Price/sale + weight/unit overhaul (post-run-2):**
-  - `salePriceCents` now nullable on both products and variations — null = not on sale
-  - Variable products: `salePriceCents` always null; `sale = true` if any variation is on sale
-  - Variations: `salePriceCents` null when `sale=false`, value (< regularPriceCents) when `sale=true`
-  - Simple products: `salePriceCents` null when not on sale, value when on sale
-  - `weightUnit`/`dimensionUnit` derived from last word of `formatted_weight`/`formatted_dimensions` — not hardcoded
-  - Weight now treated like dimensions — null both `weight`/`weightUnit` if value missing/0.0 or unit invalid; checked independently per product and per variation; no bucketing
-  - `invalid_weight_items` bucket removed — 14 previously-bucketed products now in shaped with null weight; surfaced via dashboard
-  - Partial or bad-unit dimensions silently nulled (both weight and dimensions are now optional)
-  - `variations.sale_price_cents`, `variations.weight_unit`, `variations.dimension_unit` all changed to nullable in schema
-  - All 10 verify_shaped_items.py checks pass
-- **Clean bucket: 578 | Categorized: 573**
-- **Next: drop + re-apply schema → upload → import**
+- **Run 3 complete.** DB seeded: 573 products, 5,296 variations, 56 categories, 2,530 product images, 1,899 variation images, 912 description images.
+- **Clean bucket: 577 | Categorized: 573**
+- **74 products pending owner review** across 9 flagged buckets (see `docs/completed_3.md` for breakdown)
+- **Next: share flagged buckets with owner for review → fix + re-import as needed**

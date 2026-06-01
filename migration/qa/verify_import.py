@@ -10,6 +10,16 @@ load_dotenv(dotenv_path=BASE.parent / ".env")
 with open(BASE / "recategorized/categorized_items.json") as f:
     items = json.load(f)
 
+with open(BASE / "images/url_map.json") as f:
+    url_map = json.load(f)
+
+with open(BASE / "images/upload_map.json") as f:
+    upload_map = json.load(f)
+
+def resolvable(src):
+    local = url_map.get(src)
+    return bool(local and upload_map.get(local))
+
 conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 cur = conn.cursor()
 
@@ -101,9 +111,11 @@ check("No duplicate product slugs", not dup_slugs,
 # ── 8. Variation image count matches source (after parent dedup) ──────────────
 
 expected_var_imgs = sum(
-    len(ve["variation"].get("images", []))
+    1
     for i in items
     for ve in i.get("variations", [])
+    for img in ve.get("variation", {}).get("images", [])
+    if resolvable(img["src"])
 )
 cur.execute("SELECT COUNT(*) FROM variation_images;")
 db_var_imgs = cur.fetchone()[0]

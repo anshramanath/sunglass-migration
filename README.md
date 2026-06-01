@@ -1,5 +1,5 @@
 # 🕶️ Bikershades Migration
-_Last updated: 2026-05-31_
+_Last updated: 2026-06-01_
 
 Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean, normalized schema for a new multi-brand app backed by Supabase.
 
@@ -24,13 +24,13 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `audit_shaped_items.py` | Validates all fields in shaped items for existence and correct values |
 | `verify_shaped_items.py` | Cross-references reshaped output against raw — all 647 accounted for, no data loss |
 | `audit_categorized_items.py` | Validates category path structure — leaf-only assignments, valid levels/slugs, tree stats |
-| `verify_categorized_items.py` | Cross-references all three recategorized outputs — 578 total accounted for, no dropped/merged slugs |
+| `verify_categorized_items.py` | Cross-references all three recategorized outputs — 577 total accounted for, no dropped/merged slugs |
 | `audit_downloaded_images.py` | Checks url_map coverage, file integrity, failed/collision counts, coverage by image type |
 | `verify_downloaded_images.py` | Cross-references all image URLs in items against url_map and failed.json — no URLs lost |
 | `audit_uploaded_images.py` | Checks upload_map coverage, URL validity, missing files |
 | `verify_uploaded_images.py` | Verifies every downloaded file resolves to a Supabase URL end-to-end |
 | `audit_import.py` | Checks DB row counts, brands, category tree depth, duplicate SKUs, products with no images |
-| `verify_import.py` | Cross-references DB against source — SKUs, field values, variation counts, category leaf slugs |
+| `verify_import.py` | Cross-references DB against source — SKUs, field values, variation counts, category leaf slugs; variation image count excludes permanent 404s |
 
 **Schema** (`migration/db/`)
 | File | Description |
@@ -41,8 +41,9 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 **Docs** (`docs/`)
 | File | Description |
 |---|---|
-| `completed_1.md` | Run 1 results (pre price/stock schema changes) |
+| `completed_3.md` | Run 3 results (current) |
 | `completed_2.md` | Run 2 results |
+| `completed_1.md` | Run 1 results (pre price/stock schema changes) |
 | `shaped-items/` | Field-level audit, verify, attribute analysis, category link counts |
 | `categorized-items/` | Categorized items audit, verify, category tree, and per-bucket review notes |
 | `downloaded-images/` | Download audit and verify results |
@@ -69,11 +70,11 @@ fetch_products.py         → items/products.json (647 products)
         ↓
 fetch_variations.py       → items/variations.json (6,064 variations)
         ↓
-reshape_items.py          → reshaped/ — shaped_items.json (578) + 7 problem buckets
+reshape_items.py          → reshaped/ — shaped_items.json (577) + 7 problem buckets
         ↓
-recategorize_items.py     → recategorized/ — categorized_items.json (573) + no_category_items.json (2) + single_leaf_items.json (3)
+recategorize_items.py     → recategorized/ — categorized_items.json (573) + no_category_items.json (2) + single_leaf_items.json (2)
         ↓
-download_images.py        → images/local/ (2,444 images)
+download_images.py        → images/local/ (2,465 images)
         ↓
 upload_images.py          → images uploaded to Supabase Storage
         ↓
@@ -121,13 +122,13 @@ python migration/pipeline/reshape_items.py
 ```bash
 python migration/pipeline/recategorize_items.py
 ```
-Applies drops and merges, removes single-item leaves, strips non-leaf paths. Result: 8 trees, max depth 2 from root to leaf, products only at leaves. Outputs three buckets to `recategorized/`.
+Applies drops and merges, removes single-item leaves, strips non-leaf paths. Result: 8 trees, max depth 3, products only at leaves. Outputs three buckets to `recategorized/`.
 
 **8. Download images**
 ```bash
 python migration/pipeline/download_images.py
 ```
-✅ Crash-safe — checkpoints after every image via `url_map.json`. Images named using the path after `/uploads/` or `/gallery/` with `/` replaced by `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. Failed downloads tracked in `failed.json` with `{sku, src}`.
+✅ Crash-safe — checkpoints after every image via `url_map.json`. Images named using the path after `/uploads/` or `/gallery/` with `/` replaced by `_` (e.g. `2024_05_image.jpg`) — globally unique, no collisions. Failed downloads tracked in `failed.json`.
 
 **9. Upload images to Supabase Storage**
 ```bash
@@ -148,12 +149,10 @@ python migration/pipeline/import_items.py
 | | Count |
 |---|---|
 | Total products | 647 |
-| Variable products | 486 |
-| Simple products | 161 |
 | Total variations | 6,064 |
-| Shaped items (post-reshape) | 578 |
+| Shaped items (post-reshape) | 577 |
 | Categorized items (post-recategorize) | 573 |
-| Flagged for owner review | 69 |
+| Flagged for owner review | 74 |
 
 ---
 
@@ -162,23 +161,23 @@ python migration/pipeline/import_items.py
 ### `reshaped/` — output of `reshape_items.py`
 | File | Count | Reason |
 |---|---|---|
-| `shaped_items.json` | 578 | ✅ Passes to recategorize |
-| `invalid_sku_items.json` | 22 | ⚠️ SKU is null or contains a space |
+| `shaped_items.json` | 577 | ✅ Passes to recategorize |
 | `mismatched_attr_items.json` | 22 | ⚠️ Variation slugs not in product attribute terms |
-| `zero_price_items.json` | 10 | ⚠️ Price is zero (product or all variations) |
+| `invalid_sku_items.json` | 21 | ⚠️ SKU is null or contains a space |
 | `duplicate_name_items.json` | 6 | ⚠️ Same name as another item |
+| `duplicate_sku_items.json` | 5 | ⚠️ Global SKU collision — product or variation SKU appears in another product |
 | `missing_attributes_items.json` | 5 | ⚠️ Variations with completely empty attribute list |
+| `zero_price_items.json` | 8 | ⚠️ Price is zero (product or all variations) |
 | `no_image_items.json` | 3 | ⚠️ No images at all |
-| `multiple_variation_images_items.json` | 1 | ⚠️ Variation has more than 1 image |
 
-> Products with null/invalid weight (14) and null/invalid dimensions (51) pass through to shaped with those fields nulled. They are surfaced in the admin dashboard for the owner to fill in.
+> Products with null/invalid weight or dimensions pass through to shaped with those fields nulled. Surfaced in the admin dashboard for the owner to fill in.
 
 ### `recategorized/` — output of `recategorize_items.py`
 | File | Count | Reason |
 |---|---|---|
 | `categorized_items.json` | 573 | ✅ Ready for import — all paths end at leaf nodes |
 | `no_category_items.json` | 2 | ⚠️ All category links were dropped — owner review needed |
-| `single_leaf_items.json` | 3 | ⚠️ Only item in their leaf category — owner review needed |
+| `single_leaf_items.json` | 2 | ⚠️ Only item in their leaf category — owner review needed |
 
 ---
 
@@ -267,11 +266,10 @@ Multi-brand Supabase/Postgres. See `migration/db/001_initial_schema.sql`.
 
 - [x] Fetch all products (647)
 - [x] Fetch all variations (6,064)
-- [x] Reshape into clean schema — 578 clean, 69 flagged across 7 buckets
-- [x] Recategorize — 573 ready, 2 no-category, 3 single-leaf
-- [x] Design database schema (price range, stock int, no ratings, variation_images table, nullable weight/dimensions)
-- [x] Download images (2,444 downloaded, 10 permanent 404s)
-- [ ] Drop and re-apply schema in Supabase
-- [ ] Upload images to Supabase Storage
-- [ ] Import into Supabase DB
-- [ ] Owner review — fix or resolve flagged buckets (69 products)
+- [x] Reshape into clean schema — 577 clean, 70 flagged across 8 buckets
+- [x] Recategorize — 573 ready, 2 no-category, 2 single-leaf
+- [x] Design database schema (price range, stock int, no ratings, variation_images table, nullable weight/dimensions/sale)
+- [x] Download images (2,465 downloaded, 11 permanent 404s)
+- [x] Upload images to Supabase Storage (2,465 uploaded, 0 broken chain)
+- [x] Import into Supabase DB (573 products, all checks passed)
+- [ ] Owner review — fix or resolve flagged buckets (74 products)

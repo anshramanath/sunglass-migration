@@ -1,8 +1,8 @@
 # Imported Items Audit
-_Last updated: 2026-05-31_
+_Last updated: 2026-06-01_
 
 **Source:** Supabase DB
-**Products:** 581 | **Variations:** 5,649 | **Categories:** 54
+**Products:** 573 | **Variations:** 5,296 | **Categories:** 56
 
 ---
 
@@ -16,12 +16,13 @@ _Last updated: 2026-05-31_
 
 | Table | DB | Expected |
 |-------|---:|--------:|
-| `products` | 581 | 581 ✅ |
-| `variations` | 5,649 | 5,649 ✅ |
-| `categories` | 54 | — |
-| `product_categories` | 1,082 | — |
-| `product_images` | 2,618 | — |
-| `description_images` | 935 | — |
+| `products` | 573 | 573 ✅ |
+| `variations` | 5,296 | 5,296 ✅ |
+| `categories` | 56 | — |
+| `product_categories` | 1,067 | — |
+| `product_images` | 2,530 | — |
+| `variation_images` | 1,899 | — |
+| `description_images` | 912 | — |
 
 ---
 
@@ -30,7 +31,7 @@ _Last updated: 2026-05-31_
 | Depth | Count |
 |-------|------:|
 | 1 | 8 |
-| 2 | 18 |
+| 2 | 20 |
 | 3 | 28 |
 
 ---
@@ -41,7 +42,7 @@ _Last updated: 2026-05-31_
 |-------|--------|
 | Products with no images | 0 ✅ |
 | Products with no categories | 0 ✅ |
-| Variations with no image | 108 (frontend falls back to product) |
+| Variations with no image | 3,409 (frontend falls back to product) |
 | Duplicate product SKUs | 0 ✅ |
 | Duplicate variation SKUs | 0 ✅ |
 
@@ -50,3 +51,11 @@ _Last updated: 2026-05-31_
 ## Brands
 
 - BikerShades (`slug=bikershades`)
+
+---
+
+## Notes
+
+- `variation_images` replaces the previous `image_src`/`image_name` columns on variations — supports multiple images per variation with `sort_order`.
+- 10 variation images dropped at import (permanent 404s — in `failed.json`, not in `url_map`). All affected variations still have parent product images for frontend fallback.
+- `description_images` is product-only — variation description images were removed during reshape (always duplicates of parent).

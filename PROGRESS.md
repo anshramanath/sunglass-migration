@@ -1,5 +1,36 @@
 # Bikershades Migration Progress
-_Last updated: 2026-05-31_
+_Last updated: 2026-06-01_
+
+## Run 3 — Complete (2026-06-01)
+
+Full results in `docs/completed_3.md`.
+
+**DB state:** 573 products, 5,296 variations, 56 categories, 2,530 product images, 1,899 variation images, 912 description images.
+
+### Post-run-2 changes applied in this run
+
+- `variation_images` table replaces `image_src`/`image_name` columns on variations — supports multiple images per variation with `sort_order`
+- `description_images` is now product-only — variation description images dropped (always duplicates of parent)
+- `variations.attribute` (was `variation text[]`) — renamed + made `not null default '{}'`
+- `sale_price_cents`, `weight_unit`, `dimension_unit` on variations now nullable
+- `multiple_variation_images` reshape bucket removed — schema supports it natively
+- Global SKU uniqueness enforced in reshape: post-processing pass over all buckets, maintains `seen_skus` set, moves any product with a collision (product vs variation, or vs another product) to `duplicate_sku_items` bucket. 5 products caught.
+- `verify_import.py` updated: variation image expected count filters to only resolvable images (in url_map + upload_map). 10 variation image URLs are permanent 404s — never downloaded, never uploaded, correctly dropped at import. Same failure class as the other 11 in `failed.json`.
+
+### Reshape buckets (run 3)
+
+| Bucket | Count |
+|--------|------:|
+| `shaped_items.json` | 577 ✅ |
+| `mismatched_attr_items.json` | 22 |
+| `invalid_sku_items.json` | 21 |
+| `duplicate_name_items.json` | 6 |
+| `duplicate_sku_items.json` | 5 |
+| `missing_attributes_items.json` | 5 |
+| `zero_price_items.json` | 8 |
+| `no_image_items.json` | 3 |
+
+---
 
 ## Overview
 
