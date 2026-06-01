@@ -44,7 +44,7 @@ Migrating product data from bikershades.com (WordPress/WooCommerce) into a clean
 | `completed_3.md` | Run 3 results (current) |
 | `completed_2.md` | Run 2 results |
 | `completed_1.md` | Run 1 results (pre price/stock schema changes) |
-| `shaped-items/` | Field-level audit, verify, attribute analysis, category link counts |
+| `shaped-items/` | Reshaped JSON structure + field decisions (`shape.md`), field-level audit, verify, attribute analysis |
 | `categorized-items/` | Categorized items audit, verify, category tree, and per-bucket review notes |
 | `downloaded-images/` | Download audit and verify results |
 | `uploaded-images/` | Upload audit and verify results |

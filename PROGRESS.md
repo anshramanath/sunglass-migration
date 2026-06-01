@@ -1,6 +1,8 @@
 # Bikershades Migration Progress
 _Last updated: 2026-06-01_
 
+> **Shape reference:** `docs/shaped-items/shape.md` — full reshaped JSON structure and every field decision.
+
 ## Run 3 — Complete (2026-06-01)
 
 Full results in `docs/completed_3.md`.
