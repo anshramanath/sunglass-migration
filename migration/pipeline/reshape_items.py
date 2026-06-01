@@ -209,8 +209,8 @@ def reshape_product(product, variation_stubs, full_variations_map):
         raw_sale_price = int(prices.get("sale_price") or 0)
         min_price = regular_price
         max_price = regular_price
-        sale_price = raw_sale_price
-        sale = sale_price > 0 and sale_price < min_price
+        sale = raw_sale_price > 0 and raw_sale_price < min_price
+        sale_price = raw_sale_price if sale else None
 
     return {
         "name": clean_name(product.get("name")),
@@ -240,8 +240,9 @@ def reshape_product(product, variation_stubs, full_variations_map):
 def reshape_variation(v):
     prices = v.get("prices") or {}
     regular_price = int(prices.get("regular_price") or 0)
-    sale_price = int(prices.get("sale_price") or 0)
-    sale = sale_price > 0 and sale_price < regular_price
+    raw_sale_price = int(prices.get("sale_price") or 0)
+    sale = raw_sale_price > 0 and raw_sale_price < regular_price
+    sale_price = raw_sale_price if sale else None
 
     links = v.get("_links") or {}
     self_links = links.get("self") or []

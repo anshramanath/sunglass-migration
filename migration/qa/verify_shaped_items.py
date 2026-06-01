@@ -135,14 +135,31 @@ for p in reshaped["shaped"]:
         expected_sale = any(ve["variation"].get("sale", False) for ve in variations)
         if sale != expected_sale:
             shaped_violations.append(f"sale {sale} != expected {expected_sale} (from variations): {sku}")
+
+        # variation-level price invariants
+        for ve in variations:
+            v = ve["variation"]
+            v_sku = v.get("sku", "?")
+            v_reg = v.get("regularPriceCents", 0)
+            v_sale_p = v.get("salePriceCents")
+            v_sale = v.get("sale", False)
+            expected_v_sale = v_sale_p is not None and v_sale_p > 0 and v_sale_p < v_reg
+            if v_sale != expected_v_sale:
+                shaped_violations.append(f"variation sale mismatch sku={v_sku} sale={v_sale} saleP={v_sale_p} reg={v_reg}")
+            if v_sale and v_sale_p is None:
+                shaped_violations.append(f"variation sale=true but salePriceCents null: {v_sku}")
+            if not v_sale and v_sale_p is not None:
+                shaped_violations.append(f"variation sale=false but salePriceCents non-null: {v_sku}")
     else:
         if min_p != max_p:
             shaped_violations.append(f"simple product min {min_p} != max {max_p}: {sku}")
-        if sale_p is None:
-            shaped_violations.append(f"simple product has null salePriceCents: {sku}")
-        expected_sale = bool(sale_p and sale_p > 0 and sale_p < min_p)
+        expected_sale = sale_p is not None and sale_p > 0 and sale_p < min_p
         if sale != expected_sale:
             shaped_violations.append(f"sale {sale} != expected {expected_sale} (salePriceCents={sale_p} min={min_p}): {sku}")
+        if sale and sale_p is None:
+            shaped_violations.append(f"simple product sale=true but salePriceCents null: {sku}")
+        if not sale and sale_p is not None:
+            shaped_violations.append(f"simple product sale=false but salePriceCents non-null: {sku}")
 
     if any(len(ve.get("variation", {}).get("images", [])) > 1 for ve in variations):
         shaped_violations.append(f"variation >1 image: {sku}")

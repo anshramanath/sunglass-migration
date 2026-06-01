@@ -58,7 +58,7 @@ create table variations (
   description text,
   sale boolean not null default false,
   regular_price_cents int not null,
-  sale_price_cents int not null,
+  sale_price_cents int,
   stock int not null default 1,
   weight float,
   weight_unit text not null default 'oz',

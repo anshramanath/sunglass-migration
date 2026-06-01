@@ -49,8 +49,8 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 ## Price model
 - Variable products (have variations): `minPriceCents` = min of variation `regularPriceCents`, `maxPriceCents` = max. `salePriceCents = null`. `sale = true` if any variation has `sale = true`.
 - Simple products (no variations): `minPriceCents = maxPriceCents = regularPrice` (WooCommerce regular price, before any sale). `salePriceCents` = sale price. `sale = salePriceCents > 0 AND salePriceCents < minPriceCents`.
-- `sale_price_cents` is nullable on the `products` table only — null for variable products. `variations.sale_price_cents` is always non-null — variations are the source of truth for per-variation pricing.
-- DB columns on products: `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable). DB columns on variations: `regular_price_cents`, `sale_price_cents` (not null).
+- `sale_price_cents` is nullable on both `products` and `variations`. Null means not on sale. Variable products always have null. Variations have null when `sale=false`, a value when `sale=true` (always less than `regular_price_cents`).
+- DB columns on products: `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable). DB columns on variations: `regular_price_cents`, `sale_price_cents` (nullable).
 - All price logic computed in reshape, not import.
 
 ## Stock model

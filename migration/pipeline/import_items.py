@@ -166,7 +166,7 @@ for i, product in enumerate(products):
                 var.get("description"),
                 var.get("sale", False),
                 var.get("regularPriceCents", 0),
-                var.get("salePriceCents", 0),
+                var.get("salePriceCents"),
                 var.get("stock", 1),
                 var.get("weight"),
                 var.get("weightUnit"),
