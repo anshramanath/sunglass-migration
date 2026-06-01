@@ -2,13 +2,13 @@
 _Last updated: 2026-05-31_
 
 **Source:** `migration/images/upload_map.json` cross-referenced against `url_map.json`
-**Local files:** 2,467 | **Uploaded:** 2,467
+**Local files:** 2,465 | **Uploaded:** 2,465
 
 ---
 
 ## Result
 
-**All checks passed.** All 2,467 local files are uploaded to Supabase Storage. Zero gaps, zero bad URLs, zero duplicates.
+**All checks passed.** All 2,465 local files are uploaded to Supabase Storage. Zero gaps, zero bad URLs, zero duplicates.
 
 ---
 
@@ -16,8 +16,8 @@ _Last updated: 2026-05-31_
 
 | Metric | Value |
 |--------|------:|
-| Local files (from url_map) | 2,467 |
-| Uploaded (in upload_map) | 2,467 |
+| Local files (from url_map) | 2,465 |
+| Uploaded (in upload_map) | 2,465 |
 | Not yet uploaded | 0 |
 | In upload_map but missing from disk | 0 |
 | Bad Supabase URLs | 0 |
