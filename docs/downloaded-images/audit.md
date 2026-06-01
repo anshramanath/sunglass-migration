@@ -2,13 +2,13 @@
 _Last updated: 2026-05-31_
 
 **Source:** `migration/images/url_map.json` + `migration/images/failed.json`
-**Items:** 574 | **Unique URLs:** 2,477 | **Downloaded:** 2,467 | **Failed:** 10
+**Items:** 573 | **Unique URLs:** 2,476 | **Downloaded:** 2,465 | **Failed:** 11
 
 ---
 
 ## Result
 
-**All checks passed.** 2,467 images downloaded with zero missing files, zero zero-byte files, zero invalid extensions, and zero collisions. 10 permanent 404s tracked in `failed.json`.
+**All checks passed.** 2,465 images downloaded with zero missing files, zero zero-byte files, zero invalid extensions, and zero collisions. 11 permanent 404s tracked in `failed.json`.
 
 ---
 
@@ -16,13 +16,13 @@ _Last updated: 2026-05-31_
 
 | Metric | Value |
 |--------|------:|
-| Items | 574 |
-| URLs in `url_map` | 2,467 |
-| Files on disk | 2,467 |
+| Items | 573 |
+| URLs in `url_map` | 2,465 |
+| Files on disk | 2,465 |
 | In map but missing from disk | 0 |
 | Zero-byte files | 0 |
 | Invalid extensions | 0 |
-| Failed downloads | 10 |
+| Failed downloads | 11 |
 | Collisions | 0 |
 | Items with no images | 0 |
 
@@ -32,10 +32,10 @@ _Last updated: 2026-05-31_
 
 | Type | Downloaded | Failed | Total |
 |------|----------:|-------:|------:|
-| `product` | 1,422 | 0 | 1,422 |
-| `variation` | 1,026 | 4 | 1,030 |
+| `product` | 1,421 | 0 | 1,421 |
+| `variation` | 1,025 | 5 | 1,030 |
 | `description` | 35 | 6 | 41 |
-| **Total** | **2,467** | **10** | **2,477** |
+| **Total** | **2,465** | **11** | **2,476** |
 
 ---
 

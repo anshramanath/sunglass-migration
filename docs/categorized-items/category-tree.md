@@ -8,7 +8,7 @@ Counts shown at leaf nodes only. Branch nodes end with `/`.
 ```
 Accessories/
 ├── Cases (11)
-├── Return Labels (4)
+├── Return Labels (3)
 ├── Strings (2)
 └── Tools (4)
 
