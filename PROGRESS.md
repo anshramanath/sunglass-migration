@@ -278,7 +278,7 @@ Detailed manual review notes now live in `reshaped-problems/`.
 
 - `reshaped-problems/diagnosis.md` — high-level summary of all reviewed buckets
 - `reshaped-problems/zero_price_review.md`
-- `reshaped-problems/no_weight_review.md`
+- `reshaped-problems/invalid_weight_review.md`
 - `reshaped-problems/no_image_review.md`
 - `reshaped-problems/invalid_sku_review.md`
 - `reshaped-problems/missing_attributes_review.md`
@@ -338,7 +338,8 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 | `categories` | `id`, `brand_id`, `parent_id`, `name`, `slug` |
 | `products` | `id`, `brand_id`, `name`, `slug`, `sku`, `wp_url`, `product_url`, `description`, `summary[]`, `attributes[]`, `sale`, `min_price_cents`, `max_price_cents`, `sale_price_cents` (nullable — null for variable), `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
 | `product_categories` | `product_id`, `category_id` (junction) |
-| `variations` | `id`, `product_id`, `slug`, `sku`, `variation[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents` (not null — source of truth for per-variation pricing), `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit`, `image_src`, `image_name` |
+| `variations` | `id`, `product_id`, `slug`, `sku`, `attribute text[]`, `wp_url`, `product_url`, `description`, `sale`, `regular_price_cents`, `sale_price_cents` (nullable — null when sale=false, value when sale=true), `stock` (int, 0 or 1), `weight`, `weight_unit`, `length`, `width`, `height`, `dimension_unit` |
+| `variation_images` | `id`, `variation_id`, `src`, `name`, `sort_order` |
 | `product_images` | `id`, `product_id`, `src`, `name`, `sort_order` |
 | `description_images` | `id`, `product_id`, `src`, `sort_order` |
 | `admins` | `user_id` → `auth.users(id)` |
@@ -349,11 +350,11 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - `categories` has `slug` for URL routing — `link` from WooCommerce is not stored, hierarchy is reconstructed from `parent_id` at import time by parsing the source link paths
 - `attributes` is `jsonb` — stores `[{name, terms[]}]` grouped by attribute type for efficient listing-page queries without joining variations
 - `variation[]` on variations table is `text[]` — flat slug array of the specific combo e.g. `["black-clear", "1-00"]`
-- `image_src` / `image_name` on variations — variations have at most 1 image; flattened onto the row instead of a separate table. Having more than 1 variation image in WooCommerce is a misconfiguration (only 6 variations across 1 product had this, all sharing identical images). First image is used; frontend falls back to parent product images when null.
+- `variation_images` mirrors `product_images` — `variation_id`, `src`, `name`, `sort_order`. WooCommerce only had 1 image per variation; >1 gets bucketed to `multiple_variation_images`. Frontend falls back to parent product images when no variation images exist.
 - `summary[]` is `text[]` — parsed from `<li>` tags
 - Dimensions stored as flat columns (`length`, `width`, `height`) not jsonb
 - Separate image tables for product, variation, and description images — all have `src`, `name`, `sort_order`
-- `description_images` has nullable `product_id` and `variation_id` with a check constraint enforcing exactly one is set — a description image belongs to either a product or a variation, not both
+- `description_images` is product-only — `product_id not null`. Variation description images dropped during reshape (always duplicates of parent product description images).
 - `description_images.name` derived from filename in the import script (last path segment of `src`)
 - No signup — `admins` table gates admin access since Supabase Auth signup endpoint is publicly accessible
 - RLS enabled on all tables, frontend never hits Supabase directly — goes through backend API with `service_role` key
@@ -396,8 +397,10 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Schema further updated — `description_images` now product-only (`product_id not null`, `variation_id` and check constraint removed). Variation `descriptionImgs` field dropped from reshape — description images belong to products only.
 - [x] QA scripts updated — audit flags stray `descriptionImgs` on variations; verify checks variation image count and no stray variation description images.
 - [x] Reshape weight/unit overhaul — `weightUnit`/`dimensionUnit` now derived from `formatted_weight`/`formatted_dimensions` (last word), not hardcoded. `invalid_weight_items` bucket replaces `no_weight_items` + `missing_unit_items`: catches null weight and weight with bad/missing unit (14 total). Partial or bad-unit dimensions silently nulled — dimensions are optional. Clean bucket: 564.
-- [ ] Drop and re-apply schema in Supabase
-- [ ] Re-run download (in progress) → upload → import
+- [x] Price/sale overhaul — `salePriceCents` now nullable on both products and variations. Variable products: always null. Variations: null when sale=false, value when sale=true. Simple products: null when not on sale, value when on sale. Product-level min/max use variation regular prices (not effective prices). `variations.sale_price_cents` schema changed from `not null` to nullable. `verify_shaped_items.py` updated with full price invariant checks (11 checks, all pass).
+- [ ] Re-run recategorize (reshape changed — need fresh categorized_items.json)
+- [ ] Drop and re-apply schema in Supabase (variations.sale_price_cents now nullable)
+- [ ] Re-run download → upload → import
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing/mismatched attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

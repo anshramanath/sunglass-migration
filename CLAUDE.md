@@ -73,7 +73,7 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 ### reshaped/ (step 3)
 - `shaped_items.json` — 564 ✅
 - `invalid_sku_items.json` — 22
-- `no_weight_items.json` — 14 (includes weight=0.0)
+- `invalid_weight_items.json` — 14 (null weight, weight=0.0, or weight missing unit)
 - `zero_price_items.json` — 10 (includes variable products with all-zero variation prices)
 - `missing_attributes_items.json` — 5 (variations with completely empty attribute list)
 - `mismatched_attr_items.json` — 22 (variation slugs not in product attribute terms)
@@ -100,5 +100,14 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
   - Attribute cleanup: unused product attribute terms stripped so every color button has a real variation
   - Variation images that duplicate a parent product image are stripped during reshape
   - Clean bucket: 564 | Categorized: 559
-- **Download in progress** — fresh run on updated data (559 items, fewer unique URLs due to dedup improvements)
-- **Next: download complete → upload → drop + re-apply schema → import**
+- **Price/sale + weight/unit overhaul (post-run-2):**
+  - `salePriceCents` now nullable on both products and variations — null = not on sale
+  - Variable products: `salePriceCents` always null; `sale = true` if any variation is on sale
+  - Variations: `salePriceCents` null when `sale=false`, value (< regularPriceCents) when `sale=true`
+  - Simple products: `salePriceCents` null when not on sale, value when on sale
+  - `weightUnit`/`dimensionUnit` derived from last word of `formatted_weight`/`formatted_dimensions` — not hardcoded
+  - `invalid_weight_items` replaces `no_weight_items` — catches null weight, weight=0.0, and missing unit
+  - Partial or bad-unit dimensions silently nulled (dimensions are optional; weight is required)
+  - `variations.sale_price_cents` schema changed from `int not null` → `int` (nullable)
+  - All 11 verify_shaped_items.py checks pass
+- **Next: re-run recategorize → drop + re-apply schema → download → upload → import**
