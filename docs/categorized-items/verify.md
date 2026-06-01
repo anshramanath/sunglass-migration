@@ -7,7 +7,7 @@ _Last updated: 2026-05-31_
 
 ## Result
 
-**All checks passed.** All 564 shaped items accounted for across buckets. No data loss.
+**All checks passed.** All 578 shaped items accounted for across buckets. No data loss.
 
 ---
 
@@ -18,7 +18,7 @@ _Last updated: 2026-05-31_
 | All shaped items accounted for | ✅ |
 | No extra items in output | ✅ |
 | No item in multiple buckets | ✅ |
-| Count integrity (559 + 2 + 3 = 564) | ✅ |
+| Count integrity (573 + 2 + 3 = 578) | ✅ |
 | All paths end at leaf nodes | ✅ |
 | No redundant parent paths | ✅ |
 | No single-item leaves in categorized output | ✅ |
@@ -32,7 +32,7 @@ _Last updated: 2026-05-31_
 
 | Bucket | Count |
 |--------|------:|
-| `categorized_items.json` | 559 |
+| `categorized_items.json` | 573 |
 | `no_category_items.json` | 2 |
 | `single_leaf_items.json` | 3 |
-| **Total** | **564** |
+| **Total** | **578** |

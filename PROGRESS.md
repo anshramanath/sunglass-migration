@@ -289,7 +289,6 @@ Detailed manual review notes now live in `reshaped-problems/`.
 | Bucket | Count | Status | Direction |
 |---|---:|---|---|
 | zero_price | 10 products | reviewed | mostly owner review; mix of excludes, form/workflow items, unavailable products, and at least one real product that needs price |
-| invalid_weight | 14 products | reviewed | 12 null weight (service/shipping items + real products needing weight), 2 with weight=0.0 but no unit — all need owner review |
 | no_image | 3 products | reviewed | ask owner for real images; only use placeholders with explicit approval |
 | invalid_sku | 22 products | reviewed | mostly owner review; many are real products that need canonical SKU cleanup |
 | missing_attributes | 5 products | built / owner escalation | take entire bucket to owner; variation option metadata is not safe to reconstruct blindly |
@@ -397,10 +396,11 @@ Multi-brand Supabase/Postgres schema. Auth handled by Supabase Auth (`auth.users
 - [x] Schema further updated — `description_images` now product-only (`product_id not null`, `variation_id` and check constraint removed). Variation `descriptionImgs` field dropped from reshape — description images belong to products only.
 - [x] QA scripts updated — audit flags stray `descriptionImgs` on variations; verify checks variation image count and no stray variation description images.
 - [x] Reshape weight/unit overhaul — `weightUnit`/`dimensionUnit` now derived from `formatted_weight`/`formatted_dimensions` (last word), not hardcoded. `invalid_weight_items` bucket replaces `no_weight_items` + `missing_unit_items`: catches null weight and weight with bad/missing unit (14 total). Partial or bad-unit dimensions silently nulled — dimensions are optional. Clean bucket: 564.
-- [x] Price/sale overhaul — `salePriceCents` now nullable on both products and variations. Variable products: always null. Variations: null when sale=false, value when sale=true. Simple products: null when not on sale, value when on sale. Product-level min/max use variation regular prices (not effective prices). `variations.sale_price_cents` schema changed from `not null` to nullable. `verify_shaped_items.py` updated with full price invariant checks (11 checks, all pass).
-- [ ] Re-run recategorize (reshape changed — need fresh categorized_items.json)
-- [ ] Drop and re-apply schema in Supabase (variations.sale_price_cents now nullable)
-- [ ] Re-run download → upload → import
+- [x] Price/sale overhaul — `salePriceCents` now nullable on both products and variations. Variable products: always null. Variations: null when sale=false, value when sale=true. Simple products: null when not on sale, value when on sale. Product-level min/max use variation regular prices (not effective prices). `variations.sale_price_cents` schema changed from `not null` to nullable. `verify_shaped_items.py` updated with full price invariant checks (10 checks, all pass).
+- [x] Weight overhaul — weight treated like dimensions: null both `weight`/`weightUnit` if value missing/0.0 or unit invalid. Checked independently per product and per variation. `invalid_weight_items` bucket removed — 14 products now pass through with null weight, surfaced in dashboard. `variations.weight_unit` and `variations.dimension_unit` changed to nullable in schema. Clean bucket: 578 | Categorized: 573.
+- [x] Re-run recategorize — 573 categorized / 2 no-category / 3 single-leaf. All QA passed.
+- [ ] Drop and re-apply schema in Supabase
+- [ ] Upload images → import
 - [ ] Manually review and fix flagged buckets (invalid SKU, no weight, duplicates, missing/mismatched attributes, zero price, no image, multiple variation images, no category)
 - [ ] Owner review — share `treatment.md` + `recategorized/no_category_items.json` to unblock remaining flagged items
 

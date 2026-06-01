@@ -2,13 +2,13 @@
 _Last updated: 2026-05-31_
 
 **Source:** `recategorized/categorized_items.json`
-**Items:** 559 | **No-category:** 2
+**Items:** 573 | **No-category:** 2
 
 ---
 
 ## Result
 
-**No issues found.** All 559 items have valid category paths ending at leaf nodes only.
+**No issues found.** All 573 items have valid category paths ending at leaf nodes only.
 
 ---
 
@@ -16,20 +16,20 @@ _Last updated: 2026-05-31_
 
 | Root | Assignments |
 |------|------------:|
-| `sunglasses` | 675 |
+| `sunglasses` | 680 |
 | `bifocals` | 136 |
-| `prescription` | 109 |
-| `transitions` | 84 |
-| `sale` | 12 |
-| `accessories` | 12 |
-| `combo-sets` | 10 |
+| `prescription` | 110 |
+| `transitions` | 86 |
+| `accessories` | 21 |
+| `sale` | 14 |
+| `combo-sets` | 13 |
 | `try-before-you-buy` | 7 |
 
 | Path Depth | Assignments |
 |-----------|------------:|
-| 1 | 29 |
-| 2 | 208 |
-| 3 | 808 |
+| 1 | 34 |
+| 2 | 217 |
+| 3 | 816 |
 
 ---
 

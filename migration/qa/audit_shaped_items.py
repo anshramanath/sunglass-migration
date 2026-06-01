@@ -59,11 +59,9 @@ for p in products:
     if is_blank(p.get("descriptionImgs")):
         flag("product.descriptionImgs[empty]", sku)
 
-    # Weight (should be set — this is the clean bucket)
+    # Weight (optional — null if missing/0.0/bad unit)
     if p.get("weight") is None:
         flag("product.weight[null]", sku)
-    elif p.get("weight") <= 0:
-        flag("product.weight[zero]", sku, f"value={p.get('weight')}")
 
     # Dimensions
     dims = p.get("dimensions") or {}
@@ -144,7 +142,6 @@ print()
 critical_keywords = [
     "product.name", "product.slug", "product.sku", "product.wpUrl", "product.productUrl",
     "product.minPriceCents", "product.maxPriceCents", "product.salePriceCents[sale=true]",
-    "product.weight[null]", "product.weight[zero]",
     "variation.slug", "variation.sku", "variation.wpUrl", "variation.productUrl",
     "variation.regularPriceCents", "variation.salePriceCents[sale=true]",
     "variation.attribute[empty]",

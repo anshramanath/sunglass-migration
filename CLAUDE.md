@@ -71,9 +71,8 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 ## Output buckets
 
 ### reshaped/ (step 3)
-- `shaped_items.json` — 564 ✅
+- `shaped_items.json` — 578 ✅
 - `invalid_sku_items.json` — 22
-- `invalid_weight_items.json` — 14 (null weight, weight=0.0, or weight missing unit)
 - `zero_price_items.json` — 10 (includes variable products with all-zero variation prices)
 - `missing_attributes_items.json` — 5 (variations with completely empty attribute list)
 - `mismatched_attr_items.json` — 22 (variation slugs not in product attribute terms)
@@ -82,7 +81,7 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
 - `multiple_variation_images_items.json` — 1
 
 ### recategorized/ (step 4)
-- `categorized_items.json` — 559 ✅ ready for import (all paths end at leaf nodes only)
+- `categorized_items.json` — 573 ✅ ready for import (all paths end at leaf nodes only)
 - `no_category_items.json` — 2 (all categories dropped — owner review; see `docs/categorized-items/categorized-problems/no_category_review.md`)
 - `single_leaf_items.json` — 3 (only item in their leaf category — owner review; see `docs/categorized-items/categorized-problems/single_leaf_review.md`)
 
@@ -106,8 +105,10 @@ Image resolution chain in import: `bikershades URL → url_map → local path �
   - Variations: `salePriceCents` null when `sale=false`, value (< regularPriceCents) when `sale=true`
   - Simple products: `salePriceCents` null when not on sale, value when on sale
   - `weightUnit`/`dimensionUnit` derived from last word of `formatted_weight`/`formatted_dimensions` — not hardcoded
-  - `invalid_weight_items` replaces `no_weight_items` — catches null weight, weight=0.0, and missing unit
-  - Partial or bad-unit dimensions silently nulled (dimensions are optional; weight is required)
-  - `variations.sale_price_cents` schema changed from `int not null` → `int` (nullable)
-  - All 11 verify_shaped_items.py checks pass
-- **Next: re-run recategorize → drop + re-apply schema → download → upload → import**
+  - Weight now treated like dimensions — null both `weight`/`weightUnit` if value missing/0.0 or unit invalid; checked independently per product and per variation; no bucketing
+  - `invalid_weight_items` bucket removed — 14 previously-bucketed products now in shaped with null weight; surfaced via dashboard
+  - Partial or bad-unit dimensions silently nulled (both weight and dimensions are now optional)
+  - `variations.sale_price_cents`, `variations.weight_unit`, `variations.dimension_unit` all changed to nullable in schema
+  - All 10 verify_shaped_items.py checks pass
+- **Clean bucket: 578 | Categorized: 573**
+- **Next: drop + re-apply schema → upload → import**
