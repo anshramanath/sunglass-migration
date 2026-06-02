@@ -7,7 +7,7 @@ data = json.loads((BASE / "data/prosport/fetch-products/products.json").read_tex
 
 total = len(data)
 variable = [p for p in data if p["type"] == "variable"]
-simple = [p for p in data if p["type"] == "simple"]
+simple   = [p for p in data if p["type"] == "simple"]
 
 # ── Overview ──────────────────────────────────────────────────────────────────
 print(f"=== Products ({total} total) ===\n")
@@ -52,8 +52,7 @@ unique_cats = dict((c["id"], c["name"]) for p in data for c in p.get("categories
 cat_usage = Counter(c["name"] for p in data for c in p.get("categories", []))
 print(f"\nCategories: {len(unique_cats)} unique")
 print(f"  Products with no category: {sum(1 for p in data if not p.get('categories'))}")
-print(f"  Top categories:")
-for name, n in cat_usage.most_common(10):
+for name, n in cat_usage.most_common():
     print(f"    {name}: {n}")
 
 # ── Attributes ────────────────────────────────────────────────────────────────
@@ -65,30 +64,57 @@ for name, n in attr_usage.most_common():
 
 # ── Pricing ───────────────────────────────────────────────────────────────────
 print(f"\nPricing (parent-level):")
-print(f"  Has price: {sum(1 for p in data if p.get('price'))}")
+print(f"  Has price:         {sum(1 for p in data if p.get('price'))}")
 print(f"  Has regular_price: {sum(1 for p in data if p.get('regular_price'))}")
-print(f"  on_sale=True: {sum(1 for p in data if p.get('on_sale'))}")
+print(f"  Has sale_price:    {sum(1 for p in data if p.get('sale_price'))}")
+on_sale_no_price = [p for p in data if p.get("on_sale") and not p.get("sale_price")]
+print(f"  on_sale=True but no sale_price: {len(on_sale_no_price)} (all type=variable, WC quirk)")
 
 # ── Stock ─────────────────────────────────────────────────────────────────────
 print(f"\nStock (parent-level):")
 print(f"  manage_stock=True: {sum(1 for p in data if p.get('manage_stock'))}")
 print(f"  stock_status: {dict(Counter(p.get('stock_status') for p in data))}")
 
+# ── Dimensions ────────────────────────────────────────────────────────────────
+def dims_filled(p):
+    d = p.get("dimensions", {})
+    return all(d.get(k, "") not in ("", None) for k in ("length", "width", "height"))
+
+print(f"\nDimensions:")
+print(f"  All subfields populated: {sum(1 for p in data if dims_filled(p))} / {total}")
+
 # ── Descriptions ──────────────────────────────────────────────────────────────
 print(f"\nDescriptions:")
-print(f"  Has description: {sum(1 for p in data if p.get('description', '').strip())} / {total}")
+print(f"  Has description:       {sum(1 for p in data if p.get('description', '').strip())} / {total}")
 print(f"  Has short_description: {sum(1 for p in data if p.get('short_description', '').strip())} / {total}")
+
+# ── total_sales & featured ─────────────────────────────────────────────────────
+print(f"\ntotal_sales:")
+print(f"  > 0:  {sum(1 for p in data if p.get('total_sales'))}")
+print(f"  = 0:  {sum(1 for p in data if p.get('total_sales') == 0)}")
+top_sales = Counter(p.get("total_sales") for p in data if p.get("total_sales")).most_common(5)
+print(f"  Top values: {top_sales}")
+
+featured = [p for p in data if p.get("featured")]
+print(f"\nFeatured: {len(featured)}")
+for p in featured:
+    print(f"  [{p['id']}] {p['name']}")
 
 # ── Flags ─────────────────────────────────────────────────────────────────────
 print(f"\nFlags:")
-print(f"  Draft variable products: {sum(1 for p in variable if p['status'] == 'draft')}")
-print(f"  Published variable products: {sum(1 for p in variable if p['status'] == 'publish')}")
-print(f"  Published simple products: {sum(1 for p in simple if p['status'] == 'publish')}")
+drafts = [p for p in data if p["status"] == "draft"]
+no_sku = [p for p in data if not p.get("sku")]
+for p in drafts:
+    print(f"  draft:  [{p['id']}] {p['name']}")
+for p in no_sku:
+    print(f"  no sku: [{p['id']}] {p['name']} (type={p['type']})")
 
 # ── Field coverage ────────────────────────────────────────────────────────────
-def is_meaningful(val):
+def is_meaningful(field, val):
     if val is None:
         return False
+    if field == "dimensions":
+        return isinstance(val, dict) and all(val.get(k, "") not in ("", None) for k in ("length", "width", "height"))
     if val in ("", [], {}, 0, "0.00", "taxable"):
         return False
     if isinstance(val, bool):
@@ -101,11 +127,13 @@ def summarize(val):
     if isinstance(val, list):
         return f"list[{len(val)}]" if val else "[]"
     if isinstance(val, dict):
-        return "object" if val else "{}"
+        return "{...}" if val else "{}"
     if isinstance(val, bool):
         return str(val)
     s = str(val).strip()
-    return s if s else '""'
+    if not s:
+        return '""'
+    return s[:60] + ("…" if len(s) > 60 else "")
 
 SKIP = {"_links", "price_html"}
 fields = [k for k in data[0].keys() if k not in SKIP]
@@ -116,7 +144,7 @@ print("-" * 90)
 
 for field in fields:
     values = [p.get(field) for p in data]
-    filled = sum(1 for v in values if is_meaningful(v))
+    filled = sum(1 for v in values if is_meaningful(field, v))
     pct = filled / total * 100
     top = Counter(summarize(v) for v in values).most_common(4)
     top_str = "  ".join(f"{label}×{n}" for label, n in top)

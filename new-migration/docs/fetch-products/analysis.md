@@ -13,24 +13,25 @@ _171 products fetched via admin REST API (`/wp-json/wc/v3/products`)_
 | publish | 170 |
 | draft | 1 |
 
-One draft variable product exists — likely a copy/junk entry. Decide at reshape whether to drop it.
+One draft variable product: `proSPORT Cabriolet Mirror Bifocal (Copy)` (id 4019). Likely a junk copy — flag at reshape.
 
 ## Variations (parent-level IDs only)
 
-- Total variation IDs across all variable products: **1,794**
+- Total variation IDs across variable products: **1,794**
 - Per-product: min 2 / avg 11.6 / max 88
+- Simple products: 0 variation IDs
 
-Actual variation data lives in `fetch_variations.py` output. The parent `variations` field is just an array of IDs.
+Actual variation data requires `fetch_variations.py`. The parent `variations` field is just an array of IDs.
 
 ## SKUs
 
-- 170/171 products have a parent SKU (1 simple product missing)
-- All 170 are unique at the parent level — no duplicates
-- Variable product parent SKUs are meaningless; real SKUs live on variations
+- 170/171 products have a parent SKU — missing on `Sunglass String Chum Strap` (id 3139, simple)
+- All 170 are unique at the parent level
+- Variable product parent SKUs are meaningless; real SKUs live on variations — nullify at reshape
 
 ## Images (parent gallery)
 
-All 171 products have at least one image. Most have multiple — these are the product gallery shots, not variation images.
+All 171 products have at least one image. Most have multiple — parent gallery shots, not variation images.
 
 | Image count | Products |
 |---|---|
@@ -41,11 +42,9 @@ All 171 products have at least one image. Most have multiple — these are the p
 | 5 | 27 |
 | 6+ | 5 |
 
-Variation images come from the `image` field on each variation (fetched separately).
-
 ## Categories
 
-11 unique categories. Every product is tagged **Uncategorized** alongside its real category — drop Uncategorized at reshape.
+11 unique categories. Every product is tagged **Uncategorized** alongside its real category — strip at reshape.
 
 | Category | Products |
 |---|---|
@@ -59,17 +58,17 @@ Variation images come from the `image` field on each variation (fetched separate
 | CLEAR & YELLOW | 11 |
 | STREET | 10 |
 | METALS & AVIATORS | 6 |
-| BIFOCALS PROGRESSIVE | 2 |
+| BIG & TALL | 2 |
 
 ## Attributes
 
-9 unique attribute names across all products. Two types:
+9 unique attribute names. Two types:
 
 **Variation axes** (drive variation combinations):
 - `Choose Color` — 154 products
 - `Choose Power` — 68 products (bifocal/reader products only)
 
-**Filter-only** (not variation axes, used for storefront filtering):
+**Filter-only** (storefront filtering, not variation axes):
 - `Frame Color for Filter` — 146
 - `Lens Color for Filter` — 145
 - `Activity for Filter` — 141
@@ -78,29 +77,36 @@ Variation images come from the `image` field on each variation (fetched separate
 - `Material for Filter` — 135
 - `Gender For Filter` — 61
 
-11 products have no attributes at all — inspect at reshape.
+11 products have no attributes — inspect at reshape.
 
-## Pricing (parent-level)
+## Pricing
 
-Parent `price` field is always populated (171/171) but is just a display value derived from variations. `regular_price` only exists on 17 products (the simple ones). `on_sale=True` on 170/171 — this is a WooCommerce quirk; actual sale logic lives on variations.
+Parent `price` is always populated but derived from variations for variable products. `regular_price` and `sale_price` only exist on simple products.
 
-## Stock (parent-level)
+`on_sale=True` on 170/171 products — WooCommerce sets this when any variation is on sale. 154 products have `on_sale=True` with no `sale_price` at the parent level, all of them variable. Reliable for simple products only.
 
-- `manage_stock=True`: 19 products (actual quantity tracking)
+## Dimensions
+
+All 171 products have a `dimensions` object but every subfield (`length`, `width`, `height`) is an empty string — 0/171 usable. Drop at reshape.
+
+## total_sales & featured
+
+- `total_sales > 0`: 80 products. Top values: 1×22, 3×12, 4×11, 2×11. Treat 0 as unknown, not confirmed zero.
+- `featured=True`: 5 products — Apex Day Vision, Puma Bifocal, Methane Bifocal, Taxi Polarized Bifocal, Commando Polarized Bifocal.
+
+## Stock
+
+- `manage_stock=True`: 19 products
 - `stock_status`: 160 instock / 11 outofstock
-- Variable product stock is aggregate of variations — per-variation stock comes from fetch_variations
+- `stock_quantity` only valid when `manage_stock=True`. Use `stock_status` as source of truth.
 
 ## Descriptions
 
 - Has `description`: 148 / 171
 - Has `short_description`: 35 / 171
 
-23 products have no description at all. Short description is sparse.
+Descriptions contain hardcoded Sunglass Monster image URLs (`sunglassmonster.com`). Decide at reshape whether to rewrite or strip.
 
-**Gotcha:** descriptions contain hardcoded Sunglass Monster image URLs (`sunglassmonster.com`). Decide at reshape whether to rewrite or strip them.
+## Field coverage summary
 
-## Field coverage
-
-~40 fields carry zero information (all null, all empty, or all-same WooCommerce defaults). See [notes.md](notes.md) for the full keep/drop lists.
-
-Notable dead fields: `virtual`, `downloadable`, `tax_status`, `backorders_allowed`, `average_rating`, `rating_count`, `brands`, `tags`, `default_attributes`, `global_unique_id`, all `date_on_sale_*` fields.
+~40 fields carry zero information. Notable dead fields: `virtual`, `downloadable`, `tax_status`, `backorders_allowed`, `average_rating`, `rating_count`, `brands`, `tags`, `default_attributes`, `global_unique_id`, all `date_on_sale_*` fields, `dimensions` (object exists but all empty). See [notes.md](notes.md) for full keep/drop lists.
