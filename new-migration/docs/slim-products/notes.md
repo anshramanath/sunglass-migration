@@ -27,7 +27,6 @@
 | `images` | `[{src, name}]` — parent gallery images |
 | `attributes` | `[{name, options}]` — 11 products have none |
 | `variations` | `[int]` — variation IDs. Source of truth for whether product is variable. |
-| `related_ids` | `[int]` — WP auto-generated, not curated. Drop at reshape. |
 
 ## Decisions made
 
@@ -36,13 +35,13 @@
 - **`on_sale` ignored for variable products** — always True regardless of actual sale state.
 - **`href` dropped** — `permalink` covers the URL need.
 - **`dimensions` dropped at reshape** — 0/171 have real data.
-- **`related_ids` dropped at reshape** — WooCommerce auto-generated, not useful.
+- **`related_ids` dropped at slim** — WooCommerce auto-generated, not useful.
 - **`Uncategorized` stripped at reshape** — every product has it, carries no signal.
 - **Parent SKU nulled for variable products at reshape** — real SKUs live on variations.
 
 ## Flags to handle at reshape
 
-- **Draft product** — `proSPORT Cabriolet Mirror Bifocal (Copy)` (id 4019, 1 product)
-- **No SKU** — `Sunglass String Chum Strap` (id 3139, simple product)
 - **Description URLs** — HTML descriptions contain `sunglassmonster.com` image URLs. Decide whether to rewrite or strip.
 - **11 products with no attributes** — confirm at reshape they are simple products.
+
+_Note: the draft copy (id 4019) and no-SKU simple (id 3139) are excluded at validation — they never reach reshape._

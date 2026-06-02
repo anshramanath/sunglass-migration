@@ -41,7 +41,6 @@ All checks are hard errors — a product with any failure is excluded from `prod
 | `attributes[].name` | Non-empty string |
 | `attributes[].options[]` | Each option a non-empty string |
 | `variations[]` | Each entry a number |
-| `related_ids[]` | Each entry a number |
 
 ## Design decisions
 

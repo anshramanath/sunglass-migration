@@ -27,13 +27,12 @@
 | `images` | `[{src, name}]` | id/alt/srcset dropped. Parent gallery only, not variation images. |
 | `attributes` | `[{name, options}]` | id/slug/variation flag dropped |
 | `variations` | `[int]` | Variation IDs — source of truth for whether product is variable |
-| `related_ids` | `[int]` | WP auto-generated. Drop at reshape. |
 
 ## Fields dropped entirely
 
 All carry zero information (always null, always empty, or all-same WooCommerce defaults):
 
-`date_on_sale_from/to`, `virtual`, `downloadable`, `downloads`, `download_limit`, `download_expiry`, `external_url`, `button_text`, `tax_status`, `tax_class`, `backorders`, `backorders_allowed`, `backordered`, `low_stock_amount`, `sold_individually`, `shipping_required`, `shipping_taxable`, `shipping_class`, `shipping_class_id`, `reviews_allowed`, `average_rating`, `rating_count`, `upsell_ids`, `cross_sell_ids`, `parent_id`, `purchase_note`, `brands`, `tags`, `default_attributes`, `grouped_products`, `menu_order`, `post_password`, `global_unique_id`, `meta_data`, `has_options`, `purchasable`, `catalog_visibility`, `date_created`, `date_modified` (and all `_gmt` twins), `price_html`, `manage_stock`, `href`, `_links`
+`date_on_sale_from/to`, `virtual`, `downloadable`, `downloads`, `download_limit`, `download_expiry`, `external_url`, `button_text`, `tax_status`, `tax_class`, `backorders`, `backorders_allowed`, `backordered`, `low_stock_amount`, `sold_individually`, `shipping_required`, `shipping_taxable`, `shipping_class`, `shipping_class_id`, `reviews_allowed`, `average_rating`, `rating_count`, `upsell_ids`, `cross_sell_ids`, `parent_id`, `purchase_note`, `brands`, `tags`, `default_attributes`, `grouped_products`, `menu_order`, `post_password`, `global_unique_id`, `meta_data`, `has_options`, `purchasable`, `catalog_visibility`, `date_created`, `date_modified` (and all `_gmt` twins), `price_html`, `manage_stock`, `href`, `_links`, `related_ids`
 
 ## Gotchas
 
@@ -42,7 +41,6 @@ All carry zero information (always null, always empty, or all-same WooCommerce d
 - **Parent SKU on variable products** — meaningless. Nullify at reshape.
 - **`dimensions`** — object always present but all subfields empty. Drop at reshape.
 - **`stock_quantity`** — only valid when `manage_stock=True`. Use `stock_status` as source of truth.
-- **`related_ids`** — WP auto-generated, not curated. Drop at reshape.
 - **Descriptions contain Sunglass Monster URLs** — HTML points to `sunglassmonster.com`. Decide at reshape whether to rewrite or strip.
 - **11 products with no attributes** — likely all simple products. Verify at reshape.
 - **1 draft product** — `proSPORT Cabriolet Mirror Bifocal (Copy)` (id 4019). Flag at reshape.

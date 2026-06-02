@@ -199,10 +199,6 @@ for p in data:
         if not isinstance(v, (int, float)):
             err(pid, f"variation ID is not a number: {v!r}")
 
-    # related_ids: list of numbers
-    for r in p.get("related_ids", []):
-        if not isinstance(r, (int, float)):
-            err(pid, f"related_id is not a number: {r!r}")
 
 # ── Outputs ───────────────────────────────────────────────────────────────────
 valid   = [p for p in data if p["id"] not in product_errors]

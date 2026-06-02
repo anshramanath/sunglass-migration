@@ -30,12 +30,11 @@ _171 products after slimming from fetch-products_
 | `images` | 171/171 | All have at least one image object |
 | `attributes` | 160/171 | 11 products have no attributes |
 | `variations` | 154/171 | 17 simple products have empty array |
-| `related_ids` | 171/171 | |
 
 ## Flags
 
-- **1 draft product** — `proSPORT Cabriolet Mirror Bifocal (Copy)` (id 4019). Flag at reshape.
-- **1 product with no SKU** — `Sunglass String Chum Strap` (id 3139, simple). Flag at reshape.
+- **1 draft product** — `proSPORT Cabriolet Mirror Bifocal (Copy)` (id 4019). Excluded at validation.
+- **1 product with no SKU** — `Sunglass String Chum Strap` (id 3139, simple). Excluded at validation.
 - **dimensions** — 0/171 usable. The field is structurally always present but carries no real data. Drop at reshape.
 
 ## type vs variations
@@ -98,6 +97,3 @@ The 2 products that are `outofstock` with no quantity (`proSPORT Navigator Rimle
 | METALS & AVIATORS | 6 |
 | BIG & TALL | 2 |
 
-## related_ids
-
-Every product has exactly 5 related IDs. All 26 unique IDs resolve to products within this same set — nothing external. WooCommerce auto-generates these; they're not curated. **Drop at reshape.**

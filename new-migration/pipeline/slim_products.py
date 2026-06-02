@@ -51,7 +51,6 @@ def slim(p):
         "images": [{"src": i["src"], "name": i["name"]} for i in p.get("images", [])],
         "attributes": [{"name": a["name"], "options": a["options"]} for a in p.get("attributes", [])],
         "variations": p.get("variations", []),
-        "related_ids": p.get("related_ids", []),
     }
 
 slimmed = [slim(p) for p in raw]
