@@ -27,11 +27,6 @@ print(f"Brand: {brand_name} ({slug})")
 print(f"Slimming {len(raw)} products...\n")
 
 def slim(p):
-    href = None
-    for link in p.get("_links", {}).get("self", []):
-        href = link.get("href")
-        break
-
     return {
         "id": p["id"],
         "name": p.get("name"),
@@ -46,6 +41,8 @@ def slim(p):
         "regular_price": p.get("regular_price"),
         "sale_price": p.get("sale_price"),
         "on_sale": p.get("on_sale"),
+        "featured": p.get("featured"),
+        "total_sales": p.get("total_sales"),
         "stock_quantity": p.get("stock_quantity"),
         "stock_status": p.get("stock_status"),
         "weight": p.get("weight"),
@@ -55,7 +52,6 @@ def slim(p):
         "attributes": [{"name": a["name"], "options": a["options"]} for a in p.get("attributes", [])],
         "variations": p.get("variations", []),
         "related_ids": p.get("related_ids", []),
-        "href": href,
     }
 
 slimmed = [slim(p) for p in raw]
