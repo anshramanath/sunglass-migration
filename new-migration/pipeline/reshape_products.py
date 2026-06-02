@@ -111,7 +111,10 @@ def reshape(p):
         'dimensions':        dimensions,
         'categories':        p.get('categories', []),
         'images':            p.get('images', []),
-        'attributes':        p.get('attributes', []),
+        'attributes':        [
+            {**a, 'name': re.sub(r'(?i)^choose\s+', '', re.sub(r'(?i)\s+for\s+filter$', '', a['name'])).strip()}
+            for a in p.get('attributes', [])
+        ],
         'variations':        p.get('variations', []),
     }
 

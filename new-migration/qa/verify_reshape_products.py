@@ -76,9 +76,19 @@ for pid, r in reshaped_map.items():
             err(pid, f"old field '{f}' still present")
 
     # pass-through fields unchanged
-    for f in ("id", "name", "slug", "type", "sku", "featured", "categories", "attributes", "variations"):
+    for f in ("id", "name", "slug", "type", "sku", "featured", "categories", "variations"):
         if r.get(f) != s.get(f):
             err(pid, f"'{f}' changed: {s.get(f)!r} → {r.get(f)!r}")
+
+    # attributes: names cleaned (Choose prefix + for Filter suffix stripped); options unchanged
+    def clean_attr_name(n):
+        import re as _re
+        n = _re.sub(r'(?i)\s+for\s+filter$', '', n).strip()
+        n = _re.sub(r'(?i)^choose\s+', '', n).strip()
+        return n
+    expected_attrs = [{**a, 'name': clean_attr_name(a['name'])} for a in s.get('attributes', [])]
+    if r.get('attributes') != expected_attrs:
+        err(pid, f"attributes mismatch")
 
     # oldLink == source permalink
     if r.get("oldLink") != s.get("permalink"):
