@@ -107,12 +107,18 @@ for pid, r in reshaped_map.items():
     if desc is not None and TAG_RE.search(desc):
         err(pid, "description still contains HTML tags")
 
-    # descriptionImages: list of http URLs (never null)
+    # descriptionImages: list of {src, name} objects (never null)
     di = r.get("descriptionImages")
     if not isinstance(di, list):
         err(pid, f"descriptionImages is not a list: {di!r}")
-    elif not all(isinstance(u, str) and u.startswith("http") for u in di):
-        err(pid, f"descriptionImages contains non-URL entries: {di!r}")
+    else:
+        for entry in di:
+            if not isinstance(entry, dict):
+                err(pid, f"descriptionImages entry is not an object: {entry!r}")
+            elif not isinstance(entry.get("src"), str) or not entry["src"].startswith("http"):
+                err(pid, f"descriptionImages entry missing valid src: {entry!r}")
+            elif not isinstance(entry.get("name"), str) or not entry["name"]:
+                err(pid, f"descriptionImages entry missing name: {entry!r}")
 
     # shortDescription: list of plain strings (never null)
     sd = r.get("shortDescription")

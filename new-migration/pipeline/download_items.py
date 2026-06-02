@@ -55,13 +55,14 @@ def collect_urls(items):
         for img in item.get("images", []):
             if img.get("src"):
                 yield sku, img["src"]
-        for url in item.get("descriptionImages", []):
-            if url:
-                yield sku, url
+        for img in item.get("descriptionImages", []):
+            if img.get("src"):
+                yield sku, img["src"]
         for v in item.get("variations", []):
             vsku = v.get("sku") or sku
-            if v.get("image") and v["image"].get("src"):
-                yield vsku, v["image"]["src"]
+            for img in v.get("images", []):
+                if img.get("src"):
+                    yield vsku, img["src"]
 
 
 def get_filename(url, sku, used_filenames, collisions, url_to_filename):

@@ -45,6 +45,7 @@
 ## Description images
 
 - 146 products have 1 description image; 23 have none
+- Each entry is a `{src, name}` object; name derived from URL path after `/uploads/`
 - Only 2 unique URLs across all products (reused sizing diagrams from sunglassmonster.com and bikershades.com)
 
 ## Short description

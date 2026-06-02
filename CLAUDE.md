@@ -32,12 +32,12 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 6. `pipeline/validate_variations.py` — validates variations → `data/{slug}/validated-variations/variations.json` + `flagged.json`
 
 ### Reshape → Import
-7. `pipeline/reshape_products.py` — normalizes products: HTML stripped, prices to cents, stock merged, attributes name-cleaned → `data/{slug}/reshape-products/`
-8. `pipeline/reshape_variations.py` — normalizes variations: same conventions, grouped structure preserved → `data/{slug}/reshape-variations/`
+7. `pipeline/reshape_products.py` — normalizes products: HTML stripped, prices to cents, stock merged, attributes name-cleaned, descriptionImages as `{src, name}` objects → `data/{slug}/reshape-products/`
+8. `pipeline/reshape_variations.py` — normalizes variations: same conventions, `image` → `images[]` array → `data/{slug}/reshape-variations/`
 9. `pipeline/create_items.py` — embeds variations into products, ownership checks, attribute expansion/prune, image dedup, min/max price → `data/{slug}/create-items/`
-10. `pipeline/recategorize_items.py` — applies drops/merges, collapses to leaf paths → `data/{slug}/recategorized/`
-11. `pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
-12. `pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
+10. `pipeline/prosport_categorize_items.py` — normalizes category names, assigns leaf paths with `{level, name, slug}` structure, hardcoded assignments for 21 uncategorized products → `data/{slug}/categorize-items/`
+11. `pipeline/download_items.py` — downloads all images locally (crash-safe via `download_map.json`) → `data/{slug}/download-items/`
+12. `pipeline/upload_items.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
 13. `pipeline/import_items.py` — inserts into Supabase DB
 
 ### Analysis (per stage)
@@ -73,20 +73,19 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/fetch-products/products.json` — raw API response
 - `data/{slug}/slim-products/products.json` — relevant fields only
-- `data/{slug}/validate-products/products.json` + `flagged.json` — passed/failed validation
+- `data/{slug}/validate-products/products.json` + `flagged.json` — passed/failed validation (output folder: `validate-products/`)
 - `data/{slug}/fetch-variations/variations.json` — raw variation API response
 - `data/{slug}/slim-variations/variations.json` — relevant fields only
 - `data/{slug}/validate-variations/variations.json` + `flagged.json` — passed/failed validation
 - `data/{slug}/reshape-products/products.json` — normalized products
 - `data/{slug}/reshape-variations/variations.json` — normalized variations
 - `data/{slug}/create-items/items.json` + `flagged.json` — combined items
-- `data/{slug}/recategorized/`
-- `data/{slug}/images/` (url_map, upload_map, local/)
+- `data/{slug}/categorize-items/items.json` — items with normalized `[[{level, name, slug}]]` category paths
+- `data/{slug}/download-items/download_map.json` + `flagged.json` + `images/` — downloaded images
 
 ## Current state (ProSport)
-- **Products:** 169 validated → reshaped → 166 items passed create-items, 3 flagged (all due to 18 variations excluded at validation).
+- **Products:** 169 validated → reshaped → 166 items passed create-items, 3 flagged (products 2145, 2211, 1208 — unreplaced variation IDs from 18 variations excluded at validate: 17 SKU-spaces, 1 no-price).
 - **Variations:** 1,740 validated → reshaped → 1,713 embedded into items.
-- **Flagged items (3):** products 2145, 2211, 1208 — have unreplaced variation IDs from the 18 variations excluded at validate (17 SKU-spaces, 1 no-price). Fix in WooCommerce and re-run to resolve.
-- No `gallery_image_ids` found on any ProSport variation — single `image` field only.
-- 97.9% of variation images deduped against parent (1677/1713 nulled).
-- Next step: `recategorize_items.py`.
+- **Categorized:** 166 items → `categorize-items/`. 21 previously uncategorized products assigned. 9 leaves across 3 parent categories + Accessories root-level leaf.
+- **Images:** 411 downloaded (373 product, 36 variation, 2 description) → `download-items/`. 0 failed.
+- **Next step:** `upload_items.py`.

@@ -35,7 +35,7 @@ TAG_RE = re.compile(r'<[^>]+>')
 EXPECTED_FIELDS = {
     "id", "parent_id", "name", "type", "oldLink", "description",
     "sku", "regularPriceCents", "salePriceCents", "sale",
-    "stock", "weight", "dimensions", "image", "attributes",
+    "stock", "weight", "dimensions", "images", "attributes",
 }
 
 DROPPED_FIELDS = {
@@ -96,9 +96,17 @@ for pid, r_vars in reshaped_map.items():
         if r.get("oldLink") != s.get("permalink"):
             err(vid, f"oldLink mismatch: {r.get('oldLink')!r} != {s.get('permalink')!r}")
 
-        # image unchanged
-        if r.get("image") != s.get("image"):
-            err(vid, "image changed")
+        # images: array; src matches source image src; name derived from URL
+        raw_img  = s.get("image")
+        r_images = r.get("images", [])
+        if not isinstance(r_images, list):
+            err(vid, f"images is not a list: {r_images!r}")
+        elif raw_img and raw_img.get("src"):
+            if len(r_images) != 1 or r_images[0].get("src") != raw_img["src"]:
+                err(vid, f"images src mismatch: expected [{raw_img['src']!r}]")
+        else:
+            if r_images:
+                err(vid, f"source image is null but images={r_images!r}")
 
         # description: no HTML
         desc = r.get("description")
@@ -147,8 +155,19 @@ for pid, r_vars in reshaped_map.items():
                 if dv is not None and not isinstance(dv, float):
                     err(vid, f"dimensions.{dim} is not a float or null: {dv!r}")
 
-        # attributes: name cleaned, option unchanged
-        expected_attrs = [{"name": clean_attr_name(a["name"]), "option": a["option"]} for a in s.get("attributes", [])]
+        # attributes: name cleaned, Power options normalized
+        def norm_power(name, option):
+            if name == "Power":
+                try:
+                    return f"{float(option.replace('-', '.')):.2f}"
+                except (ValueError, AttributeError):
+                    pass
+            return option
+
+        expected_attrs = [
+            {"name": clean_attr_name(a["name"]), "option": norm_power(clean_attr_name(a["name"]), a["option"])}
+            for a in s.get("attributes", [])
+        ]
         if r.get("attributes") != expected_attrs:
             err(vid, f"attributes mismatch")
 

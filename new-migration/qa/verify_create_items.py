@@ -79,10 +79,11 @@ for item in items:
             if vid not in s_vars:
                 err(pid, f"variation {vid} not found in reshape-variations for this product")
 
-            # image dedup: variation image should not match any parent image
+            # image dedup: no variation image should duplicate a parent image
             parent_srcs = {img["src"] for img in item.get("images", [])}
-            if v.get("image") and v["image"]["src"] in parent_srcs:
-                err(pid, f"variation {vid} image still duplicates parent image")
+            for vimg in v.get("images", []):
+                if vimg["src"] in parent_srcs:
+                    err(pid, f"variation {vid} images[] contains src duplicating parent image: {vimg['src']}")
 
             # variation attributes exist in product attribute pool
             product_attr_map = {a["name"]: set(a["options"]) for a in item.get("attributes", [])}

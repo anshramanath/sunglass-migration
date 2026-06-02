@@ -14,7 +14,7 @@
 | All expected fields present | All 15 output fields present on every variation |
 | Pass-through fields unchanged | `id`, `parent_id`, `name`, `type`, `sku` match source exactly |
 | `oldLink` | Equals source `permalink` |
-| `image` | Unchanged from source |
+| `images` | Array; `[{src, name}]` if source `image` has a src; `[]` if source `image` is null |
 | `description` | No HTML tags remaining |
 | Price field types | `regularPriceCents`, `salePriceCents` are `int` or `null` |
 | `regularPriceCents` | Equals source `regular_price` × 100 (rounded) |

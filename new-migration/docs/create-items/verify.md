@@ -14,7 +14,7 @@
 | Variation id in source list | Each embedded variation's `id` was in the original product's `variations[]` |
 | `parent_id` matches | Each embedded variation's `parent_id` equals the product `id` |
 | Variation in reshape-variations | Each embedded variation exists in `reshape-variations` under the correct `product_id` |
-| Image dedup | No variation `image.src` matches any `src` in the parent's `images[]` |
+| Image dedup | No entry in a variation's `images[]` has a `src` matching any `src` in the parent's `images[]` |
 | Variation attributes in parent pool | Each variation's `{name, option}` exists in the product's `attributes[]` after expansion |
 | Simple products | `variations[]` is empty |
 | `minPriceCents` | Equals `min(variation.regularPriceCents)` |

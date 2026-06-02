@@ -113,7 +113,7 @@ VARIATION_SCALAR_FIELDS = [
     "id", "parent_id", "name", "type", "oldLink",
     "description", "sku",
     "regularPriceCents", "salePriceCents", "sale",
-    "stock", "weight", "image",
+    "stock", "weight",
 ]
 
 for field in VARIATION_SCALAR_FIELDS:
@@ -319,16 +319,16 @@ if no_images:
 
 print(f"\n  Total unique product image URLs: {len({img['src'] for p in items for img in p.get('images', [])})}")
 
-v_img_null    = sum(1 for v in all_vars if v.get("image") is None)
-v_img_present = sum(1 for v in all_vars if v.get("image") is not None)
+v_img_null    = sum(1 for v in all_vars if not v.get("images"))
+v_img_present = sum(1 for v in all_vars if v.get("images"))
 print(f"\n  Variation images:")
-print(f"    null (deduped)  : {pct(v_img_null, len(all_vars))}")
-print(f"    present (unique): {pct(v_img_present, len(all_vars))}")
-print(f"    unique image URLs: {len({v['image']['src'] for v in all_vars if v.get('image')})}")
+print(f"    images=[] (deduped): {pct(v_img_null, len(all_vars))}")
+print(f"    images present     : {pct(v_img_present, len(all_vars))}")
+print(f"    unique image URLs: {len({img['src'] for v in all_vars for img in v.get('images', [])})}")
 
 # per-product: how many unique variation images does each product have
 unique_var_imgs_per_product = [
-    sum(1 for v in p["variations"] if v.get("image"))
+    sum(1 for v in p["variations"] if v.get("images"))
     for p in variables
 ]
 print(f"\n  Unique variation images per variable product:")

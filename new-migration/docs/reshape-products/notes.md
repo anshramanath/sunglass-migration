@@ -12,7 +12,7 @@
 | `permalink` | `oldLink` | Renamed |
 | `status` | — | Dropped |
 | `description` | `description` | All HTML stripped to plain text; `<img>` tags removed first |
-| _(from description)_ | `descriptionImages` | Array of `src` URLs extracted from `<img>` tags; `[]` if none |
+| _(from description)_ | `descriptionImages` | Array of `{src, name}` objects extracted from `<img>` tags; `name` derived from URL path after `/uploads/` with `/` → `_`; `[]` if none |
 | `short_description` | `shortDescription` | `<li>` items parsed to plain text array; `[]` if empty |
 | `price` | — | Dropped — replaced by `minPriceCents`/`maxPriceCents` |
 | `regular_price` | — | Dropped — folded into `minPriceCents`/`maxPriceCents` logic |

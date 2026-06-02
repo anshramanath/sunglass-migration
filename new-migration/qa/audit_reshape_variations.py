@@ -76,6 +76,15 @@ print(f"  Non-null: {pct(len(weights), total_vars)}")
 if weights:
     print(f"  Range: {min(weights)}–{max(weights)}")
 
+# ── Images ────────────────────────────────────────────────────────────────────
+print(f"\n── Images ──")
+with_img  = sum(1 for v in all_vars if v.get("images"))
+no_img    = sum(1 for v in all_vars if not v.get("images"))
+print(f"  images non-empty : {pct(with_img, total_vars)}")
+print(f"  images empty     : {no_img}  (null source image)")
+unique_srcs = {img["src"] for v in all_vars for img in v.get("images", [])}
+print(f"  unique image URLs: {len(unique_srcs)}")
+
 # ── Attributes ────────────────────────────────────────────────────────────────
 print(f"\n── Attributes ──")
 attr_counter = Counter(a["name"] for v in all_vars for a in v.get("attributes", []))

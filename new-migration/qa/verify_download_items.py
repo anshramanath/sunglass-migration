@@ -37,13 +37,14 @@ for item in items:
         src = img.get("src")
         if src and src not in accounted:
             err(f"id={item['id']} product image not in download_map or flagged: {src}")
-    for url in item.get("descriptionImages", []):
-        if url and url not in accounted:
-            err(f"id={item['id']} description image not in download_map or flagged: {url}")
+    for img in item.get("descriptionImages", []):
+        src = img.get("src") if isinstance(img, dict) else None
+        if src and src not in accounted:
+            err(f"id={item['id']} description image not in download_map or flagged: {src}")
     for v in item.get("variations", []):
-        if v.get("image") and v["image"].get("src"):
-            src = v["image"]["src"]
-            if src not in accounted:
+        for img in v.get("images", []):
+            src = img.get("src")
+            if src and src not in accounted:
                 err(f"id={item['id']} variation {v['id']} image not in download_map or flagged: {src}")
 
 # ── Every local path in download_map exists on disk ──────────────────────────

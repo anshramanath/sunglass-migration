@@ -134,9 +134,9 @@ Note: `product.stock` is the WC aggregate (always 1 for managed variable product
 - 0 products with no images
 
 **Variation images:**
-- 1,677/1,713 (97.9%) null — deduped against parent
-- 36/1,713 (2.1%) carry a unique image
-- 149/150 variable products have all variation images nulled
+- 1,677/1,713 (97.9%) `images: []` — deduped against parent
+- 36/1,713 (2.1%) carry a unique image in `images[]`
+- 149/150 variable products have all variation images deduped to `[]`
 - 1 product (Professor Multifocal, id=2211) has 23 unique variation images — each variation has its own photo
 
 ---

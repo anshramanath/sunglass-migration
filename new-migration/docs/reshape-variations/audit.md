@@ -13,6 +13,12 @@
 | `weight` | 1740/1740 (100.0%) |
 | `dimensions` (any non-null field) | 0/1740 (0.0%) |
 
+## Images
+
+- All 1740 variations have a non-empty `images[]` — source `image` field is always populated at this stage
+- 209 unique image URLs
+- Dedup against parent images happens at create-items, not here
+
 ## Pricing
 
 - All 1740 variations have `sale=True` — every ProSport variation is on sale

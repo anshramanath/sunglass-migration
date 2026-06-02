@@ -3,6 +3,7 @@ import json
 import os
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 
 BASE = Path(__file__).parent.parent
@@ -26,6 +27,12 @@ if not in_path.exists():
 data = json.loads(in_path.read_text())
 out_dir = BASE / "data" / slug / "reshape-products"
 out_dir.mkdir(parents=True, exist_ok=True)
+
+def image_name(src):
+    path = urlparse(src).path
+    if '/uploads/' in path:
+        path = path.split('/uploads/', 1)[1]
+    return path.lstrip('/').replace('/', '_') or 'image.jpg'
 
 IMG_RE     = re.compile(r'<img[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
 IMG_TAG_RE = re.compile(r'<img[^>]*>', re.IGNORECASE)
@@ -72,7 +79,7 @@ def reshape(p):
 
     # description: extract img URLs, strip all HTML to plain text
     desc_raw = p.get('description') or ''
-    desc_imgs = IMG_RE.findall(desc_raw)
+    desc_imgs = [{'src': url, 'name': image_name(url)} for url in IMG_RE.findall(desc_raw)]
     desc_text = strip_html(IMG_TAG_RE.sub('', desc_raw))
 
     # short_description: parse <li> items to plain text array

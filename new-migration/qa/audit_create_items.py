@@ -63,10 +63,10 @@ print(f"  min: {min(vcounts)}  max: {max(vcounts)}  avg: {sum(vcounts)/len(vcoun
 
 # ── Image dedup ───────────────────────────────────────────────────────────────
 print(f"\n── Variation image dedup ──")
-nulled   = sum(1 for v in all_vars if v.get("image") is None)
-has_img  = sum(1 for v in all_vars if v.get("image") is not None)
-print(f"  image=null (deduped or none): {nulled}")
-print(f"  image present:                {has_img}")
+nulled   = sum(1 for v in all_vars if not v.get("images"))
+has_img  = sum(1 for v in all_vars if v.get("images"))
+print(f"  images=[] (deduped or none): {nulled}")
+print(f"  images present:              {has_img}")
 
 # ── Attributes ────────────────────────────────────────────────────────────────
 print(f"\n── Product attributes (post-expansion + prune) ──")

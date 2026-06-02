@@ -63,8 +63,8 @@ if present_files:
 # ── By image type ─────────────────────────────────────────────────────────────
 print(f"\n── URLs by image type ──")
 product_urls     = {img["src"] for p in items for img in p.get("images", []) if img.get("src")}
-variation_urls   = {v["image"]["src"] for p in items for v in p.get("variations", []) if v.get("image") and v["image"].get("src")}
-description_urls = {url for p in items for url in p.get("descriptionImages", []) if url}
+variation_urls   = {img["src"] for p in items for v in p.get("variations", []) for img in v.get("images", []) if img.get("src")}
+description_urls = {img["src"] for p in items for img in p.get("descriptionImages", []) if isinstance(img, dict) and img.get("src")}
 
 for label, url_set in [("product_image", product_urls), ("variation_image", variation_urls), ("description_image", description_urls)]:
     downloaded = len(url_set & set(download_map))

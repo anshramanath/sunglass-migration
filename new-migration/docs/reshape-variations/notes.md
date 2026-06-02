@@ -20,7 +20,7 @@
 | `weight` | `weight` | String → float; `null` if empty |
 | `dimensions` | `dimensions` | Always `{length, width, height}`; each field float or `null` |
 | `attributes[].name` | `attributes[].name` | `"Choose "` prefix stripped (e.g. `Choose Color` → `Color`) |
-| `image` | `image` | Unchanged (`{src, name}`) |
+| `image` | `images` | Wrapped in array: `[{src, name}]` if source image has a src; `[]` if null. `name` derived from URL path after `/uploads/` with `/` → `_` |
 
 All other fields (`id`, `parent_id`, `name`, `type`, `sku`, `description`) pass through unchanged except `description` has HTML stripped to plain text.
 

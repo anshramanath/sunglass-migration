@@ -96,11 +96,10 @@ for item in items:
         if any(o in used_options.get(attr["name"], set()) for o in attr["options"])
     ]
 
-    # image dedup: null out variation image if it duplicates a parent image
+    # image dedup: remove variation images that duplicate a parent image
     parent_srcs = {img["src"] for img in item.get("images", [])}
     for v in filled:
-        if v.get("image") and v["image"]["src"] in parent_srcs:
-            v["image"] = None
+        v["images"] = [img for img in v.get("images", []) if img["src"] not in parent_srcs]
 
     # min/max price + sale
     reg_prices = [v["regularPriceCents"] for v in filled if v.get("regularPriceCents") is not None]

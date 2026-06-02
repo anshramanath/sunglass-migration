@@ -26,7 +26,7 @@ Unmatched IDs remain as integers in the array.
 - Variable product with no filled variations → flag
 - Attribute expansion: for each variation attribute, if the name exists in the parent's attributes, add the option if missing. If the name doesn't exist in the parent at all → flag.
 - Attribute prune: remove options no variation uses; drop empty attributes
-- Image dedup: if a variation's `image.src` matches any `src` in the parent's `images[]`, set `image` to `null`
+- Image dedup: remove any entry from a variation's `images[]` whose `src` matches a `src` in the parent's `images[]`; result is `[]` if all deduped
 - Min/max price: `minPriceCents` = min variation `regularPriceCents`; `maxPriceCents` = max
 - Sale: `True` if any variation has `sale=True`; cross-checked against WC `sale` value from reshape
 - `variations[]` cleaned to only filled objects (unreplaced ints dropped)
@@ -39,6 +39,6 @@ Check-before-add across all product SKUs and variation SKUs. Duplicates flag the
 - **Ownership triple-check** — variation is only swapped in if its `id` matches the slot AND its `parent_id` matches the product. The grouped structure of reshape-variations provides a third implicit check (the variation came from the same `product_id` entry).
 - **Flag entire product** — if any variation ID is unreplaced, the whole product is excluded. Partial items are not written to `items.json`.
 - **Attribute expansion not flagging** — if a variation uses an option the parent didn't list, the option is added to the parent rather than flagging. This corrects WooCommerce data where parent attribute options weren't updated when new variations were added. The check is: name must match a parent attribute; if the name itself is absent, that is flagged.
-- **Image dedup** — 1677 of 1713 variations (97.9%) had their image nulled as a duplicate of a parent image. Only 36 variations carry a unique image.
+- **Image dedup** — 1677 of 1713 variations (97.9%) have `images: []` after dedup. Only 36 variations carry a unique image not present in the parent's `images[]`.
 - **Min/max from `regularPriceCents`** — uses the stable "was" price, not the current selling price, so the range doesn't change when sales start/stop.
 - **`salePriceCents` stays null at product level** — sale pricing is per-variation only.

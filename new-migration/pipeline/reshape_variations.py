@@ -3,6 +3,7 @@ import json
 import os
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 
 BASE = Path(__file__).parent.parent
@@ -26,6 +27,12 @@ if not in_path.exists():
 raw = json.loads(in_path.read_text())
 out_dir = BASE / "data" / slug / "reshape-variations"
 out_dir.mkdir(parents=True, exist_ok=True)
+
+def image_name(src):
+    path = urlparse(src).path
+    if '/uploads/' in path:
+        path = path.split('/uploads/', 1)[1]
+    return path.lstrip('/').replace('/', '_') or 'image.jpg'
 
 IMG_TAG_RE = re.compile(r'<img[^>]*>', re.IGNORECASE)
 TAG_RE     = re.compile(r'<[^>]+>')
@@ -89,7 +96,7 @@ def reshape(v):
         'stock':            stock,
         'weight':           to_num(v.get('weight')),
         'dimensions':       dimensions,
-        'image':            v.get('image'),
+        'images':           [{'src': v['image']['src'], 'name': image_name(v['image']['src'])}] if v.get('image') and v['image'].get('src') else [],
         'attributes':       [
             {'name': clean_attr_name(a['name']), 'option': normalize_power(a['option']) if clean_attr_name(a['name']) == 'Power' else a['option']}
             for a in v.get('attributes', [])

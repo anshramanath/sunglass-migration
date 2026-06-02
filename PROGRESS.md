@@ -56,12 +56,12 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 - [x] `validate_variations.py` — 1,740 passed, 18 flagged (17 SKU-spaces across 2 products, 1 no-price)
 
 **Reshape → Create Items**
-- [x] `reshape_products.py` — 169 products → `reshape-products/`
-- [x] `reshape_variations.py` — 1,740 variations → `reshape-variations/`
+- [x] `reshape_products.py` — 169 products → `reshape-products/` (descriptionImages as `{src, name}` objects)
+- [x] `reshape_variations.py` — 1,740 variations → `reshape-variations/` (`image` → `images[]`)
 - [x] `create_items.py` — 166 items passed, 3 flagged (unreplaced variation IDs from validate) → `create-items/`
 
-**Recategorize → Import**
-- [ ] `recategorize_items.py`
-- [ ] `download_images.py`
-- [ ] `upload_images.py`
+**Categorize → Import**
+- [x] `prosport_categorize_items.py` — 166 items, 197 leaf assignments, 9 leaves, 21 previously uncategorized assigned → `categorize-items/`
+- [x] `download_items.py` — 411 images downloaded (0 failed) → `download-items/`
+- [ ] `upload_items.py`
 - [ ] `import_items.py`

@@ -17,7 +17,7 @@
 | `images` | Unchanged from source |
 | `totalSales` | Equals source `total_sales` |
 | `description` | No HTML tags remaining |
-| `descriptionImages` | Always a list; entries are `http` URLs; `[]` if none |
+| `descriptionImages` | Always a list of `{src, name}` objects; `src` starts with `http`; `name` derived from URL path after `/uploads/`; `[]` if none |
 | `shortDescription` | Always a list of plain strings (no HTML); `[]` if empty |
 | Price field types | `minPriceCents`, `maxPriceCents`, `salePriceCents` are `int` or `null` |
 | Variable pricing | `minPriceCents`, `maxPriceCents`, `salePriceCents` all `null`; `sale` matches source `on_sale` |

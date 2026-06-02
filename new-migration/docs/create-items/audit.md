@@ -23,8 +23,8 @@
 
 ## Image dedup
 
-- 1677/1713 variations (97.9%) had `image` set to `null` — duplicate of a parent image
-- 36 variations carry a unique image not present in the parent's `images[]`
+- 1677/1713 variations (97.9%) have `images: []` — deduped against parent
+- 36 variations carry a unique image in `images[]` not present in the parent's `images[]`
 
 ## Product attributes (post-expansion + prune)
 
