@@ -26,7 +26,7 @@ slug = config["slug"]
 base_url = os.getenv(config["base_url"])
 auth = (os.getenv(config["consumer_key"]), os.getenv(config["consumer_secret"]))
 
-products_path = BASE / "data" / slug / "validated-products" / "products.json"
+products_path = BASE / "data" / slug / "validate-products" / "products.json"
 if not products_path.exists():
     raise SystemExit(f"Run validate_products.py first. Not found: {products_path}")
 

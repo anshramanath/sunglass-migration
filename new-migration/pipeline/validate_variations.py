@@ -17,7 +17,7 @@ if not config:
 
 slug = config["slug"]
 
-products_path = BASE / "data" / slug / "validated-products" / "products.json"
+products_path = BASE / "data" / slug / "validate-products" / "products.json"
 variations_path = BASE / "data" / slug / "slim-variations" / "variations.json"
 
 if not products_path.exists():
@@ -30,7 +30,7 @@ raw = json.loads(variations_path.read_text())
 
 known_product_ids = {p["id"] for p in products}
 
-out_dir = BASE / "data" / slug / "validated-variations"
+out_dir = BASE / "data" / slug / "validate-variations"
 out_dir.mkdir(parents=True, exist_ok=True)
 
 variation_errors = {}  # vid -> [msgs]
@@ -57,7 +57,7 @@ for entry in raw:
     if product_id not in known_product_ids:
         # flag all variations in this entry
         for v in entry.get("variations", []):
-            err(v.get("id"), f"product_id={product_id} not in validated-products")
+            err(v.get("id"), f"product_id={product_id} not in validate-products")
 
     for v in entry.get("variations", []):
         vid = v.get("id")

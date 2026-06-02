@@ -41,6 +41,8 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 ### Analysis (per stage)
 - `analysis/analyze_products.py` — raw product field coverage and stats
 - `analysis/analyze_slim_products.py` — slim product field presence and cross-checks
+- `analysis/analyze_variations.py` — raw variation field coverage, pricing, stock, image, attribute stats
+- `analysis/analyze_slim_variations.py` — slim variation field presence, on_sale consistency, parent_id cross-check
 
 ## Key differences from old pipeline
 
@@ -80,6 +82,7 @@ All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/images/` (url_map, upload_map, local/)
 
 ## Current state (ProSport)
-- 171 products fetched, slimmed, validated. 169 passed, 2 flagged (1 draft copy with no slug, 1 simple with no SKU).
-- `fetch_variations.py` not yet written. 1,794 variation IDs to fetch across 154 variable products.
+- **Products:** 171 fetched, slimmed, validated. 169 passed, 2 flagged (1 draft copy with no slug, 1 simple with no SKU).
+- **Variations:** 1,758 fetched across 153 variable products, slimmed, validated. 1,740 passed, 18 flagged (17 with spaces in SKUs across 2 products, 1 with no price). Decision pending on flagged variations before reshape.
 - No `gallery_image_ids` found on any ProSport variation — single `image` field only.
+- Next step: `reshape_items.py`.

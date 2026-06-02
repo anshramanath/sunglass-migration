@@ -20,7 +20,7 @@ if not config:
 slug = config["slug"]
 data = json.loads((BASE / "data" / slug / "slim-products" / "products.json").read_text())
 
-out_dir = BASE / "data" / slug / "validated-products"
+out_dir = BASE / "data" / slug / "validate-products"
 out_dir.mkdir(parents=True, exist_ok=True)
 
 product_errors = {}
