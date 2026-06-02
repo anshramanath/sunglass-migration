@@ -75,12 +75,12 @@ Note: all 169 products are also assigned to "Uncategorized" — this category wi
 
 | Attribute | Products | Unique options |
 |---|---|---|
-| Choose Color | 153 | 214 |
-| Frame Color for Filter | 146 | 27 |
-| Lens Color for Filter | 145 | 20 |
-| Activity for Filter | 141 | 8 |
-| Frame Styles for Filter | 139 | 9 |
-| Lens Type for Filter | 135 | 7 |
-| Material for Filter | 135 | 3 |
-| Choose Power | 67 | 21 |
-| Gender For Filter | 61 | 2 |
+| Color | 153 | 214 |
+| Frame Color | 146 | 27 |
+| Lens Color | 145 | 20 |
+| Activity | 141 | 8 |
+| Frame Styles | 139 | 9 |
+| Lens Type | 135 | 7 |
+| Material | 135 | 3 |
+| Power | 67 | 21 |
+| Gender | 61 | 2 |

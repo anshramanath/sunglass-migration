@@ -24,7 +24,7 @@
 | `dimensions` | `dimensions` | All-or-nothing: all three fields as floats, or `null` if any missing |
 | `images` | `images` | Unchanged (`[{src, name}]`) |
 | `categories` | `categories` | Unchanged (`[{name, slug}]`) |
-| `attributes` | `attributes` | Unchanged (`[{name, options[]}]`) |
+| `attributes` | `attributes` | Names cleaned: `"Choose "` prefix and `" for Filter"` suffix stripped (e.g. `Choose Color` → `Color`, `Lens Color for Filter` → `Lens Color`); options unchanged |
 | `variations` | `variations` | Unchanged (array of IDs) |
 
 All other fields (`id`, `name`, `slug`, `type`, `sku`, `featured`) pass through unchanged.
