@@ -3,7 +3,7 @@ from collections import Counter
 from pathlib import Path
 
 BASE = Path(__file__).parent.parent
-data = json.loads((BASE / "data/prosport/fetch-items/products.json").read_text())
+data = json.loads((BASE / "data/prosport/fetch-products/products.json").read_text())
 
 total = len(data)
 variable = [p for p in data if p["type"] == "variable"]

@@ -27,7 +27,7 @@ base_url = os.getenv(config["base_url"])
 auth = (os.getenv(config["consumer_key"]), os.getenv(config["consumer_secret"]))
 
 (BASE / "data" / slug).mkdir(parents=True, exist_ok=True)
-out_dir = BASE / "data" / slug / "fetch-items"
+out_dir = BASE / "data" / slug / "fetch-products"
 out_dir.mkdir(exist_ok=True)
 
 print(f"Brand: {brand_name} ({slug})")
