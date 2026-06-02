@@ -77,6 +77,23 @@ print(f"\n  no quantity + outofstock: {len(no_qty_out)}")
 for p in no_qty_out:
     print(f"    {p['name']}")
 
+# ── featured & total_sales ───────────────────────────────────────────────────
+print("\n--- featured ---")
+featured = [p for p in data if p.get("featured")]
+print(f"  Featured products: {len(featured)}")
+for p in featured:
+    print(f"    [{p['id']}] {p['name']}")
+
+print("\n--- total_sales ---")
+has_sales   = [p for p in data if p.get("total_sales")]
+zero_sales  = [p for p in data if p.get("total_sales") == 0]
+null_sales  = [p for p in data if p.get("total_sales") is None]
+sale_counts = Counter(p["total_sales"] for p in data if p.get("total_sales"))
+print(f"  Has sales (>0):   {len(has_sales)}")
+print(f"  Zero sales:       {len(zero_sales)}")
+print(f"  Null:             {len(null_sales)}")
+print(f"  Top values:       {sale_counts.most_common(5)}")
+
 # ── categories ────────────────────────────────────────────────────────────────
 print("\n--- categories ---")
 unique_cats = dict((c["slug"], c["name"]) for p in data for c in p["categories"])
