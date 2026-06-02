@@ -1,5 +1,5 @@
 # Sunglass Monster Migration — Claude Context
-_Last updated: 2026-06-01_
+_Last updated: 2026-06-02_
 
 ## What this is
 Multi-brand WooCommerce → Supabase migration pipeline. Uses the authenticated WooCommerce admin REST API (`/wp-json/wc/v3/`) for complete product data. The active brand is selected via `BRAND` in `.env`.
@@ -21,13 +21,26 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 
 ## Pipeline (in order)
 
-1. `pipeline/fetch_products.py` — fetches all products via admin REST API, saves to `data/{slug}/products.json`
-2. `pipeline/fetch_variations.py` — fetches all variations per product, saves to `data/{slug}/variations.json`
-3. `pipeline/reshape_items.py` — normalizes data, buckets by issue type into `data/{slug}/reshaped/`
-4. `pipeline/recategorize_items.py` — applies drops/merges, collapses to leaf paths, outputs `data/{slug}/recategorized/`
-5. `pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
-6. `pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
-7. `pipeline/import_items.py` — inserts categorized items into Supabase DB
+### Products
+1. `pipeline/fetch_products.py` — fetches all products via admin REST API → `data/{slug}/fetch-products/products.json`
+2. `pipeline/slim_products.py` — extracts relevant fields only → `data/{slug}/slim-products/products.json`
+3. `pipeline/validate_products.py` — validates all fields per product → `data/{slug}/validated-products/products.json` + `flagged.json`
+
+### Variations
+4. `pipeline/fetch_variations.py` — fetches all variations for each validated product → `data/{slug}/fetch-variations/variations.json`
+5. `pipeline/slim_variations.py` — extracts relevant fields → `data/{slug}/slim-variations/variations.json`
+6. `pipeline/validate_variations.py` — validates variations → `data/{slug}/validated-variations/variations.json` + `flagged.json`
+
+### Reshape → Import
+7. `pipeline/reshape_items.py` — normalizes, strips junk fields, merges products + variations → `data/{slug}/reshaped/`
+8. `pipeline/recategorize_items.py` — applies drops/merges, collapses to leaf paths → `data/{slug}/recategorized/`
+9. `pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
+10. `pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
+11. `pipeline/import_items.py` — inserts into Supabase DB
+
+### Analysis (per stage)
+- `analysis/analyze_products.py` — raw product field coverage and stats
+- `analysis/analyze_slim_products.py` — slim product field presence and cross-checks
 
 ## Key differences from old pipeline
 
@@ -54,13 +67,19 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 ## Data paths
 
 All output scoped to `data/{brand_slug}/`:
-- `data/{slug}/products.json`
-- `data/{slug}/variations.json`
+- `data/{slug}/fetch-products/products.json` — raw API response
+- `data/{slug}/slim-products/products.json` — relevant fields only
+- `data/{slug}/validated-products/products.json` — passed validation
+- `data/{slug}/validated-products/flagged.json` — failed validation
+- `data/{slug}/fetch-variations/variations.json` — raw variation API response
+- `data/{slug}/slim-variations/variations.json` — relevant fields only
+- `data/{slug}/validated-variations/variations.json` — passed validation
+- `data/{slug}/validated-variations/flagged.json` — failed validation
 - `data/{slug}/reshaped/`
 - `data/{slug}/recategorized/`
 - `data/{slug}/images/` (url_map, upload_map, local/)
 
-## Current state
-- Folder structure created. Pipeline scripts not yet written.
-- ProSport credentials confirmed working. 171 products (154 variable, 17 simple).
+## Current state (ProSport)
+- 171 products fetched, slimmed, validated. 169 passed, 2 flagged (1 draft copy with no slug, 1 simple with no SKU).
+- `fetch_variations.py` not yet written. 1,794 variation IDs to fetch across 154 variable products.
 - No `gallery_image_ids` found on any ProSport variation — single `image` field only.

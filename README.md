@@ -17,14 +17,11 @@ Set `BRAND="proSPORT Sunglasses"` in `.env` to select the active brand.
 
 ```
 new-migration/
-  pipeline/      ← fetch, reshape, recategorize, download, upload, import
-  qa/            ← audit + verify scripts for each step
+  pipeline/      ← fetch, slim, validate, reshape, recategorize, download, upload, import
+  analysis/      ← per-stage analysis scripts
   db/            ← schema SQL
   data/          ← per-brand output (data/{slug}/...)
-  docs/          ← per-brand docs (docs/{slug}/...)
-  CLAUDE.md      ← Claude Code context
-  PROGRESS.md    ← decision log
-  README.md      ← this file
+  docs/          ← per-stage notes and analysis (docs/{stage}/)
 ```
 
 ---
@@ -35,9 +32,17 @@ new-migration/
 # Set active brand in .env
 BRAND="proSPORT Sunglasses"
 
-# Run pipeline steps in order
+# Products
 python pipeline/fetch_products.py
+python pipeline/slim_products.py
+python pipeline/validate_products.py
+
+# Variations
 python pipeline/fetch_variations.py
+python pipeline/slim_variations.py
+python pipeline/validate_variations.py
+
+# Reshape → import
 python pipeline/reshape_items.py
 python pipeline/recategorize_items.py
 python pipeline/download_images.py
