@@ -7,7 +7,7 @@ BASE = Path(__file__).parent.parent
 load_dotenv(dotenv_path=BASE.parent / ".env")
 
 BRAND_CONFIG = {
-    "proSPORT Sunglasses": {
+    "prosport": {
         "slug": "prosport",
     },
 }

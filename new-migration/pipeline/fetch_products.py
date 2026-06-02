@@ -9,7 +9,7 @@ BASE = Path(__file__).parent.parent  # new-migration/
 load_dotenv(dotenv_path=BASE.parent / ".env")
 
 BRAND_CONFIG = {
-    "proSPORT Sunglasses": {
+    "prosport": {
         "slug": "prosport",
         "base_url": "PROSPORT_BASE_URL",
         "consumer_key": "PROSPORT_CONSUMER_KEY",
