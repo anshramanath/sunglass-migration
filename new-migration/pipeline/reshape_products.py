@@ -32,6 +32,17 @@ IMG_TAG_RE = re.compile(r'<img[^>]*>', re.IGNORECASE)
 LI_RE  = re.compile(r'<li>(.*?)</li>', re.DOTALL | re.IGNORECASE)
 TAG_RE = re.compile(r'<[^>]+>')
 
+def clean_attr_name(raw):
+    name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
+    name = re.sub(r'(?i)^choose\s+', '', name).strip()
+    return name
+
+def normalize_power(val):
+    try:
+        return f"{float(val.replace('-', '.')):.2f}"
+    except (ValueError, AttributeError):
+        return val
+
 def strip_html(text):
     if not text:
         return None
@@ -112,7 +123,11 @@ def reshape(p):
         'categories':        p.get('categories', []),
         'images':            p.get('images', []),
         'attributes':        [
-            {**a, 'name': re.sub(r'(?i)^choose\s+', '', re.sub(r'(?i)\s+for\s+filter$', '', a['name'])).strip()}
+            {
+                **a,
+                'name':    clean_attr_name(a['name']),
+                'options': [normalize_power(o) if clean_attr_name(a['name']) == 'Power' else o for o in a.get('options', [])],
+            }
             for a in p.get('attributes', [])
         ],
         'variations':        p.get('variations', []),

@@ -59,6 +59,12 @@ def clean_attr_name(name):
     name = re.sub(r'(?i)^choose\s+', '', name).strip()
     return name
 
+def normalize_power(val):
+    try:
+        return f"{float(val.replace('-', '.')):.2f}"
+    except (ValueError, AttributeError):
+        return val
+
 def reshape(v):
     # stock
     sq = v.get('stock_quantity')
@@ -84,7 +90,10 @@ def reshape(v):
         'weight':           to_num(v.get('weight')),
         'dimensions':       dimensions,
         'image':            v.get('image'),
-        'attributes':       [{'name': clean_attr_name(a['name']), 'option': a['option']} for a in v.get('attributes', [])],
+        'attributes':       [
+            {'name': clean_attr_name(a['name']), 'option': normalize_power(a['option']) if clean_attr_name(a['name']) == 'Power' else a['option']}
+            for a in v.get('attributes', [])
+        ],
     }
 
 reshaped = [
