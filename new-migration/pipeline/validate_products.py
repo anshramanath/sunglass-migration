@@ -130,6 +130,18 @@ for p in data:
     if not isinstance(p.get("on_sale"), bool):
         err(pid, f"on_sale must be a boolean, got {p.get('on_sale')!r}")
 
+    # on_sale vs sale_price consistency (simple products only — reliable signal)
+    if not is_variable:
+        if p.get("on_sale") and sp in (None, ""):
+            err(pid, "on_sale=True but no sale_price (simple product)")
+        if sp not in (None, "") and not p.get("on_sale"):
+            err(pid, "sale_price set but on_sale=False (simple product)")
+
+        # when no sale_price: price must equal regular_price
+        if sp in (None, "") and rp not in (None, "") and is_num(price) and is_num(rp):
+            if price != rp:
+                err(pid, f"no sale_price but price ({price}) != regular_price ({rp})")
+
     # featured: boolean
     if not isinstance(p.get("featured"), bool):
         err(pid, f"featured must be a boolean, got {p.get('featured')!r}")
