@@ -33,7 +33,7 @@ def err(vid, msg):
 TAG_RE = re.compile(r'<[^>]+>')
 
 EXPECTED_FIELDS = {
-    "id", "parent_id", "name", "type", "oldLink", "description",
+    "id", "parent_id", "name", "type", "oldUrl", "description",
     "sku", "regularPriceCents", "salePriceCents", "sale",
     "stock", "weight", "dimensions", "images", "attributes",
 }
@@ -92,9 +92,9 @@ for pid, r_vars in reshaped_map.items():
             if r.get(f) != s.get(f):
                 err(vid, f"'{f}' changed: {s.get(f)!r} → {r.get(f)!r}")
 
-        # oldLink == source permalink
-        if r.get("oldLink") != s.get("permalink"):
-            err(vid, f"oldLink mismatch: {r.get('oldLink')!r} != {s.get('permalink')!r}")
+        # oldUrl == source permalink
+        if r.get("oldUrl") != s.get("permalink"):
+            err(vid, f"oldUrl mismatch: {r.get('oldUrl')!r} != {s.get('permalink')!r}")
 
         # images: source image object wrapped in array unchanged; [] if source null
         raw_img  = s.get("image")

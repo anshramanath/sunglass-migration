@@ -80,7 +80,7 @@ def reshape(v):
         'parent_id':        v['parent_id'],
         'name':             v.get('name'),
         'type':             v.get('type'),
-        'oldLink':          v.get('permalink'),
+        'oldUrl':          v.get('permalink'),
         'description':      strip_html(v.get('description')),
         'sku':              v['sku'],
         'regularPriceCents': to_cents(v.get('regular_price')),

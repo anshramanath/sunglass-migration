@@ -40,7 +40,7 @@ print(f"  Simple:   {len(simples)}")
 # ── Field presence ────────────────────────────────────────────────────────────
 print(f"\n── Field presence ──")
 fields = [
-    "description", "descriptionImages", "shortDescription",
+    "description", "descriptionImages", "summary",
     "weight", "images",
 ]
 for f in fields:
@@ -100,8 +100,8 @@ for count in sorted(di_counts):
     print(f"  {label}: {di_counts[count]} products")
 
 print(f"\n── Short description ──")
-sd_counts = [len(p.get("shortDescription") or []) for p in products if p.get("shortDescription")]
-print(f"  Has shortDescription: {pct(len(sd_counts), len(products))}")
+sd_counts = [len(p.get("summary") or []) for p in products if p.get("summary")]
+print(f"  Has summary: {pct(len(sd_counts), len(products))}")
 if sd_counts:
     print(f"  Bullets per product — min: {min(sd_counts)}  max: {max(sd_counts)}  avg: {sum(sd_counts)/len(sd_counts):.1f}")
 

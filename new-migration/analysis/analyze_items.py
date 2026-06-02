@@ -75,13 +75,13 @@ print(f"  1. PRODUCT FIELD PRESENCE")
 print(DASH)
 
 PRODUCT_SCALAR_FIELDS = [
-    "id", "name", "slug", "oldLink", "type",
+    "id", "name", "slug", "oldUrl", "type",
     "description", "sku",
     "minPriceCents", "maxPriceCents", "salePriceCents",
     "sale", "featured", "totalSales",
     "stock", "weight",
 ]
-PRODUCT_ARRAY_FIELDS = ["descriptionImages", "shortDescription", "categories", "images", "attributes", "variations"]
+PRODUCT_ARRAY_FIELDS = ["descriptionImages", "summary", "categories", "images", "attributes", "variations"]
 
 for field in PRODUCT_SCALAR_FIELDS:
     n = sum(1 for p in items if has(p.get(field)))
@@ -110,7 +110,7 @@ print(f"  2. VARIATION FIELD PRESENCE")
 print(DASH)
 
 VARIATION_SCALAR_FIELDS = [
-    "id", "parent_id", "name", "type", "oldLink",
+    "id", "parent_id", "name", "type", "oldUrl",
     "description", "sku",
     "regularPriceCents", "salePriceCents", "sale",
     "stock", "weight",
@@ -356,8 +356,8 @@ if desc_img_counts:
     print(f"\n  descriptionImages per product (when set):")
     print(f"  Distribution: {dict(sorted(Counter(desc_img_counts).items()))}")
 
-short_desc_counts = [len(p["shortDescription"]) for p in items if has(p.get("shortDescription"))]
-print(f"\n  Products with non-empty shortDescription: {pct(len(short_desc_counts), len(items))}")
+short_desc_counts = [len(p["summary"]) for p in items if has(p.get("summary"))]
+print(f"\n  Products with non-empty summary: {pct(len(short_desc_counts), len(items))}")
 if short_desc_counts:
     print(f"  Bullet count stats:")
     print(pstats(short_desc_counts))
@@ -500,9 +500,9 @@ print(f"\n{DASH}")
 print(f"  15. DATA QUALITY SIGNALS")
 print(DASH)
 
-# Products missing both description and shortDescription
-bare_products = [p for p in items if not has(p.get("description")) and not has(p.get("shortDescription")) and not has(p.get("descriptionImages"))]
-print(f"  Products with no description, shortDescription, or descriptionImages: {len(bare_products)}")
+# Products missing both description and summary
+bare_products = [p for p in items if not has(p.get("description")) and not has(p.get("summary")) and not has(p.get("descriptionImages"))]
+print(f"  Products with no description, summary, or descriptionImages: {len(bare_products)}")
 if bare_products:
     for p in bare_products[:10]:
         print(f"    id={p['id']}  {p['name'][:50]}")

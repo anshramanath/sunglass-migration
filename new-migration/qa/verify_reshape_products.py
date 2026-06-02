@@ -33,8 +33,8 @@ def err(pid, msg):
 TAG_RE = re.compile(r'<[^>]+>')
 
 EXPECTED_FIELDS = {
-    "id", "name", "slug", "oldLink", "type",
-    "description", "descriptionImages", "shortDescription",
+    "id", "name", "slug", "oldUrl", "type",
+    "description", "descriptionImages", "summary",
     "sku", "minPriceCents", "maxPriceCents", "salePriceCents", "sale",
     "featured", "totalSales", "stock", "weight", "dimensions",
     "categories", "images", "attributes", "variations",
@@ -90,9 +90,9 @@ for pid, r in reshaped_map.items():
     if r.get('attributes') != expected_attrs:
         err(pid, f"attributes mismatch")
 
-    # oldLink == source permalink
-    if r.get("oldLink") != s.get("permalink"):
-        err(pid, f"oldLink mismatch: {r.get('oldLink')!r} != {s.get('permalink')!r}")
+    # oldUrl == source permalink
+    if r.get("oldUrl") != s.get("permalink"):
+        err(pid, f"oldUrl mismatch: {r.get('oldUrl')!r} != {s.get('permalink')!r}")
 
     # images unchanged
     if r.get("images") != s.get("images"):
@@ -120,14 +120,14 @@ for pid, r in reshaped_map.items():
             elif not isinstance(entry.get("name"), str) or not entry["name"]:
                 err(pid, f"descriptionImages entry missing name: {entry!r}")
 
-    # shortDescription: list of plain strings (never null)
-    sd = r.get("shortDescription")
+    # summary: list of plain strings (never null)
+    sd = r.get("summary")
     if not isinstance(sd, list):
-        err(pid, f"shortDescription is not a list: {sd!r}")
+        err(pid, f"summary is not a list: {sd!r}")
     else:
         for item in sd:
             if not isinstance(item, str) or TAG_RE.search(item):
-                err(pid, f"shortDescription item contains HTML or is not a string: {item!r}")
+                err(pid, f"summary item contains HTML or is not a string: {item!r}")
 
     # price fields: int or null
     for f in ("minPriceCents", "maxPriceCents", "salePriceCents"):
