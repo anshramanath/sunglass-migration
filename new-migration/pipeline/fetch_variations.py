@@ -43,19 +43,21 @@ print(f"Store: {base_url}")
 print(f"Variable products: {len(variable)}")
 print()
 
-# Load progress from previous run if it exists
-data = {}
+# Load progress — stored as list of {product_id: int, variations: [...]}
+# Keep an in-memory dict for fast lookup during the run
+entries = []
+fetched = {}  # pid -> index in entries
 if out_path.exists():
-    data = json.loads(out_path.read_text())
-    print(f"Resuming — {len(data)}/{len(variable)} products already fetched\n")
+    entries = json.loads(out_path.read_text())
+    fetched = {e["product_id"]: i for i, e in enumerate(entries)}
+    print(f"Resuming — {len(fetched)}/{len(variable)} products already fetched\n")
 
 for i, product in enumerate(variable):
     pid = product["id"]
-    pid_str = str(pid)
     expected = len(product["variations"])
 
-    if pid_str in data:
-        print(f"[{i+1}/{len(variable)}] id={pid} — skipped (already fetched {len(data[pid_str])} variations)")
+    if pid in fetched:
+        print(f"[{i+1}/{len(variable)}] id={pid} — skipped (already fetched {len(entries[fetched[pid]]['variations'])} variations)")
         continue
 
     print(f"[{i+1}/{len(variable)}] id={pid} ({product['name'][:50]}) — {expected} variations...")
@@ -97,12 +99,14 @@ for i, product in enumerate(variable):
     else:
         print(f"  OK ({len(variations)} variations)")
 
-    data[pid_str] = variations
-    out_path.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+    entry = {"product_id": pid, "variations": variations}
+    fetched[pid] = len(entries)
+    entries.append(entry)
+    out_path.write_text(json.dumps(entries, indent=2, ensure_ascii=False))
 
     time.sleep(0.1)
 
-total = sum(len(v) for v in data.values())
+total = sum(len(e["variations"]) for e in entries)
 print(f"\nTotal variations: {total}")
 print(f"Saved → {out_path}")
 print(f"\n  → Next: python pipeline/slim_variations.py")
