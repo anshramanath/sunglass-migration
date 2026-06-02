@@ -29,10 +29,7 @@ out_dir = BASE / "data" / slug / "reshape-products"
 out_dir.mkdir(parents=True, exist_ok=True)
 
 def image_name(src):
-    path = urlparse(src).path
-    if '/uploads/' in path:
-        path = path.split('/uploads/', 1)[1]
-    return path.lstrip('/').replace('/', '_') or 'image.jpg'
+    return urlparse(src).path.rstrip('/').rsplit('/', 1)[-1] or 'image.jpg'
 
 IMG_RE     = re.compile(r'<img[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
 IMG_TAG_RE = re.compile(r'<img[^>]*>', re.IGNORECASE)
