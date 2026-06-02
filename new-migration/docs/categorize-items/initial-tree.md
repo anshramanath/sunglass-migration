@@ -103,5 +103,74 @@ READERS SPECIAL FIT
 ├── BIFOCALS (44)
 └── FULL LENS (24)
 
-ACCESSORIES (12)
+Accessories (12)
+```
+
+---
+
+## Naming convention
+
+- **Name**: title case — first letter of every word capitalised, except `and` which stays lowercase. e.g. `Readers Special Fit`, `Metal and Aviators`
+- **Slug**: derived from name — `name.lower().replace(' ', '-')` e.g. `readers-special-fit`
+- **Round-trip checks**:
+  - `slugify(name)` = `name.lower().replace(' ', '-')`
+  - `namify(slug)` = capitalise first letter of each `-`-separated word, except `and`
+  - `slugify(name) == slug` and `namify(slug) == name` must both hold
+- `&` is not allowed in names — use `and` instead so the round-trip is clean
+
+## Category name map (old → new)
+
+| Old (WooCommerce) | New name | New slug |
+|---|---|---|
+| SHOP BY STYLE | Shop By Style | shop-by-style |
+| SPORT | Sport | sport |
+| STREET | Street | street |
+| METALS & AVIATORS / METAL & AVIATORS | Metal and Aviators | metal-and-aviators |
+| LENS COLOR | Lens Color | lens-color |
+| POLARIZED | Polarized | polarized |
+| HD COPPER | Hd Copper | hd-copper |
+| CLEAR & YELLOW | Clear and Yellow | clear-and-yellow |
+| READERS SPECIAL FIT | Readers Special Fit | readers-special-fit |
+| BIFOCALS | Bifocals | bifocals |
+| FULL LENS | Full Lens | full-lens |
+| NEW ARRIVALS | — dropped — | — |
+| BIG & TALL | — dropped — | — |
+| Uncategorized | — dropped — | — |
+| *(new)* | Accessories | accessories |
+
+## Category structure per product
+
+`categories` is an array of path arrays. Each path is its own array — parent and child are always paired together, no ambiguity when a product sits at multiple leaves.
+
+Single leaf with parent:
+```json
+[
+  [
+    { "level": 1, "name": "Readers Special Fit", "slug": "readers-special-fit" },
+    { "level": 2, "name": "Bifocals", "slug": "bifocals" }
+  ]
+]
+```
+
+Root-level leaf (no parent):
+```json
+[
+  [
+    { "level": 1, "name": "Accessories", "slug": "accessories" }
+  ]
+]
+```
+
+Product at two leaves:
+```json
+[
+  [
+    { "level": 1, "name": "Lens Color", "slug": "lens-color" },
+    { "level": 2, "name": "Hd Copper", "slug": "hd-copper" }
+  ],
+  [
+    { "level": 1, "name": "Shop By Style", "slug": "shop-by-style" },
+    { "level": 2, "name": "Sport", "slug": "sport" }
+  ]
+]
 ```
