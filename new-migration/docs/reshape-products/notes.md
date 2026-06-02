@@ -12,8 +12,8 @@
 | `permalink` | `oldLink` | Renamed |
 | `status` | — | Dropped |
 | `description` | `description` | All HTML stripped to plain text; `<img>` tags removed first |
-| _(from description)_ | `descriptionImages` | Array of `src` URLs extracted from `<img>` tags; `null` if none |
-| `short_description` | `shortDescription` | `<li>` items parsed to plain text array; `null` if empty |
+| _(from description)_ | `descriptionImages` | Array of `src` URLs extracted from `<img>` tags; `[]` if none |
+| `short_description` | `shortDescription` | `<li>` items parsed to plain text array; `[]` if empty |
 | `price` | — | Dropped — replaced by `minPriceCents`/`maxPriceCents` |
 | `regular_price` | — | Dropped — folded into `minPriceCents`/`maxPriceCents` logic |
 | `sale_price` | `salePriceCents` | Cents (×100, rounded); `null` if empty. Simple only — null for variable |
@@ -21,7 +21,7 @@
 | `total_sales` | `totalSales` | Renamed (camelCase) |
 | `stock_quantity` + `stock_status` | `stock` | `stock_quantity` if non-null, else `1` if `instock` or `0` if `outofstock` |
 | `weight` | `weight` | String → float; `null` if empty |
-| `dimensions` | `dimensions` | All-or-nothing: all three fields as floats, or `null` if any missing |
+| `dimensions` | `dimensions` | Always an object `{length, width, height}`; each field is a float or `null` if missing |
 | `images` | `images` | Unchanged (`[{src, name}]`) |
 | `categories` | `categories` | Unchanged (`[{name, slug}]`) |
 | `attributes` | `attributes` | Names cleaned: `"Choose "` prefix and `" for Filter"` suffix stripped (e.g. `Choose Color` → `Color`, `Lens Color for Filter` → `Lens Color`); options unchanged |
@@ -47,5 +47,5 @@ All other fields (`id`, `name`, `slug`, `type`, `sku`, `featured`) pass through 
 - **`regularPrice` as base for simple min/max** — `price` equals `sale_price` when a sale is active, so it's not a stable base. `regularPrice` gives the "was" price and is used when available.
 - **`sale` kept on variable products** — WooCommerce sets this when any variation is on sale. Retained (not nullified) so accuracy can be verified against actual variation data at the combine step. For ProSport, 153/153 variable products have `sale=True` from WooCommerce; verified as accurate against validated variations (one exception is product 2145 whose variations were all flagged).
 - **`stock` merge** — `stock_quantity` is the authoritative value when `manage_stock=true`. Fallback to `1`/`0` from `stock_status` covers products where stock management is off.
-- **Dimensions all-or-nothing** — no ProSport products have dimension data. Rule ensures partial dimension objects (some fields set, others empty) don't slip through.
-- **Empty strings → null** — all optional fields use `null` for absence rather than empty strings.
+- **Dimensions always an object** — `{length, width, height}` always present; fields are `null` when no data. No ProSport products have dimension data — all fields null.
+- **Empty strings → null for scalars; arrays stay arrays** — optional string/number fields use `null` for absence. Array fields (`descriptionImages`, `shortDescription`, `categories`, `images`, `attributes`, `variations`) are always arrays, never null.

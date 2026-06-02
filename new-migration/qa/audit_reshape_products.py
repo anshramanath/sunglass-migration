@@ -41,11 +41,13 @@ print(f"  Simple:   {len(simples)}")
 print(f"\n── Field presence ──")
 fields = [
     "description", "descriptionImages", "shortDescription",
-    "weight", "dimensions", "images",
+    "weight", "images",
 ]
 for f in fields:
     n = sum(1 for p in products if filled(p.get(f)))
     print(f"  {f:<22} {pct(n, len(products))}")
+has_dims = sum(1 for p in products if any(p.get("dimensions", {}).get(d) is not None for d in ("length", "width", "height")))
+print(f"  {'dimensions':<22} {pct(has_dims, len(products))}  (at least one non-null field)")
 
 # ── Pricing ───────────────────────────────────────────────────────────────────
 print(f"\n── Pricing (simple products) ──")

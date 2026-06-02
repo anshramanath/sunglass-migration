@@ -17,11 +17,11 @@
 | `images` | Unchanged from source |
 | `totalSales` | Equals source `total_sales` |
 | `description` | No HTML tags remaining |
-| `descriptionImages` | List of `http` URLs or `null` |
-| `shortDescription` | List of plain strings (no HTML) or `null` |
+| `descriptionImages` | Always a list; entries are `http` URLs; `[]` if none |
+| `shortDescription` | Always a list of plain strings (no HTML); `[]` if empty |
 | Price field types | `minPriceCents`, `maxPriceCents`, `salePriceCents` are `int` or `null` |
 | Variable pricing | `minPriceCents`, `maxPriceCents`, `salePriceCents` all `null`; `sale` matches source `on_sale` |
 | Simple pricing | `minPriceCents == maxPriceCents`; equals `regularPrice` cents if set, else `price` cents; `salePriceCents` matches source `sale_price`; `sale` matches source `on_sale` |
 | `stock` | Equals `stock_quantity` if non-null, else `1`/`0` from `stock_status` |
 | `weight` | Float or `null`; matches source value |
-| `dimensions` | `null` or all-three-field object with float values |
+| `dimensions` | Always `{length, width, height}` dict; each field float or `null` |

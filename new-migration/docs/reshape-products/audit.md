@@ -3,7 +3,7 @@
 ## Overview
 
 - 169 products (153 variable, 16 simple)
-- All 169 have images; none have dimensions
+- All 169 have images; no products have real dimension values (all fields null)
 
 ## Field presence
 
@@ -13,7 +13,7 @@
 | `descriptionImages` | 146/169 (86.4%) |
 | `shortDescription` | 32/169 (18.9%) |
 | `weight` | 18/169 (10.7%) |
-| `dimensions` | 0/169 (0.0%) |
+| `dimensions` (any non-null field) | 0/169 (0.0%) |
 | `images` | 169/169 (100.0%) |
 
 ## Pricing

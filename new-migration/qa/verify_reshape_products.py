@@ -107,21 +107,21 @@ for pid, r in reshaped_map.items():
     if desc is not None and TAG_RE.search(desc):
         err(pid, "description still contains HTML tags")
 
-    # descriptionImages: list of http URLs or null
+    # descriptionImages: list of http URLs (never null)
     di = r.get("descriptionImages")
-    if di is not None:
-        if not isinstance(di, list) or not all(isinstance(u, str) and u.startswith("http") for u in di):
-            err(pid, f"descriptionImages is not a list of URLs: {di!r}")
+    if not isinstance(di, list):
+        err(pid, f"descriptionImages is not a list: {di!r}")
+    elif not all(isinstance(u, str) and u.startswith("http") for u in di):
+        err(pid, f"descriptionImages contains non-URL entries: {di!r}")
 
-    # shortDescription: non-empty list of plain strings or null
+    # shortDescription: list of plain strings (never null)
     sd = r.get("shortDescription")
-    if sd is not None:
-        if not isinstance(sd, list) or not sd:
-            err(pid, "shortDescription is not a non-empty list")
-        else:
-            for item in sd:
-                if not isinstance(item, str) or TAG_RE.search(item):
-                    err(pid, f"shortDescription item contains HTML or is not a string: {item!r}")
+    if not isinstance(sd, list):
+        err(pid, f"shortDescription is not a list: {sd!r}")
+    else:
+        for item in sd:
+            if not isinstance(item, str) or TAG_RE.search(item):
+                err(pid, f"shortDescription item contains HTML or is not a string: {item!r}")
 
     # price fields: int or null
     for f in ("minPriceCents", "maxPriceCents", "salePriceCents"):
@@ -166,16 +166,15 @@ for pid, r in reshaped_map.items():
     if w != expected_w:
         err(pid, f"weight={w!r} expected {expected_w!r}")
 
-    # dimensions: null or all-three-float object
+    # dimensions: always a dict with length/width/height each float or null
     dims = r.get("dimensions")
-    if dims is not None:
-        if not isinstance(dims, dict):
-            err(pid, "dimensions is not a dict")
-        else:
-            for dim in ("length", "width", "height"):
-                v = dims.get(dim)
-                if v is None or not isinstance(v, float):
-                    err(pid, f"dimensions.{dim} is not a float: {v!r}")
+    if not isinstance(dims, dict):
+        err(pid, f"dimensions is not a dict: {dims!r}")
+    else:
+        for dim in ("length", "width", "height"):
+            v = dims.get(dim)
+            if v is not None and not isinstance(v, float):
+                err(pid, f"dimensions.{dim} is not a float or null: {v!r}")
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 print(f"Verify: reshape-products — {len(reshaped)} products\n")

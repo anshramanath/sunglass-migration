@@ -85,10 +85,10 @@ def reshape(p):
     sq = p.get('stock_quantity')
     stock = sq if sq is not None else (1 if p.get('stock_status') == 'instock' else 0)
 
-    # dimensions: all-or-nothing
+    # dimensions: always an object; fields null if missing
     dims = p.get('dimensions') or {}
     l, w, h = to_num(dims.get('length')), to_num(dims.get('width')), to_num(dims.get('height'))
-    dimensions = {'length': l, 'width': w, 'height': h} if all(x is not None for x in (l, w, h)) else None
+    dimensions = {'length': l, 'width': w, 'height': h}
 
     return {
         'id':                p['id'],
@@ -97,8 +97,8 @@ def reshape(p):
         'oldLink':           p['permalink'],
         'type':              p['type'],
         'description':       desc_text,
-        'descriptionImages': desc_imgs or None,
-        'shortDescription':  short_desc,
+        'descriptionImages': desc_imgs,
+        'shortDescription':  short_desc or [],
         'sku':               p['sku'],
         'minPriceCents':     min_price,
         'maxPriceCents':     max_price,
