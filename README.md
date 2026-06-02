@@ -17,7 +17,7 @@ Set `BRAND="proSPORT Sunglasses"` in `.env` to select the active brand.
 
 ```
 new-migration/
-  pipeline/      ← fetch, slim, validate, reshape, recategorize, download, upload, import
+  pipeline/      ← fetch, slim, validate, reshape, create, recategorize, download, upload, import
   analysis/      ← per-stage analysis scripts
   db/            ← schema SQL
   data/          ← per-brand output (data/{slug}/...)
@@ -42,8 +42,12 @@ python pipeline/fetch_variations.py
 python pipeline/slim_variations.py
 python pipeline/validate_variations.py
 
-# Reshape → import
-python pipeline/reshape_items.py
+# Reshape → create items
+python pipeline/reshape_products.py
+python pipeline/reshape_variations.py
+python pipeline/create_items.py
+
+# Recategorize → import
 python pipeline/recategorize_items.py
 python pipeline/download_images.py
 python pipeline/upload_images.py

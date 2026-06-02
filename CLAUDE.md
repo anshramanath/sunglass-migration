@@ -32,11 +32,13 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 6. `pipeline/validate_variations.py` — validates variations → `data/{slug}/validated-variations/variations.json` + `flagged.json`
 
 ### Reshape → Import
-7. `pipeline/reshape_items.py` — normalizes, strips junk fields, merges products + variations → `data/{slug}/reshaped/`
-8. `pipeline/recategorize_items.py` — applies drops/merges, collapses to leaf paths → `data/{slug}/recategorized/`
-9. `pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
-10. `pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
-11. `pipeline/import_items.py` — inserts into Supabase DB
+7. `pipeline/reshape_products.py` — normalizes products: HTML stripped, prices to cents, stock merged, attributes name-cleaned → `data/{slug}/reshape-products/`
+8. `pipeline/reshape_variations.py` — normalizes variations: same conventions, grouped structure preserved → `data/{slug}/reshape-variations/`
+9. `pipeline/create_items.py` — embeds variations into products, ownership checks, attribute expansion/prune, image dedup, min/max price → `data/{slug}/create-items/`
+10. `pipeline/recategorize_items.py` — applies drops/merges, collapses to leaf paths → `data/{slug}/recategorized/`
+11. `pipeline/download_images.py` — downloads all images locally (crash-safe via `url_map.json`)
+12. `pipeline/upload_images.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
+13. `pipeline/import_items.py` — inserts into Supabase DB
 
 ### Analysis (per stage)
 - `analysis/analyze_products.py` — raw product field coverage and stats
@@ -71,18 +73,20 @@ All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and
 All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/fetch-products/products.json` — raw API response
 - `data/{slug}/slim-products/products.json` — relevant fields only
-- `data/{slug}/validated-products/products.json` — passed validation
-- `data/{slug}/validated-products/flagged.json` — failed validation
+- `data/{slug}/validate-products/products.json` + `flagged.json` — passed/failed validation
 - `data/{slug}/fetch-variations/variations.json` — raw variation API response
 - `data/{slug}/slim-variations/variations.json` — relevant fields only
-- `data/{slug}/validated-variations/variations.json` — passed validation
-- `data/{slug}/validated-variations/flagged.json` — failed validation
-- `data/{slug}/reshaped/`
+- `data/{slug}/validate-variations/variations.json` + `flagged.json` — passed/failed validation
+- `data/{slug}/reshape-products/products.json` — normalized products
+- `data/{slug}/reshape-variations/variations.json` — normalized variations
+- `data/{slug}/create-items/items.json` + `flagged.json` — combined items
 - `data/{slug}/recategorized/`
 - `data/{slug}/images/` (url_map, upload_map, local/)
 
 ## Current state (ProSport)
-- **Products:** 171 fetched, slimmed, validated. 169 passed, 2 flagged (1 draft copy with no slug, 1 simple with no SKU).
-- **Variations:** 1,758 fetched across 153 variable products, slimmed, validated. 1,740 passed, 18 flagged (17 with spaces in SKUs across 2 products, 1 with no price). Decision pending on flagged variations before reshape.
+- **Products:** 169 validated → reshaped → 166 items passed create-items, 3 flagged (all due to 18 variations excluded at validation).
+- **Variations:** 1,740 validated → reshaped → 1,713 embedded into items.
+- **Flagged items (3):** products 2145, 2211, 1208 — have unreplaced variation IDs from the 18 variations excluded at validate (17 SKU-spaces, 1 no-price). Fix in WooCommerce and re-run to resolve.
 - No `gallery_image_ids` found on any ProSport variation — single `image` field only.
-- Next step: `reshape_items.py`.
+- 97.9% of variation images deduped against parent (1677/1713 nulled).
+- Next step: `recategorize_items.py`.
