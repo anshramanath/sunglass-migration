@@ -3,8 +3,8 @@
 ## Results
 
 - Input: `slim-products/products.json` (171 products)
-- Passed: 169 → `validated-products/products.json`
-- Flagged: 2 → `validated-products/flagged.json`
+- Passed: 169 → `validate-products/products.json`
+- Flagged: 2 → `validate-products/flagged.json`
 
 See [flagged.md](flagged.md) for details and decisions on each flagged product.
 
@@ -38,6 +38,7 @@ All checks are hard errors — a product with any failure is excluded from `prod
 | `dimensions.length/width/height` | Null or empty OK; if present must be a valid number |
 | `categories[].name` | Non-empty string |
 | `categories[].slug` | Non-empty string; must match `slugify(name)` |
+| `images` | Must have at least one image |
 | `images[].src` | Non-empty string starting with `http` |
 | `images[].name` | Non-empty string |
 | `attributes[].name` | Non-empty string |

@@ -188,6 +188,10 @@ for p in data:
             if expected != cslug:
                 err(pid, f"category slug mismatch: name={cname!r} expected={expected!r} got={cslug!r}")
 
+    # images: at least one required
+    if not p.get("images"):
+        err(pid, "images is empty — product must have at least one image")
+
     # images: src starts with http, name non-empty string
     for i, img in enumerate(p.get("images", [])):
         src = img.get("src")
