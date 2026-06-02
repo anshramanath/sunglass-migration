@@ -29,6 +29,7 @@ All checks are hard errors — a product with any failure is excluded from `prod
 | `sale_price` | Null or empty string OK; if present must be a valid number; must be less than `regular_price` when both present |
 | `on_sale` | Boolean |
 | `on_sale` vs `sale_price` (simple only) | If `on_sale=True`, must have `sale_price`; if `sale_price` set, `on_sale` must be `True` |
+| `price` vs `regular_price` (simple only) | When no `sale_price`, `price` must equal `regular_price` |
 | `featured` | Boolean |
 | `total_sales` | Number or null |
 | `stock_quantity` | Number or null |
