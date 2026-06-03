@@ -1,9 +1,14 @@
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
-BASE = Path(__file__).parent.parent
-raw = json.loads((BASE / "data/prosport/slim-variations/variations.json").read_text())
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
+
+_, config = load_brand()
+slug = config["slug"]
+raw = json.loads((BASE / f"data/{slug}/slim-variations/variations.json").read_text())
 
 all_v = [v for e in raw for v in e["variations"]]
 N = len(all_v)

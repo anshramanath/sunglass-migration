@@ -1,9 +1,14 @@
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
-BASE = Path(__file__).parent.parent
-raw = json.loads((BASE / "data/prosport/fetch-variations/variations.json").read_text())
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
+
+_, config = load_brand()
+slug = config["slug"]
+raw = json.loads((BASE / f"data/{slug}/fetch-variations/variations.json").read_text())
 
 # Flatten while keeping per-product structure available
 all_variations = [v for entry in raw for v in entry["variations"]]

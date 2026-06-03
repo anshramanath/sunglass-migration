@@ -1,9 +1,14 @@
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
-BASE = Path(__file__).parent.parent
-data = json.loads((BASE / "data/prosport/slim-products/products.json").read_text())
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
+
+_, config = load_brand()
+slug = config["slug"]
+data = json.loads((BASE / f"data/{slug}/slim-products/products.json").read_text())
 N = len(data)
 
 print(f"=== Slim Products ({N} total) ===\n")
