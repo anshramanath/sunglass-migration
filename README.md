@@ -20,6 +20,7 @@ new-migration/
   pipeline/      ← fetch, slim, validate, reshape, create, categorize, download, upload, import
   analysis/      ← per-stage field coverage and stats scripts
   qa/            ← per-stage audit and verify scripts
+  config/        ← shared BRAND_CONFIG + load_brand() module
   db/            ← schema SQL (001_initial_schema.sql, drop_schema.sql)
   data/          ← per-brand output (data/{slug}/...)
   docs/
