@@ -85,6 +85,11 @@ attr_counter = Counter(a["name"] for v in all_vars for a in v.get("attributes", 
 for name, count in attr_counter.most_common():
     options = {a["option"] for v in all_vars for a in v.get("attributes", []) if a["name"] == name}
     print(f"  {name:<12} {count:>6} variations  {len(options):>4} unique options")
+multi_word = [n for n in attr_counter if ' ' in n]
+if multi_word:
+    print(f"  [WARN] multi-word attribute names: {multi_word}")
+else:
+    print(f"  all attribute names are single-word ✓")
 
 # ── Variations per product ────────────────────────────────────────────────────
 print(f"\n── Variations per product ──")

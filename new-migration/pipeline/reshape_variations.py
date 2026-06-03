@@ -49,8 +49,11 @@ def to_num(val):
     except (TypeError, ValueError):
         return None
 
-def clean_attr_name(name):
-    name = re.sub(r'(?i)^choose\s+', '', name).strip()
+def clean_attr_name(raw):
+    name = re.sub(r'(?i)^choose\s+', '', raw).strip()
+    name = re.sub(r'\s*\(.*?\)', '', name).strip()
+    if ' ' in name:
+        print(f"  [WARN] clean_attr_name: multi-word result {name!r} (raw: {raw!r})")
     return name
 
 def normalize_power(val):

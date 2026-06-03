@@ -33,6 +33,9 @@ TAG_RE = re.compile(r'<[^>]+>')
 def clean_attr_name(raw):
     name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
     name = re.sub(r'(?i)^choose\s+', '', name).strip()
+    name = re.sub(r'\s*\(.*?\)', '', name).strip()
+    if ' ' in name:
+        print(f"  [WARN] clean_attr_name: multi-word result {name!r} (raw: {raw!r})")
     return name
 
 def normalize_power(val):

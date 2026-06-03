@@ -71,11 +71,9 @@ for p in data:
     if p.get("type") == "simple" and p.get("variations"):
         err(pid, "type=simple but has variation IDs")
 
-    # status: publish or draft; draft is an error
-    if p.get("status") not in ("publish", "draft"):
-        err(pid, f"status must be 'publish' or 'draft', got {p.get('status')!r}")
-    elif p.get("status") == "draft":
-        err(pid, "status=draft")
+    # status: must be publish
+    if p.get("status") != "publish":
+        err(pid, f"status={p.get('status')!r}")
 
     # description: string or null
     if p.get("description") is not None and not isinstance(p["description"], str):

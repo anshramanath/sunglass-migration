@@ -13,6 +13,13 @@ BRAND_CONFIG = {
         "consumer_key": "PROSPORT_CONSUMER_KEY",
         "consumer_secret": "PROSPORT_CONSUMER_SECRET",
     },
+    "monster": {
+        "slug": "monster",
+        "brand_name": "Sunglass Monster",
+        "base_url": "MONSTER_BASE_URL",
+        "consumer_key": "MONSTER_CONSUMER_KEY",
+        "consumer_secret": "MONSTER_CONSUMER_SECRET",
+    },
 }
 
 def load_brand():

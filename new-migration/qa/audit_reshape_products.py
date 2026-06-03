@@ -115,3 +115,8 @@ attr_counter = Counter(a["name"] for p in products for a in p.get("attributes", 
 for name, count in attr_counter.most_common():
     option_set = {o for p in products for a in p.get("attributes", []) if a["name"] == name for o in a.get("options", [])}
     print(f"  {name:<30} {count:>4} products  {len(option_set):>4} unique options")
+multi_word = [n for n in attr_counter if ' ' in n]
+if multi_word:
+    print(f"  [WARN] multi-word attribute names: {multi_word}")
+else:
+    print(f"  all attribute names are single-word ✓")
