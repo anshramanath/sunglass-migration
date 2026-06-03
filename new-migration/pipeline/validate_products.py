@@ -213,8 +213,6 @@ for p in data:
     for a in p.get("attributes", []):
         if not isinstance(a.get("name"), str) or not a["name"].strip():
             err(pid, f"attribute name is not a valid non-empty string: {a}")
-        if not isinstance(a.get("options"), list) or not a["options"]:
-            err(pid, f"attribute '{a.get('name')}' has no options")
         for opt in a.get("options", []):
             if not isinstance(opt, str) or not opt.strip():
                 err(pid, f"attribute '{a.get('name')}' has empty option: {opt!r}")
