@@ -2,27 +2,16 @@ import json
 import time
 import requests
 from pathlib import Path
-from dotenv import load_dotenv
 import os
+import sys
 
-BASE = Path(__file__).parent.parent
-load_dotenv(dotenv_path=BASE.parent / ".env")
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
 
-BRAND_CONFIG = {
-    "prosport": {
-        "slug": "prosport",
-        "base_url": "PROSPORT_BASE_URL",
-        "consumer_key": "PROSPORT_CONSUMER_KEY",
-        "consumer_secret": "PROSPORT_CONSUMER_SECRET",
-    },
-}
 
-brand_name = os.getenv("BRAND")
-config = BRAND_CONFIG.get(brand_name)
-if not config:
-    raise SystemExit(f"Unknown BRAND={brand_name!r}. Add it to BRAND_CONFIG.")
-
-slug = config["slug"]
+brand_key, config = load_brand()
+slug       = config["slug"]
+brand_name = config["brand_name"]
 base_url = os.getenv(config["base_url"])
 auth = (os.getenv(config["consumer_key"]), os.getenv(config["consumer_secret"]))
 

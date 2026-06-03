@@ -4,22 +4,14 @@ import sys
 import psycopg2
 from psycopg2.extras import Json
 from pathlib import Path
-from dotenv import load_dotenv
 
 sys.stdout.reconfigure(line_buffering=True)
 
-BASE = Path(__file__).parent.parent
-load_dotenv(dotenv_path=BASE.parent / ".env")
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
 
-BRAND_CONFIG = {
-    "prosport": {"slug": "prosport", "brand_name": "proSPORT Sunglasses"},
-}
 
-brand_key  = os.getenv("BRAND")
-config     = BRAND_CONFIG.get(brand_key)
-if not config:
-    raise SystemExit(f"Unknown BRAND={brand_key!r}. Add it to BRAND_CONFIG.")
-
+brand_key, config = load_brand()
 slug       = config["slug"]
 brand_name = config["brand_name"]
 
