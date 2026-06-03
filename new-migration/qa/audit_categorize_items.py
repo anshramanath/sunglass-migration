@@ -81,6 +81,21 @@ for depth, count in sorted(depth_counter.items()):
     label = "root-level (no parent)" if depth == 1 else "child (has parent)"
     print(f"  depth {depth} — {label}: {count} paths")
 
+# ── sortOrder coverage ────────────────────────────────────────────────────────
+print(f"\n── sortOrder ──")
+missing_so = [
+    (p["id"], path[-1]["slug"])
+    for p in items for path in p["categories"]
+    for entry in path if not isinstance(entry.get("sortOrder"), int)
+]
+if missing_so:
+    print(f"  [WARN] missing/invalid sortOrder on {len(missing_so)} nodes")
+else:
+    print(f"  all nodes have sortOrder ✓")
+unique_roots = {path[0]["slug"]: path[0]["sortOrder"] for p in items for path in p["categories"]}
+for slug, so in sorted(unique_roots.items(), key=lambda x: x[1]):
+    print(f"  root {slug!r}: sortOrder={so}")
+
 # ── Products with no categories ───────────────────────────────────────────────
 no_cat = [p for p in items if not p["categories"]]
 print(f"\n── Products with no categories: {len(no_cat)} ──")

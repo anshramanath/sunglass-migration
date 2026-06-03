@@ -91,11 +91,14 @@ for p in output:
             if parent_slug not in PARENT_SLUGS:
                 err(f"id={pid}: path[0] slug {parent_slug!r} not a known parent")
 
-        # namify(slug) == name for every entry
+        # namify(slug) == name and sortOrder is a positive int for every entry
         for entry in path:
             expected_name = namify(entry["slug"])
             if entry["name"] != expected_name:
                 err(f"id={pid}: namify({entry['slug']!r}) = {expected_name!r} but name={entry['name']!r}")
+            so = entry.get("sortOrder")
+            if not isinstance(so, int) or so < 1:
+                err(f"id={pid}: entry {entry['slug']!r} has invalid sortOrder={so!r}")
 
     # No duplicate leaf slugs within one product
     if len(leaf_slugs_seen) != len(set(leaf_slugs_seen)):

@@ -50,8 +50,8 @@ def ensure_category(path):
         key = (parent_id, node["slug"])
         if key not in category_id_map:
             cur.execute(
-                "INSERT INTO categories (brand_id, parent_id, name, slug) VALUES (%s, %s, %s, %s) RETURNING id;",
-                (brand_id, parent_id, node["name"], node["slug"]),
+                "INSERT INTO categories (brand_id, parent_id, name, slug, sort_order) VALUES (%s, %s, %s, %s, %s) RETURNING id;",
+                (brand_id, parent_id, node["name"], node["slug"], node["sortOrder"]),
             )
             category_id_map[key] = cur.fetchone()[0]
         parent_id = category_id_map[key]

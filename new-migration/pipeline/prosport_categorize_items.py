@@ -1,7 +1,6 @@
 import copy
 import html
 import json
-import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -64,6 +63,26 @@ TREE = {
     "accessories":         None,
 }
 
+# slug → sortOrder (1-indexed, resets per parent)
+SORT_ORDER = {
+    # roots — determines navbar button order
+    "shop-by-style":       1,
+    "lens-color":          2,
+    "readers-special-fit": 3,
+    "accessories":         4,
+    # shop-by-style children
+    "sport":               1,
+    "street":              2,
+    "metal-and-aviators":  3,
+    # lens-color children
+    "polarized":           1,
+    "hd-copper":           2,
+    "clear-and-yellow":    3,
+    # readers-special-fit children
+    "bifocals":            1,
+    "full-lens":           2,
+}
+
 LEAF_SLUGS   = set(TREE.keys())
 PARENT_SLUGS = {v[1] for v in TREE.values() if v}
 
@@ -122,23 +141,25 @@ for item in items:
     if pid in HARDCODED:
         leaf_slugs.add(HARDCODED[pid])
 
-    # Pass 3: build path arrays
+    # Pass 3: build path arrays with sortOrder on every node
     paths = []
-    for leaf_slug in sorted(leaf_slugs):
+    for leaf_slug in leaf_slugs:
         leaf_name = namify(leaf_slug)
         parent = TREE[leaf_slug]
         if parent:
             parent_name, parent_slug = parent
             path = [
-                {"level": 1, "name": parent_name, "slug": parent_slug},
-                {"level": 2, "name": leaf_name,   "slug": leaf_slug},
+                {"level": 1, "name": parent_name, "slug": parent_slug, "sortOrder": SORT_ORDER[parent_slug]},
+                {"level": 2, "name": leaf_name,   "slug": leaf_slug,   "sortOrder": SORT_ORDER[leaf_slug]},
             ]
         else:
             path = [
-                {"level": 1, "name": leaf_name, "slug": leaf_slug},
+                {"level": 1, "name": leaf_name, "slug": leaf_slug, "sortOrder": SORT_ORDER[leaf_slug]},
             ]
         paths.append(path)
 
+    # Sort paths by root sortOrder then leaf sortOrder
+    paths.sort(key=lambda p: (p[0]["sortOrder"], p[-1]["sortOrder"]))
     item["categories"] = paths
 
 

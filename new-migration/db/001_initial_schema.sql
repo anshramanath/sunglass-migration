@@ -14,7 +14,8 @@ create table categories (
   brand_id uuid not null references brands(id),
   parent_id uuid references categories(id),
   name text not null,
-  slug text not null
+  slug text not null,
+  sort_order int not null default 1
 );
 
 create table products (
@@ -33,7 +34,7 @@ create table products (
   min_price_cents int not null,
   max_price_cents int not null,
   sale_price_cents int,
-  stock int not null default 1,
+  stock int,
   weight float,
   weight_unit text,
   length float,
