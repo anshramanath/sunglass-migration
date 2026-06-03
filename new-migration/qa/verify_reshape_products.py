@@ -74,11 +74,24 @@ for pid, r in reshaped_map.items():
         if r.get(f) != s.get(f):
             err(pid, f"'{f}' changed: {s.get(f)!r} → {r.get(f)!r}")
 
-    # attributes: names cleaned (Choose prefix + for Filter suffix stripped); options unchanged
+    # attributes: names cleaned (prefixes/postfixes stripped + brand overrides)
+    _OVERRIDES = {
+        "monster": {
+            "Cleaner Spray Bottle QTY":  "Quantity",
+            "Qty":                       "Quantity",
+            "Frame Styles for Filter":   "Style",
+            "Special Size for Filter":   "Size",
+        },
+    }
     def clean_attr_name(n):
         import re as _re
+        override = _OVERRIDES.get(brand_key, {}).get(n)
+        if override:
+            return override
         n = _re.sub(r'(?i)\s+for\s+filter$', '', n).strip()
         n = _re.sub(r'(?i)^choose\s+', '', n).strip()
+        n = _re.sub(r'(?i)^filter\s+by\s+', '', n).strip()
+        n = _re.sub(r'\s*\(.*?\)', '', n).strip()
         return n
     expected_attrs = [{**a, 'name': clean_attr_name(a['name'])} for a in s.get('attributes', [])]
     if r.get('attributes') != expected_attrs:

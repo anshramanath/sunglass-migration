@@ -53,8 +53,23 @@ def to_num(val):
     except (TypeError, ValueError):
         return None
 
+_ATTR_OVERRIDES = {
+    "monster": {
+        "Cleaner Spray Bottle QTY":  "Quantity",
+        "Qty":                       "Quantity",
+        "Frame Styles for Filter":   "Style",
+        "Special Size for Filter":   "Size",
+    },
+}
+
 def clean_attr_name(name):
+    override = _ATTR_OVERRIDES.get(brand_key, {}).get(name)
+    if override:
+        return override
+    name = re.sub(r'(?i)\s+for\s+filter$', '', name).strip()
     name = re.sub(r'(?i)^choose\s+', '', name).strip()
+    name = re.sub(r'(?i)^filter\s+by\s+', '', name).strip()
+    name = re.sub(r'\s*\(.*?\)', '', name).strip()
     return name
 
 # ── Product ID coverage ───────────────────────────────────────────────────────

@@ -32,9 +32,10 @@ TAG_RE = re.compile(r'<[^>]+>')
 
 ATTR_OVERRIDES = {
     "monster": {
-        "Choose Bandana Color":      "Color",
         "Cleaner Spray Bottle QTY":  "Quantity",
         "Qty":                       "Quantity",
+        "Frame Styles for Filter":   "Style",
+        "Special Size for Filter":   "Size",
     },
 }
 
@@ -44,9 +45,8 @@ def clean_attr_name(raw):
         return override
     name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
     name = re.sub(r'(?i)^choose\s+', '', name).strip()
+    name = re.sub(r'(?i)^filter\s+by\s+', '', name).strip()
     name = re.sub(r'\s*\(.*?\)', '', name).strip()
-    if ' ' in name:
-        print(f"  [WARN] clean_attr_name: multi-word result {name!r} (raw: {raw!r})")
     return name
 
 def normalize_power(val):
