@@ -7,7 +7,7 @@ Migrates brand product data from WooCommerce to Supabase using the authenticated
 
 | Brand | Slug | Store URL | Status |
 |-------|------|-----------|--------|
-| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | ✅ Complete |
+| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | 🔄 Run 2 in progress |
 | Sunglass Monster | `monster` | sunglassmonster.com | 🔄 In Progress |
 
 Set `BRAND=prosport` or `BRAND=monster` in `.env` to select the active brand.
@@ -27,7 +27,8 @@ new-migration/
   docs/
     prosport/
       build-run/ ← notes from building the pipeline
-      run-1/     ← full ProSport migration run notes + summary
+      run-1/     ← full ProSport run-1 notes + summary (old pipeline)
+      run-2/     ← ProSport run-2 (all pipeline improvements applied)
     monster/
       build-run/ ← Monster migration run notes (in progress)
 ```
@@ -86,7 +87,7 @@ MONSTER_CONSUMER_SECRET=...
 
 ---
 
-## ProSport — Run 1
+## ProSport — Run 1 (complete, old pipeline)
 
 | Table | Rows |
 |-------|------|
@@ -98,11 +99,25 @@ MONSTER_CONSUMER_SECRET=...
 | variation_images | 36 |
 | description_images | 143 |
 
-All verify scripts: **PASSED**
+All verify scripts: **PASSED**. Full summary: `new-migration/docs/prosport/run-1/migration-complete/summary.md`
 
-3 products flagged (2145, 2211, 1208) — fix SKU spaces + missing price in WooCommerce, re-run pipeline to add them.
+## ProSport — Run 2 (in progress, all pipeline improvements)
 
-Full summary: `new-migration/docs/prosport/run-1/migration-complete/summary.md`
+Re-run with: null weight/dims for variable products, sortOrder on images, weightUnit/dimensionUnit fields, category sortOrder on every node, import as pure insertion.
+
+| Stage | Count | Status |
+|-------|-------|--------|
+| validate-products | 169 passed, 2 flagged | ✅ |
+| validate-variations | 1,740 passed, 18 flagged | ✅ |
+| reshape-products | 169 | ✅ |
+| reshape-variations | 1,740 | ✅ |
+| create-items | 166 items, 3 flagged | ✅ |
+| categorize-items | 166 items, 197 assignments | ✅ |
+| download-items | — | ⏳ Next |
+| upload-items | — | ⏳ |
+| import | — | ⏳ |
+
+3 products flagged (2145, 2211, 1208) — fix SKU spaces + missing price in WooCommerce, re-run to add them.
 
 ---
 

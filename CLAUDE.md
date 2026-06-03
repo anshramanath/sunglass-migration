@@ -45,7 +45,7 @@ from config import BASE, load_brand
 7. `pipeline/reshape_products.py` — normalizes products: HTML stripped, prices to cents, stock merged, attributes name-cleaned, descriptionImages as `{src, name}` objects → `data/{slug}/reshape-products/`
 8. `pipeline/reshape_variations.py` — normalizes variations: same conventions, `image` → `images[]` array → `data/{slug}/reshape-variations/`
 9. `pipeline/create_items.py` — embeds variations into products, ownership checks, attribute expansion/prune, image dedup, min/max price → `data/{slug}/create-items/`
-10. `pipeline/{brand}_categorize_items.py` — brand-specific: normalizes category names, assigns leaf paths with `{level, name, slug}` structure → `data/{slug}/categorize-items/`
+10. `pipeline/{brand}_categorize_items.py` — brand-specific: normalizes category names, assigns leaf paths with `{level, name, slug, sortOrder}` structure → `data/{slug}/categorize-items/`
 11. `pipeline/download_items.py` — downloads all images locally (crash-safe via `download_map.json`) → `data/{slug}/download-items/`
 12. `pipeline/upload_items.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
 13. `pipeline/import_items.py` — inserts into Supabase DB
@@ -60,12 +60,18 @@ from config import BASE, load_brand
 ### QA (per stage)
 - `qa/audit_*.py` / `qa/verify_*.py` — per-stage audit (counts, field stats) and verify (cross-check data vs source) scripts for: products, slim-products, variations, slim-variations, reshape-products, reshape-variations, create-items, categorize-items, download-items, upload-items, import
 
-## Pipeline robustness improvements (added during Monster run)
+## Pipeline robustness improvements (added during Monster run + ProSport run-2)
 
 - **Attribute name collision detection** — `validate_products.py` and `validate_variations.py` simulate `clean_attr_name` at validate time and flag any product/variation where two raw attribute names would map to the same cleaned name. Catches reshape-time collisions early.
 - **`ATTR_OVERRIDES` dict** — in `reshape_products.py` and `reshape_variations.py`, a brand-keyed dict that maps raw WooCommerce attribute names to canonical cleaned names before the generic prefix/postfix rules run. Add a new entry for each brand that needs it.
 - **`clean_attr_name` rules** — strips `for Filter` suffix, `Choose ` prefix, `Filter by ` prefix, and parentheticals like `(REQUIRED)`. Overrides checked first.
 - **Variable product stock = null** — `reshape_products.py` sets `stock=null` for all variable products. Variation-level stock is the source of truth; the WooCommerce aggregate is misleading.
+- **Variable product weight/dimensions = null** — `reshape_products.py` also nullifies `weight` and all three dimension fields for variable products. Same reasoning: variation-level is the source of truth.
+- **All-or-nothing dimensions** — if only some of length/width/height are present in reshape, all three are nullified and an `[INFO]` line is printed. Applies to both products (simple only) and variations.
+- **`sortOrder` on images** — every image object in `images[]`, `descriptionImages[]`, and variation `images[]` gets a 1-indexed `sortOrder` field set during reshape. Import reads it directly; no generation at import time.
+- **`weightUnit` / `dimensionUnit` fields** — set to `null` in reshape output. Import reads them from data; no inline defaults.
+- **Category `sortOrder` on every node** — `{brand}_categorize_items.py` has a `SORT_ORDER` dict (slug → int, 1-indexed, resets per parent). Every node in every category path gets its `sortOrder` stamped. Import reads `node["sortOrder"]`; no generation at import time.
+- **Import as pure insertion** — no field generation or inline defaults in `import_items.py`. All values come from categorize-items output. Dead fallbacks (`.get("stock", 1)`, enumerate for sort_order, hardcoded `None` for units) removed.
 - **WooCommerce slug validation** — removed `slugify(name) == slug` check; WooCommerce slugs diverge from names (apostrophes, truncation, etc.). Just check non-empty string.
 - **Empty attribute options OK** — `validate_products.py` no longer flags empty `options[]` arrays; `create_items.py` fills them from variation data.
 
@@ -113,18 +119,19 @@ All output scoped to `data/{brand_slug}/`:
 docs/
   prosport/
     build-run/   ← notes from building the pipeline with ProSport
-    run-1/       ← full ProSport migration run notes + summary
+    run-1/       ← full ProSport run-1 notes + summary (old pipeline, pre-improvements)
+    run-2/       ← ProSport run-2 notes (new pipeline: sort orders, null weight/dims, etc.)
   monster/
     build-run/   ← Monster migration run notes (in progress)
 ```
 
 ## Current state (ProSport)
-- **Complete.** Full run summary: `docs/prosport/run-1/migration-complete/summary.md`
-- **Products:** 169 validated → 166 imported, 3 flagged (2145, 2211, 1208 — unreplaced variation IDs from 18 flagged variations: 17 SKU-spaces, 1 no-price).
-- **Variations:** 1,740 validated → 1,713 embedded and imported.
-- **Categories:** 12 categories (4 roots, 8 leaves), 197 product-category assignments.
-- **Images:** 411 downloaded → 411 uploaded → 565 product images, 36 variation images, 143 description images in DB.
-- **Pending:** Fix 3 flagged products in WooCommerce (SKU spaces + missing price), re-fetch, re-run pipeline.
+- **Run 2 in progress.** Re-run with all pipeline improvements (sort orders, null weight/dims, weightUnit/dimensionUnit, import as pure insertion).
+- **Complete through:** `categorize-items`. Next: `download_items.py`.
+- **Products:** 169 validated → 166 items, 3 flagged (2145, 2211, 1208 — same as run-1, WooCommerce not fixed yet).
+- **Variations:** 1,740 validated → 1,713 embedded.
+- **Categories:** 166 items, 197 leaf assignments, 12 categories with sortOrder on every node.
+- **Run-1 summary (old pipeline):** `docs/prosport/run-1/migration-complete/summary.md`
 
 ## Current state (Monster)
 - **In progress.** Pipeline complete through `create_items`. Next: `monster_categorize_items.py`.

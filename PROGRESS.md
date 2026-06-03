@@ -9,7 +9,7 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 | Brand | Status |
 |-------|--------|
-| proSPORT Sunglasses | ✅ Complete |
+| proSPORT Sunglasses | 🔄 Run 2 in progress (categorize done, download next) |
 | Sunglass Monster | 🔄 In Progress (create-items done, categorize next) |
 
 ---
@@ -23,6 +23,12 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 - **Docs isolated per brand and run** — `docs/prosport/build-run/`, `docs/prosport/run-1/`, `docs/monster/build-run/`. Per-stage notes, analysis, audit, and verify files at each stage.
 - **Categorize script is brand-specific** — `{brand}_categorize_items.py` because category mapping is subjective and brand-dependent.
 - **Variable product stock = null** — reshape sets `stock=null` for all variable products. WooCommerce aggregate is misleading; variation-level stock is the source of truth.
+- **Variable product weight/dimensions = null** — `reshape_products.py` also nullifies `weight` and all three dimension fields for variable products. Variation-level is source of truth; WooCommerce sometimes disagrees across variations.
+- **All-or-nothing dimensions** — if only some of length/width/height are present, all three are nullified with an `[INFO]` print. Applies to simple products and all variations. Doesn't block the pipeline — just surfaces data quality issues.
+- **`sortOrder` on images (1-indexed)** — every image object in `images[]`, `descriptionImages[]`, and variation `images[]` carries a `sortOrder` field set during reshape. Import reads it directly — no enumerate or generated sort order at import time.
+- **`weightUnit` / `dimensionUnit` as null fields** — present in reshape output (both null for now). Import reads from data, no hardcoded None in import.
+- **Category `sortOrder` on every node** — `{brand}_categorize_items.py` has a flat `SORT_ORDER` dict (slug → int). Every node in every path gets its sortOrder stamped. Same slug always gets the same sort order. Import reads `node["sortOrder"]`.
+- **Import as pure insertion** — no field generation or inline defaults in `import_items.py`. All values come from categorize-items output. Removed: `enumerate` for sort_order, `.get("stock", 1)`, `.get("sale", False)`, `.get("summary") or []`, `.get("totalSales", 0)`, hardcoded `None` for units.
 - **`ATTR_OVERRIDES` in reshape scripts** — brand-keyed dict for raw WooCommerce attribute names that need manual remapping before generic cleaning rules run. Lives in the reshape script, not config, so brand-specific transform logic stays in transform scripts.
 - **Attribute name collision detection at validate time** — `validate_products.py` and `validate_variations.py` simulate `clean_attr_name` and flag any product/variation where two attributes would collide after cleaning. Catches reshape-time issues early without touching the data.
 - **WooCommerce slug validation** — just checks non-empty string; removed `slugify(name)==slug` comparison since WooCommerce slugs diverge from names.
@@ -79,6 +85,38 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 **Run-1 verified identical to build-run.** All verify scripts PASSED. Two transient 503s during fetch_variations resolved on retry; `analyze_slim_products.py` stale `related_ids` field removed.
 
 **Full run summary:** `docs/prosport/run-1/migration-complete/summary.md`
+
+### Run 2 (pipeline improvements applied)
+
+Re-run from scratch with: null weight/dims for variable products, all-or-nothing dims, sortOrder on all images, weightUnit/dimensionUnit fields, category sortOrder on every node, import as pure insertion.
+
+**Products**
+- [x] `fetch_products.py` — 171 products (same source)
+- [x] `slim_products.py`
+- [x] `validate_products.py` — 169 passed, 2 flagged (same)
+- [x] `analyze_*.py` scripts
+
+**Variations**
+- [x] `fetch_variations.py` — 1,758 variations
+- [x] `slim_variations.py`
+- [x] `validate_variations.py` — 1,740 passed, 18 flagged (same)
+- [x] `analyze_*.py` scripts
+
+**Reshape → Create Items**
+- [x] `reshape_products.py` — 169 products, variable weight/dims=null, sortOrder on images, weightUnit/dimensionUnit=null
+- [x] `reshape_variations.py` — 1,740 variations, all-or-nothing dims, sortOrder on variation images
+- [x] `audit_reshape_products.py` + `verify_reshape_products.py` — PASSED
+- [x] `audit_reshape_variations.py` + `verify_reshape_variations.py` — PASSED
+- [x] `create_items.py` — 166 items, 3 flagged (same), 1,713 variations embedded
+- [x] `audit_create_items.py` + `verify_create_items.py` + `analyze_items.py` — PASSED
+
+**Categorize → Import**
+- [x] `prosport_categorize_items.py` — 166 items, 197 leaf assignments, sortOrder on all 382 category nodes → PASSED
+- [ ] `download_items.py` ← next
+- [ ] `upload_items.py`
+- [ ] `import_items.py`
+
+**Run-2 docs:** `docs/prosport/run-2/`
 
 ---
 
