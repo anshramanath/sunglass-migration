@@ -29,7 +29,7 @@ EXPECTED_FIELDS = {
     "id", "name", "slug", "oldUrl", "type",
     "description", "descriptionImages", "summary",
     "sku", "minPriceCents", "maxPriceCents", "salePriceCents", "sale",
-    "featured", "totalSales", "stock", "weight", "dimensions",
+    "featured", "totalSales", "stock", "weight", "weightUnit", "dimensions", "dimensionUnit",
     "categories", "images", "attributes", "variations",
 }
 
@@ -100,9 +100,13 @@ for pid, r in reshaped_map.items():
     if r.get("oldUrl") != s.get("permalink"):
         err(pid, f"oldUrl mismatch: {r.get('oldUrl')!r} != {s.get('permalink')!r}")
 
-    # images unchanged
-    if r.get("images") != s.get("images"):
-        err(pid, "images array changed")
+    # images: src/name unchanged, sortOrder starts at 1
+    for i, img in enumerate(r.get("images", [])):
+        src = s.get("images", [])[i].get("src") if i < len(s.get("images", [])) else None
+        if img.get("src") != src:
+            err(pid, f"images[{i}] src changed")
+        if img.get("sortOrder") != i + 1:
+            err(pid, f"images[{i}] sortOrder={img.get('sortOrder')!r} expected {i + 1}")
 
     # totalSales unchanged
     if r.get("totalSales") != s.get("total_sales"):
@@ -113,18 +117,20 @@ for pid, r in reshaped_map.items():
     if desc is not None and TAG_RE.search(desc):
         err(pid, "description still contains HTML tags")
 
-    # descriptionImages: list of {src, name} objects (never null)
+    # descriptionImages: list of {src, name, sortOrder} objects (never null)
     di = r.get("descriptionImages")
     if not isinstance(di, list):
         err(pid, f"descriptionImages is not a list: {di!r}")
     else:
-        for entry in di:
+        for i, entry in enumerate(di):
             if not isinstance(entry, dict):
-                err(pid, f"descriptionImages entry is not an object: {entry!r}")
+                err(pid, f"descriptionImages[{i}] is not an object: {entry!r}")
             elif not isinstance(entry.get("src"), str) or not entry["src"].startswith("http"):
-                err(pid, f"descriptionImages entry missing valid src: {entry!r}")
+                err(pid, f"descriptionImages[{i}] missing valid src: {entry!r}")
             elif not isinstance(entry.get("name"), str) or not entry["name"]:
-                err(pid, f"descriptionImages entry missing name: {entry!r}")
+                err(pid, f"descriptionImages[{i}] missing name: {entry!r}")
+            elif entry.get("sortOrder") != i + 1:
+                err(pid, f"descriptionImages[{i}] sortOrder={entry.get('sortOrder')!r} expected {i + 1}")
 
     # summary: list of plain strings (never null)
     sd = r.get("summary")

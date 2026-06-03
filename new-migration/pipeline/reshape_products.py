@@ -83,7 +83,7 @@ def reshape(p):
 
     # description: extract img URLs, strip all HTML to plain text
     desc_raw = p.get('description') or ''
-    desc_imgs = [{'src': url, 'name': image_name(url)} for url in IMG_RE.findall(desc_raw)]
+    desc_imgs = [{'src': url, 'name': image_name(url), 'sortOrder': i + 1} for i, url in enumerate(IMG_RE.findall(desc_raw))]
     desc_text = strip_html(IMG_TAG_RE.sub('', desc_raw))
 
     # short_description: parse <li> items to plain text array
@@ -141,9 +141,11 @@ def reshape(p):
         'totalSales':        p.get('total_sales') or 0,
         'stock':             stock,
         'weight':            weight,
+        'weightUnit':        None,
         'dimensions':        dimensions,
+        'dimensionUnit':     None,
         'categories':        p.get('categories', []),
-        'images':            p.get('images', []),
+        'images':            [{**img, 'sortOrder': i + 1} for i, img in enumerate(p.get('images', []))],
         'attributes':        [
             {
                 **a,

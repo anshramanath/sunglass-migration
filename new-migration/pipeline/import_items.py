@@ -87,21 +87,21 @@ for i, p in enumerate(items):
             p["sku"],
             p.get("oldUrl"),
             p.get("description"),
-            p.get("summary") or [],
+            p["summary"],
             Json(p.get("attributes", [])),
             p.get("featured", False),
-            p.get("totalSales", 0),
-            p.get("sale", False),
+            p["totalSales"],
+            p["sale"],
             p["minPriceCents"],
             p["maxPriceCents"],
             p.get("salePriceCents"),
-            p.get("stock", 1),
-            p.get("weight"),
-            None,
+            p["stock"],
+            p["weight"],
+            p["weightUnit"],
             dims.get("length"),
             dims.get("width"),
             dims.get("height"),
-            None,
+            p["dimensionUnit"],
         ),
     )
     product_id = cur.fetchone()[0]
@@ -115,21 +115,21 @@ for i, p in enumerate(items):
         )
 
     # product_images
-    for j, img in enumerate(p.get("images", []), start=1):
+    for img in p.get("images", []):
         src = resolve_src(img["src"])
         if src:
             cur.execute(
                 "INSERT INTO product_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                (product_id, src, img.get("name", ""), j),
+                (product_id, src, img.get("name", ""), img["sortOrder"]),
             )
 
     # description_images
-    for j, img in enumerate(p.get("descriptionImages", []), start=1):
+    for img in p.get("descriptionImages", []):
         src = resolve_src(img["src"])
         if src:
             cur.execute(
                 "INSERT INTO description_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                (product_id, src, img.get("name", ""), j),
+                (product_id, src, img.get("name", ""), img["sortOrder"]),
             )
 
     # variations
@@ -156,27 +156,27 @@ for i, p in enumerate(items):
                 v.get("oldUrl"),
                 v.get("description"),
                 Json(v.get("attributes", [])),
-                v.get("sale", False),
+                v["sale"],
                 v["regularPriceCents"],
                 v.get("salePriceCents"),
-                v.get("stock", 1),
-                v.get("weight"),
-                None,
+                v["stock"],
+                v["weight"],
+                v["weightUnit"],
                 v_dims.get("length"),
                 v_dims.get("width"),
                 v_dims.get("height"),
-                None,
+                v["dimensionUnit"],
             ),
         )
         variation_id = cur.fetchone()[0]
 
         # variation_images
-        for j, img in enumerate(v.get("images", []), start=1):
+        for img in v.get("images", []):
             src = resolve_src(img["src"])
             if src:
                 cur.execute(
                     "INSERT INTO variation_images (variation_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                    (variation_id, src, img.get("name", ""), j),
+                    (variation_id, src, img.get("name", ""), img["sortOrder"]),
                 )
 
     if (i + 1) % 50 == 0:

@@ -1,6 +1,5 @@
 import html as html_mod
 import json
-import os
 import sys
 import re
 from pathlib import Path
@@ -100,8 +99,10 @@ def reshape(v):
         'sale':             v.get('on_sale'),
         'stock':            stock,
         'weight':           to_num(v.get('weight')),
+        'weightUnit':       None,
         'dimensions':       dimensions,
-        'images':           [v['image']] if v.get('image') and v['image'].get('src') else [],
+        'dimensionUnit':    None,
+        'images':           [{'src': v['image']['src'], 'name': v['image'].get('name', ''), 'sortOrder': 1}] if v.get('image') and v['image'].get('src') else [],
         'attributes':       [
             {'name': clean_attr_name(a['name']), 'option': normalize_power(a['option']) if clean_attr_name(a['name']) == 'Power' else a['option']}
             for a in v.get('attributes', [])

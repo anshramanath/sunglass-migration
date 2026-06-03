@@ -75,9 +75,11 @@ for item in items:
 
             # image dedup: no variation image should duplicate a parent image
             parent_srcs = {img["src"] for img in item.get("images", [])}
-            for vimg in v.get("images", []):
+            for i, vimg in enumerate(v.get("images", [])):
                 if vimg["src"] in parent_srcs:
                     err(pid, f"variation {vid} images[] contains src duplicating parent image: {vimg['src']}")
+                if vimg.get("sortOrder") != i + 1:
+                    err(pid, f"variation {vid} images[{i}] sortOrder={vimg.get('sortOrder')!r} expected {i + 1}")
 
             # variation attributes exist in product attribute pool
             product_attr_map = {a["name"]: set(a["options"]) for a in item.get("attributes", [])}
@@ -109,6 +111,16 @@ for item in items:
         # simple: variations must be empty
         if variations:
             err(pid, f"simple product has non-empty variations: {variations}")
+
+    # product images: sortOrder sequential from 1
+    for i, img in enumerate(item.get("images", [])):
+        if img.get("sortOrder") != i + 1:
+            err(pid, f"images[{i}] sortOrder={img.get('sortOrder')!r} expected {i + 1}")
+
+    # descriptionImages: sortOrder sequential from 1
+    for i, img in enumerate(item.get("descriptionImages", [])):
+        if img.get("sortOrder") != i + 1:
+            err(pid, f"descriptionImages[{i}] sortOrder={img.get('sortOrder')!r} expected {i + 1}")
 
     # product SKU uniqueness
     sku = item.get("sku")

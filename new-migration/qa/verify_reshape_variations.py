@@ -29,7 +29,7 @@ TAG_RE = re.compile(r'<[^>]+>')
 EXPECTED_FIELDS = {
     "id", "parent_id", "name", "type", "oldUrl", "description",
     "sku", "regularPriceCents", "salePriceCents", "sale",
-    "stock", "weight", "dimensions", "images", "attributes",
+    "stock", "weight", "weightUnit", "dimensions", "dimensionUnit", "images", "attributes",
 }
 
 DROPPED_FIELDS = {
@@ -105,14 +105,20 @@ for pid, r_vars in reshaped_map.items():
         if r.get("oldUrl") != s.get("permalink"):
             err(vid, f"oldUrl mismatch: {r.get('oldUrl')!r} != {s.get('permalink')!r}")
 
-        # images: source image object wrapped in array unchanged; [] if source null
+        # images: source image wrapped in array with sortOrder=1; [] if source null
         raw_img  = s.get("image")
         r_images = r.get("images", [])
         if not isinstance(r_images, list):
             err(vid, f"images is not a list: {r_images!r}")
         elif raw_img and raw_img.get("src"):
-            if len(r_images) != 1 or r_images[0] != raw_img:
-                err(vid, f"images object mismatch: expected [{raw_img!r}], got {r_images!r}")
+            if len(r_images) != 1:
+                err(vid, f"images should have 1 entry, got {len(r_images)}")
+            else:
+                img = r_images[0]
+                if img.get("src") != raw_img.get("src"):
+                    err(vid, f"images[0] src mismatch: {img.get('src')!r} != {raw_img.get('src')!r}")
+                if img.get("sortOrder") != 1:
+                    err(vid, f"images[0] sortOrder={img.get('sortOrder')!r} expected 1")
         else:
             if r_images:
                 err(vid, f"source image is null but images={r_images!r}")
