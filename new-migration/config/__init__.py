@@ -2,7 +2,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-BASE = Path(__file__).parent  # new-migration/
+BASE = Path(__file__).parent.parent  # new-migration/
 load_dotenv(dotenv_path=BASE.parent / ".env")
 
 BRAND_CONFIG = {
