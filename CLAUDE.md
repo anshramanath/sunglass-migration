@@ -8,16 +8,14 @@ Multi-brand WooCommerce → Supabase migration pipeline. Uses the authenticated 
 
 ```python
 BRAND_CONFIG = {
-    "proSPORT Sunglasses": {
+    "prosport": {
         "slug": "prosport",
-        "base_url": "PROSPORT_BASE_URL",
-        "consumer_key": "PROSPORT_CONSUMER_KEY",
-        "consumer_secret": "PROSPORT_CONSUMER_SECRET",
+        "brand_name": "proSPORT Sunglasses",
     },
 }
 ```
 
-All pipeline scripts load `BRAND` from `.env`, look it up in `BRAND_CONFIG`, and derive the slug + credentials from there.
+All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport`), look it up in `BRAND_CONFIG`, and derive the slug from there. Fetch scripts load credentials via separate env vars (`PROSPORT_BASE_URL`, `PROSPORT_CONSUMER_KEY`, `PROSPORT_CONSUMER_SECRET`).
 
 ## Pipeline (in order)
 
@@ -82,10 +80,12 @@ All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/create-items/items.json` + `flagged.json` — combined items
 - `data/{slug}/categorize-items/items.json` — items with normalized `[[{level, name, slug}]]` category paths
 - `data/{slug}/download-items/download_map.json` + `flagged.json` + `images/` — downloaded images
+- `data/{slug}/upload-items/upload_map.json` — Supabase storage URLs
 
 ## Current state (ProSport)
-- **Products:** 169 validated → reshaped → 166 items passed create-items, 3 flagged (products 2145, 2211, 1208 — unreplaced variation IDs from 18 variations excluded at validate: 17 SKU-spaces, 1 no-price).
-- **Variations:** 1,740 validated → reshaped → 1,713 embedded into items.
-- **Categorized:** 166 items → `categorize-items/`. 21 previously uncategorized products assigned. 9 leaves across 3 parent categories + Accessories root-level leaf.
-- **Images:** 411 downloaded (373 product, 36 variation, 2 description) → `download-items/`. 0 failed.
-- **Next step:** `upload_items.py`.
+- **Complete.** Full run summary: `docs/migration-complete/summary.md`
+- **Products:** 169 validated → 166 imported, 3 flagged (2145, 2211, 1208 — unreplaced variation IDs from 18 flagged variations: 17 SKU-spaces, 1 no-price).
+- **Variations:** 1,740 validated → 1,713 embedded and imported.
+- **Categories:** 12 categories (4 roots, 8 leaves), 197 product-category assignments.
+- **Images:** 411 downloaded → 411 uploaded → 565 product images, 36 variation images, 143 description images in DB.
+- **Pending:** Fix 3 flagged products in WooCommerce (SKU spaces + missing price), re-fetch, re-run pipeline.

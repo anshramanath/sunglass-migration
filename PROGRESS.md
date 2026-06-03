@@ -9,7 +9,7 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 | Brand | Status |
 |-------|--------|
-| proSPORT Sunglasses | 🔄 In progress |
+| proSPORT Sunglasses | ✅ Complete |
 
 ---
 
@@ -63,5 +63,9 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 **Categorize → Import**
 - [x] `prosport_categorize_items.py` — 166 items, 197 leaf assignments, 9 leaves, 21 previously uncategorized assigned → `categorize-items/`
 - [x] `download_items.py` — 411 images downloaded (0 failed) → `download-items/`
-- [ ] `upload_items.py`
-- [ ] `import_items.py`
+- [x] `upload_items.py` — 411 uploaded (0 failed), bucket `prosport` → `upload-items/`
+- [x] `import_items.py` — 166 products, 1713 variations, 12 categories → Supabase DB
+
+**3 flagged products (2145, 2211, 1208)** — fix SKU spaces + missing price in WooCommerce, re-fetch, re-run pipeline to add them.
+
+**Full run summary:** `docs/migration-complete/summary.md`
