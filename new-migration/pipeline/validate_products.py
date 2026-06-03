@@ -18,6 +18,25 @@ out_dir = BASE / "data" / slug / "validate-products"
 out_dir.mkdir(parents=True, exist_ok=True)
 
 product_errors = {}
+
+ATTR_OVERRIDES = {
+    "monster": {
+        "Cleaner Spray Bottle QTY":  "Quantity",
+        "Qty":                       "Quantity",
+        "Frame Styles for Filter":   "Style",
+        "Special Size for Filter":   "Size",
+    },
+}
+
+def sim_clean_attr_name(raw):
+    override = ATTR_OVERRIDES.get(brand_key, {}).get(raw)
+    if override:
+        return override
+    name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
+    name = re.sub(r'(?i)^choose\s+', '', name).strip()
+    name = re.sub(r'(?i)^filter\s+by\s+', '', name).strip()
+    name = re.sub(r'\s*\(.*?\)', '', name).strip()
+    return name
 seen_ids = set()
 seen_skus = {}  # sku -> pid, for duplicate detection
 
@@ -190,13 +209,24 @@ for p in data:
         if not isinstance(img.get("name"), str) or not img["name"].strip():
             err(pid, f"image[{i}] name is not a valid non-empty string")
 
-    # attributes: name non-empty string; each option non-empty string
+    # attributes: name non-empty string; options non-empty array; each option non-empty string
     for a in p.get("attributes", []):
         if not isinstance(a.get("name"), str) or not a["name"].strip():
             err(pid, f"attribute name is not a valid non-empty string: {a}")
+        if not isinstance(a.get("options"), list) or not a["options"]:
+            err(pid, f"attribute '{a.get('name')}' has no options")
         for opt in a.get("options", []):
             if not isinstance(opt, str) or not opt.strip():
                 err(pid, f"attribute '{a.get('name')}' has empty option: {opt!r}")
+    # attribute name collision check: simulate cleaning and flag if two raw names map to the same cleaned name
+    cleaned = [sim_clean_attr_name(a["name"]) for a in p.get("attributes", []) if isinstance(a.get("name"), str)]
+    seen, dupes = set(), set()
+    for n in cleaned:
+        if n in seen:
+            dupes.add(n)
+        seen.add(n)
+    if dupes:
+        err(pid, f"attribute name collision after cleaning: {sorted(dupes)}")
 
     # variations: list of numbers
     for v in p.get("variations", []):

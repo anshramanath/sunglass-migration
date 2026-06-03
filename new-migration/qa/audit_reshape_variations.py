@@ -86,6 +86,12 @@ for name, count in attr_counter.most_common():
     options = {a["option"] for v in all_vars for a in v.get("attributes", []) if a["name"] == name}
     print(f"  {name:<12} {count:>6} variations  {len(options):>4} unique options")
 print(f"  unique names: {sorted(attr_counter.keys())}")
+collisions = [v["id"] for v in all_vars
+              if len({a["name"] for a in v.get("attributes", [])}) < len([a["name"] for a in v.get("attributes", [])])]
+if collisions:
+    print(f"  [WARN] attribute name collisions in {len(collisions)} variations: {collisions[:10]}")
+else:
+    print(f"  no attribute name collisions ✓")
 
 # ── Variations per product ────────────────────────────────────────────────────
 print(f"\n── Variations per product ──")

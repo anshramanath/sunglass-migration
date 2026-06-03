@@ -65,6 +65,11 @@ print(f"  sale=True (WC value, deferred): {pct(var_sale_true, len(variables))}")
 
 # ── Stock ─────────────────────────────────────────────────────────────────────
 print(f"\n── Stock ──")
+variable_non_null = [p for p in products if p.get("type") == "variable" and p.get("stock") is not None]
+if variable_non_null:
+    print(f"  [WARN] variable products with non-null stock: {len(variable_non_null)}")
+else:
+    print(f"  variable stock=null: ✓")
 stock_zero     = sum(1 for p in products if p.get("stock") == 0)
 stock_pos      = sum(1 for p in products if isinstance(p.get("stock"), int) and p["stock"] > 0)
 stock_one_flag = sum(1 for p in products if p.get("stock") == 1)
@@ -116,3 +121,11 @@ for name, count in attr_counter.most_common():
     option_set = {o for p in products for a in p.get("attributes", []) if a["name"] == name for o in a.get("options", [])}
     print(f"  {name:<30} {count:>4} products  {len(option_set):>4} unique options")
 print(f"  unique names: {sorted(attr_counter.keys())}")
+collisions = [(p["id"], p["name"]) for p in products
+              if len({a["name"] for a in p.get("attributes", [])}) < len([a["name"] for a in p.get("attributes", [])])]
+if collisions:
+    print(f"  [WARN] attribute name collisions in {len(collisions)} products:")
+    for pid, pname in collisions:
+        print(f"    [{pid}] {pname}")
+else:
+    print(f"  no attribute name collisions ✓")

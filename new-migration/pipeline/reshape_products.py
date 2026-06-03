@@ -104,9 +104,12 @@ def reshape(p):
         sale_price = to_cents(p.get('sale_price'))
         sale = p.get('on_sale')
 
-    # stock: use stock_quantity if present, else 1/0 from stock_status
-    sq = p.get('stock_quantity')
-    stock = sq if sq is not None else (1 if p.get('stock_status') == 'instock' else 0)
+    # stock: variable products defer to variation-level stock; simple products use quantity or status fallback
+    if is_variable:
+        stock = None
+    else:
+        sq = p.get('stock_quantity')
+        stock = sq if sq is not None else (1 if p.get('stock_status') == 'instock' else 0)
 
     # dimensions: always an object; fields null if missing
     dims = p.get('dimensions') or {}

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -26,6 +27,25 @@ known_product_ids = {p["id"] for p in products}
 
 out_dir = BASE / "data" / slug / "validate-variations"
 out_dir.mkdir(parents=True, exist_ok=True)
+
+ATTR_OVERRIDES = {
+    "monster": {
+        "Cleaner Spray Bottle QTY":  "Quantity",
+        "Qty":                       "Quantity",
+        "Frame Styles for Filter":   "Style",
+        "Special Size for Filter":   "Size",
+    },
+}
+
+def sim_clean_attr_name(raw):
+    override = ATTR_OVERRIDES.get(brand_key, {}).get(raw)
+    if override:
+        return override
+    name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
+    name = re.sub(r'(?i)^choose\s+', '', name).strip()
+    name = re.sub(r'(?i)^filter\s+by\s+', '', name).strip()
+    name = re.sub(r'\s*\(.*?\)', '', name).strip()
+    return name
 
 variation_errors = {}  # vid -> [msgs]
 seen_ids = set()
@@ -177,6 +197,15 @@ for entry in raw:
                 err(vid, f"attribute name is not a valid non-empty string: {a}")
             if not isinstance(a.get("option"), str) or not a["option"].strip():
                 err(vid, f"attribute '{a.get('name')}' has empty option")
+        # attribute name collision check
+        cleaned = [sim_clean_attr_name(a["name"]) for a in v.get("attributes", []) if isinstance(a.get("name"), str)]
+        seen, dupes = set(), set()
+        for n in cleaned:
+            if n in seen:
+                dupes.add(n)
+            seen.add(n)
+        if dupes:
+            err(vid, f"attribute name collision after cleaning: {sorted(dupes)}")
 
 # ── Outputs ───────────────────────────────────────────────────────────────────
 all_variation_ids = {v["id"] for entry in raw for v in entry["variations"]}
