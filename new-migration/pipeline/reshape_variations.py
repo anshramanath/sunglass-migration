@@ -79,9 +79,11 @@ def reshape(v):
     sq = v.get('stock_quantity')
     stock = sq if sq is not None else (1 if v.get('stock_status') == 'instock' else 0)
 
-    # dimensions: always an object; fields null if missing
+    # dimensions: all-or-nothing — partial fills are nullified
     dims = v.get('dimensions') or {}
     l, w, h = to_num(dims.get('length')), to_num(dims.get('width')), to_num(dims.get('height'))
+    if any(v is not None for v in (l, w, h)) and not all(v is not None for v in (l, w, h)):
+        l = w = h = None
     dimensions = {'length': l, 'width': w, 'height': h}
 
     return {

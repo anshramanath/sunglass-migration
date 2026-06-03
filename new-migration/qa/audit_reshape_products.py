@@ -77,10 +77,20 @@ print(f"  stock=0 (outofstock / empty qty): {stock_zero}")
 print(f"  stock=1 (instock fallback):        {stock_one_flag}")
 print(f"  stock>1 (real quantity):           {stock_pos - stock_one_flag}")
 
-# ── Weight ────────────────────────────────────────────────────────────────────
-print(f"\n── Weight ──")
-weights = [p["weight"] for p in products if p.get("weight") is not None]
-print(f"  Non-null: {pct(len(weights), len(products))}")
+# ── Weight + Dimensions ───────────────────────────────────────────────────────
+print(f"\n── Weight + Dimensions ──")
+variable_non_null_weight = [p for p in variables if p.get("weight") is not None]
+if variable_non_null_weight:
+    print(f"  [WARN] variable products with non-null weight: {len(variable_non_null_weight)}")
+else:
+    print(f"  variable weight=null: ✓")
+variable_non_null_dims = [p for p in variables if any(p.get("dimensions", {}).get(d) is not None for d in ("length", "width", "height"))]
+if variable_non_null_dims:
+    print(f"  [WARN] variable products with non-null dimensions: {len(variable_non_null_dims)}")
+else:
+    print(f"  variable dimensions=null: ✓")
+weights = [p["weight"] for p in simples if p.get("weight") is not None]
+print(f"  simple weight non-null: {pct(len(weights), len(simples))}")
 if weights:
     print(f"  Range: {min(weights)}–{max(weights)}")
 

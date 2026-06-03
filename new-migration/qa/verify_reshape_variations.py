@@ -154,7 +154,7 @@ for pid, r_vars in reshaped_map.items():
         if w != expected_w:
             err(vid, f"weight={w!r} expected {expected_w!r}")
 
-        # dimensions: always a dict with length/width/height each float or null
+        # dimensions: all-or-nothing; each field float or null
         dims = r.get("dimensions")
         if not isinstance(dims, dict):
             err(vid, f"dimensions is not a dict: {dims!r}")
@@ -163,6 +163,9 @@ for pid, r_vars in reshaped_map.items():
                 dv = dims.get(dim)
                 if dv is not None and not isinstance(dv, float):
                     err(vid, f"dimensions.{dim} is not a float or null: {dv!r}")
+            vals = [dims.get(d) for d in ("length", "width", "height")]
+            if any(v is not None for v in vals) and not all(v is not None for v in vals):
+                err(vid, f"dimensions partially filled: {dims!r}")
 
         # attributes: name cleaned, Power options normalized
         def norm_power(name, option):

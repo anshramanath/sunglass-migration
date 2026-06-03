@@ -1,5 +1,4 @@
 import json
-import os
 import sys
 import re
 from pathlib import Path
@@ -174,24 +173,35 @@ for pid, r in reshaped_map.items():
         if r.get("stock") != expected_stock:
             err(pid, f"stock={r.get('stock')} expected {expected_stock}")
 
-    # weight: float or null, matches source
+    # weight + dimensions: variable products must be null; simple products match source
     w = r.get("weight")
-    if w is not None and not isinstance(w, float):
-        err(pid, f"weight is not a float: {w!r}")
-    src_w = s.get("weight")
-    expected_w = None if src_w in (None, "") else float(src_w)
-    if w != expected_w:
-        err(pid, f"weight={w!r} expected {expected_w!r}")
-
-    # dimensions: always a dict with length/width/height each float or null
     dims = r.get("dimensions")
-    if not isinstance(dims, dict):
-        err(pid, f"dimensions is not a dict: {dims!r}")
+    if is_variable:
+        if w is not None:
+            err(pid, f"weight should be null for variable product, got {w!r}")
+        if not isinstance(dims, dict):
+            err(pid, f"dimensions is not a dict: {dims!r}")
+        else:
+            for dim in ("length", "width", "height"):
+                if dims.get(dim) is not None:
+                    err(pid, f"dimensions.{dim} should be null for variable product, got {dims[dim]!r}")
     else:
-        for dim in ("length", "width", "height"):
-            v = dims.get(dim)
-            if v is not None and not isinstance(v, float):
-                err(pid, f"dimensions.{dim} is not a float or null: {v!r}")
+        if w is not None and not isinstance(w, float):
+            err(pid, f"weight is not a float: {w!r}")
+        src_w = s.get("weight")
+        expected_w = None if src_w in (None, "") else float(src_w)
+        if w != expected_w:
+            err(pid, f"weight={w!r} expected {expected_w!r}")
+        if not isinstance(dims, dict):
+            err(pid, f"dimensions is not a dict: {dims!r}")
+        else:
+            for dim in ("length", "width", "height"):
+                v = dims.get(dim)
+                if v is not None and not isinstance(v, float):
+                    err(pid, f"dimensions.{dim} is not a float or null: {v!r}")
+            vals = [dims.get(d) for d in ("length", "width", "height")]
+            if any(v is not None for v in vals) and not all(v is not None for v in vals):
+                err(pid, f"dimensions partially filled: {dims!r}")
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 print(f"Verify: reshape-products — {len(reshaped)} products\n")

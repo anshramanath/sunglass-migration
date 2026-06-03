@@ -1,6 +1,5 @@
 import html as html_mod
 import json
-import os
 import sys
 import re
 from pathlib import Path
@@ -111,10 +110,17 @@ def reshape(p):
         sq = p.get('stock_quantity')
         stock = sq if sq is not None else (1 if p.get('stock_status') == 'instock' else 0)
 
-    # dimensions: always an object; fields null if missing
-    dims = p.get('dimensions') or {}
-    l, w, h = to_num(dims.get('length')), to_num(dims.get('width')), to_num(dims.get('height'))
-    dimensions = {'length': l, 'width': w, 'height': h}
+    # weight + dimensions: variable products defer to variation-level; simple products use product-level
+    if is_variable:
+        weight = None
+        dimensions = {'length': None, 'width': None, 'height': None}
+    else:
+        weight = to_num(p.get('weight'))
+        dims = p.get('dimensions') or {}
+        l, w, h = to_num(dims.get('length')), to_num(dims.get('width')), to_num(dims.get('height'))
+        if any(v is not None for v in (l, w, h)) and not all(v is not None for v in (l, w, h)):
+            l = w = h = None
+        dimensions = {'length': l, 'width': w, 'height': h}
 
     return {
         'id':                p['id'],
@@ -133,7 +139,7 @@ def reshape(p):
         'featured':          p.get('featured'),
         'totalSales':        p.get('total_sales') or 0,
         'stock':             stock,
-        'weight':            to_num(p.get('weight')),
+        'weight':            weight,
         'dimensions':        dimensions,
         'categories':        p.get('categories', []),
         'images':            p.get('images', []),
