@@ -1,5 +1,5 @@
 # Sunglass Monster Migration — Claude Context
-_Last updated: 2026-06-02_
+_Last updated: 2026-06-03_
 
 ## What this is
 Multi-brand WooCommerce → Supabase migration pipeline. Uses the authenticated WooCommerce admin REST API (`/wp-json/wc/v3/`) for complete product data. The active brand is selected via `BRAND` in `.env`.
@@ -12,10 +12,14 @@ BRAND_CONFIG = {
         "slug": "prosport",
         "brand_name": "proSPORT Sunglasses",
     },
+    "monster": {
+        "slug": "monster",
+        "brand_name": "Sunglass Monster",
+    },
 }
 ```
 
-All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport`), look it up in `BRAND_CONFIG`, and derive the slug from there. Fetch scripts load credentials via separate env vars (`PROSPORT_BASE_URL`, `PROSPORT_CONSUMER_KEY`, `PROSPORT_CONSUMER_SECRET`).
+All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport` or `BRAND=monster`), look it up in `BRAND_CONFIG`, and derive the slug from there. Fetch scripts load credentials via separate env vars (`PROSPORT_BASE_URL`, `PROSPORT_CONSUMER_KEY`, `PROSPORT_CONSUMER_SECRET`, and equivalents for monster).
 
 `BRAND_CONFIG` lives in `new-migration/config/__init__.py` — a shared importable module. Scripts import it with:
 ```python
@@ -30,18 +34,18 @@ from config import BASE, load_brand
 ### Products
 1. `pipeline/fetch_products.py` — fetches all products via admin REST API → `data/{slug}/fetch-products/products.json`
 2. `pipeline/slim_products.py` — extracts relevant fields only → `data/{slug}/slim-products/products.json`
-3. `pipeline/validate_products.py` — validates all fields per product → `data/{slug}/validated-products/products.json` + `flagged.json`
+3. `pipeline/validate_products.py` — validates all fields per product → `data/{slug}/validate-products/products.json` + `flagged.json`
 
 ### Variations
 4. `pipeline/fetch_variations.py` — fetches all variations for each validated product → `data/{slug}/fetch-variations/variations.json`
 5. `pipeline/slim_variations.py` — extracts relevant fields → `data/{slug}/slim-variations/variations.json`
-6. `pipeline/validate_variations.py` — validates variations → `data/{slug}/validated-variations/variations.json` + `flagged.json`
+6. `pipeline/validate_variations.py` — validates variations → `data/{slug}/validate-variations/variations.json` + `flagged.json`
 
 ### Reshape → Import
 7. `pipeline/reshape_products.py` — normalizes products: HTML stripped, prices to cents, stock merged, attributes name-cleaned, descriptionImages as `{src, name}` objects → `data/{slug}/reshape-products/`
 8. `pipeline/reshape_variations.py` — normalizes variations: same conventions, `image` → `images[]` array → `data/{slug}/reshape-variations/`
 9. `pipeline/create_items.py` — embeds variations into products, ownership checks, attribute expansion/prune, image dedup, min/max price → `data/{slug}/create-items/`
-10. `pipeline/prosport_categorize_items.py` — normalizes category names, assigns leaf paths with `{level, name, slug}` structure, hardcoded assignments for 21 uncategorized products → `data/{slug}/categorize-items/`
+10. `pipeline/{brand}_categorize_items.py` — brand-specific: normalizes category names, assigns leaf paths with `{level, name, slug}` structure → `data/{slug}/categorize-items/`
 11. `pipeline/download_items.py` — downloads all images locally (crash-safe via `download_map.json`) → `data/{slug}/download-items/`
 12. `pipeline/upload_items.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
 13. `pipeline/import_items.py` — inserts into Supabase DB
@@ -55,6 +59,15 @@ from config import BASE, load_brand
 
 ### QA (per stage)
 - `qa/audit_*.py` / `qa/verify_*.py` — per-stage audit (counts, field stats) and verify (cross-check data vs source) scripts for: products, slim-products, variations, slim-variations, reshape-products, reshape-variations, create-items, categorize-items, download-items, upload-items, import
+
+## Pipeline robustness improvements (added during Monster run)
+
+- **Attribute name collision detection** — `validate_products.py` and `validate_variations.py` simulate `clean_attr_name` at validate time and flag any product/variation where two raw attribute names would map to the same cleaned name. Catches reshape-time collisions early.
+- **`ATTR_OVERRIDES` dict** — in `reshape_products.py` and `reshape_variations.py`, a brand-keyed dict that maps raw WooCommerce attribute names to canonical cleaned names before the generic prefix/postfix rules run. Add a new entry for each brand that needs it.
+- **`clean_attr_name` rules** — strips `for Filter` suffix, `Choose ` prefix, `Filter by ` prefix, and parentheticals like `(REQUIRED)`. Overrides checked first.
+- **Variable product stock = null** — `reshape_products.py` sets `stock=null` for all variable products. Variation-level stock is the source of truth; the WooCommerce aggregate is misleading.
+- **WooCommerce slug validation** — removed `slugify(name) == slug` check; WooCommerce slugs diverge from names (apostrophes, truncation, etc.). Just check non-empty string.
+- **Empty attribute options OK** — `validate_products.py` no longer flags empty `options[]` arrays; `create_items.py` fills them from variation data.
 
 ## Key differences from old pipeline
 
@@ -83,7 +96,7 @@ from config import BASE, load_brand
 All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/fetch-products/products.json` — raw API response
 - `data/{slug}/slim-products/products.json` — relevant fields only
-- `data/{slug}/validate-products/products.json` + `flagged.json` — passed/failed validation (output folder: `validate-products/`)
+- `data/{slug}/validate-products/products.json` + `flagged.json` — passed/failed validation
 - `data/{slug}/fetch-variations/variations.json` — raw variation API response
 - `data/{slug}/slim-variations/variations.json` — relevant fields only
 - `data/{slug}/validate-variations/variations.json` + `flagged.json` — passed/failed validation
@@ -94,10 +107,30 @@ All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/download-items/download_map.json` + `flagged.json` + `images/` — downloaded images
 - `data/{slug}/upload-items/upload_map.json` — Supabase storage URLs
 
+## Docs structure
+
+```
+docs/
+  prosport/
+    build-run/   ← notes from building the pipeline with ProSport
+    run-1/       ← full ProSport migration run notes + summary
+  monster/
+    build-run/   ← Monster migration run notes (in progress)
+```
+
 ## Current state (ProSport)
-- **Complete.** Full run summary: `docs/run-1/migration-complete/summary.md`
+- **Complete.** Full run summary: `docs/prosport/run-1/migration-complete/summary.md`
 - **Products:** 169 validated → 166 imported, 3 flagged (2145, 2211, 1208 — unreplaced variation IDs from 18 flagged variations: 17 SKU-spaces, 1 no-price).
 - **Variations:** 1,740 validated → 1,713 embedded and imported.
 - **Categories:** 12 categories (4 roots, 8 leaves), 197 product-category assignments.
 - **Images:** 411 downloaded → 411 uploaded → 565 product images, 36 variation images, 143 description images in DB.
 - **Pending:** Fix 3 flagged products in WooCommerce (SKU spaces + missing price), re-fetch, re-run pipeline.
+
+## Current state (Monster)
+- **In progress.** Pipeline complete through `create_items`. Next: `monster_categorize_items.py`.
+- **Products:** 277 fetched → 267 validated → 265 in create-items, 10 flagged, 2 flagged at create-items.
+- **Variations:** 2,675 fetched → 2,673 validated → 2,646 embedded.
+- **Flagged products (10):** 2 Lens Type collisions (Holiday Reader 29701, Dorothy Reader 29640), 5 no-SKU, 2 no-image, 1 private+SKU-space+collision (proSPORT VShield 25942).
+- **Flagged create-items (2):** 10471 (Professor Multifocal Reader — variation 11143 SKU space), 6688 (Morocco Mirror — variation 7682 no price).
+- **All audit + verify scripts PASSED** through create-items.
+- **Pending:** Write `monster_categorize_items.py`, then download → upload → import.

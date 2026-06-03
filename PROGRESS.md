@@ -1,5 +1,5 @@
 # Sunglass Monster Migration Progress
-_Last updated: 2026-06-02_
+_Last updated: 2026-06-03_
 
 Multi-brand WooCommerce → Supabase migration using the authenticated admin REST API.
 
@@ -10,6 +10,7 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 | Brand | Status |
 |-------|--------|
 | proSPORT Sunglasses | ✅ Complete |
+| Sunglass Monster | 🔄 In Progress (create-items done, categorize next) |
 
 ---
 
@@ -17,9 +18,15 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 - **Admin REST API over Store API** — authenticated, returns real stock quantities, complete variation data, and full price fields. Store API was used for BikerShades (old pipeline) but was lossy — variation images limited to 1, no real stock counts.
 - **`BRAND` env var selects active brand** — hardcoded dict maps brand name → slug + credential env var names. Switching brands is one `.env` change.
-- **Shared config module (`config/__init__.py`)** — `BRAND_CONFIG` and `load_brand()` live in `new-migration/config/__init__.py`. All 28 pipeline/analysis/qa scripts import from it via `sys.path.insert` + `from config import BASE, load_brand`. Single source of truth; adding a new brand is one dict entry.
+- **Shared config module (`config/__init__.py`)** — `BRAND_CONFIG` and `load_brand()` live in `new-migration/config/__init__.py`. All pipeline/analysis/qa scripts import from it via `sys.path.insert` + `from config import BASE, load_brand`. Single source of truth; adding a new brand is one dict entry.
 - **Output isolated per brand slug** — all pipeline output written to `data/{slug}/` so multiple brands can coexist on disk without collision.
-- **Docs isolated per run** — `docs/build-run/` for pipeline development, `docs/run-1/` for first full run. Per-stage notes, analysis, audit, and verify files at each stage.
+- **Docs isolated per brand and run** — `docs/prosport/build-run/`, `docs/prosport/run-1/`, `docs/monster/build-run/`. Per-stage notes, analysis, audit, and verify files at each stage.
+- **Categorize script is brand-specific** — `{brand}_categorize_items.py` because category mapping is subjective and brand-dependent.
+- **Variable product stock = null** — reshape sets `stock=null` for all variable products. WooCommerce aggregate is misleading; variation-level stock is the source of truth.
+- **`ATTR_OVERRIDES` in reshape scripts** — brand-keyed dict for raw WooCommerce attribute names that need manual remapping before generic cleaning rules run. Lives in the reshape script, not config, so brand-specific transform logic stays in transform scripts.
+- **Attribute name collision detection at validate time** — `validate_products.py` and `validate_variations.py` simulate `clean_attr_name` and flag any product/variation where two attributes would collide after cleaning. Catches reshape-time issues early without touching the data.
+- **WooCommerce slug validation** — just checks non-empty string; removed `slugify(name)==slug` comparison since WooCommerce slugs diverge from names.
+- **Empty attribute options OK** — `validate_products.py` allows empty `options[]` arrays; `create_items.py` fills them from variation data.
 
 ---
 
@@ -71,4 +78,49 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 **Run-1 verified identical to build-run.** All verify scripts PASSED. Two transient 503s during fetch_variations resolved on retry; `analyze_slim_products.py` stale `related_ids` field removed.
 
-**Full run summary:** `docs/run-1/migration-complete/summary.md`
+**Full run summary:** `docs/prosport/run-1/migration-complete/summary.md`
+
+---
+
+## Sunglass Monster
+
+**Credentials:** Confirmed working 2026-06-02.
+**Products:** 277 (242 variable, 25 simple + 10 flagged).
+
+### Steps
+
+**Products**
+- [x] `fetch_products.py` — 277 products
+- [x] `analyze_products.py`
+- [x] `slim_products.py`
+- [x] `analyze_slim_products.py`
+- [x] `validate_products.py` — 267 passed, 10 flagged
+  - 2 attribute name collisions (Holiday Reader 29701, Dorothy Reader 29640 — `Lens Type for Filter` + `Filter by Lens Type` both clean to `Lens Type`)
+  - 5 no-SKU products
+  - 2 no-image products
+  - 1 private status + SKU space + attribute collision (proSPORT VShield 25942)
+
+**Variations**
+- [x] `fetch_variations.py` — 2,675 variations across 242 variable products
+- [x] `analyze_variations.py`
+- [x] `slim_variations.py`
+- [x] `analyze_slim_variations.py`
+- [x] `validate_variations.py` — 2,673 passed, 2 flagged
+  - 11143: SKU space
+  - 7682: no price
+
+**Reshape → Create Items**
+- [x] `reshape_products.py` — 267 products, variable stock=null
+- [x] `reshape_variations.py` — 2,673 variations
+- [x] `audit_reshape_products.py` + `verify_reshape_products.py` — PASSED
+- [x] `audit_reshape_variations.py` + `verify_reshape_variations.py` — PASSED
+- [x] `create_items.py` — 265 items, 2 flagged (10471, 6688), 2,646 variations embedded
+- [x] `audit_create_items.py` + `verify_create_items.py` + `analyze_items.py` — PASSED
+
+**Categorize → Import**
+- [ ] `monster_categorize_items.py` — to be written
+- [ ] `download_items.py`
+- [ ] `upload_items.py`
+- [ ] `import_items.py`
+
+**12 items to fix in WooCommerce** — 10 flagged products + 2 flagged create-items (fix upstream, re-run from fetch to re-include them).

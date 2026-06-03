@@ -164,11 +164,15 @@ for pid, r in reshaped_map.items():
         if r.get("sale") != s.get("on_sale"):
             err(pid, f"sale mismatch: source on_sale={s.get('on_sale')!r} reshaped sale={r.get('sale')!r}")
 
-    # stock
-    sq = s.get("stock_quantity")
-    expected_stock = sq if sq is not None else (1 if s.get("stock_status") == "instock" else 0)
-    if r.get("stock") != expected_stock:
-        err(pid, f"stock={r.get('stock')} expected {expected_stock}")
+    # stock: variable products must be null; simples use quantity or status fallback
+    if s.get("type") == "variable":
+        if r.get("stock") is not None:
+            err(pid, f"stock should be null for variable product, got {r.get('stock')}")
+    else:
+        sq = s.get("stock_quantity")
+        expected_stock = sq if sq is not None else (1 if s.get("stock_status") == "instock" else 0)
+        if r.get("stock") != expected_stock:
+            err(pid, f"stock={r.get('stock')} expected {expected_stock}")
 
     # weight: float or null, matches source
     w = r.get("weight")
