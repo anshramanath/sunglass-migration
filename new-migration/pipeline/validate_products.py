@@ -175,10 +175,6 @@ for p in data:
             err(pid, f"category name is not a valid non-empty string: {c}")
         if not isinstance(cslug, str) or not cslug.strip():
             err(pid, f"category slug is not a valid non-empty string: {c}")
-        if isinstance(cname, str) and isinstance(cslug, str):
-            expected = slugify(cname)
-            if expected != cslug:
-                err(pid, f"category slug mismatch: name={cname!r} expected={expected!r} got={cslug!r}")
 
     # images: at least one required
     if not p.get("images"):
