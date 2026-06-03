@@ -79,8 +79,18 @@ PROSPORT_CONSUMER_SECRET=...
 
 ## ProSport — Run 1
 
-- **166 products** imported (3 flagged: SKU spaces + missing price — fix in WooCommerce and re-run)
-- **1,713 variations** imported
-- **12 categories** (4 roots, 8 leaves), 197 product-category assignments
-- **411 images** downloaded and uploaded to Supabase Storage bucket `prosport`
-- Full summary: `new-migration/docs/build-run/migration-complete/summary.md`
+| Table | Rows |
+|-------|------|
+| products | 166 |
+| variations | 1,713 |
+| categories | 12 (4 roots, 8 leaves) |
+| product_categories | 197 |
+| product_images | 565 |
+| variation_images | 36 |
+| description_images | 143 |
+
+All verify scripts: **PASSED**
+
+3 products flagged (2145, 2211, 1208) — fix SKU spaces + missing price in WooCommerce, re-run pipeline to add them.
+
+Full summary: `new-migration/docs/run-1/migration-complete/summary.md`

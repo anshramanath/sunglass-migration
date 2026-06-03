@@ -17,6 +17,14 @@ BRAND_CONFIG = {
 
 All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport`), look it up in `BRAND_CONFIG`, and derive the slug from there. Fetch scripts load credentials via separate env vars (`PROSPORT_BASE_URL`, `PROSPORT_CONSUMER_KEY`, `PROSPORT_CONSUMER_SECRET`).
 
+`BRAND_CONFIG` lives in `new-migration/config/__init__.py` — a shared importable module. Scripts import it with:
+```python
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
+```
+`load_brand()` returns `(key, config)` where `key` is the env var value and `config` has slug, brand_name, base_url, consumer_key, consumer_secret. `BASE` is the `new-migration/` root path.
+
 ## Pipeline (in order)
 
 ### Products
@@ -43,6 +51,10 @@ All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport`), look it up in 
 - `analysis/analyze_slim_products.py` — slim product field presence and cross-checks
 - `analysis/analyze_variations.py` — raw variation field coverage, pricing, stock, image, attribute stats
 - `analysis/analyze_slim_variations.py` — slim variation field presence, on_sale consistency, parent_id cross-check
+- `analysis/analyze_items.py` — combined items: pricing tiers, stock distribution, image dedup, attribute spread
+
+### QA (per stage)
+- `qa/audit_*.py` / `qa/verify_*.py` — per-stage audit (counts, field stats) and verify (cross-check data vs source) scripts for: products, slim-products, variations, slim-variations, reshape-products, reshape-variations, create-items, categorize-items, download-items, upload-items, import
 
 ## Key differences from old pipeline
 
@@ -83,7 +95,7 @@ All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/upload-items/upload_map.json` — Supabase storage URLs
 
 ## Current state (ProSport)
-- **Complete.** Full run summary: `docs/migration-complete/summary.md`
+- **Complete.** Full run summary: `docs/run-1/migration-complete/summary.md`
 - **Products:** 169 validated → 166 imported, 3 flagged (2145, 2211, 1208 — unreplaced variation IDs from 18 flagged variations: 17 SKU-spaces, 1 no-price).
 - **Variations:** 1,740 validated → 1,713 embedded and imported.
 - **Categories:** 12 categories (4 roots, 8 leaves), 197 product-category assignments.

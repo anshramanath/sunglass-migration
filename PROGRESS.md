@@ -17,8 +17,9 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 - **Admin REST API over Store API** — authenticated, returns real stock quantities, complete variation data, and full price fields. Store API was used for BikerShades (old pipeline) but was lossy — variation images limited to 1, no real stock counts.
 - **`BRAND` env var selects active brand** — hardcoded dict maps brand name → slug + credential env var names. Switching brands is one `.env` change.
+- **Shared config module (`config/__init__.py`)** — `BRAND_CONFIG` and `load_brand()` live in `new-migration/config/__init__.py`. All 28 pipeline/analysis/qa scripts import from it via `sys.path.insert` + `from config import BASE, load_brand`. Single source of truth; adding a new brand is one dict entry.
 - **Output isolated per brand slug** — all pipeline output written to `data/{slug}/` so multiple brands can coexist on disk without collision.
-- **Docs isolated per brand** — `docs/{slug}/` mirrors the same structure as old pipeline docs.
+- **Docs isolated per run** — `docs/build-run/` for pipeline development, `docs/run-1/` for first full run. Per-stage notes, analysis, audit, and verify files at each stage.
 
 ---
 
@@ -68,4 +69,6 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 **3 flagged products (2145, 2211, 1208)** — fix SKU spaces + missing price in WooCommerce, re-fetch, re-run pipeline to add them.
 
-**Full run summary:** `docs/migration-complete/summary.md`
+**Run-1 verified identical to build-run.** All verify scripts PASSED. Two transient 503s during fetch_variations resolved on retry; `analyze_slim_products.py` stale `related_ids` field removed.
+
+**Full run summary:** `docs/run-1/migration-complete/summary.md`
