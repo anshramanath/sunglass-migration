@@ -101,16 +101,3 @@ cat_usage = Counter(c["name"] for p in data for c in p["categories"])
 print(f"  Unique categories: {len(unique_cats)}")
 for name, n in cat_usage.most_common():
     print(f"    {name}: {n}")
-
-# ── related_ids ───────────────────────────────────────────────────────────────
-print("\n--- related_ids ---")
-all_related   = [rid for p in data for rid in p["related_ids"]]
-unique_related = set(all_related)
-known_ids      = {p["id"] for p in data}
-external       = [rid for rid in unique_related if rid not in known_ids]
-counts         = Counter(len(p["related_ids"]) for p in data)
-print(f"  Products with related_ids:    {sum(1 for p in data if p['related_ids'])} / {N}")
-print(f"  Total entries:                {len(all_related)}")
-print(f"  Unique IDs:                   {len(unique_related)}")
-print(f"  IDs outside this set:         {len(external)}")
-print(f"  Count distribution:           {dict(sorted(counts.items()))}")
