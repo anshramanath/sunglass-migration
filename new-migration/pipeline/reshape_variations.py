@@ -83,6 +83,7 @@ def reshape(v):
     dims = v.get('dimensions') or {}
     l, w, h = to_num(dims.get('length')), to_num(dims.get('width')), to_num(dims.get('height'))
     if any(v is not None for v in (l, w, h)) and not all(v is not None for v in (l, w, h)):
+        print(f"  [INFO] id={v['id']} partial dimensions nullified: l={l} w={w} h={h}")
         l = w = h = None
     dimensions = {'length': l, 'width': w, 'height': h}
 
