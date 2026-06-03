@@ -49,7 +49,18 @@ def to_num(val):
     except (TypeError, ValueError):
         return None
 
+ATTR_OVERRIDES = {
+    "monster": {
+        "Choose Bandana Color":      "Color",
+        "Cleaner Spray Bottle QTY":  "Quantity",
+        "Qty":                       "Quantity",
+    },
+}
+
 def clean_attr_name(raw):
+    override = ATTR_OVERRIDES.get(brand_key, {}).get(raw)
+    if override:
+        return override
     name = re.sub(r'(?i)^choose\s+', '', raw).strip()
     name = re.sub(r'\s*\(.*?\)', '', name).strip()
     if ' ' in name:
