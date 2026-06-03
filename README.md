@@ -1,15 +1,15 @@
 # Sunglass Monster Migration
-Migrates brand product data from WooCommerce to Supabase.
+Migrates brand product data from WooCommerce to Supabase using the authenticated admin REST API.
 
 ---
 
 ## Brands
 
-| Brand | Env Prefix | Store URL |
-|-------|------------|-----------|
-| proSPORT Sunglasses | `PROSPORT` | prosportsunglasses.com |
+| Brand | Slug | Store URL | Status |
+|-------|------|-----------|--------|
+| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | ✅ Complete |
 
-Set `BRAND="proSPORT Sunglasses"` in `.env` to select the active brand.
+Set `BRAND=prosport` in `.env` to select the active brand.
 
 ---
 
@@ -17,11 +17,14 @@ Set `BRAND="proSPORT Sunglasses"` in `.env` to select the active brand.
 
 ```
 new-migration/
-  pipeline/      ← fetch, slim, validate, reshape, create, recategorize, download, upload, import
-  analysis/      ← per-stage analysis scripts
-  db/            ← schema SQL
+  pipeline/      ← fetch, slim, validate, reshape, create, categorize, download, upload, import
+  analysis/      ← per-stage field coverage and stats scripts
+  qa/            ← per-stage audit and verify scripts
+  db/            ← schema SQL (001_initial_schema.sql, drop_schema.sql)
   data/          ← per-brand output (data/{slug}/...)
-  docs/          ← per-stage notes and analysis (docs/{stage}/)
+  docs/
+    build-run/   ← notes from building the pipeline (one-time)
+    run-1/       ← notes from the first full ProSport run
 ```
 
 ---
@@ -30,7 +33,7 @@ new-migration/
 
 ```bash
 # Set active brand in .env
-BRAND="proSPORT Sunglasses"
+BRAND=prosport
 
 # Products
 python pipeline/fetch_products.py
@@ -47,10 +50,10 @@ python pipeline/reshape_products.py
 python pipeline/reshape_variations.py
 python pipeline/create_items.py
 
-# Recategorize → import
-python pipeline/recategorize_items.py
-python pipeline/download_images.py
-python pipeline/upload_images.py
+# Categorize → import
+python pipeline/prosport_categorize_items.py
+python pipeline/download_items.py
+python pipeline/upload_items.py
 python pipeline/import_items.py
 ```
 
@@ -65,9 +68,19 @@ DATABASE_URL=...
 SUPABASE_URL=...
 SUPABASE_SERVICE_KEY=...
 
-BRAND="proSPORT Sunglasses"
+BRAND=prosport
 
 PROSPORT_BASE_URL=https://prosportsunglasses.com
 PROSPORT_CONSUMER_KEY=...
 PROSPORT_CONSUMER_SECRET=...
 ```
+
+---
+
+## ProSport — Run 1
+
+- **166 products** imported (3 flagged: SKU spaces + missing price — fix in WooCommerce and re-run)
+- **1,713 variations** imported
+- **12 categories** (4 roots, 8 leaves), 197 product-category assignments
+- **411 images** downloaded and uploaded to Supabase Storage bucket `prosport`
+- Full summary: `new-migration/docs/build-run/migration-complete/summary.md`
