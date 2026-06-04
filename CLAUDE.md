@@ -1,5 +1,5 @@
 # Sunglass Monster Migration — Claude Context
-_Last updated: 2026-06-03_
+_Last updated: 2026-06-04_
 
 ## What this is
 Multi-brand WooCommerce → Supabase migration pipeline. Uses the authenticated WooCommerce admin REST API (`/wp-json/wc/v3/`) for complete product data. The active brand is selected via `BRAND` in `.env`.
@@ -16,10 +16,14 @@ BRAND_CONFIG = {
         "slug": "monster",
         "brand_name": "Sunglass Monster",
     },
+    "bikershades": {
+        "slug": "bikershades",
+        "brand_name": "BikerShades",
+    },
 }
 ```
 
-All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport` or `BRAND=monster`), look it up in `BRAND_CONFIG`, and derive the slug from there. Fetch scripts load credentials via separate env vars (`PROSPORT_BASE_URL`, `PROSPORT_CONSUMER_KEY`, `PROSPORT_CONSUMER_SECRET`, and equivalents for monster).
+All pipeline scripts load `BRAND` from `.env` (`BRAND=prosport`, `BRAND=monster`, or `BRAND=bikershades`), look it up in `BRAND_CONFIG`, and derive the slug from there. Fetch scripts load credentials via separate env vars (`PROSPORT_BASE_URL`, `PROSPORT_CONSUMER_KEY`, `PROSPORT_CONSUMER_SECRET`, and equivalents for monster and bikershades).
 
 `BRAND_CONFIG` lives in `new-migration/config/__init__.py` — a shared importable module. Scripts import it with:
 ```python
@@ -74,6 +78,8 @@ from config import BASE, load_brand
 - **Import as pure insertion** — no field generation or inline defaults in `import_items.py`. All values come from categorize-items output. Dead fallbacks (`.get("stock", 1)`, enumerate for sort_order, hardcoded `None` for units) removed.
 - **WooCommerce slug validation** — removed `slugify(name) == slug` check; WooCommerce slugs diverge from names (apostrophes, truncation, etc.). Just check non-empty string.
 - **Empty attribute options OK** — `validate_products.py` no longer flags empty `options[]` arrays; `create_items.py` fills them from variation data.
+- **Base SKU consistency check** — `validate_variations.py` checks that all variations within a product share the same pre-dash SKU base (e.g. `CA541X128RT` vs `CAPL541X128RT` is a mismatch). Combo products (`CPR` prefix) are caught and flagged. Skips variations with spaces or invalid SKUs when computing bases; flags the entire product's valid variations if mismatch detected.
+- **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed. BikerShades has photochromic variations with no image set in WooCommerce.
 
 ## Key differences from old pipeline
 
@@ -141,3 +147,11 @@ docs/
 - **Flagged create-items (2):** 10471 (Professor Multifocal Reader — variation 11143 SKU space), 6688 (Morocco Mirror — variation 7682 no price).
 - **All audit + verify scripts PASSED** through create-items.
 - **Pending:** Write `monster_categorize_items.py`, then download → upload → import.
+
+## Current state (BikerShades)
+- **In progress.** Pipeline complete through `create_items`. Next: `bikershades_categorize_items.py`.
+- **Products:** 704 fetched → 611 validated → 553 items, 58 flagged at create-items.
+- **Variations:** 5,993 fetched → 4,839 validated → 4,802 embedded.
+- **Flagged validate-variations (1,154):** 49 products with base SKU mismatch (1,114 variations — polarized vs non-polarized mixed in one WC product), 22 null images (photochromic variations), 14 private status, 5 duplicate SKUs (USPS return label junk), 4 SKU spaces, 3 missing price.
+- **Flagged create-items (58):** Mostly variable products with no filled variations (all their variations were excluded at validate). 2 also caught for duplicate SKU (warranty product 62556, face masks 49895).
+- **Pending:** Write `bikershades_categorize_items.py`, then download → upload → import.

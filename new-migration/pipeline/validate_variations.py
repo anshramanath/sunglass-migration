@@ -181,15 +181,16 @@ for entry in raw:
             if dv not in (None, "") and not is_num(dv):
                 err(vid, f"dimensions.{dim} is not a valid number: {dv!r}")
 
-        # image: src starts with http, name non-empty string
+        # image: null OK; if present must have valid src and name
         img = v.get("image")
-        if not isinstance(img, dict) or not img.get("src"):
-            err(vid, "image is missing or has no src")
-        else:
-            if not img["src"].startswith("http"):
-                err(vid, f"image.src is not a valid URL: {img['src']!r}")
-            if not isinstance(img.get("name"), str) or not img["name"].strip():
-                err(vid, "image.name is not a valid non-empty string")
+        if img is not None:
+            if not isinstance(img, dict) or not img.get("src"):
+                err(vid, "image present but has no src")
+            else:
+                if not img["src"].startswith("http"):
+                    err(vid, f"image.src is not a valid URL: {img['src']!r}")
+                if not isinstance(img.get("name"), str) or not img["name"].strip():
+                    err(vid, "image.name is not a valid non-empty string")
 
         # attributes: each has non-empty name and option
         for a in v.get("attributes", []):
