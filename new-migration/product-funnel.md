@@ -179,3 +179,13 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 - **High-power variations missing** — Sharkbait and Cooper (ProSport + Monster), Hawkeye HD, Cabot and Edison photochromic (BikerShades) are present in Veeqo at lower powers but drop off at 2.25–3.00+. The niche high-power SKUs were never added to inventory.
 
 **BikerShades** has a large non-product tail in WooCommerce (Rx services, warranty listings, accessories, phone-order placeholders) that accounts for most of its high validate_products loss rate.
+
+---
+
+## Questionable flags
+
+**Professor Multifocal Reader — create_items (all three brands)**
+Flagged for "unreplaced variation IDs" because 1 variation had a space in its SKU and was correctly excluded at validate_variations. However the product still has 23 valid variations embedded and is fully usable. The current pipeline excludes it entirely based on any flag, which causes 23 good variations × 3 brands = 69 variations to be dropped unnecessarily.
+
+**Verbena Sun Reader — veeqo_items (Monster)**
+62 of 63 variations are present in Veeqo. Flagged because 1 SKU (power 3.00) is missing. The product is essentially fully Veeqo-verified and excluding it entirely for a single absent high-power variation is overly aggressive given that high-power SKUs are consistently absent from Veeqo inventory across all brands.
