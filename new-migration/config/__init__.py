@@ -20,6 +20,13 @@ BRAND_CONFIG = {
         "consumer_key": "MONSTER_CONSUMER_KEY",
         "consumer_secret": "MONSTER_CONSUMER_SECRET",
     },
+    "bikershades": {
+        "slug": "bikershades",
+        "brand_name": "BikerShades",
+        "base_url": "BIKERSHADES_BASE_URL",
+        "consumer_key": "BIKERSHADES_CONSUMER_KEY",
+        "consumer_secret": "BIKERSHADES_CONSUMER_SECRET",
+    },
 }
 
 def load_brand():
