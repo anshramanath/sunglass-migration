@@ -34,6 +34,8 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 - **Attribute name collision detection at validate time** — `validate_products.py` and `validate_variations.py` simulate `clean_attr_name` and flag any product/variation where two attributes would collide after cleaning. Catches reshape-time issues early without touching the data.
 - **WooCommerce slug validation** — just checks non-empty string; removed `slugify(name)==slug` comparison since WooCommerce slugs diverge from names.
 - **Empty attribute options OK** — `validate_products.py` allows empty `options[]` arrays; `create_items.py` fills them from variation data.
+- **Base SKU consistency check** — `validate_variations.py` flags all variations in a product if they don't share the same pre-dash SKU base. Catches combo products (`CPR` prefix) and polarized/non-polarized variants incorrectly grouped in one WooCommerce product.
+- **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed (no src, bad URL, empty name).
 
 ---
 
@@ -163,3 +165,44 @@ Re-run from scratch with: null weight/dims for variable products, all-or-nothing
 - [ ] `import_items.py`
 
 **12 items to fix in WooCommerce** — 10 flagged products + 2 flagged create-items (fix upstream, re-run from fetch to re-include them).
+
+---
+
+## BikerShades
+
+**Credentials:** Confirmed working 2026-06-04.
+**Products:** 704 fetched (heavy WooCommerce junk: Rx add-ons, admin/private items, misc parts).
+**Variation images:** Can be `null` — some photochromic/transition lens variations have no image set.
+
+### Steps
+
+**Products**
+- [x] `fetch_products.py` — 704 products
+- [x] `slim_products.py`
+- [x] `validate_products.py` — 611 passed, 93 flagged (Rx add-ons, private/no-SKU/no-image junk)
+
+**Variations**
+- [x] `fetch_variations.py` — 5,993 variations across ~427 variable products
+- [x] `slim_variations.py`
+- [x] `validate_variations.py` — 4,839 passed, 1,154 flagged
+  - 1,114: base SKU mismatch (49 products — polarized `CAPL` vs non-polarized `CA` variants mixed in one product)
+  - 22: null image (photochromic variations)
+  - 14: private status
+  - 5: duplicate SKU (`LABEL-USPSRETURN-1-1` junk product)
+  - 4: SKU spaces
+  - 3: missing price
+
+**Reshape → Create Items**
+- [x] `reshape_products.py` — 611 products
+- [x] `reshape_variations.py` — 4,839 variations
+- [x] `create_items.py` — 553 items passed, 58 flagged, 4,802 variations embedded
+  - 56 variable products with no filled variations (all their variations excluded at validate)
+  - 2 duplicate SKU: 62556 (warranty), 49895 (face masks)
+
+**Categorize → Import**
+- [ ] `bikershades_categorize_items.py` — to be written ← next
+- [ ] `download_items.py`
+- [ ] `upload_items.py`
+- [ ] `import_items.py`
+
+**58 flagged create-items** — mostly WooCommerce junk or products with base SKU mismatch in their variations; fix upstream to re-include.

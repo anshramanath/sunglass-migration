@@ -9,8 +9,9 @@ Migrates brand product data from WooCommerce to Supabase using the authenticated
 |-------|------|-----------|--------|
 | proSPORT Sunglasses | `prosport` | prosportsunglasses.com | 🔄 Run 2 in progress |
 | Sunglass Monster | `monster` | sunglassmonster.com | 🔄 In Progress |
+| BikerShades | `bikershades` | bikershades.com | 🔄 In Progress |
 
-Set `BRAND=prosport` or `BRAND=monster` in `.env` to select the active brand.
+Set `BRAND=prosport`, `BRAND=monster`, or `BRAND=bikershades` in `.env` to select the active brand.
 
 ---
 
@@ -31,6 +32,8 @@ new-migration/
       run-2/     ← ProSport run-2 (all pipeline improvements applied)
     monster/
       build-run/ ← Monster migration run notes (in progress)
+    bikershades/
+      build-run/ ← BikerShades migration run notes (in progress)
 ```
 
 ---
@@ -83,6 +86,10 @@ PROSPORT_CONSUMER_SECRET=...
 MONSTER_BASE_URL=https://sunglassmonster.com
 MONSTER_CONSUMER_KEY=...
 MONSTER_CONSUMER_SECRET=...
+
+BIKERSHADES_BASE_URL=https://bikershades.com
+BIKERSHADES_CONSUMER_KEY=...
+BIKERSHADES_CONSUMER_SECRET=...
 ```
 
 ---
@@ -138,3 +145,23 @@ Re-run with: null weight/dims for variable products, sortOrder on images, weight
 | import | — | ⏳ |
 
 12 items to fix in WooCommerce before they can be imported (10 flagged products + 2 flagged create-items).
+
+---
+
+## BikerShades — In Progress
+
+| Stage | Count | Status |
+|-------|-------|--------|
+| fetch-products | 704 | ✅ |
+| validate-products | 611 passed, 93 flagged | ✅ |
+| fetch-variations | ~427 products, 5,993 variations | ✅ |
+| validate-variations | 4,839 passed, 1,154 flagged | ✅ |
+| reshape-products | 611 | ✅ |
+| reshape-variations | 4,839 | ✅ |
+| create-items | 553 items, 58 flagged | ✅ |
+| categorize-items | — | ⏳ Next |
+| download-items | — | ⏳ |
+| upload-items | — | ⏳ |
+| import | — | ⏳ |
+
+58 flagged create-items — mostly WooCommerce junk or products whose variations were all excluded at validate (base SKU mismatch).
