@@ -1,5 +1,5 @@
 # Sunglass Monster Migration Progress
-_Last updated: 2026-06-03_
+_Last updated: 2026-06-04_
 
 Multi-brand WooCommerce → Supabase migration using the authenticated admin REST API.
 
@@ -11,6 +11,7 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 |-------|--------|
 | proSPORT Sunglasses | 🔄 Run 2 in progress (categorize done, download next) |
 | Sunglass Monster | 🔄 In Progress (create-items done, categorize next) |
+| BikerShades | 🔄 In Progress (create-items done, categorize next) |
 
 ---
 
