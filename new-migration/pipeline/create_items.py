@@ -41,14 +41,30 @@ for entry in variations_raw:
 
 # ── Phase 2: Per-item checks ──────────────────────────────────────────────────
 
+# SKU patterns that identify non-product WooCommerce entries (per brand)
+JUNK_SKU_PREFIXES = {
+    "bikershades": ["LABEL-", "TRYB4UB-"],
+}
+JUNK_SKU_SUFFIXES = {
+    "bikershades": ["-RX", "HIGHRX"],
+}
+
 item_errors  = {}
 sale_warnings = []
 
 def flag(pid, msg):
     item_errors.setdefault(pid, []).append(msg)
 
+junk_prefixes = JUNK_SKU_PREFIXES.get(brand_key, [])
+junk_suffixes = JUNK_SKU_SUFFIXES.get(brand_key, [])
+
 for item in items:
     pid = item["id"]
+
+    sku = item.get("sku", "")
+    if any(sku.startswith(p) for p in junk_prefixes) or any(sku.endswith(s) for s in junk_suffixes):
+        flag(pid, f"non-product SKU: {sku!r}")
+        continue
 
     if item["type"] != "variable":
         continue

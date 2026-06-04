@@ -11,9 +11,9 @@ _Pipeline: fetch → validate → reshape → create_items → veeqo_items_
 | Validated products | 169 (-2) | 267 (-10) | 611 (-93) |
 | Fetched (variations) | 1,758 | 2,675 | 5,993 |
 | Validated variations | 1,669 (-89) | 2,560 (-115) | 5,299 (-694) |
-| create_items passed | 161 (-8) | 260 (-7) | 565 (-46) |
-| **veeqo_items passed** | **154 (-7)** | **255 (-5)** | **562 (-3)** |
-| **Total lost** | **17 of 171 (10%)** | **22 of 277 (8%)** | **142 of 704 (20%)** |
+| create_items passed | 161 (-8) | 260 (-7) | 462 (-149) |
+| **veeqo_items passed** | **154 (-7)** | **255 (-5)** | **459 (-3)** |
+| **Total lost** | **17 of 171 (10%)** | **22 of 277 (8%)** | **245 of 704 (35%)** |
 
 ---
 
@@ -143,7 +143,7 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 
 653 base mismatch variations span 49 products where polarized and non-polarized versions were grouped into the same WooCommerce variable product with inconsistent SKU prefixes. The C-prefix rule (CPR... vs PR... = combo vs single of same product) correctly passes those through; only genuine mismatches are flagged.
 
-### create_items — 611 → 565 passed, 46 flagged
+### create_items — 611 → 555 passed, 56 flagged
 38 products lost all their variations at validate_variations and have nothing to embed. Key groups:
 
 | Group | Products | Reason |
@@ -153,9 +153,12 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 | Bifocals (First Lady, Kumatage, Bypass, Finish Line, Puma) | 6 | All variations had SKU base mismatch |
 | Regular sunglasses (Sharkbait, Chipper, Eliminator, Brooklyn, Aruba, Rusty, Locs Impala) | 7 | All variations had SKU base mismatch |
 | Harvard/Professor Multifocal, Seaway, Apex, Wiley X Boss, Taxi, Overdrive | 6 | Partial — 1–2 variations flagged; product still passes |
+| USPS return shipping labels | 3 | Non-product SKU (LABEL- prefix) |
+| Try Before You Buy deposits | 7 | Non-product SKU (TRYB4UB- prefix) |
+| Rx frames (BikerArmour, 7eye/Ziena, Wiley X) | 93 | Non-product SKU (-RX / HIGHRX suffix) |
 | Warranty + Face Masks | 2 | Duplicate SKUs across variations |
 
-### veeqo_items — 565 → 562 passed, 3 flagged
+### veeqo_items — 462 → 459 passed, 3 flagged
 
 | Product | Missing | Notes |
 |---|---|---|
@@ -189,3 +192,12 @@ Flagged for "unreplaced variation IDs" because 1 variation had a space in its SK
 
 **Verbena Sun Reader — veeqo_items (Monster)**
 62 of 63 variations are present in Veeqo. Flagged because 1 SKU (power 3.00) is missing. The product is essentially fully Veeqo-verified and excluding it entirely for a single absent high-power variation is overly aggressive given that high-power SKUs are consistently absent from Veeqo inventory across all brands.
+
+---
+
+## BikerShades — features to build
+
+**Try Before You Buy and Rx frame submission** are currently handled as individual WooCommerce product listings (100 products across both programs), each manually created per frame model. These are flagged and excluded from migration. When building BikerShades, both flows should be reimplemented as first-class features rather than individual products:
+
+- **Try Before You Buy** — a single configurable program page where customers select frame models and pay a deposit, rather than separate deposit products per bundle combination.
+- **Send your frame for Rx** — a single submission flow where customers select their frame model and lens prescription, rather than individual `-RX` and `-HIGHRX` SKU listings per frame. This also makes it easier to add new frames to the program without creating new products.
