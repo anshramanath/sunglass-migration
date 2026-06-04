@@ -1,5 +1,5 @@
-# Product Funnel — WooCommerce → Veeqo-Verified Items
-_Pipeline: fetch → validate → reshape → create_items → veeqo_items_
+# Product Funnel — WooCommerce → create_items
+_Pipeline: fetch → validate → reshape → create_items_
 
 ---
 
@@ -11,9 +11,8 @@ _Pipeline: fetch → validate → reshape → create_items → veeqo_items_
 | Validated products | 169 (-2) | 267 (-10) | 611 (-93) |
 | Fetched (variations) | 1,758 | 2,675 | 5,993 |
 | Validated variations | 1,669 (-89) | 2,560 (-115) | 5,299 (-694) |
-| create_items passed | 161 (-8) | 260 (-7) | 462 (-149) |
-| **veeqo_items passed** | **154 (-7)** | **255 (-5)** | **459 (-3)** |
-| **Total lost** | **17 of 171 (10%)** | **22 of 277 (8%)** | **245 of 704 (35%)** |
+| **create_items passed** | **161 (-8)** | **260 (-7)** | **461 (-150)** |
+| **Total lost** | **10 of 171 (6%)** | **17 of 277 (6%)** | **243 of 704 (35%)** |
 
 ---
 
@@ -47,21 +46,6 @@ All 8 flagged are variable products that lost every variation at validate_variat
 | Cooper Bifocal | All variations had SKU base mismatch |
 | Morocco Mirror | All variations had SKU base mismatch |
 | Professor Multifocal Reader | 1 variation had a space in SKU (remaining 23 pass) |
-
-### veeqo_items — 161 → 154 passed, 7 flagged
-All flagged are bifocals and readers with SKUs not present in Veeqo at all:
-
-| Product | Missing |
-|---|---|
-| Verbena Sunglass Readers | All 45 variations (full range 1.00–3.00) |
-| Bypass Bifocal | All 36 variations (full range 1.00–4.00) |
-| Gullwing Bifocal | All 44 variations (full range 1.00–3.50) |
-| Brooklyn Reader | All 18 variations (full range 1.00–3.00) |
-| Iris Bifocal | All 12 variations (powers 1.50–3.00) |
-| Cooper Polarized Bifocal | 8 variations (powers 1.50–3.00) |
-| Sharkbait Polarized Bifocal | 7 variations (high powers 2.25–3.00) |
-
-Pattern: entirely absent from Veeqo inventory — likely discontinued or never stocked there.
 
 ---
 
@@ -100,16 +84,6 @@ All 7 flagged are variable products with no valid variations remaining:
 | Morocco Mirror | All variations had SKU base mismatch + 1 missing price |
 | Professor Multifocal Reader | 1 variation had a space in SKU (remaining 23 pass) |
 
-### veeqo_items — 260 → 255 passed, 5 flagged
-
-| Product | Missing | Notes |
-|---|---|---|
-| Cooper Polarized Bifocal | 4 variations (powers 1.50–3.00) | High-power variations absent from Veeqo |
-| Sharkbait Polarized Bifocal | 7 variations (powers 2.25–3.00) | High-power variations absent from Veeqo |
-| Verbena Sun Reader | 1 variation (power 3.00) | Single high-power SKU absent |
-| Mysto Sunglasses | All 4 variations | Product entirely absent — likely discontinued |
-| Nautica Polarized Sunglasses | All 3 variations | Product entirely absent — likely discontinued |
-
 ---
 
 ## BikerShades
@@ -143,7 +117,7 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 
 653 base mismatch variations span 49 products where polarized and non-polarized versions were grouped into the same WooCommerce variable product with inconsistent SKU prefixes. The C-prefix rule (CPR... vs PR... = combo vs single of same product) correctly passes those through; only genuine mismatches are flagged.
 
-### create_items — 611 → 555 passed, 56 flagged
+### create_items — 611 → 461 passed, 150 flagged
 38 products lost all their variations at validate_variations and have nothing to embed. Key groups:
 
 | Group | Products | Reason |
@@ -155,16 +129,8 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 | Harvard/Professor Multifocal, Seaway, Apex, Wiley X Boss, Taxi, Overdrive | 6 | Partial — 1–2 variations flagged; product still passes |
 | USPS return shipping labels | 3 | Non-product SKU (LABEL- prefix) |
 | Try Before You Buy deposits | 7 | Non-product SKU (TRYB4UB- prefix) |
-| Rx frames (BikerArmour, 7eye/Ziena, Wiley X) | 93 | Non-product SKU (-RX / HIGHRX suffix) |
+| Rx frames (BikerArmour, 7eye/Ziena, Wiley X) | 94 | Non-product SKU (-RX token / HIGHRX suffix) |
 | Warranty + Face Masks | 2 | Duplicate SKUs across variations |
-
-### veeqo_items — 462 → 459 passed, 3 flagged
-
-| Product | Missing | Notes |
-|---|---|---|
-| Cabot Photochromic Computer Reader | 8 variations (powers 1.50–3.00) | Photochromic readers not in Veeqo |
-| Edison Photochromic Computer Reader | 8 variations (powers 1.50–3.00) | Photochromic readers not in Veeqo |
-| Hawkeye HD Bifocal | 20 variations (powers 1.50–3.00) | HD bifocal variations absent from Veeqo |
 
 ---
 
@@ -190,8 +156,22 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 **Professor Multifocal Reader — create_items (all three brands)**
 Flagged for "unreplaced variation IDs" because 1 variation had a space in its SKU and was correctly excluded at validate_variations. However the product still has 23 valid variations embedded and is fully usable. The current pipeline excludes it entirely based on any flag, which causes 23 good variations × 3 brands = 69 variations to be dropped unnecessarily.
 
-**Verbena Sun Reader — veeqo_items (Monster)**
-62 of 63 variations are present in Veeqo. Flagged because 1 SKU (power 3.00) is missing. The product is essentially fully Veeqo-verified and excluding it entirely for a single absent high-power variation is overly aggressive given that high-power SKUs are consistently absent from Veeqo inventory across all brands.
+---
+
+## Veeqo — findings
+
+Veeqo is used as a QA check only (`qa/veeqo_items.py`) — it reads from `create-items/items.json` and reports which SKUs are absent from Veeqo inventory. It does not gate pipeline output. Reasons:
+
+- **WooCommerce feeds into Veeqo as a channel**, so Veeqo is downstream of WC. A SKU missing from Veeqo could mean it was never added, delisted on that channel, or fell through the sync — none of which are grounds to exclude a product from migration.
+- **Prices are unreliable.** Veeqo is connected to WC as a sales channel, causing many SKUs to appear twice in the export (native Veeqo entry + channel-synced WC copy). 431 SKUs are duplicated, 162 with conflicting prices. No way to isolate which entry is authoritative.
+- **Stock is empty** in the Veeqo export.
+
+**What the SKU check found:** 7 ProSport, 5 Monster, and 3 BikerShades products have SKUs absent from Veeqo — all bifocals/readers, either entirely missing or missing high-power variations (2.25+). These are informational only.
+
+**Descriptions — open question.**
+Veeqo has richer marketing descriptions for ~241 products where WooCommerce only has raw dimension specs. For those products Veeqo copy is clearly better. Nearly full coverage: only 1–9 products per brand have a WC description but no Veeqo equivalent. Two decisions needed:
+1. Which description is preferred when both sources have real content (they've drifted independently)?
+2. For the ~241 dimension-spec-only WC products, pull Veeqo description as a pipeline enrichment step.
 
 ---
 
