@@ -207,6 +207,15 @@ for entry in raw:
         if dupes:
             err(vid, f"attribute name collision after cleaning: {sorted(dupes)}")
 
+    # base SKU consistency: all variations in a product must share the same pre-dash base
+    valid_sku_vars = [(v["id"], v["sku"]) for v in entry.get("variations", [])
+                     if isinstance(v.get("sku"), str) and v["sku"].strip() and " " not in v["sku"]]
+    if valid_sku_vars:
+        bases = {sku.split("-")[0] for _, sku in valid_sku_vars}
+        if len(bases) > 1:
+            for v in entry.get("variations", []):
+                err(v["id"], f"sku base mismatch: product has mixed pre-dash bases {sorted(bases)}")
+
 # ── Outputs ───────────────────────────────────────────────────────────────────
 all_variation_ids = {v["id"] for entry in raw for v in entry["variations"]}
 
