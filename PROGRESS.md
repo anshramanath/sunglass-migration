@@ -1,5 +1,5 @@
 # Sunglass Monster Migration Progress
-_Last updated: 2026-06-04_
+_Last updated: 2026-06-05_
 
 Multi-brand WooCommerce → Supabase migration using the authenticated admin REST API.
 
@@ -36,6 +36,7 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 - **Empty attribute options OK** — `validate_products.py` allows empty `options[]` arrays; `create_items.py` fills them from variation data.
 - **Base SKU consistency check** — `validate_variations.py` flags all variations in a product if they don't share the same pre-dash SKU base. Catches combo products (`CPR` prefix) and polarized/non-polarized variants incorrectly grouped in one WooCommerce product.
 - **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed (no src, bad URL, empty name).
+- **Variable product SKU kept as-is from WooCommerce** — WooCommerce appends `-0` (or similar suffix) to variable product SKUs specifically to prevent duplicates when two products share the same variation base. Deriving the parent SKU from common variation segments strips this and collapses distinct products into the same SKU. Keep WC product SKU unchanged.
 
 ---
 

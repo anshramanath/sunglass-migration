@@ -1,5 +1,5 @@
 # Sunglass Monster Migration — Claude Context
-_Last updated: 2026-06-04_
+_Last updated: 2026-06-05_
 
 ## What this is
 Multi-brand WooCommerce → Supabase migration pipeline. Uses the authenticated WooCommerce admin REST API (`/wp-json/wc/v3/`) for complete product data. The active brand is selected via `BRAND` in `.env`.
@@ -80,6 +80,7 @@ from config import BASE, load_brand
 - **Empty attribute options OK** — `validate_products.py` no longer flags empty `options[]` arrays; `create_items.py` fills them from variation data.
 - **Base SKU consistency check** — `validate_variations.py` checks that all variations within a product share the same pre-dash SKU base (e.g. `CA541X128RT` vs `CAPL541X128RT` is a mismatch). Combo products (`CPR` prefix) are caught and flagged. Skips variations with spaces or invalid SKUs when computing bases; flags the entire product's valid variations if mismatch detected.
 - **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed. BikerShades has photochromic variations with no image set in WooCommerce.
+- **Variable product SKU kept as-is** — WooCommerce appends `-0` (or similar) to variable product SKUs to prevent duplicates when two products share the same variation base. Deriving from common variation segments strips this and causes false duplicate flags in `create_items.py`.
 
 ## Key differences from old pipeline
 

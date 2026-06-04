@@ -42,7 +42,7 @@ new-migration/
 
 ```bash
 # Set active brand in .env
-BRAND=monster  # or prosport
+BRAND=bikershades  # or prosport, monster
 
 # Products
 python pipeline/fetch_products.py
@@ -60,7 +60,7 @@ python pipeline/reshape_variations.py
 python pipeline/create_items.py
 
 # Categorize → import (categorize script is brand-specific)
-python pipeline/monster_categorize_items.py   # or prosport_categorize_items.py
+python pipeline/bikershades_categorize_items.py   # or prosport_ / monster_
 python pipeline/download_items.py
 python pipeline/upload_items.py
 python pipeline/import_items.py
