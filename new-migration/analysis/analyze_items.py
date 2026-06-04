@@ -556,13 +556,38 @@ print(f"\n{DASH}")
 print(f"  16. FLAGGED PRODUCTS")
 print(DASH)
 
-print(f"  Count: {len(flagged)}")
+flagged_products = [e["product"] for e in flagged]
+flagged_variable = [p for p in flagged_products if p["type"] == "variable"]
+flagged_simple   = [p for p in flagged_products if p["type"] == "simple"]
+flagged_vars     = [v for p in flagged_variable for v in p.get("variations", []) if isinstance(v, dict)]
+
+print(f"  Count: {len(flagged)}  (variable: {len(flagged_variable)}, simple: {len(flagged_simple)})")
+print(f"  Variations embedded in flagged products: {len(flagged_vars)}")
+
+reason_counts = Counter(r.split(":")[0].strip() for e in flagged for r in e["reasons"])
+print(f"\n  Reasons:")
+for reason, count in reason_counts.most_common():
+    print(f"    {reason}: {count}")
+
+if flagged_vars:
+    reg_prices = [v["regularPriceCents"] for v in flagged_vars if v.get("regularPriceCents")]
+    if reg_prices:
+        print(f"\n  Flagged variation pricing:")
+        print(f"    regularPriceCents range: {min(reg_prices)}–{max(reg_prices)} ({cents(min(reg_prices))}–{cents(max(reg_prices))})")
+
+    stock_vals = [v["stock"] for v in flagged_vars if v.get("stock") is not None]
+    print(f"\n  Flagged variation stock:")
+    print(f"    stock=0:  {sum(1 for s in stock_vals if s == 0)}")
+    print(f"    stock=1:  {sum(1 for s in stock_vals if s == 1)}")
+    print(f"    stock>1:  {sum(1 for s in stock_vals if isinstance(s, int) and s > 1)}")
+
+print(f"\n  Per product:")
 for entry in flagged:
     p = entry["product"]
+    vcount = len([v for v in p.get("variations", []) if isinstance(v, dict)])
     print(f"\n  id={p['id']}  {p['name']}")
     for r in entry["reasons"]:
         print(f"    · {r}")
-    vcount = len(p.get("variations", []))
     print(f"    · variations embedded: {vcount}")
     print(f"    · categories: {[c['name'] for c in p.get('categories', [])]}")
 
