@@ -11,8 +11,9 @@ _Pipeline: fetch → validate → reshape → create_items_
 | Validated products | 169 (-2) | 267 (-10) | 611 (-93) |
 | Fetched (variations) | 1,758 | 2,675 | 5,993 |
 | Validated variations | 1,669 (-89) | 2,560 (-115) | 5,299 (-694) |
-| **create_items passed** | **161 (-8)** | **260 (-7)** | **461 (-150)** |
-| **Total lost** | **10 of 171 (6%)** | **17 of 277 (6%)** | **243 of 704 (35%)** |
+| create_items passed | 161 (-8) | 260 (-7) | 461 (-150) |
+| **veeqo_items passed** | **154 (-7)** | **255 (-5)** | **458 (-3)** |
+| **Total lost** | **17 of 171 (10%)** | **22 of 277 (8%)** | **246 of 704 (35%)** |
 
 ---
 
@@ -160,13 +161,14 @@ Flagged for "unreplaced variation IDs" because 1 variation had a space in its SK
 
 ## Veeqo — findings
 
-Veeqo is used as a QA check only (`qa/veeqo_items.py`) — it reads from `create-items/items.json` and reports which SKUs are absent from Veeqo inventory. It does not gate pipeline output. Reasons:
+`pipeline/veeqo_items.py` is a gating pipeline step: reads `create-items/items.json`, flags items whose SKUs are absent from Veeqo, and writes `veeqo-items/items.json` (clean) + `flagged.json`. Categorize reads from `veeqo-items/`.
 
-- **WooCommerce feeds into Veeqo as a channel**, so Veeqo is downstream of WC. A SKU missing from Veeqo could mean it was never added, delisted on that channel, or fell through the sync — none of which are grounds to exclude a product from migration.
-- **Prices are unreliable.** Veeqo is connected to WC as a sales channel, causing many SKUs to appear twice in the export (native Veeqo entry + channel-synced WC copy). 431 SKUs are duplicated, 162 with conflicting prices. No way to isolate which entry is authoritative.
-- **Stock is empty** in the Veeqo export.
+**Counts:** 7 ProSport, 5 Monster, and 3 BikerShades products flagged — all bifocals/readers, either entirely missing from Veeqo or missing high-power variations (2.25+).
 
-**What the SKU check found:** 7 ProSport, 5 Monster, and 3 BikerShades products have SKUs absent from Veeqo — all bifocals/readers, either entirely missing or missing high-power variations (2.25+). These are informational only.
+**Why these products land here:**
+- **Prices are unreliable as a gate** — Veeqo is connected to WC as a sales channel, causing 431 SKUs to appear twice (native Veeqo entry + channel-synced WC copy), 162 with conflicting prices. WooCommerce is the authoritative price source.
+- **Stock is empty** in the Veeqo export — not useful as a gate.
+- **SKU absence is meaningful** — if a product has no Veeqo presence at all, it has never been stocked or sold through the Veeqo-managed channel. These are the right items to flag.
 
 **Descriptions — open question.**
 Veeqo has richer marketing descriptions for ~241 products where WooCommerce only has raw dimension specs. For those products Veeqo copy is clearly better. Nearly full coverage: only 1–9 products per brand have a WC description but no Veeqo equivalent. Two decisions needed:

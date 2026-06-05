@@ -9,9 +9,9 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 
 | Brand | Status |
 |-------|--------|
-| proSPORT Sunglasses | 🔄 In progress (create-items done, categorize → download → upload → import next) |
-| Sunglass Monster | 🔄 In progress (create-items done, write monster_categorize_items.py next) |
-| BikerShades | 🔄 In progress (create-items done, write bikershades_categorize_items.py next) |
+| proSPORT Sunglasses | 🔄 In progress (veeqo-items done, categorize → download → upload → import next) |
+| Sunglass Monster | 🔄 In progress (veeqo-items done, write monster_categorize_items.py next) |
+| BikerShades | 🔄 In progress (veeqo-items done, write bikershades_categorize_items.py next) |
 
 ---
 
@@ -36,7 +36,7 @@ Multi-brand WooCommerce → Supabase migration using the authenticated admin RES
 - **Empty attribute options OK** — `validate_products.py` allows empty `options[]` arrays; `create_items.py` fills them from variation data.
 - **Base SKU consistency check** — `validate_variations.py` flags variations where the pre-dash SKU base differs across a product. A leading `C` difference is allowed (combo vs single). Catches polarized/non-polarized mixing, SKU revisions coexisting with originals, and consolidated multi-model WC listings.
 - **Non-product SKU filtering** — `create_items.py` has `JUNK_SKU_PREFIXES`, `JUNK_SKU_SUFFIXES`, and `JUNK_SKU_CONTAINS` dicts per brand. BikerShades: flags `LABEL-` (shipping labels), `TRYB4UB-` (Try Before You Buy deposits), `-RX` token (Rx frame listings).
-- **Veeqo as QA-only** — `qa/veeqo_items.py` reports which create-items SKUs are absent from Veeqo. Informational only; no output files; does not gate the pipeline. WooCommerce feeds Veeqo as a channel — Veeqo is downstream and unreliable as a source of truth.
+- **Veeqo as pipeline gating step** — `pipeline/veeqo_items.py` reads `create-items/items.json`, flags items whose SKUs are absent from Veeqo (variable: any variation absent; simple: product SKU absent), writes `veeqo-items/items.json` + `flagged.json`. Categorize reads from `veeqo-items/`. A separate `qa/veeqo_items.py` exists as a stdout-only informational variant.
 - **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed (no src, bad URL, empty name).
 - **Variable product SKU kept as-is from WooCommerce** — WooCommerce appends `-0` (or similar suffix) to variable product SKUs specifically to prevent duplicates when two products share the same variation base. Deriving the parent SKU from common variation segments strips this and collapses distinct products into the same SKU. Keep WC product SKU unchanged.
 
@@ -116,7 +116,8 @@ Re-run from scratch with: null weight/dims for variable products, all-or-nothing
 - [x] `create_items.py` — 166 items, 3 flagged (same), 1,713 variations embedded
 - [x] `audit_create_items.py` + `verify_create_items.py` + `analyze_items.py` — PASSED
 
-**Categorize → Import**
+**Veeqo → Categorize → Import**
+- [x] `veeqo_items.py` — 161 → 154 passed, 7 flagged (bifocals/readers absent from Veeqo)
 - [x] `prosport_categorize_items.py` — 166 items, 197 leaf assignments, sortOrder on all 382 category nodes → PASSED
 - [ ] `download_items.py` ← next
 - [ ] `upload_items.py`
@@ -162,7 +163,8 @@ Re-run from scratch with: null weight/dims for variable products, all-or-nothing
 - [x] `create_items.py` — 260 items, 7 flagged, 2,537 variations embedded
 - [x] `audit_create_items.py` + `verify_create_items.py` + `analyze_items.py` — PASSED
 
-**Categorize → Import**
+**Veeqo → Categorize → Import**
+- [x] `veeqo_items.py` — 260 → 255 passed, 5 flagged (Verbena, Cooper, Sharkbait, Mysto, Nautica)
 - [ ] `monster_categorize_items.py` — to be written ← next
 - [ ] `download_items.py`
 - [ ] `upload_items.py`
@@ -210,7 +212,8 @@ Re-run from scratch with: null weight/dims for variable products, all-or-nothing
   - 2 duplicate SKU: 62556 (warranty), 49895 (face masks)
 - [x] `audit_create_items.py` + `verify_create_items.py` + `analyze_items.py` — PASSED
 
-**Categorize → Import**
+**Veeqo → Categorize → Import**
+- [x] `veeqo_items.py` — 461 → 458 passed, 3 flagged (Cabot, Edison photochromic, Hawkeye HD)
 - [ ] `bikershades_categorize_items.py` — to be written ← next
 - [ ] `download_items.py`
 - [ ] `upload_items.py`

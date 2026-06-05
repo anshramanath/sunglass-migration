@@ -14,9 +14,9 @@ slug       = config["slug"]
 brand_name = config["brand_name"]
 data_dir = BASE / "data" / slug
 
-in_path = data_dir / "create-items" / "items.json"
+in_path = data_dir / "veeqo-items" / "items.json"
 if not in_path.exists():
-    raise SystemExit(f"Run create_items.py first. Not found: {in_path}")
+    raise SystemExit(f"Run veeqo_items.py first. Not found: {in_path}")
 
 items_raw = json.loads(in_path.read_text())
 

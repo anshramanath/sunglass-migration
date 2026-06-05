@@ -49,10 +49,11 @@ from config import BASE, load_brand
 7. `pipeline/reshape_products.py` — normalizes products: HTML stripped, prices to cents, stock merged, attributes name-cleaned, descriptionImages as `{src, name}` objects → `data/{slug}/reshape-products/`
 8. `pipeline/reshape_variations.py` — normalizes variations: same conventions, `image` → `images[]` array → `data/{slug}/reshape-variations/`
 9. `pipeline/create_items.py` — embeds variations into products, ownership checks, attribute expansion/prune, image dedup, min/max price → `data/{slug}/create-items/`
-10. `pipeline/{brand}_categorize_items.py` — brand-specific: normalizes category names, assigns leaf paths with `{level, name, slug, sortOrder}` structure → `data/{slug}/categorize-items/`
-11. `pipeline/download_items.py` — downloads all images locally (crash-safe via `download_map.json`) → `data/{slug}/download-items/`
-12. `pipeline/upload_items.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
-13. `pipeline/import_items.py` — inserts into Supabase DB
+10. `pipeline/veeqo_items.py` — flags items whose SKUs are absent from Veeqo (variable: any variation missing; simple: product SKU missing) → `data/{slug}/veeqo-items/items.json` + `flagged.json`
+11. `pipeline/{brand}_categorize_items.py` — brand-specific: reads from `veeqo-items/`, normalizes category names, assigns leaf paths with `{level, name, slug, sortOrder}` structure → `data/{slug}/categorize-items/`
+12. `pipeline/download_items.py` — downloads all images locally (crash-safe via `download_map.json`) → `data/{slug}/download-items/`
+13. `pipeline/upload_items.py` — uploads to Supabase Storage (crash-safe via `upload_map.json`)
+14. `pipeline/import_items.py` — inserts into Supabase DB
 
 ### Analysis (per stage)
 - `analysis/analyze_products.py` — raw product field coverage and stats
@@ -64,7 +65,7 @@ from config import BASE, load_brand
 
 ### QA (per stage)
 - `qa/audit_*.py` / `qa/verify_*.py` — per-stage audit (counts, field stats) and verify (cross-check data vs source) scripts for: products, slim-products, variations, slim-variations, reshape-products, reshape-variations, create-items, categorize-items, download-items, upload-items, import
-- `qa/veeqo_items.py` — informational Veeqo SKU check (stdout only, no output files)
+- `qa/veeqo_items.py` — informational Veeqo SKU check (stdout only, no output files; use `pipeline/veeqo_items.py` for the gating step)
 
 ## Pipeline robustness improvements (added during Monster run + ProSport run-2)
 
@@ -84,7 +85,7 @@ from config import BASE, load_brand
 - **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed. BikerShades has photochromic variations with no image set in WooCommerce.
 - **Variable product SKU kept as-is** — WooCommerce appends `-0` (or similar) to variable product SKUs to prevent duplicates when two products share the same variation base. Deriving from common variation segments strips this and causes false duplicate flags in `create_items.py`.
 - **Non-product SKU filtering in create_items** — `JUNK_SKU_PREFIXES`, `JUNK_SKU_SUFFIXES`, and `JUNK_SKU_CONTAINS` dicts in `create_items.py` flag non-product WooCommerce entries per brand before they embed. BikerShades: `LABEL-` prefix (shipping labels), `TRYB4UB-` prefix (Try Before You Buy deposits), `-RX` token anywhere in SKU (Rx frame listings). These are service/operational WC entries that should be reimplemented as features, not migrated as products.
-- **Veeqo as QA-only** — `qa/veeqo_items.py` reads `create-items/items.json`, prints which SKUs are absent from Veeqo, writes no files. Informational only — does not gate the pipeline. WooCommerce is upstream of Veeqo (feeds it as a channel), so Veeqo cannot be used as a source of truth for prices or SKU validation.
+- **Veeqo as pipeline gating step** — `pipeline/veeqo_items.py` reads `create-items/items.json`, flags items whose SKUs are absent from Veeqo, and writes `veeqo-items/items.json` (clean) + `flagged.json`. Categorize reads from `veeqo-items/`. A separate `qa/veeqo_items.py` exists as a stdout-only informational variant.
 
 ## Key differences from old pipeline
 
@@ -120,6 +121,7 @@ All output scoped to `data/{brand_slug}/`:
 - `data/{slug}/reshape-products/products.json` — normalized products
 - `data/{slug}/reshape-variations/variations.json` — normalized variations
 - `data/{slug}/create-items/items.json` + `flagged.json` — combined items
+- `data/{slug}/veeqo-items/items.json` + `flagged.json` — Veeqo-verified items
 - `data/{slug}/categorize-items/items.json` — items with normalized `[[{level, name, slug}]]` category paths
 - `data/{slug}/download-items/download_map.json` + `flagged.json` + `images/` — downloaded images
 - `data/{slug}/upload-items/upload_map.json` — Supabase storage URLs
@@ -137,28 +139,24 @@ docs/
 ```
 
 ## Current state (ProSport)
-- **Full re-run complete through `create_items`.** Next: `prosport_categorize_items.py` (already written) → `download_items.py`.
-- **Products:** 171 fetched → 169 validated → 161 items, 8 flagged at create-items.
+- **Full re-run complete through `veeqo_items`.** Next: `prosport_categorize_items.py` (already written) → `download_items.py`.
+- **Products:** 171 fetched → 169 validated → 161 items (create-items) → **154 items, 7 flagged (veeqo-items)**.
 - **Variations:** 1,758 fetched → 1,669 validated → 1,646 embedded.
-- **Flagged validate-variations (89):** 72 base SKU mismatch, 17 SKU spaces, 1 no price.
-- **Flagged create-items (8):** 7 variable products with no filled variations (all variations excluded at validate), 1 Professor Multifocal Reader with 1 unreplaced variation ID (23 valid variations still embedded).
+- **Flagged veeqo-items (7):** bifocals/readers entirely absent from Veeqo (Verbena, Bypass, Iris, Gullwing, Brooklyn, Cooper) + Sharkbait Bifocal (7/16 SKUs missing).
 - **All audit + verify scripts PASSED.**
 - **Run-1 summary (old pipeline):** `docs/prosport/run-1/migration-complete/summary.md`
 
 ## Current state (Monster)
-- **Full re-run complete through `create_items`.** Next: write `monster_categorize_items.py`.
-- **Products:** 277 fetched → 267 validated → 260 items, 7 flagged at create-items.
+- **Full re-run complete through `veeqo_items`.** Next: write `monster_categorize_items.py`.
+- **Products:** 277 fetched → 267 validated → 260 items (create-items) → **255 items, 5 flagged (veeqo-items)**.
 - **Variations:** 2,675 fetched → 2,560 validated → 2,537 embedded.
-- **Flagged products (10):** 2 Lens Type collisions (Holiday Reader 29701, Dorothy Reader 29640), 5 no-SKU, 2 no-image, 1 private+SKU-space+collision (proSPORT VShield 25942).
-- **Flagged validate-variations (115):** 114 base SKU mismatch across 6 products, 1 SKU space, 1 no price.
-- **Flagged create-items (7):** 6 variable products with no filled variations (all from base SKU mismatch), 1 Professor Multifocal Reader with 1 unreplaced variation ID (23 valid still embedded).
+- **Flagged veeqo-items (5):** Verbena (1/63 absent), Cooper Bifocal (4/20), Sharkbait Bifocal (7/16), Mysto (4/4), Nautica (3/3).
 - **All audit + verify scripts PASSED.**
 
 ## Current state (BikerShades)
-- **Full re-run complete through `create_items`.** Next: write `bikershades_categorize_items.py`.
-- **Products:** 704 fetched → 611 validated → 461 items, 150 flagged at create-items.
+- **Full re-run complete through `veeqo_items`.** Next: write `bikershades_categorize_items.py`.
+- **Products:** 704 fetched → 611 validated → 461 items (create-items) → **458 items, 3 flagged (veeqo-items)**.
 - **Variations:** 5,993 fetched → 5,299 validated → 5,239 embedded.
-- **Flagged validate-variations (694):** 653 base SKU mismatch (36 products — polarized/non-polarized, SKU revisions, consolidated goggle lines), 22 no-name (photochromic), 14 private, 5 duplicate SKUs, 4 SKU spaces, 3 no price.
-- **Flagged create-items (150):** 38 variable products with no filled variations (base SKU mismatch), 94 Rx frame listings (-RX token in SKU), 7 Try Before You Buy deposits (TRYB4UB- prefix), 3 USPS shipping labels (LABEL- prefix), 6 partial unreplaced IDs (product still passes with remaining variations), 2 duplicate SKU (warranty 62556, face masks 49895).
+- **Flagged veeqo-items (3):** Cabot Photochromic Reader (8/10), Edison Photochromic Reader (8/10), Hawkeye HD Bifocal (20/26).
 - **All audit + verify scripts PASSED.**
 - **See `new-migration/product-funnel.md`** for full per-stage breakdown, flagging rationale, and open questions.

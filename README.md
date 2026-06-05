@@ -7,9 +7,9 @@ Migrates brand product data from WooCommerce to Supabase using the authenticated
 
 | Brand | Slug | Store URL | Status |
 |-------|------|-----------|--------|
-| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | 🔄 create-items done, categorize → download → upload → import next |
-| Sunglass Monster | `monster` | sunglassmonster.com | 🔄 create-items done, write monster_categorize_items.py next |
-| BikerShades | `bikershades` | bikershades.com | 🔄 create-items done, write bikershades_categorize_items.py next |
+| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | 🔄 veeqo-items done, categorize → download → upload → import next |
+| Sunglass Monster | `monster` | sunglassmonster.com | 🔄 veeqo-items done, write monster_categorize_items.py next |
+| BikerShades | `bikershades` | bikershades.com | 🔄 veeqo-items done, write bikershades_categorize_items.py next |
 
 Set `BRAND=prosport`, `BRAND=monster`, or `BRAND=bikershades` in `.env` to select the active brand.
 
@@ -59,6 +59,9 @@ python pipeline/validate_variations.py
 python pipeline/reshape_products.py
 python pipeline/reshape_variations.py
 python pipeline/create_items.py
+
+# Veeqo check
+python pipeline/veeqo_items.py
 
 # Categorize → import (categorize script is brand-specific)
 python pipeline/bikershades_categorize_items.py   # or prosport_ / monster_
@@ -126,6 +129,7 @@ All verify scripts: **PASSED**. Full summary: `new-migration/docs/prosport/run-1
 | validate-products | 169 passed, 2 flagged | ✅ |
 | validate-variations | 1,669 passed, 89 flagged | ✅ |
 | create-items | 161 items, 8 flagged, 1,646 vars | ✅ |
+| veeqo-items | 154 passed, 7 flagged | ✅ |
 | categorize-items | — | ⏳ Next |
 | download-items | — | ⏳ |
 | upload-items | — | ⏳ |
@@ -138,6 +142,7 @@ All verify scripts: **PASSED**. Full summary: `new-migration/docs/prosport/run-1
 | validate-products | 267 passed, 10 flagged | ✅ |
 | validate-variations | 2,560 passed, 115 flagged | ✅ |
 | create-items | 260 items, 7 flagged, 2,537 vars | ✅ |
+| veeqo-items | 255 passed, 5 flagged | ✅ |
 | categorize-items | — | ⏳ Write script next |
 | download-items | — | ⏳ |
 | upload-items | — | ⏳ |
@@ -150,6 +155,7 @@ All verify scripts: **PASSED**. Full summary: `new-migration/docs/prosport/run-1
 | validate-products | 611 passed, 93 flagged | ✅ |
 | validate-variations | 5,299 passed, 694 flagged | ✅ |
 | create-items | 461 items, 150 flagged, 5,239 vars | ✅ |
+| veeqo-items | 458 passed, 3 flagged | ✅ |
 | categorize-items | — | ⏳ Write script next |
 | download-items | — | ⏳ |
 | upload-items | — | ⏳ |
