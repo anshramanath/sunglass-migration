@@ -2,21 +2,20 @@
 Audit Sellbrite variation groups against Veeqo.
 
 Pipeline per group:
-  1. Valid     — all child_skus are non-empty, no spaces, contain a hyphen
-  2. Veeqo     — all child_skus present in Veeqo CSV
-  3. Mismatch  — check if child_skus share the same base (segment before first '-')
+  1. Veeqo     — all child_skus present in Veeqo CSV
+                 (groups with non-standard/manually-typed SKUs fail here naturally)
+  2. Mismatch  — check if child_skus share the same base (segment before first '-')
                  C-prefix rule: CPR... and PR... count as the same base
 
 Output → sellbrite/data/
   flagged.json   — groups with a base SKU mismatch
   clean.json     — groups that passed all checks
-  skipped.json   — groups that failed validity or Veeqo check (with reason)
+  skipped.json   — groups that failed the Veeqo check (with reason)
 """
 
 import csv
 import json
 import re
-import time
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -52,10 +51,6 @@ print()
 
 # ── helpers ────────────────────────────────────────────────────────────────────
 
-def is_valid_sku(sku: str) -> bool:
-    return bool(sku) and " " not in sku and "-" in sku
-
-
 def normalize_base(base: str) -> str:
     # C-prefix rule: CPR... and PR... are the same family
     return re.sub(r"^C(?=[A-Z])", "", base)
@@ -79,17 +74,7 @@ for g in groups:
         skipped.append({"reason": "no child_skus", "group": g})
         continue
 
-    # 1. validity
-    invalid = [s for s in child_skus if not is_valid_sku(s)]
-    if invalid:
-        skipped.append({
-            "reason": f"{len(invalid)}/{len(child_skus)} child SKUs invalid (spaces or no hyphen)",
-            "invalid_skus": invalid,
-            "group": g,
-        })
-        continue
-
-    # 2. veeqo presence
+    # 1. veeqo presence
     absent = [s for s in child_skus if s not in veeqo_skus]
     if absent:
         skipped.append({
@@ -119,15 +104,13 @@ out_dir = HERE / "data"
 (out_dir / "skipped.json").write_text(json.dumps(skipped, indent=2, ensure_ascii=False))
 
 # skipped breakdown
-skip_invalid = sum(1 for s in skipped if "invalid" in s["reason"])
-skip_veeqo   = sum(1 for s in skipped if "Veeqo" in s["reason"])
-skip_empty   = sum(1 for s in skipped if "no child" in s["reason"])
+skip_veeqo = sum(1 for s in skipped if "Veeqo" in s["reason"])
+skip_empty = sum(1 for s in skipped if "no child" in s["reason"])
 
 print(f"Results:")
 print(f"  Clean (passed all checks):  {len(clean):,}")
 print(f"  Flagged (base mismatch):    {len(flagged):,}")
 print(f"  Skipped — no child SKUs:    {skip_empty:,}")
-print(f"  Skipped — invalid SKUs:     {skip_invalid:,}")
 print(f"  Skipped — absent from Veeqo:{skip_veeqo:,}")
 print()
 

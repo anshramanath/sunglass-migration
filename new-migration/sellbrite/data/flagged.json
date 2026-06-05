@@ -65,6 +65,1761 @@
   },
   {
     "bases": [
+      "Bacon",
+      "Five Ohs",
+      "Frat Boy"
+    ],
+    "child_skus": [
+      "Five Ohs-MAviator-Silver-Green",
+      "Five Ohs-MAviator-Silver-Blue",
+      "Five Ohs-MAviator-Gunmetal-Blue",
+      "Five Ohs-MAviator-Gold-Orange",
+      "Five Ohs-MAviator-Gold-Green",
+      "Five Ohs-MAviator-Gold-Brown",
+      "Bacon-MAviator-Gold-Brown",
+      "Frat Boy-MAviator-Gunmetal-Silver",
+      "Frat Boy-MAviator-Chrome-Silver",
+      "Frat Boy-MAviator-Black-Silver"
+    ],
+    "group": {
+      "sku": "Aviator Sunglasses Mirrored",
+      "name": "Aviator Sunglasses Mirrored",
+      "child_skus": [
+        "Five Ohs-MAviator-Silver-Green",
+        "Five Ohs-MAviator-Silver-Blue",
+        "Five Ohs-MAviator-Gunmetal-Blue",
+        "Five Ohs-MAviator-Gold-Orange",
+        "Five Ohs-MAviator-Gold-Green",
+        "Five Ohs-MAviator-Gold-Brown",
+        "Bacon-MAviator-Gold-Brown",
+        "Frat Boy-MAviator-Gunmetal-Silver",
+        "Frat Boy-MAviator-Chrome-Silver",
+        "Frat Boy-MAviator-Black-Silver"
+      ],
+      "variation_attributes": [
+        "Color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/Aviator_Sunglasses_Mirrored/e0ed978b-bea2-5e3a-b33b-8d413389b81a.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "FO80X10TD",
+      "Thunder Clears Lens Only",
+      "Thunder Fitover Clear Goggles + Yellow Lens",
+      "Thunder Fitover Smoke Goggles + Clear Lens",
+      "Thunder Fitover Smoke Goggles + Yellow Lens",
+      "Thunder LZCLxLZYL",
+      "Thunder LZSMxLZYL",
+      "Thunder Smoke Lens Only",
+      "Thunder Yellow Lens Only",
+      "Thunder cover over clear",
+      "Thunder cover over smoke",
+      "Thunder cover over yellow"
+    ],
+    "child_skus": [
+      "Thunder cover over clear",
+      "Thunder cover over yellow",
+      "Thunder cover over smoke",
+      "Thunder Clears Lens Only",
+      "Thunder Smoke Lens Only",
+      "Thunder Yellow Lens Only",
+      "Thunder Fitover Smoke Goggles + Clear Lens",
+      "Thunder Fitover Smoke Goggles + Yellow Lens",
+      "Thunder Fitover Clear Goggles + Yellow Lens",
+      "CFO80X10TD-BK-SMXCLXYL-MFXL",
+      "CFO80X10TD-BK-CLXYL-MFXL",
+      "CFO80X10TD-BK-SMXYL-MFXL",
+      "CFO80X10TD-BK-SMXCL-MFXL",
+      "FO80X10TD-BK-HD-MFXL",
+      "Thunder LZCLxLZYL",
+      "Thunder LZSMxLZYL"
+    ],
+    "group": {
+      "sku": "B008BKVD2K",
+      "name": "Thunder Goggles 8010",
+      "child_skus": [
+        "Thunder cover over clear",
+        "Thunder cover over yellow",
+        "Thunder cover over smoke",
+        "Thunder Clears Lens Only",
+        "Thunder Smoke Lens Only",
+        "Thunder Yellow Lens Only",
+        "Thunder Fitover Smoke Goggles + Clear Lens",
+        "Thunder Fitover Smoke Goggles + Yellow Lens",
+        "Thunder Fitover Clear Goggles + Yellow Lens",
+        "CFO80X10TD-BK-SMXCLXYL-MFXL",
+        "CFO80X10TD-BK-CLXYL-MFXL",
+        "CFO80X10TD-BK-SMXYL-MFXL",
+        "CFO80X10TD-BK-SMXCL-MFXL",
+        "FO80X10TD-BK-HD-MFXL",
+        "Thunder LZCLxLZYL",
+        "Thunder LZSMxLZYL"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B008BKVD2K/bcc64068-ab55-53a0-a514-a55574454c00.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "cover over clear sunglasses",
+      "cover over smoke sunglasses"
+    ],
+    "child_skus": [
+      "cover over clear sunglasses",
+      "cover over smoke sunglasses"
+    ],
+    "group": {
+      "sku": "B008BLXZ4S",
+      "name": "Grenade",
+      "child_skus": [
+        "cover over clear sunglasses",
+        "cover over smoke sunglasses"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B008BLXZ4S/133d0f0b-3762-5371-92fb-ffbecc3e1208.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "FM00X88TT",
+      "Throttle HD",
+      "Throttle clear",
+      "Throttle smoke",
+      "Throttle yellow"
+    ],
+    "child_skus": [
+      "Throttle clear",
+      "Throttle yellow",
+      "Throttle smoke",
+      "Throttle HD",
+      "FM00X88TT-BK-CLIM-MFB",
+      "FM00X88TT-BK-YLIM-MFB",
+      "CFM00X88TT-BK-SMXCLXYL-MFB",
+      "CFM00X88TT-BK-HDXCLXYL-MFB",
+      "CFM00X88TT-BK-HDXCL-MFB",
+      "CFM00X88TT-BK-HDXSM-MFB",
+      "CFM00X88TT-BK-SMXCL-MFB",
+      "CFM00X88TT-BK-CLXYL-MFB",
+      "CFM00X88TT-BK-SMXYL-MFB",
+      "CFM00X88TT-BK-CLIMxCLIM-MFB",
+      "CFM00X88TT-BK-YLIMxYLIM-MFB"
+    ],
+    "group": {
+      "sku": "B008D97710",
+      "name": "Throttle FM 0088",
+      "child_skus": [
+        "Throttle clear",
+        "Throttle yellow",
+        "Throttle smoke",
+        "Throttle HD",
+        "FM00X88TT-BK-CLIM-MFB",
+        "FM00X88TT-BK-YLIM-MFB",
+        "CFM00X88TT-BK-SMXCLXYL-MFB",
+        "CFM00X88TT-BK-HDXCLXYL-MFB",
+        "CFM00X88TT-BK-HDXCL-MFB",
+        "CFM00X88TT-BK-HDXSM-MFB",
+        "CFM00X88TT-BK-SMXCL-MFB",
+        "CFM00X88TT-BK-CLXYL-MFB",
+        "CFM00X88TT-BK-SMXYL-MFB",
+        "CFM00X88TT-BK-CLIMxCLIM-MFB",
+        "CFM00X88TT-BK-YLIMxYLIM-MFB"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B008D97710/546fba77-6006-571f-8315-dac4357b308c.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "pilot goggle bubble clear",
+      "pilot goggle bubble smoke",
+      "pilot goggle bubble yellow"
+    ],
+    "child_skus": [
+      "pilot goggle bubble smoke",
+      "pilot goggle bubble yellow",
+      "pilot goggle bubble clear"
+    ],
+    "group": {
+      "sku": "B008TTD2C2",
+      "name": "Vintage WWII RAF Aviator pilot motorcycle Goggles with chrome accent AVT - Free Large Microfiber Cleaning Case",
+      "child_skus": [
+        "pilot goggle bubble smoke",
+        "pilot goggle bubble yellow",
+        "pilot goggle bubble clear"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B008TTD2C2/3c284d6e-de51-597c-88c5-697e86e69de3.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Pilot goggle angle Smoke",
+      "Pilot goggle angle clear",
+      "pilot goggle angle yellow"
+    ],
+    "child_skus": [
+      "Pilot goggle angle clear",
+      "Pilot goggle angle Smoke",
+      "pilot goggle angle yellow"
+    ],
+    "group": {
+      "sku": "B008TTD3U8",
+      "name": "Vintage WWII RAF Aviator pilot motorcycle Goggles with chrome accent AVT - Free Large Microfiber Cleaning Case",
+      "child_skus": [
+        "Pilot goggle angle clear",
+        "Pilot goggle angle Smoke",
+        "pilot goggle angle yellow"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B008TTD3U8/6c90f6ab-e49b-55d9-bf24-b7c2b17d33b6.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Nitrous HD 15489 full frame black",
+      "Nitrous HD 15489 full frame brown"
+    ],
+    "child_skus": [
+      "Nitrous HD 15489 full frame black",
+      "Nitrous HD 15489 full frame brown"
+    ],
+    "group": {
+      "sku": "B00ADUH8HU",
+      "name": "HD Vision Blue Blocking Sunglasses for Men and Women. Great for golf, cycling, motorcycle, running, driving and all sports activities.",
+      "child_skus": [
+        "Nitrous HD 15489 full frame black",
+        "Nitrous HD 15489 full frame brown"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00ADUH8HU/545fe91d-7f65-5d1c-91c6-f9dd8c3be68e.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Detonate ice yellow",
+      "Detonate ice yellow with yellow",
+      "Detonate yellow standard"
+    ],
+    "child_skus": [
+      "Detonate ice yellow",
+      "Detonate yellow standard",
+      "Detonate ice yellow with yellow"
+    ],
+    "group": {
+      "sku": "B00AEC9X16",
+      "name": "Yellow Lens Sunglasses with Impact Resistant Safety Polycarbonate Lenses.",
+      "child_skus": [
+        "Detonate ice yellow",
+        "Detonate yellow standard",
+        "Detonate ice yellow with yellow"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AEC9X16/945200c5-f9f5-5147-8207-33c22410f76a.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Rage small clear few",
+      "Rage small yellow"
+    ],
+    "child_skus": [
+      "Rage small yellow",
+      "Rage small clear few"
+    ],
+    "group": {
+      "sku": "B00AEC9Y4W",
+      "name": "ANSI Z87 Safety Yellow Lens Sunglasses for Cycling, Motorcycle Riding, Running, Night Driving, Shooting and Hunting.",
+      "child_skus": [
+        "Rage small yellow",
+        "Rage small clear few"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AEC9Y4W/f72dc53a-2619-5008-a2c4-f37e04bb76fb.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "s67 z87.1 clear",
+      "s67 z87.1 yellow"
+    ],
+    "child_skus": [
+      "s67 z87.1 yellow",
+      "s67 z87.1 clear"
+    ],
+    "group": {
+      "sku": "B00AEEE9S6",
+      "name": "ANSI Z87 Sport Safety Glasses for Cycling, Motorcycle Riding, Running, Shooting and Hunting.",
+      "child_skus": [
+        "s67 z87.1 yellow",
+        "s67 z87.1 clear"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AEEE9S6/30398ddc-397a-549a-98b8-417b6d29950c.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "540460 yellow half frame black",
+      "540460 yellow half frame blue",
+      "540460 yellow half frame brown",
+      "540460 yellow half frame gray"
+    ],
+    "child_skus": [
+      "540460 yellow half frame brown",
+      "540460 yellow half frame blue",
+      "540460 yellow half frame gray",
+      "540460 yellow half frame black"
+    ],
+    "group": {
+      "sku": "B00AI9CZVU",
+      "name": "Sport Yellow lens sunglasses for cycling, motorcycle riding, running, shooting and hunting. Free Microfiber Cleaning Case Included.",
+      "child_skus": [
+        "540460 yellow half frame brown",
+        "540460 yellow half frame blue",
+        "540460 yellow half frame gray",
+        "540460 yellow half frame black"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AI9CZVU/dd4f88f1-8760-5c8f-9c20-d7a1847a85ce.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Sharkbait with MF Hard case strap",
+      "Sharkebait with Microfiber strap"
+    ],
+    "child_skus": [
+      "Sharkebait with Microfiber strap",
+      "Sharkbait with MF Hard case strap"
+    ],
+    "group": {
+      "sku": "B00AITQQQU",
+      "name": "Floating Polarized Sunglasses for Fishing, Boating and Water Activities. Free Microfiber Cleaning Case and Sunglass string Included. SHARKBAIT",
+      "child_skus": [
+        "Sharkebait with Microfiber strap",
+        "Sharkbait with MF Hard case strap"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AITQQQU/bffec00d-2ee4-5501-9da7-adac233a27e6.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Outrigger Black with strap",
+      "Outrigger Brown with Strap"
+    ],
+    "child_skus": [
+      "Outrigger Black with strap",
+      "Outrigger Brown with Strap"
+    ],
+    "group": {
+      "sku": "B00AIV9UCU",
+      "name": "Polarized Float Sunglasses for Fishing, Boating, Kayaking, Water Skiing, Sailing and Canoeing. Free Microfiber Cleaning Case and Sunglass String Included.",
+      "child_skus": [
+        "Outrigger Black with strap",
+        "Outrigger Brown with Strap"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AIV9UCU/7e19531b-e2b8-5b3e-a7ac-012a15f8df4f.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "29045 Polarized Blue Mirror",
+      "29045 Polarized Blue/Brown Frame",
+      "29045 Polarized Green Mirror",
+      "29045 Polarized Orange Mirror",
+      "29045 Polarized Orange/Brown Frame"
+    ],
+    "child_skus": [
+      "29045 Polarized Blue/Brown Frame",
+      "29045 Polarized Orange Mirror",
+      "29045 Polarized Blue Mirror",
+      "29045 Polarized Green Mirror",
+      "29045 Polarized Orange/Brown Frame"
+    ],
+    "group": {
+      "sku": "B00AJ9F7TG",
+      "name": "Mirrored Polarized Sunglasses with Anti Reflective Coating for Fishing, Boating, Cycling, Motorcycle Riding, Running and Driving. Free Microfiber Cleaning Case.",
+      "child_skus": [
+        "29045 Polarized Blue/Brown Frame",
+        "29045 Polarized Orange Mirror",
+        "29045 Polarized Blue Mirror",
+        "29045 Polarized Green Mirror",
+        "29045 Polarized Orange/Brown Frame"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AJ9F7TG/b6a68eae-3068-5097-af03-70d1669291a7.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "29290 Polarized Blue Mirror",
+      "29290 Polarized Blue/Brown Frame",
+      "29290 Polarized Green Mirror",
+      "29290 Polarized Orange Mirror",
+      "29290 Polarized Orange/Brown Frame"
+    ],
+    "child_skus": [
+      "29290 Polarized Orange/Brown Frame",
+      "29290 Polarized Blue Mirror",
+      "29290 Polarized Orange Mirror",
+      "29290 Polarized Blue/Brown Frame",
+      "29290 Polarized Green Mirror"
+    ],
+    "group": {
+      "sku": "B00AJRJZLO",
+      "name": "Eagle Polarized",
+      "child_skus": [
+        "29290 Polarized Orange/Brown Frame",
+        "29290 Polarized Blue Mirror",
+        "29290 Polarized Orange Mirror",
+        "29290 Polarized Blue/Brown Frame",
+        "29290 Polarized Green Mirror"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AJRJZLO/58a8efa8-3629-5c83-9022-070ffe66d1c0.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "MontaRay PL Black",
+      "MontaRay PL Brown brwn",
+      "MontaRay PL Tortoise smk"
+    ],
+    "child_skus": [
+      "MontaRay PL Black",
+      "MontaRay PL Tortoise smk",
+      "MontaRay PL Brown brwn"
+    ],
+    "group": {
+      "sku": "B00ANXWJCQ",
+      "name": "Monta Ray 8235",
+      "child_skus": [
+        "MontaRay PL Black",
+        "MontaRay PL Tortoise smk",
+        "MontaRay PL Brown brwn"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00ANXWJCQ/338736bb-8d00-53a0-815e-c27b0138a549.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "TR90 hf polarized 75343 black",
+      "TR90 hf polarized 75343 brown",
+      "TR90 hf polarized 75343 gray",
+      "TR90 hf polarized 75343 hd",
+      "TR90 hf polarized 75343 white"
+    ],
+    "child_skus": [
+      "TR90 hf polarized 75343 black",
+      "TR90 hf polarized 75343 brown",
+      "TR90 hf polarized 75343 gray",
+      "TR90 hf polarized 75343 white",
+      "TR90 hf polarized 75343 hd"
+    ],
+    "group": {
+      "sku": "B00AOF9MKA",
+      "name": "Tron SPPL 75343",
+      "child_skus": [
+        "TR90 hf polarized 75343 black",
+        "TR90 hf polarized 75343 brown",
+        "TR90 hf polarized 75343 gray",
+        "TR90 hf polarized 75343 white",
+        "TR90 hf polarized 75343 hd"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AOF9MKA/101399fc-3ee5-500d-9f37-80dd7fb9eac2.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "6413pl zebra legs black",
+      "6413pl zebra legs brown",
+      "6413pl zebra legs red"
+    ],
+    "child_skus": [
+      "6413pl zebra legs brown",
+      "6413pl zebra legs black",
+      "6413pl zebra legs red"
+    ],
+    "group": {
+      "sku": "B00AU8OPQM",
+      "name": "Zebra Polarized Sunglasses for Women.",
+      "child_skus": [
+        "6413pl zebra legs brown",
+        "6413pl zebra legs black",
+        "6413pl zebra legs red"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AU8OPQM/5d0fb2ac-bb6c-5da9-bdc4-4ee66f2ee126.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "wayfarer p3009pl brown",
+      "wayfarer p3009pl smk"
+    ],
+    "child_skus": [
+      "wayfarer p3009pl smk",
+      "wayfarer p3009pl brown"
+    ],
+    "group": {
+      "sku": "B00AY58EPO",
+      "name": "Brooklyn PL 3009",
+      "child_skus": [
+        "wayfarer p3009pl smk",
+        "wayfarer p3009pl brown"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AY58EPO/5f3963fd-705c-5447-8ae0-9335a46a0588.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Golf hf 3184gf black",
+      "Golf hf 3184gf blue",
+      "Golf hf 3184gf gray",
+      "Golf hf 3184gf red",
+      "Golf hf 3184gf silver"
+    ],
+    "child_skus": [
+      "Golf hf 3184gf blue",
+      "Golf hf 3184gf silver",
+      "Golf hf 3184gf gray",
+      "Golf hf 3184gf red",
+      "Golf hf 3184gf black"
+    ],
+    "group": {
+      "sku": "B00AZA6OMI",
+      "name": "Gradient HD Vision Sunglasses for golf, cycling, running, driving and sports activities.",
+      "child_skus": [
+        "Golf hf 3184gf blue",
+        "Golf hf 3184gf silver",
+        "Golf hf 3184gf gray",
+        "Golf hf 3184gf red",
+        "Golf hf 3184gf black"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AZA6OMI/4d116926-704f-5271-9f6d-7ac32c93469d.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "KGO",
+      "KGO47X11RB",
+      "kids goggles 4711 small black",
+      "kids goggles 4711 small blue",
+      "kids goggles 4711 small orange",
+      "kids goggles 4711 small pink",
+      "kids goggles 4711 small red"
+    ],
+    "child_skus": [
+      "kids goggles 4711 small black",
+      "kids goggles 4711 small orange",
+      "kids goggles 4711 small pink",
+      "kids goggles 4711 small red",
+      "kids goggles 4711 small blue",
+      "KGO-47X11RB-BK-CL",
+      "KGO-47X11RB-PK-CL",
+      "KGO-47X11RB-RD-CL",
+      "KGO-47X11RB-BL-CL",
+      "CKGO47X11RB-BKSMxBKCL",
+      "CKGO47X11RB-BLSMxBLCL",
+      "CKGO47X11RB-PKSMxPKCL",
+      "CKGO47X11RB-RDSMxRDCL"
+    ],
+    "group": {
+      "sku": "B00AZPP23U",
+      "name": "Robin KGO 4711",
+      "child_skus": [
+        "kids goggles 4711 small black",
+        "kids goggles 4711 small orange",
+        "kids goggles 4711 small pink",
+        "kids goggles 4711 small red",
+        "kids goggles 4711 small blue",
+        "KGO-47X11RB-BK-CL",
+        "KGO-47X11RB-PK-CL",
+        "KGO-47X11RB-RD-CL",
+        "KGO-47X11RB-BL-CL",
+        "CKGO47X11RB-BKSMxBKCL",
+        "CKGO47X11RB-BLSMxBLCL",
+        "CKGO47X11RB-PKSMxPKCL",
+        "CKGO47X11RB-RDSMxRDCL"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00AZPP23U/adef9e15-00c8-51ef-9b93-a670e4159434.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "john lennon black",
+      "john lennon brown lens",
+      "john lennon dark silver",
+      "john lennon gunmetal",
+      "john lennon shiny silver"
+    ],
+    "child_skus": [
+      "john lennon gunmetal",
+      "john lennon brown lens",
+      "john lennon dark silver",
+      "john lennon shiny silver",
+      "john lennon black"
+    ],
+    "group": {
+      "sku": "B00B2BQ0UK",
+      "name": "John Lennon Round Sunglasses. Free Microfiber Cleaning Case Included. 9164",
+      "child_skus": [
+        "john lennon gunmetal",
+        "john lennon brown lens",
+        "john lennon dark silver",
+        "john lennon shiny silver",
+        "john lennon black"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B2BQ0UK/c80f0ed6-bad3-5f25-9192-bb30d506e561.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Silver aviator 6562pl Amber Lens",
+      "Silver aviator 6562pl Silver Lens"
+    ],
+    "child_skus": [
+      "Silver aviator 6562pl Silver Lens",
+      "Silver aviator 6562pl Amber Lens"
+    ],
+    "group": {
+      "sku": "B00B2BQ1BS",
+      "name": "Silver Mirror Aviator Polarized Sunglasses for Men and Women.",
+      "child_skus": [
+        "Silver aviator 6562pl Silver Lens",
+        "Silver aviator 6562pl Amber Lens"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B2BQ1BS/c7fe18f4-026d-5b5c-a1bb-c1868c20bc8a.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "hd aviator pl 24816 black",
+      "hd aviator pl 24816 bronze",
+      "hd aviator pl 24816 gunmetal"
+    ],
+    "child_skus": [
+      "hd aviator pl 24816 gunmetal",
+      "hd aviator pl 24816 black",
+      "hd aviator pl 24816 bronze"
+    ],
+    "group": {
+      "sku": "B00B2BSFIK",
+      "name": "HD Vision Polarized Aviator Sunglasses with Durable High Nickel Metal Frames. Free Microfiber Cleaning Case Included.",
+      "child_skus": [
+        "hd aviator pl 24816 gunmetal",
+        "hd aviator pl 24816 black",
+        "hd aviator pl 24816 bronze"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B2BSFIK/511f68ac-1a6e-5ae1-8b79-b8485646b0b1.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "hd full frame p43276msg blk",
+      "hd full frame p43276msg tortoise"
+    ],
+    "child_skus": [
+      "hd full frame p43276msg blk",
+      "hd full frame p43276msg tortoise"
+    ],
+    "group": {
+      "sku": "B00B3Y1952",
+      "name": "Cartel 43276",
+      "child_skus": [
+        "hd full frame p43276msg blk",
+        "hd full frame p43276msg tortoise"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B3Y1952/7c2b1be2-c436-5b55-b2d6-b4351db2d4c1.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "square w/metal 1334pl brn",
+      "square w/metal 1334pl glos",
+      "square w/metal 1334pl matte"
+    ],
+    "child_skus": [
+      "square w/metal 1334pl brn-brn",
+      "square w/metal 1334pl brn-smk",
+      "square w/metal 1334pl glos-blk",
+      "square w/metal 1334pl matte-blk"
+    ],
+    "group": {
+      "sku": "B00B4EB03M",
+      "name": "Square Polarized Sunglasses for Men. Free Microfiber Cleaning Case.",
+      "child_skus": [
+        "square w/metal 1334pl brn-brn",
+        "square w/metal 1334pl brn-smk",
+        "square w/metal 1334pl glos-blk",
+        "square w/metal 1334pl matte-blk"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B4EB03M/0c69d23e-e08f-5c75-8449-c82a206d3c33.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Revo PL Large 29317  Blue Tortoise",
+      "Revo PL Large 29317  Orange Blk",
+      "Revo PL Large 29317 Blue Blk frame",
+      "Revo PL Large 29317 Orange Tortoise"
+    ],
+    "child_skus": [
+      "Revo PL Large 29317 Blue Blk frame",
+      "Revo PL Large 29317  Orange Blk",
+      "Revo PL Large 29317 Orange Tortoise",
+      "Revo PL Large 29317  Blue Tortoise"
+    ],
+    "group": {
+      "sku": "B00B9EWRZC",
+      "name": "Dozer PL Mirror 29317",
+      "child_skus": [
+        "Revo PL Large 29317 Blue Blk frame",
+        "Revo PL Large 29317  Orange Blk",
+        "Revo PL Large 29317 Orange Tortoise",
+        "Revo PL Large 29317  Blue Tortoise"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B9EWRZC/6d28fab1-480f-51d9-a2f1-235fa517216c.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Revo PL Med 29093pl  Blue Tortoise",
+      "Revo PL Med 29093pl  Orange Blk",
+      "Revo PL Med 29093pl Blue Blk frame",
+      "Revo PL Med 29093pl Orange Tortoise"
+    ],
+    "child_skus": [
+      "Revo PL Med 29093pl  Orange Blk",
+      "Revo PL Med 29093pl  Blue Tortoise",
+      "Revo PL Med 29093pl Blue Blk frame",
+      "Revo PL Med 29093pl Orange Tortoise"
+    ],
+    "group": {
+      "sku": "B00B9EWTSW",
+      "name": "Kahuna PL Mirror 29093",
+      "child_skus": [
+        "Revo PL Med 29093pl  Orange Blk",
+        "Revo PL Med 29093pl  Blue Tortoise",
+        "Revo PL Med 29093pl Blue Blk frame",
+        "Revo PL Med 29093pl Orange Tortoise"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B9EWTSW/559ad1a7-cc92-531a-9e0e-4101b09a45ae.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Round pl 3238pl brown",
+      "Round pl 3238pl smk"
+    ],
+    "child_skus": [
+      "Round pl 3238pl brown-tortoise",
+      "Round pl 3238pl smk-blk",
+      "Round pl 3238pl smk-tortoise"
+    ],
+    "group": {
+      "sku": "B00B9KAXES",
+      "name": "Round Polarized Sunglasses for Men and Women. Free Microfiber Cleaning Case.",
+      "child_skus": [
+        "Round pl 3238pl brown-tortoise",
+        "Round pl 3238pl smk-blk",
+        "Round pl 3238pl smk-tortoise"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B9KAXES/2288888a-95eb-50f1-8311-cb9f413e1ab0.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "4559hd pl blk",
+      "4559hd pl tortoise"
+    ],
+    "child_skus": [
+      "4559hd pl blk",
+      "4559hd pl tortoise"
+    ],
+    "group": {
+      "sku": "B00B9KAZ32",
+      "name": "Blue Blocking HD Polarized Sunglasses for Men and Women - Free Microfiber Cleaning Case.",
+      "child_skus": [
+        "4559hd pl blk",
+        "4559hd pl tortoise"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00B9KAZ32/c93be566-9ebb-5770-bd5a-dac72da45c17.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Top Cushion bifocal re150 gradient 1.5",
+      "Top Cushion bifocal re150 gradient 2.0",
+      "Top Cushion bifocal re150 gradient 2.5",
+      "Top Cushion bifocal re150 gradient 3.0"
+    ],
+    "child_skus": [
+      "Top Cushion bifocal re150 gradient 2.5",
+      "Top Cushion bifocal re150 gradient 1.5",
+      "Top Cushion bifocal re150 gradient 2.0",
+      "Top Cushion bifocal re150 gradient 3.0"
+    ],
+    "group": {
+      "sku": "B00DZXE9LU",
+      "name": "Bifocal Sunglasses for Men. Gradient Lenses and Rubber Cushion on Top of the Frames. Great for Motorcycle Riding, Cycling, Golf, Driving and All Other Sports Activities.",
+      "child_skus": [
+        "Top Cushion bifocal re150 gradient 2.5",
+        "Top Cushion bifocal re150 gradient 1.5",
+        "Top Cushion bifocal re150 gradient 2.0",
+        "Top Cushion bifocal re150 gradient 3.0"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00DZXE9LU/35b8b453-d43d-5ba6-928a-5d4bc8b561a1.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "sky train hd 24093pl brown",
+      "sky train hd 24093pl gl",
+      "sky train hd 24093pl matt"
+    ],
+    "child_skus": [
+      "sky train hd 24093pl gl-blk",
+      "sky train hd 24093pl matt-blk",
+      "sky train hd 24093pl brown"
+    ],
+    "group": {
+      "sku": "B00E5MBJOA",
+      "name": "Blue Blocking High Definition HD Polarized Sunglasses for Men and Women. Free Microfiber Case included.",
+      "child_skus": [
+        "sky train hd 24093pl gl-blk",
+        "sky train hd 24093pl matt-blk",
+        "sky train hd 24093pl brown"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00E5MBJOA/7f88e349-a424-50da-933b-c623a7be58a7.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "speedracer hd 99465 blue",
+      "speedracer hd 99465 brown",
+      "speedracer hd 99465 glossy blk",
+      "speedracer hd 99465 matte blk"
+    ],
+    "child_skus": [
+      "speedracer hd 99465 blue",
+      "speedracer hd 99465 brown",
+      "speedracer hd 99465 glossy blk",
+      "speedracer hd 99465 matte blk"
+    ],
+    "group": {
+      "sku": "B00E7UKPB8",
+      "name": "Speedracer HD 99465",
+      "child_skus": [
+        "speedracer hd 99465 blue",
+        "speedracer hd 99465 brown",
+        "speedracer hd 99465 glossy blk",
+        "speedracer hd 99465 matte blk"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00E7UKPB8/c1fd20c2-86bd-50a9-a562-708309556c93.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "6029nd us route blk",
+      "6029nd us route brown"
+    ],
+    "child_skus": [
+      "6029nd us route brown",
+      "6029nd us route blk"
+    ],
+    "group": {
+      "sku": "B00E9J2CDG",
+      "name": "Night Vision Yellow Sunglasses for Men and Women. Free Microfiber Cleaning Case Included.",
+      "child_skus": [
+        "6029nd us route brown",
+        "6029nd us route blk"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00E9J2CDG/b5ad1919-0392-527a-866c-4dc019521d3e.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Skid pc1195 small yellow MIR YEL",
+      "Skid pc1195 small yellow YEL"
+    ],
+    "child_skus": [
+      "Skid pc1195 small yellow YEL",
+      "Skid pc1195 small yellow MIR YEL"
+    ],
+    "group": {
+      "sku": "B00ED2RFVI",
+      "name": "Flite Yellow SP 1195",
+      "child_skus": [
+        "Skid pc1195 small yellow YEL",
+        "Skid pc1195 small yellow MIR YEL"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00ED2RFVI/9fea059b-a678-5335-abb2-6335962cb4cd.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "yellow sq aviator 20540 blk",
+      "yellow sq aviator 20540 gunmetal",
+      "yellow sq aviator 20540 silver"
+    ],
+    "child_skus": [
+      "yellow sq aviator 20540 blk",
+      "yellow sq aviator 20540 silver",
+      "yellow sq aviator 20540 gunmetal"
+    ],
+    "group": {
+      "sku": "B00EDTHK2U",
+      "name": "Yellow Aviator Sunglasses for Men. Free Microfiber Cleaning Case Included.",
+      "child_skus": [
+        "yellow sq aviator 20540 blk",
+        "yellow sq aviator 20540 silver",
+        "yellow sq aviator 20540 gunmetal"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00EDTHK2U/160ec1a9-9186-5f95-9eec-126f5f9bedb3.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Aspin hd 98015 blk",
+      "Aspin hd 98015 brown",
+      "Aspin hd 98015 grey"
+    ],
+    "child_skus": [
+      "Aspin hd 98015 brown",
+      "Aspin hd 98015 grey",
+      "Aspin hd 98015 blk"
+    ],
+    "group": {
+      "sku": "B00EHN73SS",
+      "name": "High Definition Blue Blocking Sunglasses for Men and Women.",
+      "child_skus": [
+        "Aspin hd 98015 brown",
+        "Aspin hd 98015 grey",
+        "Aspin hd 98015 blk"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00EHN73SS/e2776372-c40c-53ce-bb71-65e6f87d3b17.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Malibu 2403rv blue blk",
+      "Malibu 2403rv blue blue",
+      "Malibu 2403rv green blk",
+      "Malibu 2403rv orange red",
+      "Malibu 2403rv orange white"
+    ],
+    "child_skus": [
+      "Malibu 2403rv blue blk",
+      "Malibu 2403rv orange white",
+      "Malibu 2403rv orange red",
+      "Malibu 2403rv green blk",
+      "Malibu 2403rv blue blue"
+    ],
+    "group": {
+      "sku": "B00EW1MNE4",
+      "name": "TR90 Mirrored Sunglasses Men and Women for Sports Activities. Free Microfiber Case Included.",
+      "child_skus": [
+        "Malibu 2403rv blue blk",
+        "Malibu 2403rv orange white",
+        "Malibu 2403rv orange red",
+        "Malibu 2403rv green blk",
+        "Malibu 2403rv blue blue"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00EW1MNE4/4956588e-a65e-5775-a730-030e9ac9f676.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Cancun 29891pl metal Blue",
+      "Cancun 29891pl metal Green",
+      "Cancun 29891pl metal Orange",
+      "Cancun 29891pl metal Red"
+    ],
+    "child_skus": [
+      "Cancun 29891pl metal Orange",
+      "Cancun 29891pl metal Red",
+      "Cancun 29891pl metal Blue",
+      "Cancun 29891pl metal Green"
+    ],
+    "group": {
+      "sku": "B00EYN2UOI",
+      "name": "Polarized Mirror Sunglasses For Men. Free Microfiber Cleaning Case.",
+      "child_skus": [
+        "Cancun 29891pl metal Orange",
+        "Cancun 29891pl metal Red",
+        "Cancun 29891pl metal Blue",
+        "Cancun 29891pl metal Green"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00EYN2UOI/6f5f164d-12e9-5211-a3e0-2436aba1ec55.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "S56 Hawkeye Rfoam blk",
+      "S56 Hawkeye Rfoam blue",
+      "S56 Hawkeye Rfoam orange",
+      "S56 Hawkeye Rfoam silver"
+    ],
+    "child_skus": [
+      "S56 Hawkeye Rfoam blk",
+      "S56 Hawkeye Rfoam silver",
+      "S56 Hawkeye Rfoam orange",
+      "S56 Hawkeye Rfoam blue"
+    ],
+    "group": {
+      "sku": "B00GR9GBUQ",
+      "name": "Vanguard S56",
+      "child_skus": [
+        "S56 Hawkeye Rfoam blk",
+        "S56 Hawkeye Rfoam silver",
+        "S56 Hawkeye Rfoam orange",
+        "S56 Hawkeye Rfoam blue"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00GR9GBUQ/9ff4a7cc-ff72-5d25-be22-374e2d87ee6c.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Oval L BifWomen R430BS 25Brown",
+      "Oval L Bifocal",
+      "Oval L Bifocal Women R430BS brown15",
+      "Oval L Bifocal Women R430BS brown2",
+      "Oval L Bifocal Women R430BS brown3",
+      "Oval L Bifocal Women R430BS red15",
+      "Oval L Bifocal Women R430BS red2",
+      "Oval L Bifocal Women R430BS red25",
+      "Oval L Bifocal Women R430BS red3",
+      "Oval L Bifocal Women R430BS white15",
+      "Oval L Bifocal Women R430BS white2",
+      "Oval L Bifocal Women R430BS white25",
+      "Oval L Bifocal Women R430BS white3",
+      "RE4X30SL",
+      "RE4X30SLBRSMXRDSM"
+    ],
+    "child_skus": [
+      "Oval L Bifocal Women R430BS white3",
+      "Oval L Bifocal Women R430BS red3",
+      "Oval L Bifocal Women R430BS brown3",
+      "Oval L Bifocal-w R430BS blk 15",
+      "Oval L Bifocal Women R430BS white15",
+      "Oval L Bifocal Women R430BS white2",
+      "Oval L Bifocal Women R430BS red2",
+      "Oval L BifWomen R430BS 25Brown",
+      "Oval L Bifocal Women R430BS brown15",
+      "Oval L Bifocal-w R430BS blk 25",
+      "Oval L Bifocal-w R430BS blk 3",
+      "Oval L Bifocal Women R430BS red15",
+      "Oval L Bifocal Women R430BS white25",
+      "Oval L Bifocal-w R430BS blk 2",
+      "Oval L Bifocal Women R430BS brown2",
+      "Oval L Bifocal Women R430BS red25",
+      "CRE4X30SL-BKSMXRDSM-150-MFP",
+      "CRE4X30SL-BKSMXRDSM-200-MFP",
+      "CRE4X30SL-BKSMXRDSM-250-MFP",
+      "CRE4X30SL-BKSMXRDSM-300-MFP",
+      "CRE4X30SLBRSMXRDSM-150-MFP",
+      "CRE4X30SLBRSMXRDSM-200-MFP",
+      "CRE4X30SLBRSMXRDSM-250-MFP",
+      "CRE4X30SLBRSMXRDSM-300-MFP"
+    ],
+    "group": {
+      "sku": "B00KX8SJRU",
+      "name": "Starlet BF 430",
+      "child_skus": [
+        "Oval L Bifocal Women R430BS white3",
+        "Oval L Bifocal Women R430BS red3",
+        "Oval L Bifocal Women R430BS brown3",
+        "Oval L Bifocal-w R430BS blk 15",
+        "Oval L Bifocal Women R430BS white15",
+        "Oval L Bifocal Women R430BS white2",
+        "Oval L Bifocal Women R430BS red2",
+        "Oval L BifWomen R430BS 25Brown",
+        "Oval L Bifocal Women R430BS brown15",
+        "Oval L Bifocal-w R430BS blk 25",
+        "Oval L Bifocal-w R430BS blk 3",
+        "Oval L Bifocal Women R430BS red15",
+        "Oval L Bifocal Women R430BS white25",
+        "Oval L Bifocal-w R430BS blk 2",
+        "Oval L Bifocal Women R430BS brown2",
+        "Oval L Bifocal Women R430BS red25",
+        "CRE4X30SL-BKSMXRDSM-150-MFP",
+        "CRE4X30SL-BKSMXRDSM-200-MFP",
+        "CRE4X30SL-BKSMXRDSM-250-MFP",
+        "CRE4X30SL-BKSMXRDSM-300-MFP",
+        "CRE4X30SLBRSMXRDSM-150-MFP",
+        "CRE4X30SLBRSMXRDSM-200-MFP",
+        "CRE4X30SLBRSMXRDSM-250-MFP",
+        "CRE4X30SLBRSMXRDSM-300-MFP"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00KX8SJRU/73b96427-f448-5488-9164-f8f751f4c26a.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Cheetah RstoneR436 Pink10",
+      "Cheetah RstoneR436 Pink15",
+      "Cheetah RstoneR436 Pink20",
+      "Cheetah RstoneR436 Pink25",
+      "Cheetah RstoneR436 Pink3",
+      "Cheetah RstoneR436 Purple10",
+      "Cheetah RstoneR436 Purple15",
+      "Cheetah RstoneR436 Purple20",
+      "Cheetah RstoneR436 Purple25",
+      "Cheetah RstoneR436 Purple3",
+      "Cheetah RstoneR436 Red10",
+      "Cheetah RstoneR436 Red15",
+      "Cheetah RstoneR436 Red20",
+      "Cheetah RstoneR436 Red25",
+      "Cheetah RstoneR436 Red3",
+      "Cheetah RstoneR436 Yellow10",
+      "Cheetah RstoneR436 Yellow15",
+      "Cheetah RstoneR436 Yellow20",
+      "Cheetah RstoneR436 Yellow25",
+      "Cheetah RstoneR436 Yellow3"
+    ],
+    "child_skus": [
+      "Cheetah RstoneR436 Pink20",
+      "Cheetah RstoneR436 Pink3",
+      "Cheetah RstoneR436 Purple10",
+      "Cheetah RstoneR436 Pink10",
+      "Cheetah RstoneR436 Red10",
+      "Cheetah RstoneR436 Purple3",
+      "Cheetah RstoneR436 Red15",
+      "Cheetah RstoneR436 Yellow20",
+      "Cheetah RstoneR436 Yellow25",
+      "Cheetah RstoneR436 Yellow15",
+      "Cheetah RstoneR436 Red20",
+      "Cheetah RstoneR436 Red3",
+      "Cheetah RstoneR436 Pink15",
+      "Cheetah RstoneR436 Pink25",
+      "Cheetah RstoneR436 Red25",
+      "Cheetah RstoneR436 Yellow3",
+      "Cheetah RstoneR436 Yellow10",
+      "Cheetah RstoneR436 Purple15",
+      "Cheetah RstoneR436 Purple25",
+      "Cheetah RstoneR436 Purple20"
+    ],
+    "group": {
+      "sku": "B00KXA0HQY",
+      "name": "Cheetah Design Frame Bifocal Sunglasses with Rhinestones for Women. Bifocal Reading Powers are Available from 1.00, 1.50, 2.00, 2.50 and 3.00.",
+      "child_skus": [
+        "Cheetah RstoneR436 Pink20",
+        "Cheetah RstoneR436 Pink3",
+        "Cheetah RstoneR436 Purple10",
+        "Cheetah RstoneR436 Pink10",
+        "Cheetah RstoneR436 Red10",
+        "Cheetah RstoneR436 Purple3",
+        "Cheetah RstoneR436 Red15",
+        "Cheetah RstoneR436 Yellow20",
+        "Cheetah RstoneR436 Yellow25",
+        "Cheetah RstoneR436 Yellow15",
+        "Cheetah RstoneR436 Red20",
+        "Cheetah RstoneR436 Red3",
+        "Cheetah RstoneR436 Pink15",
+        "Cheetah RstoneR436 Pink25",
+        "Cheetah RstoneR436 Red25",
+        "Cheetah RstoneR436 Yellow3",
+        "Cheetah RstoneR436 Yellow10",
+        "Cheetah RstoneR436 Purple15",
+        "Cheetah RstoneR436 Purple25",
+        "Cheetah RstoneR436 Purple20"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00KXA0HQY/d6ecac54-5a18-539d-8031-323f9dae7005.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Shark Tail FloatPOL 7186 brown",
+      "Shark Tail FloatPOL 7186 smk",
+      "SharkTail FloatPOL7186 BR",
+      "SharkTail FloatPOL7186 smk"
+    ],
+    "child_skus": [
+      "SharkTail FloatPOL7186 smk-mf/hc/st",
+      "Shark Tail FloatPOL 7186 brown-mf/st",
+      "Shark Tail FloatPOL 7186 smk-mf/st",
+      "SharkTail FloatPOL7186 BR-mf/hc/st"
+    ],
+    "group": {
+      "sku": "B00LH5ZBYW",
+      "name": "SharkTail Float POL 7186",
+      "child_skus": [
+        "SharkTail FloatPOL7186 smk-mf/hc/st",
+        "Shark Tail FloatPOL 7186 brown-mf/st",
+        "Shark Tail FloatPOL 7186 smk-mf/st",
+        "SharkTail FloatPOL7186 BR-mf/hc/st"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00LH5ZBYW/afbb68f5-3704-5c0e-8da7-3541d26be04f.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "NitroHD 0373 Blk",
+      "NitroHD 0373 Brown"
+    ],
+    "child_skus": [
+      "NitroHD 0373 Brown",
+      "NitroHD 0373 Blk"
+    ],
+    "group": {
+      "sku": "B00LLKXLZY",
+      "name": "Navigator 0373",
+      "child_skus": [
+        "NitroHD 0373 Brown",
+        "NitroHD 0373 Blk"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00LLKXLZY/da117ccd-431b-5910-93bd-7015afb44685.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "ChromeAngel.Stone.Yellow blk",
+      "ChromeAngel.Stone.Yellow blue",
+      "ChromeAngel.Stone.Yellow pink",
+      "FM85X11MNCHRS"
+    ],
+    "child_skus": [
+      "ChromeAngel.Stone.Yellow blue",
+      "ChromeAngel.Stone.Yellow pink",
+      "ChromeAngel.Stone.Yellow blk",
+      "FM85X11MNCHRS-BK-YL-MFB",
+      "FM85X11MNCHRS-BL-YL-MFB",
+      "FM85X11MNCHRS-PK-YL-MFB"
+    ],
+    "group": {
+      "sku": "B00LMMJVR8",
+      "name": "Magnum Rhinestone Chrome Yellow",
+      "child_skus": [
+        "ChromeAngel.Stone.Yellow blue",
+        "ChromeAngel.Stone.Yellow pink",
+        "ChromeAngel.Stone.Yellow blk",
+        "FM85X11MNCHRS-BK-YL-MFB",
+        "FM85X11MNCHRS-BL-YL-MFB",
+        "FM85X11MNCHRS-PK-YL-MFB"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00LMMJVR8/89faab77-7a97-5915-abb9-63a7823cebb3.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Bermuda 22132 Ice mocha",
+      "Bermuda 22132 brown lens",
+      "Bermuda 22132 smk/glossy",
+      "Bermuda 22132 smk/matt"
+    ],
+    "child_skus": [
+      "Bermuda 22132 Ice mocha",
+      "Bermuda 22132 brown lens",
+      "Bermuda 22132 smk/matt",
+      "Bermuda 22132 smk/glossy"
+    ],
+    "group": {
+      "sku": "B00M9W3PMW",
+      "name": "TR90 Semi Rimless Sports Sunglasses for Men and Women",
+      "child_skus": [
+        "Bermuda 22132 Ice mocha",
+        "Bermuda 22132 brown lens",
+        "Bermuda 22132 smk/matt",
+        "Bermuda 22132 smk/glossy"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00M9W3PMW/6a259c1a-be4f-5d5c-9cb6-ad4afd4a4a09.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Condor clear",
+      "Condor smoke",
+      "Condor yellow"
+    ],
+    "child_skus": [
+      "Condor smoke",
+      "Condor yellow",
+      "Condor clear"
+    ],
+    "group": {
+      "sku": "B00N5BBUPA",
+      "name": "Biker Sunglasses with Removable Foam Cushion",
+      "child_skus": [
+        "Condor smoke",
+        "Condor yellow",
+        "Condor clear"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00N5BBUPA/cd1b6f9f-218e-5e14-817f-a0c0cea5eef4.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Sawtooth clear",
+      "Sawtooth smoke",
+      "Sawtooth yellow"
+    ],
+    "child_skus": [
+      "Sawtooth smoke",
+      "Sawtooth clear",
+      "Sawtooth yellow"
+    ],
+    "group": {
+      "sku": "B00N5BBZP0",
+      "name": "Motorcycle Sunglasses Foam Padded for Larger Head Sizes.",
+      "child_skus": [
+        "Sawtooth smoke",
+        "Sawtooth clear",
+        "Sawtooth yellow"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00N5BBZP0/965c26d4-890e-5efe-b8c0-62837b65aedd.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Dynamo clear",
+      "Dynamo smoke",
+      "Dynamo yellow",
+      "FM65X07"
+    ],
+    "child_skus": [
+      "Dynamo yellow",
+      "Dynamo smoke",
+      "Dynamo clear",
+      "CFM65X07-BK-SMXYL-MFB",
+      "CFM65X07-BK-CLXYL-MFB",
+      "CFM65X07-BK-SMXCL-MFB",
+      "CFM65X07-BK-SMXCLXYL-MFB",
+      "CFM65X07-BK-SMxSM-MFB",
+      "CFM65X07-BK-CLxCL-MFB",
+      "CFM65X07-BK-YLxYL-MFB"
+    ],
+    "group": {
+      "sku": "B00N5BC5KO",
+      "name": "Z87 Motorcycle Glasses Foam Padded with Microfiber Cleaning Case.",
+      "child_skus": [
+        "Dynamo yellow",
+        "Dynamo smoke",
+        "Dynamo clear",
+        "CFM65X07-BK-SMXYL-MFB",
+        "CFM65X07-BK-CLXYL-MFB",
+        "CFM65X07-BK-SMXCL-MFB",
+        "CFM65X07-BK-SMXCLXYL-MFB",
+        "CFM65X07-BK-SMxSM-MFB",
+        "CFM65X07-BK-CLxCL-MFB",
+        "CFM65X07-BK-YLxYL-MFB"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00N5BC5KO/4e34131f-6d3e-52c3-aeb1-54ccbd51b134.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "GO47X57TK",
+      "Tank clear",
+      "Tank clear blue flame",
+      "Tank clear green flame",
+      "Tank clear red flame",
+      "Tank smoke",
+      "Tank smoke blue flame",
+      "Tank smoke green flame",
+      "Tank smoke red  flame",
+      "Tank yellow"
+    ],
+    "child_skus": [
+      "Tank clear red flame",
+      "Tank clear",
+      "Tank smoke",
+      "Tank yellow",
+      "CGO47X57TK-BK-SMXYL-MFLG",
+      "CGO47X57TK-BK-SMXCLXYL-MFLG",
+      "CGO47X57TK-BK-SMXCL-MFLG",
+      "CGO47X57TK-BK-CLXYL-MFLG",
+      "GO47X57TK-BK-BL-MFLG",
+      "GO47X57TK-BK-RO-MFLG",
+      "CGO47X57TK-BK-CLxCL-MFLG",
+      "CGO47X57TK-BK-YLxYL-MFLG",
+      "CGO47X57TK-BK-SMxSM-MFLG",
+      "CGO47X57TK-BK-BLxBL-MFLG",
+      "CGO47X57TK-BK-ROxRO-MFLG",
+      "GO47X57TK-BK-MBL",
+      "GO47X57TK-BK-MGR",
+      "GO47X57TK-BK-MOR",
+      "Tank smoke red  flame",
+      "Tank clear green flame",
+      "Tank clear blue flame",
+      "Tank smoke blue flame",
+      "Tank smoke green flame"
+    ],
+    "group": {
+      "sku": "B00NBAAHXG",
+      "name": "Tank Goggles 4757",
+      "child_skus": [
+        "Tank clear red flame",
+        "Tank clear",
+        "Tank smoke",
+        "Tank yellow",
+        "CGO47X57TK-BK-SMXYL-MFLG",
+        "CGO47X57TK-BK-SMXCLXYL-MFLG",
+        "CGO47X57TK-BK-SMXCL-MFLG",
+        "CGO47X57TK-BK-CLXYL-MFLG",
+        "GO47X57TK-BK-BL-MFLG",
+        "GO47X57TK-BK-RO-MFLG",
+        "CGO47X57TK-BK-CLxCL-MFLG",
+        "CGO47X57TK-BK-YLxYL-MFLG",
+        "CGO47X57TK-BK-SMxSM-MFLG",
+        "CGO47X57TK-BK-BLxBL-MFLG",
+        "CGO47X57TK-BK-ROxRO-MFLG",
+        "GO47X57TK-BK-MBL",
+        "GO47X57TK-BK-MGR",
+        "GO47X57TK-BK-MOR",
+        "Tank smoke red  flame",
+        "Tank clear green flame",
+        "Tank clear blue flame",
+        "Tank smoke blue flame",
+        "Tank smoke green flame"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00NBAAHXG/b2c0f617-470b-529a-ae5a-071c060cb654.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "FM0X49VP",
+      "Viper HD",
+      "Viper blue/blue",
+      "Viper clear",
+      "Viper green/oragne",
+      "Viper oragne/red",
+      "Viper smoke",
+      "Viper yellow"
+    ],
+    "child_skus": [
+      "Viper blue/blue",
+      "Viper clear",
+      "Viper HD",
+      "Viper oragne/red",
+      "Viper smoke",
+      "Viper green/oragne",
+      "Viper yellow",
+      "CFM0X49VP-BK-SMXCLXYL-MFB",
+      "CFM0X49VP-BK-HDXSM-MFB",
+      "CFM0X49VP-BK-SMXCL-MFB",
+      "CFM0X49VP-BK-SMXYL-MFB",
+      "CFM0X49VP-BK-HDXCL-MFB",
+      "CFM0X49VP-BK-CLXYL-MFB",
+      "CFM0X49VP-BK-HDXCLXYL-MFB",
+      "CFM0X49VP-BK-HDXYL-MFB"
+    ],
+    "group": {
+      "sku": "B00NBAAKJW",
+      "name": "Motorcycle Sunglasses EVA Foam for Men",
+      "child_skus": [
+        "Viper blue/blue",
+        "Viper clear",
+        "Viper HD",
+        "Viper oragne/red",
+        "Viper smoke",
+        "Viper green/oragne",
+        "Viper yellow",
+        "CFM0X49VP-BK-SMXCLXYL-MFB",
+        "CFM0X49VP-BK-HDXSM-MFB",
+        "CFM0X49VP-BK-SMXCL-MFB",
+        "CFM0X49VP-BK-SMXYL-MFB",
+        "CFM0X49VP-BK-HDXCL-MFB",
+        "CFM0X49VP-BK-CLXYL-MFB",
+        "CFM0X49VP-BK-HDXCLXYL-MFB",
+        "CFM0X49VP-BK-HDXYL-MFB"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B00NBAAKJW/77615fcf-7ac0-53bd-95d2-d96cf86744d5.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
       "Crusader",
       "CrusaderS55"
     ],
@@ -85,6 +1840,333 @@
       "description": null,
       "images": [
         "https://images.sellbrite.com/production/5512/B00W4B8KT6/a01970ba-2a8f-57e1-ad8e-80db1a8f0534.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Swim Gg Black",
+      "Swim Gg Blue",
+      "Swim Gg Multi",
+      "Swim Gg Orange",
+      "Swim Gg White",
+      "Swim Gg Yellow"
+    ],
+    "child_skus": [
+      "Swim Gg Yellow-Black 2pr",
+      "Swim Gg White-Black 2pr",
+      "Swim Gg Orange-Black 2pr",
+      "Swim Gg Multi-Black 2pr",
+      "Swim Gg Blue-Black 2pr",
+      "Swim Gg White-White-2pr",
+      "Swim Gg Black-Black 2pr"
+    ],
+    "group": {
+      "sku": "B0143YMXPS",
+      "name": "2 pairs of Swim Goggles for Adults, Youth and Kids with an Adjustable Nose Bridge",
+      "child_skus": [
+        "Swim Gg Yellow-Black 2pr",
+        "Swim Gg White-Black 2pr",
+        "Swim Gg Orange-Black 2pr",
+        "Swim Gg Multi-Black 2pr",
+        "Swim Gg Blue-Black 2pr",
+        "Swim Gg White-White-2pr",
+        "Swim Gg Black-Black 2pr"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B0143YMXPS/e05af08f-bce7-5668-861f-b2d72da743e2.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Sharkbait 7331pl blue HCST",
+      "Sharkbait 7331pl blue ST",
+      "Sharkbait 7331pl orange HCST",
+      "Sharkbait 7331pl orange ST"
+    ],
+    "child_skus": [
+      "Sharkbait 7331pl blue HCST",
+      "Sharkbait 7331pl blue ST",
+      "Sharkbait 7331pl orange HCST",
+      "Sharkbait 7331pl orange ST"
+    ],
+    "group": {
+      "sku": "B016NEIWYM",
+      "name": "Floating Polarized Mirrored Sunglasses for Fishing, Boating and Water Activities.",
+      "child_skus": [
+        "Sharkbait 7331pl blue HCST",
+        "Sharkbait 7331pl blue ST",
+        "Sharkbait 7331pl orange HCST",
+        "Sharkbait 7331pl orange ST"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B016NEIWYM/6b46d6f5-3659-54ef-a7a5-972e359abb27.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Amada reader blk brn 1",
+      "Amada reader blk brn 1.25",
+      "Amada reader blk brn 1.5",
+      "Amada reader blk brn 1.75",
+      "Amada reader blk brn 2",
+      "Amada reader blk brn 2.25",
+      "Amada reader blk brn 2.5",
+      "Amada reader blk brn 2.75",
+      "Amada reader blk brn 3",
+      "Amada reader blk brn 3.25",
+      "Amada reader blk brn 3.5",
+      "Amada reader blk brn 4",
+      "Amada reader blk smk 1",
+      "Amada reader blk smk 1.25",
+      "Amada reader blk smk 1.5",
+      "Amada reader blk smk 1.75",
+      "Amada reader blk smk 2",
+      "Amada reader blk smk 2.25",
+      "Amada reader blk smk 2.5",
+      "Amada reader blk smk 2.75",
+      "Amada reader blk smk 3",
+      "Amada reader blk smk 3.25",
+      "Amada reader blk smk 3.5",
+      "Amada reader blk smk 4",
+      "Amada reader brn brn 1",
+      "Amada reader brn brn 1.25",
+      "Amada reader brn brn 1.5",
+      "Amada reader brn brn 1.75",
+      "Amada reader brn brn 2",
+      "Amada reader brn brn 2.25",
+      "Amada reader brn brn 2.5",
+      "Amada reader brn brn 2.75",
+      "Amada reader brn brn 3",
+      "Amada reader brn brn 3.25",
+      "Amada reader brn brn 3.5",
+      "Amada reader brn brn 4",
+      "Amada reader brn smk 1",
+      "Amada reader brn smk 1.25",
+      "Amada reader brn smk 1.5",
+      "Amada reader brn smk 1.75",
+      "Amada reader brn smk 2",
+      "Amada reader brn smk 2.25",
+      "Amada reader brn smk 2.5",
+      "Amada reader brn smk 2.75",
+      "Amada reader brn smk 3",
+      "Amada reader brn smk 3.25",
+      "Amada reader brn smk 3.5",
+      "Amada reader brn smk 4",
+      "Amada reader camo 1",
+      "Amada reader camo 1.25",
+      "Amada reader camo 1.5",
+      "Amada reader camo 1.75",
+      "Amada reader camo 2",
+      "Amada reader camo 2.25",
+      "Amada reader camo 2.5",
+      "Amada reader camo 2.75",
+      "Amada reader camo 3",
+      "Amada reader camo 3.25",
+      "Amada reader camo 3.5",
+      "Amada reader camo 4"
+    ],
+    "child_skus": [
+      "Amada reader camo 1.5",
+      "Amada reader brn smk 2",
+      "Amada reader brn smk 2.25",
+      "Amada reader brn smk 2.5",
+      "Amada reader camo 1.75",
+      "Amada reader camo 2",
+      "Amada reader camo 2.25",
+      "Amada reader brn smk 2.75",
+      "Amada reader brn smk 3",
+      "Amada reader brn smk 3.25",
+      "Amada reader brn smk 3.5",
+      "Amada reader brn smk 4",
+      "Amada reader camo 1",
+      "Amada reader camo 1.25",
+      "Amada reader brn brn 1.5",
+      "Amada reader brn brn 1.75",
+      "Amada reader brn brn 2",
+      "Amada reader brn brn 2.25",
+      "Amada reader brn brn 2.5",
+      "Amada reader brn brn 2.75",
+      "Amada reader brn brn 3",
+      "Amada reader brn brn 3.25",
+      "Amada reader brn brn 3.5",
+      "Amada reader brn brn 4",
+      "Amada reader brn smk 1",
+      "Amada reader brn smk 1.25",
+      "Amada reader brn smk 1.5",
+      "Amada reader brn smk 1.75",
+      "Amada reader blk brn 1",
+      "Amada reader blk brn 1.25",
+      "Amada reader blk brn 1.5",
+      "Amada reader blk brn 1.75",
+      "Amada reader blk brn 2",
+      "Amada reader blk brn 2.25",
+      "Amada reader blk brn 2.5",
+      "Amada reader blk brn 2.75",
+      "Amada reader blk brn 3",
+      "Amada reader blk brn 3.25",
+      "Amada reader blk brn 3.5",
+      "Amada reader blk brn 4",
+      "Amada reader blk smk 1",
+      "Amada reader blk smk 1.25",
+      "Amada reader blk smk 1.5",
+      "Amada reader blk smk 1.75",
+      "Amada reader blk smk 2",
+      "Amada reader blk smk 2.25",
+      "Amada reader blk smk 2.5",
+      "Amada reader blk smk 2.75",
+      "Amada reader blk smk 3",
+      "Amada reader blk smk 3.25",
+      "Amada reader blk smk 3.5",
+      "Amada reader blk smk 4",
+      "Amada reader brn brn 1",
+      "Amada reader brn brn 1.25",
+      "Amada reader camo 2.5",
+      "Amada reader camo 2.75",
+      "Amada reader camo 3",
+      "Amada reader camo 3.25",
+      "Amada reader camo 3.5",
+      "Amada reader camo 4"
+    ],
+    "group": {
+      "sku": "B017CMAJ8G",
+      "name": "Squre Reading Sunglasses Sun Readers",
+      "child_skus": [
+        "Amada reader camo 1.5",
+        "Amada reader brn smk 2",
+        "Amada reader brn smk 2.25",
+        "Amada reader brn smk 2.5",
+        "Amada reader camo 1.75",
+        "Amada reader camo 2",
+        "Amada reader camo 2.25",
+        "Amada reader brn smk 2.75",
+        "Amada reader brn smk 3",
+        "Amada reader brn smk 3.25",
+        "Amada reader brn smk 3.5",
+        "Amada reader brn smk 4",
+        "Amada reader camo 1",
+        "Amada reader camo 1.25",
+        "Amada reader brn brn 1.5",
+        "Amada reader brn brn 1.75",
+        "Amada reader brn brn 2",
+        "Amada reader brn brn 2.25",
+        "Amada reader brn brn 2.5",
+        "Amada reader brn brn 2.75",
+        "Amada reader brn brn 3",
+        "Amada reader brn brn 3.25",
+        "Amada reader brn brn 3.5",
+        "Amada reader brn brn 4",
+        "Amada reader brn smk 1",
+        "Amada reader brn smk 1.25",
+        "Amada reader brn smk 1.5",
+        "Amada reader brn smk 1.75",
+        "Amada reader blk brn 1",
+        "Amada reader blk brn 1.25",
+        "Amada reader blk brn 1.5",
+        "Amada reader blk brn 1.75",
+        "Amada reader blk brn 2",
+        "Amada reader blk brn 2.25",
+        "Amada reader blk brn 2.5",
+        "Amada reader blk brn 2.75",
+        "Amada reader blk brn 3",
+        "Amada reader blk brn 3.25",
+        "Amada reader blk brn 3.5",
+        "Amada reader blk brn 4",
+        "Amada reader blk smk 1",
+        "Amada reader blk smk 1.25",
+        "Amada reader blk smk 1.5",
+        "Amada reader blk smk 1.75",
+        "Amada reader blk smk 2",
+        "Amada reader blk smk 2.25",
+        "Amada reader blk smk 2.5",
+        "Amada reader blk smk 2.75",
+        "Amada reader blk smk 3",
+        "Amada reader blk smk 3.25",
+        "Amada reader blk smk 3.5",
+        "Amada reader blk smk 4",
+        "Amada reader brn brn 1",
+        "Amada reader brn brn 1.25",
+        "Amada reader camo 2.5",
+        "Amada reader camo 2.75",
+        "Amada reader camo 3",
+        "Amada reader camo 3.25",
+        "Amada reader camo 3.5",
+        "Amada reader camo 4"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B017CMAJ8G/c13c5ad8-2a73-5200-afa9-7c3a8287189c.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Angel.Stone.Clear.BLK.Trans",
+      "Angel.Stone.Yellow.BLK.Trans"
+    ],
+    "child_skus": [
+      "Angel.Stone.Yellow.BLK.Trans-HC",
+      "Angel.Stone.Yellow.BLK.Trans",
+      "Angel.Stone.Clear.BLK.Trans",
+      "Angel.Stone.Clear.BLK.Trans-HC"
+    ],
+    "group": {
+      "sku": "B01DMNYIHC",
+      "name": "Transition Magnum Rhinestone Black",
+      "child_skus": [
+        "Angel.Stone.Yellow.BLK.Trans-HC",
+        "Angel.Stone.Yellow.BLK.Trans",
+        "Angel.Stone.Clear.BLK.Trans",
+        "Angel.Stone.Clear.BLK.Trans-HC"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B01DMNYIHC/b1c0ef36-fb24-5d26-a47b-da232bc33bc1.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Angel.Stone.Clear.PNK.Trans",
+      "Angel.Stone.Yellow.PNK.Trans"
+    ],
+    "child_skus": [
+      "Angel.Stone.Yellow.PNK.Trans",
+      "Angel.Stone.Yellow.PNK.Trans-HC",
+      "Angel.Stone.Clear.PNK.Trans",
+      "Angel.Stone.Clear.PNK.Trans-HC"
+    ],
+    "group": {
+      "sku": "B01DMS41D8",
+      "name": "Transition Magnum Rhinestone Pink",
+      "child_skus": [
+        "Angel.Stone.Yellow.PNK.Trans",
+        "Angel.Stone.Yellow.PNK.Trans-HC",
+        "Angel.Stone.Clear.PNK.Trans",
+        "Angel.Stone.Clear.PNK.Trans-HC"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B01DMS41D8/e5bc2e7e-ccf9-5ff2-850a-d297a01dcc2a.jpg"
       ]
     }
   },
@@ -147,6 +2229,95 @@
       "description": null,
       "images": [
         "https://images.sellbrite.com/production/5512/B07BX6KMJM/b0a3d759-c7a3-5014-bf86-eca911f366b7.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Camshaft orange",
+      "Camshaft smk/pink",
+      "FM10X30CS"
+    ],
+    "child_skus": [
+      "CFM10X30CS-BK-SMXCLXYL-MFB",
+      "FM10X30CS-BL-MBL-MFB",
+      "Camshaft orange-pink",
+      "Camshaft smk/pink"
+    ],
+    "group": {
+      "sku": "B07BZ2WWNQ",
+      "name": "Bikershades Motorcycle Riding Safety Sunglass Foam Cushioned Men Block 100% UVA and UVB",
+      "child_skus": [
+        "CFM10X30CS-BK-SMXCLXYL-MFB",
+        "FM10X30CS-BL-MBL-MFB",
+        "Camshaft orange-pink",
+        "Camshaft smk/pink"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B07BZ2WWNQ/3ac26ad0-a97d-5e10-9c3f-3c3596d17859.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Vortex z87.1 Smoke black",
+      "Vortex z87.1 Smoke blue",
+      "Vortex z87.1 Smoke brown",
+      "Vortex z87.1 Smoke orange"
+    ],
+    "child_skus": [
+      "Vortex z87.1 Smoke black",
+      "Vortex z87.1 Smoke blue",
+      "Vortex z87.1 Smoke brown",
+      "Vortex z87.1 Smoke orange"
+    ],
+    "group": {
+      "sku": "B07C4KYJTN",
+      "name": "ANSI Z87.1 Wraparound Sports sunglasses for cycling, running, tennis, driving, golf and motorcycle riding.",
+      "child_skus": [
+        "Vortex z87.1 Smoke black",
+        "Vortex z87.1 Smoke blue",
+        "Vortex z87.1 Smoke brown",
+        "Vortex z87.1 Smoke orange"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B07C4KYJTN/dd761075-9adf-5031-a69d-d74994fb3af9.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "FM71X36SLII",
+      "Original Slider pc7140 green",
+      "Slider II Green"
+    ],
+    "child_skus": [
+      "FM71X36SLII-RD-MOR-MFB",
+      "Original Slider pc7140 green",
+      "Slider II Green"
+    ],
+    "group": {
+      "sku": "B07C8GRF5N",
+      "name": "Bikershades Motorcycle Safety Sunglass Goggles Interchangeable Adjustable strap & Removable Foam Cushion",
+      "child_skus": [
+        "FM71X36SLII-RD-MOR-MFB",
+        "Original Slider pc7140 green",
+        "Slider II Green"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B07C8GRF5N/3d087a11-9fd8-5d2e-a794-82c69014b47c.jpg"
       ]
     }
   },
@@ -256,6 +2427,31 @@
       "description": null,
       "images": [
         "https://images.sellbrite.com/production/5512/B0D7FHBXKJ/88eb22a8-8ce5-5ce1-9efb-082fe7c3df1f.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "BB 3012 aviator X 2",
+      "BB 3012 aviator X 4"
+    ],
+    "child_skus": [
+      "BB 3012 aviator X 4",
+      "BB 3012 aviator X 2"
+    ],
+    "group": {
+      "sku": "B0DH8NL31V",
+      "name": "proSPORT Aviator Blue Blocking Sunglasses Classic Light-weight Plastic Teardrop Frame Pack of 2 & 4",
+      "child_skus": [
+        "BB 3012 aviator X 4",
+        "BB 3012 aviator X 2"
+      ],
+      "variation_attributes": [
+        "color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/B0DH8NL31V/27deee89-33ac-50b8-b326-2c384de4ad44.jpg"
       ]
     }
   },
@@ -471,6 +2667,31 @@
   },
   {
     "bases": [
+      "Deep Zipper case BN143H",
+      "Free Zipper case C741"
+    ],
+    "child_skus": [
+      "Deep Zipper case BN143H",
+      "Free Zipper case C741"
+    ],
+    "group": {
+      "sku": "black hard cases",
+      "name": "Black Deluxe Nylon Water Resistant Sunglass Hard Case with zipper and belt clip",
+      "child_skus": [
+        "Deep Zipper case BN143H",
+        "Free Zipper case C741"
+      ],
+      "variation_attributes": [
+        "size"
+      ],
+      "description": "bikershades Store Enter Keywords here: {keywords} -- Frame Type -- With Foam Cushion WithOut Foam Cushion Bifocals Goggles Cover Overs -- Lens Color/Type -- -- Frame Size -- Deluxe Nylon Water Resistant Hard Case - 2 Sizes!     Item Description Protect your sunglasses with a water resistant hard case!  Available in MEDIUM and LARGE sizes: Medium size: 6 1/4\" long x 2 1/2\" wide x 2\" tall.   Large size: 6 1/4\" long x 3\" wide x 2.75\" tall.   FEATURES: Secure zipper closure Water resistant (not water proof for swimming or diving) Hard nylon mesh outer shell (won't crush!) Soft cloth lined interior won't scratch lenses Key / belt clip  Integrated belt loop 1000's sold! View My Other Items For Sale Visit My eBay Store Add me to your Favorite Sellers Featured Categories     About Us Payment Shipping Returns Contact Us   THANK YOU VERY MUCH for viewing our Ebay store. Bikershadescom wants your business! Trust your eyes to no other than Bikershades. Since 2001, Bikershadescom has specialized in the absolute best quality and best fitting motorcycle sunglasses, motorcycle goggles, and prescription motorcycle eyewear at incredible prices. We are serious about biker eyewear, and so should you. Thousands and thousands of satisfied bikers across the world count on Bikershadescom to protect their most important asset while riding - their eyes. Bikershadescom stands behind every sunglass sold. All of our styles have been tried and tested on the road by real, hard core bikers (not mopeds) before we sell them to you. Try on a pair, and you would expect to pay at least 4 to 6 times more for our motorcycle sunglasses. Bikershadescom maintains strict quality standards to make sure you will become our customers for life. 90 Day Warranty: We understand bikers are extremely tough on their motorcycle sunglasses. We know bikers rely on their sunglasses to ride. That is why Bikershadescom offers a full 90 day warranty against defects in workmanship for every pair sold. Don't be surprised if you find yourself wearing the same Bikershades glasses 1 to 2 years from now! THANKS AGAIN FOR YOUR CONTINUED SUPPORT! - Your friends at Bikershadescom. We gladly accept PayPal and all major credit cards including Mastercard, Visa, AMEX and Discover. Combined Shipping: Purchase more than one pair and take advantage of NO additional shipping charges for your 2nd, 3rd, 4th, 5th, 6th, 7th, 8th...pair! So, order a couple of backup pairs, a clear or yellow pair for night riding, or one for a friend! Don't get ever get caught without a spare pair of shades. How long does it take to ship? All orders will be shipped within 24 - 48 business hours via United States Postal Service from CENTRALLY located Dallas, TX, USA (nice!). U.S. orders are normally received 2 - 5 days after leaving our offices. International order shipping times always differ, and normally take 2 - 4 weeks for delivery. However, on rare occasion, some international orders have taken 6 to 8 weeks, depending if Customs decides to inspect the package. Thank you in advance for your patience. International Orders: We ship to North America, South America, Europe, Asia, Africa, and Australia. Please be PATIENT,THANK YOU. Average shipping times for International orders is 2 to 4 weeks. However, some International orders may take 6 to 8 weeks for delivery. Your Customs Office in your country may decide to inspect your package, and we have NO control over that. USPS tracking information is NOT available when package leaves United States borders. Customer will be responsible for lost or stolen mail in international countries once the package has been shown to leave the United States. Customers are responsible for any international duty fees associated with order. Packaging: All orders are packaged in corrugated cardboard boxes tested at 200 lbs per square inch. We don't take any shortcuts! Returns & Exchanges Bikershadescom strives for your 100% satisfaction. We believe in the motto, \"A HAPPY Customer is a REPEAT Customer\" (However, please understand there's nothing we can do for broken glasses if they were run over by your friend's truck, or accidentally used as a weapon.) If you have anything negative you want to tell us, please email us first BEFORE you provide any negative feedback. There's nothing we can't fix. Thank you in advance! Also, please do not file a case before contacting us first. If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. EXCHANGES WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price. To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Ebay User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. ) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. RETURNS WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will refund the shipping fees you incurred for the return.) If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. To return a product, please find the item in My eBay and select Return this Item from the More Actions drop-down menu. From there, you will specify a reason for the return, and print all necessary shipping labels. A 10% restocking fee will be apply. For more information, see: http://pages.ebay.com/help/buy/return-item.html INTERNATIONAL EXCHANGES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price.To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. INTERNATIONAL RETURNS are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will the return shipping fees you incurred for the return.) To return a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return (If the sunglass is too big or too small, we can recommend a style that fits you. Please include the following information: are you male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions. Please Email us from the Ebay site for any questions or concerns. We will respond as quickly as possible, usually within 1 or 2 business days. Sorry, we'd love to talk to all of our customers on the phone, but if we did, we wouldn't get our orders out on time!       Accessories/ Clearance Bifocals Clearance Frame Style Full Lens Sun Readers Fun, Party & Rally Glasses Lens Type Motorcycle Eyewear Polarized Sunglasses proSPORT Sunglasses Other items   Visit Our Store Sunglass Sizing Help Lens and Frame Technology Prescription Sunglass FAQs About Us Contact Us View Feedback Add to Favorite Seller Sign up for Newsletter",
+      "images": [
+        "https://images.sellbrite.com/production/5512/black_hard_cases/c4df104b-fe53-52f3-a0dc-9c5fded2dd06.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
       "A10X16CP",
       "A10X19CP",
       "CA10X16CP"
@@ -556,6 +2777,29 @@
   },
   {
     "bases": [
+      "Brooklyn Wayfarer Yellow 6013ND",
+      "CA60X03BL"
+    ],
+    "child_skus": [
+      "Brooklyn Wayfarer Yellow 6013ND",
+      "CCA60X03BL-BKYLxBKYL"
+    ],
+    "group": {
+      "sku": "CA60X03BL",
+      "name": "Brooklyn Yellow OLD 6013 NEW 6003",
+      "child_skus": [
+        "Brooklyn Wayfarer Yellow 6013ND",
+        "CCA60X03BL-BKYLxBKYL"
+      ],
+      "variation_attributes": [
+        "Color"
+      ],
+      "description": null,
+      "images": []
+    }
+  },
+  {
+    "bases": [
       "A60X17MB",
       "CA60X17MB"
     ],
@@ -631,6 +2875,29 @@
   },
   {
     "bases": [
+      "BB 6085",
+      "CA60X85FW"
+    ],
+    "child_skus": [
+      "BB 6085",
+      "CCA60X85FW-BKHDxBKHD"
+    ],
+    "group": {
+      "sku": "CA60X85FW",
+      "name": "Fareway BB 6085",
+      "child_skus": [
+        "BB 6085",
+        "CCA60X85FW-BKHDxBKHD"
+      ],
+      "variation_attributes": [
+        "Color"
+      ],
+      "description": null,
+      "images": []
+    }
+  },
+  {
+    "bases": [
       "A61X33PB",
       "CA61X33PB"
     ],
@@ -652,6 +2919,29 @@
       "images": [
         "https://images.sellbrite.com/production/5512/CA61X33PB/c48b8c96-5754-5ec6-b553-70a736cb2f48.jpg"
       ]
+    }
+  },
+  {
+    "bases": [
+      "Brooklyn Wayfarer Bblocker 8841",
+      "CA60X03BL"
+    ],
+    "child_skus": [
+      "Brooklyn Wayfarer Bblocker 8841",
+      "CCA60X03BL-BKHDXBKHD"
+    ],
+    "group": {
+      "sku": "CCA60X03BL",
+      "name": "Brooklyn HD OLD 8841 NEW 6003",
+      "child_skus": [
+        "Brooklyn Wayfarer Bblocker 8841",
+        "CCA60X03BL-BKHDXBKHD"
+      ],
+      "variation_attributes": [
+        "Size"
+      ],
+      "description": null,
+      "images": []
     }
   },
   {
@@ -721,6 +3011,37 @@
       "description": "'  ' bikershades (http://emporium.auctiva.com/bikershades) Store '\n\n\nEnter Keywords here: {wfoam dksmk med-lg} -- Frame Type --With Foam CushionWithOut Foam CushionBifocalsGogglesCover Overs   -- Lens Color/Type --   -- Frame Size --   Detonate Motorcycle Sunglasses Smoke     Item Description Detonate motorcycle sunglass goggles feature classic square frames with soft and sweat-proof foam cushions. The perfect wraparound frames protect your eyes from all weather elements such as sun, wind and dust and other irritants. With impact resistant and safety rated POLYCARBONATE lenses, and rubberized nose and ear pieces, Detonate sunglasses are truly functional motorcycle eyewear. Features and Benefits: Impact Resistant Safety POLYCARBONATE Lenses (same material used in helmet visors) Lens Colors: Smoke, Yellow, Tinted Yellow, Clear, Tinted Clear Thicker, Softer, Sweat-Proof Foam 100% UV400 Lenses for Maximum Sun Protection Flex Polycarbonate Frame FREE Deluxe Microfiber Cleaning Case with Drawstring ($5 value) Bikershadescom 90 Day Warranty Fits Medium to Large Head Sizes Compare Bikershadescom Motorcycle Sunglasses with other brands... Bikershadescom Sunglasses vs. Other Sunglasses & Generics Impact resistant polycarbonate lenses. Unsafe acrylic lenses or conventional plastic. Balanced and weighted frames for more comfortable and snug fit. Lightweight, wiggles while riding. Durable MemoryFlex Frames are easier behind the ears. Plastic frames hurt and pinch & easily snap in half. Integrated rubber ear & nose pieces. Bare plastic ear & nose pieces. Thicker, softer, & sweatproof foam gaskets. Thin foam does not seal out wind, absorbs sweat, breaks apart and flattens out. Decentered lenses for focal accuracy. Focal point on lens may be off and cause distortion. Quality craftsmanship. Visible glue residue, foam peels off, parts fall off. Free Microfiber cleaning case with drawstring included. Cloth or plastic cases, or no case at all. 90 Day Bikershadescom Warranty. No warranty. View My Other Items For Sale Visit My eBay Store Add me to your Favorite Sellers Featured Categories     About Us Payment Shipping Returns Contact Us   THANK YOU VERY MUCH for viewing our Ebay store. Bikershadescom wants your business! Trust your eyes to no other than Bikershades. Since 2001, Bikershadescom has specialized in the absolute best quality and best fitting motorcycle sunglasses, motorcycle goggles, and prescription motorcycle eyewear at incredible prices. We are serious about biker eyewear, and so should you. Thousands and thousands of satisfied bikers across the world count on Bikershadescom to protect their most important asset while riding - their eyes. Bikershadescom stands behind every sunglass sold. All of our styles have been tried and tested on the road by real, hard core bikers (not mopeds) before we sell them to you. Try on a pair, and you would expect to pay at least 4 to 6 times more for our motorcycle sunglasses. Bikershadescom maintains strict quality standards to make sure you will become our customers for life. 90 Day Warranty: We understand bikers are extremely tough on their motorcycle sunglasses. We know bikers rely on their sunglasses to ride. That is why Bikershadescom offers a full 90 day warranty against defects in workmanship for every pair sold. Don't be surprised if you find yourself wearing the same Bikershades glasses 1 to 2 years from now! THANKS AGAIN FOR YOUR CONTINUED SUPPORT! - Your friends at Bikershadescom. We gladly accept PayPal and all major credit cards including Mastercard, Visa, AMEX and Discover. Combined Shipping: Purchase more than one pair and take advantage of NO additional shipping charges for your 2nd, 3rd, 4th, 5th, 6th, 7th, 8th...pair! So, order a couple of backup pairs, a clear or yellow pair for night riding, or one for a friend! Don't get ever get caught without a spare pair of shades. How long does it take to ship? All orders will be shipped within 24 - 48 business hours via United States Postal Service from CENTRALLY located Dallas, TX, USA (nice!). U.S. orders are normally received 2 - 5 days after leaving our offices. International order shipping times always differ, and normally take 2 - 4 weeks for delivery. However, on rare occasion, some international orders have taken 6 to 8 weeks, depending if Customs decides to inspect the package. Thank you in advance for your patience. International Orders: We ship to North America, South America, Europe, Asia, Africa, and Australia. Please be PATIENT,THANK YOU. Average shipping times for International orders is 2 to 4 weeks. However, some International orders may take 6 to 8 weeks for delivery. Your Customs Office in your country may decide to inspect your package, and we have NO control over that. USPS tracking information is NOT available when package leaves United States borders. Customer will be responsible for lost or stolen mail in international countries once the package has been shown to leave the United States. Customers are responsible for any international duty fees associated with order. Packaging: All orders are packaged in corrugated cardboard boxes tested at 200 lbs per square inch. We don't take any shortcuts! Returns & Exchanges Bikershadescom strives for your 100% satisfaction. We believe in the motto, \"A HAPPY Customer is a REPEAT Customer\" (However, please understand there's nothing we can do for broken glasses if they were run over by your friend's truck, or accidentally used as a weapon.) If you have anything negative you want to tell us, please email us first BEFORE you provide any negative feedback. There's nothing we can't fix. Thank you in advance! Also, please do not file a case before contacting us first. If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. EXCHANGES WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price. To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Ebay User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. ) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. RETURNS WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will refund the shipping fees you incurred for the return.) If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. To return a product, please find the item in My eBay and select Return this Item from the More Actions drop-down menu. From there, you will specify a reason for the return, and print all necessary shipping labels. A 10% restocking fee will be apply. For more information, see: http://pages.ebay.com/help/buy/return-item.html INTERNATIONAL EXCHANGES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price.To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. INTERNATIONAL RETURNS are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will the return shipping fees you incurred for the return.) To return a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return (If the sunglass is too big or too small, we can recommend a style that fits you. Please include the following information: are you male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions. Please Email us from the Ebay site for any questions or concerns. We will respond as quickly as possible, usually within 1 or 2 business days. Sorry, we'd love to talk to all of our customers on the phone, but if we did, we wouldn't get our orders out on time!       Accessories/ Clearance Bifocals Clearance Frame Style Full Lens Sun Readers Fun, Party & Rally Glasses Lens Type Motorcycle Eyewear Polarized Sunglasses proSPORT Sunglasses Other items     Visit Our Store Sunglass Sizing Help Lens and Frame Technology Prescription Sunglass FAQs About Us Contact Us View Feedback Add to Favorite Seller Sign up for Newsletter",
       "images": [
         "https://images.sellbrite.com/production/5512/Detonate_Foam_27019/3e05572c-9c55-56e9-85ac-59e0afa55996.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Dynamo Flame 6507 Clear",
+      "Dynamo Flame 6507 Smoke",
+      "Dynamo Flame 6507 Yellow"
+    ],
+    "child_skus": [
+      "Dynamo Flame 6507 Clear",
+      "Dynamo Flame 6507 Yellow",
+      "Dynamo Flame 6507 Smoke"
+    ],
+    "group": {
+      "sku": "Dynamo Flame 6507",
+      "name": "Z87 Motorcycle Safety Sun Glasses Goggles Flame Clear Yellow Night Riding Mens",
+      "child_skus": [
+        "Dynamo Flame 6507 Clear",
+        "Dynamo Flame 6507 Yellow",
+        "Dynamo Flame 6507 Smoke"
+      ],
+      "variation_attributes": [
+        "lens color"
+      ],
+      "description": "bikershades Store Enter Keywords here: {wfoam ladiesfit sm-med med-lg yell cl dksmk} -- Frame Type -- With Foam Cushion WithOut Foam Cushion Bifocals Goggles Cover Overs -- Lens Color/Type -- -- Frame Size -- Dynamo Motorcycle Sunglasses with Flame Design     Item Description The Dynamo Motorcycle sunglasses with Flame temples are equipped with durable and high quality ANSI Z-87 safety rated lenses, which means the Dynamo can stand up in the harshest conditions.   The high performance polycarbonate flex frames shield your eyes completely from the harmful UV rays, wind and dust from all angles. The Dynamo biker glasses are one of our best fitting and versatile frames.   Features and Benefits: Impact resistant Polycarbonate lenses (same material used in helmet visors) Indestructible ANSI Z87 Polycarbonate frames with Memory Flex Thicker, softer, sweat proof foam 100% UV400 lenses for maximum sun protection Comfortable, flexible rubber earpieces don't hurt behind your ears. Dynamo is an extremely versatile frame, perfect for both men and women. FREE deluxe microfiber cleaning case with drawstring included with each pair ($5 value) Available smoke, clear and yellow lenses. Fits Medium to LARGE heads. Compare Bikershadescom Motorcycle Sunglasses with other brands... Bikershadescom Sunglasses vs. Other Sunglasses & Generics Impact resistant polycarbonate lenses. Unsafe acrylic lenses or conventional plastic. Balanced and weighted frames for more comfortable and snug fit. Lightweight, wiggles while riding. Durable MemoryFlex Frames are easier behind the ears. Plastic frames hurt and pinch & easily snap in half. Integrated rubber ear & nose pieces. Bare plastic ear & nose pieces. Thicker, softer, & sweat proof foam gaskets. Thin foam does not seal out wind, absorbs sweat, breaks apart and flattens out. Decentered lenses for focal accuracy. Focal point on lens may be off and cause distortion. Quality craftsmanship. Visible glue residue, foam peels off, parts fall off. Free Microfiber cleaning case with drawstring included. Cloth or plastic cases, or no case at all. 90 Day Bikershadescom Warranty. No warranty. View My Other Items For Sale Visit My eBay Store Add me to your Favorite Sellers Featured Categories     About Us Payment Shipping Returns Contact Us   THANK YOU VERY MUCH for viewing our Ebay store. Bikershadescom wants your business! Trust your eyes to no other than Bikershades. Since 2001, Bikershadescom has specialized in the absolute best quality and best fitting motorcycle sunglasses, motorcycle goggles, and prescription motorcycle eyewear at incredible prices. We are serious about biker eyewear, and so should you. Thousands and thousands of satisfied bikers across the world count on Bikershadescom to protect their most important asset while riding - their eyes. Bikershadescom stands behind every sunglass sold. All of our styles have been tried and tested on the road by real, hard core bikers (not mopeds) before we sell them to you. Try on a pair, and you would expect to pay at least 4 to 6 times more for our motorcycle sunglasses. Bikershadescom maintains strict quality standards to make sure you will become our customers for life. 90 Day Warranty: We understand bikers are extremely tough on their motorcycle sunglasses. We know bikers rely on their sunglasses to ride. That is why Bikershadescom offers a full 90 day warranty against defects in workmanship for every pair sold. Don't be surprised if you find yourself wearing the same Bikershades glasses 1 to 2 years from now! THANKS AGAIN FOR YOUR CONTINUED SUPPORT! - Your friends at Bikershadescom. We gladly accept PayPal and all major credit cards including Mastercard, Visa, AMEX and Discover. Combined Shipping: Purchase more than one pair and take advantage of NO additional shipping charges for your 2nd, 3rd, 4th, 5th, 6th, 7th, 8th...pair! So, order a couple of backup pairs, a clear or yellow pair for night riding, or one for a friend! Don't get ever get caught without a spare pair of shades. How long does it take to ship? All orders will be shipped within 24 - 48 business hours via United States Postal Service from CENTRALLY located Dallas, TX, USA (nice!). U.S. orders are normally received 2 - 5 days after leaving our offices. International order shipping times always differ, and normally take 2 - 4 weeks for delivery. However, on rare occasion, some international orders have taken 6 to 8 weeks, depending if Customs decides to inspect the package. Thank you in advance for your patience. International Orders: We ship to North America, South America, Europe, Asia, Africa, and Australia. Please be PATIENT,THANK YOU. Average shipping times for International orders is 2 to 4 weeks. However, some International orders may take 6 to 8 weeks for delivery. Your Customs Office in your country may decide to inspect your package, and we have NO control over that. USPS tracking information is NOT available when package leaves United States borders. Customer will be responsible for lost or stolen mail in international countries once the package has been shown to leave the United States. Customers are responsible for any international duty fees associated with order. Packaging: All orders are packaged in corrugated cardboard boxes tested at 200 lbs per square inch. We don't take any shortcuts! Returns & Exchanges Bikershadescom strives for your 100% satisfaction. We believe in the motto, \"A HAPPY Customer is a REPEAT Customer\" (However, please understand there's nothing we can do for broken glasses if they were run over by your friend's truck, or accidentally used as a weapon.) If you have anything negative you want to tell us, please email us first BEFORE you provide any negative feedback. There's nothing we can't fix. Thank you in advance! Also, please do not file a case before contacting us first. If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. EXCHANGES WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price. To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Ebay User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. ) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. RETURNS WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will refund the shipping fees you incurred for the return.) If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. To return a product, please find the item in My eBay and select Return this Item from the More Actions drop-down menu. From there, you will specify a reason for the return, and print all necessary shipping labels. A 10% restocking fee will be apply. For more information, see: http://pages.ebay.com/help/buy/return-item.html INTERNATIONAL EXCHANGES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price.To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. INTERNATIONAL RETURNS are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will the return shipping fees you incurred for the return.) To return a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return (If the sunglass is too big or too small, we can recommend a style that fits you. Please include the following information: are you male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions. Please Email us from the Ebay site for any questions or concerns. We will respond as quickly as possible, usually within 1 or 2 business days. Sorry, we'd love to talk to all of our customers on the phone, but if we did, we wouldn't get our orders out on time!       Accessories/ Clearance Bifocals Clearance Frame Style Full Lens Sun Readers Fun, Party & Rally Glasses Lens Type Motorcycle Eyewear Polarized Sunglasses proSPORT Sunglasses Other items   Visit Our Store Sunglass Sizing Help Lens and Frame Technology Prescription Sunglass FAQs About Us Contact Us View Feedback Add to Favorite Seller Sign up for Newsletter",
+      "images": [
+        "https://images.sellbrite.com/production/5512/Dynamo_Flame_6507/ab32c728-7522-570c-981e-6ff70f3455f6.jpg",
+        "https://images.sellbrite.com/production/5512/Dynamo_Flame_6507/d0620666-5c9e-5f04-8916-2cec46095c2f.jpg",
+        "https://images.sellbrite.com/production/5512/Dynamo_Flame_6507/03398c00-2baf-5a5c-b729-46db7302b76b.jpg",
+        "https://images.sellbrite.com/production/5512/Dynamo_Flame_6507/57729ed5-bfb6-578c-ae78-b475235801f0.jpg"
       ]
     }
   },
@@ -946,6 +3267,116 @@
       ],
       "description": null,
       "images": []
+    }
+  },
+  {
+    "bases": [
+      "Flavor Flav",
+      "Gold Digger"
+    ],
+    "child_skus": [
+      "Gold Digger-Silver-Smoke",
+      "Gold Digger-Gold-Brown",
+      "Flavor Flav-Black",
+      "Flavor Flav-White",
+      "Flavor Flav-Purple",
+      "Flavor Flav-Pink",
+      "Gold Digger-Gunmetal-Smoke"
+    ],
+    "group": {
+      "sku": "Gradient Aviator Sunglasses",
+      "name": "Flavor Flav 2067",
+      "child_skus": [
+        "Gold Digger-Silver-Smoke",
+        "Gold Digger-Gold-Brown",
+        "Flavor Flav-Black",
+        "Flavor Flav-White",
+        "Flavor Flav-Purple",
+        "Flavor Flav-Pink",
+        "Gold Digger-Gunmetal-Smoke"
+      ],
+      "variation_attributes": [
+        "Lens and Frame Color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/Gradient_Aviator_Sunglasses/10a57497-8dd9-5cf9-aa8b-832f6b162fd0.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "Ironman 71961 blk",
+      "Ironman 71961 blue",
+      "Ironman 71961 orange",
+      "Ironman 71961 red",
+      "Ironman 71961 silver",
+      "Ironman 71961 white"
+    ],
+    "child_skus": [
+      "Ironman 71961 blk",
+      "Ironman 71961 red",
+      "Ironman 71961 silver",
+      "Ironman 71961 orange",
+      "Ironman 71961 blue",
+      "Ironman 71961 white"
+    ],
+    "group": {
+      "sku": "Ironman 71961",
+      "name": "Sport golf fishing running cycling driving Sunglasses glasses polycarbonate lens",
+      "child_skus": [
+        "Ironman 71961 blk",
+        "Ironman 71961 red",
+        "Ironman 71961 silver",
+        "Ironman 71961 orange",
+        "Ironman 71961 blue",
+        "Ironman 71961 white"
+      ],
+      "variation_attributes": [
+        "frame color"
+      ],
+      "description": "bikershades Store Enter Keywords here: {wofoam dksmk, ladiesfit sm-med med-lg} -- Frame Type -- With Foam Cushion WithOut Foam Cushion Bifocals Goggles Cover Overs -- Lens Color/Type -- -- Frame Size -- Ironman Wraparound Sports Sunglasses Click to view supersized imageClick to view supersized imageClick to view supersized imageClick to view supersized image     Item Description Compete at your optimum level with our Ironman Half Frame Wraparound Sports sunglasses. Equipped with optical quality UV400 polycarbonate lenses, UltraGrip™ rubber nose and ear pieces, Ironman performance sport sunglasses will keep your vision focused on the game so you can always compete at your highest level. Lightweight wraparound semi rimless frame shields your eyes and eliminates distraction from harmful ultraviolet rays, wind, dust and debris. Take advantage of our amazing EBAY offer. MSRP on these glasses is normally $24.99!   Features and Benefits: Super sleek and modern, cutting edge designs Impact resistant UV400 polycarbonate lenses Memory Flex™ frames retain shape in heat and more forgiving behind the ears. UltraGrip™ rubber nose pieces and earpieces - prevents slippage when wet.Super lightweight & comfortable Memory Flex frames FREE Deluxe Microfiber Cleaning Case. (a $5 Value) Fits Medium to Large heads Perfect for Fishing, Boating, Golf, Cycling, Running, Tennis, Baseball, Volleyball, Target Sports, Driving, and Motorcycle. Bikershadescom 90 day warranty. View My Other Items For Sale Add me to your Favorite Sellers Visit My eBay Store Featured Categories     About Us Payment Shipping Returns Contact Us   THANK YOU VERY MUCH for viewing our Ebay store. Bikershadescom wants your business! Trust your eyes to no other than Bikershades. Since 2001, Bikershadescom has specialized in the absolute best quality and best fitting motorcycle sunglasses, motorcycle goggles, and prescription motorcycle eyewear at incredible prices. We are serious about biker eyewear, and so should you. Thousands and thousands of satisfied bikers across the world count on Bikershadescom to protect their most important asset while riding - their eyes. Bikershadescom stands behind every sunglass sold. All of our styles have been tried and tested on the road by real, hard core bikers (not mopeds) before we sell them to you. Try on a pair, and you would expect to pay at least 4 to 6 times more for our motorcycle sunglasses. Bikershadescom maintains strict quality standards to make sure you will become our customers for life. 90 Day Warranty: We understand bikers are extremely tough on their motorcycle sunglasses. We know bikers rely on their sunglasses to ride. That is why Bikershadescom offers a full 90 day warranty against defects in workmanship for every pair sold. Don't be surprised if you find yourself wearing the same Bikershades glasses 1 to 2 years from now! THANKS AGAIN FOR YOUR CONTINUED SUPPORT! - Your friends at Bikershadescom. We gladly accept PayPal and all major credit cards including Mastercard, Visa, AMEX and Discover. Combined Shipping: Purchase more than one pair and take advantage of NO additional shipping charges for your 2nd, 3rd, 4th, 5th, 6th, 7th, 8th...pair! So, order a couple of backup pairs, a clear or yellow pair for night riding, or one for a friend! Don't get ever get caught without a spare pair of shades. How long does it take to ship? All orders will be shipped within 24 - 48 business hours via United States Postal Service from CENTRALLY located Dallas, TX, USA (nice!). U.S. orders are normally received 2 - 5 days after leaving our offices. International order shipping times always differ, and normally take 2 - 4 weeks for delivery. However, on rare occasion, some international orders have taken 6 to 8 weeks, depending if Customs decides to inspect the package. Thank you in advance for your patience. International Orders: We ship to North America, South America, Europe, Asia, Africa, and Australia. Please be PATIENT,THANK YOU. Average shipping times for International orders is 2 to 4 weeks. However, some International orders may take 6 to 8 weeks for delivery. Your Customs Office in your country may decide to inspect your package, and we have NO control over that. USPS tracking information is NOT available when package leaves United States borders. Customer will be responsible for lost or stolen mail in international countries once the package has been shown to leave the United States. Customers are responsible for any international duty fees associated with order. Packaging: All orders are packaged in corrugated cardboard boxes tested at 200 lbs per square inch. We don't take any shortcuts! Returns & Exchanges Bikershadescom strives for your 100% satisfaction. We believe in the motto, \"A HAPPY Customer is a REPEAT Customer\" (However, please understand there's nothing we can do for broken glasses if they were run over by your friend's truck, or accidentally used as a weapon.) If you have anything negative you want to tell us, please email us first BEFORE you provide any negative feedback. There's nothing we can't fix. Thank you in advance! Also, please do not file a case before contacting us first. If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. EXCHANGES WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price. To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Ebay User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. ) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. RETURNS WITHIN UNITED STATES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will refund the shipping fees you incurred for the return.) If the sunglass is too big or too small, we can recommend a style that fits you. Please email us the following information: are you male or female?, your helmet size?, height and weight?, and anything unique about your nose bridge (high, low, normal)? Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too. To return a product, please find the item in My eBay and select Return this Item from the More Actions drop-down menu. From there, you will specify a reason for the return, and print all necessary shipping labels. A 10% restocking fee will be apply. For more information, see: http://pages.ebay.com/help/buy/return-item.html INTERNATIONAL EXCHANGES are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. You will receive credit for the full purchase price.To exchange a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return or Exchange (If the sunglass is too big or too small, we can recommend a style that fits you. Please let us know if you are a male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions, and send you a PayPal bill to cover postage required to send a new pair back to you. INTERNATIONAL RETURNS are accepted within 14 days after delivery date. Product must be in original condition and packaging. Sunglasses must not have been worn. We will gladly refund back the full purchase amount minus the original shipping and handling fees. Customer is responsible for postage to ship product back to us. (If, on rare occasion, the sunglasses are defective, we will the return shipping fees you incurred for the return.) To return a product, please obtain a \"Return Authorization\" from us by emailing us the following information: 1. Buyer User ID 2. Item # 3. Date of Purchase 4. Reason for Return (If the sunglass is too big or too small, we can recommend a style that fits you. Please include the following information: are you male or female, your helmet size, height and weight, and anything unique about your nose bridge. Click on the 'Sunglass Sizing Help' Link on the 'Helpful Links' section on the right, and include your head size too.) We will reply to your email with specific instructions. Please Email us from the Ebay site for any questions or concerns. We will respond as quickly as possible, usually within 1 or 2 business days. Sorry, we'd love to talk to all of our customers on the phone, but if we did, we wouldn't get our orders out on time!       Accessories/ Clearance Bifocals Clearance Frame Style Full Lens Sun Readers Fun, Party & Rally Glasses Lens Type Motorcycle Eyewear Polarized Sunglasses proSPORT Sunglasses Other items   Visit Our Store Sunglass Sizing Help Lens and Frame Technology Prescription Sunglass FAQs About Us Contact Us View Feedback Add to Favorite Seller Sign up for Newsletter",
+      "images": [
+        "https://images.sellbrite.com/production/5512/Ironman_71961/2b6d278c-d44d-5f38-b3ac-4ba468494ff3.jpg",
+        "https://images.sellbrite.com/production/5512/Ironman_71961/c48248d0-3b61-5a6e-ba65-47b8b1494ec2.jpg",
+        "https://images.sellbrite.com/production/5512/Ironman_71961/2d905816-147c-5a3d-aa8c-467cf2837f97.jpg",
+        "https://images.sellbrite.com/production/5512/Ironman_71961/568d0b0a-fead-58b8-ae8f-3e0cbc01841d.jpg"
+      ]
+    }
+  },
+  {
+    "bases": [
+      "LO90X35HB",
+      "Locs 9035",
+      "Locs 9035 MBK",
+      "Locs 9035 WH"
+    ],
+    "child_skus": [
+      "LO90X35HB-GBK-SM",
+      "LO90X35HB-MBK-SM",
+      "LO90X35HB-WH-SM",
+      "Locs 9035-GBK-SM X GBK-SM",
+      "Locs 9035 MBK-SM X MBK-SM",
+      "Locs 9035 WH-SM X WH-SM"
+    ],
+    "group": {
+      "sku": "LO90X35HB",
+      "name": "Locs Hombre 9035",
+      "child_skus": [
+        "LO90X35HB-GBK-SM",
+        "LO90X35HB-MBK-SM",
+        "LO90X35HB-WH-SM",
+        "Locs 9035-GBK-SM X GBK-SM",
+        "Locs 9035 MBK-SM X MBK-SM",
+        "Locs 9035 WH-SM X WH-SM"
+      ],
+      "variation_attributes": [
+        "Color"
+      ],
+      "description": null,
+      "images": [
+        "https://images.sellbrite.com/production/5512/LO90X35HB/169f8b41-c7d1-52c0-b42e-008c3a6a7d97.jpg"
+      ]
     }
   },
   {
