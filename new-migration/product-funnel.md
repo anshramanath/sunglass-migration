@@ -48,6 +48,18 @@ All 8 flagged are variable products that lost every variation at validate_variat
 | Morocco Mirror | All variations had SKU base mismatch |
 | Professor Multifocal Reader | 1 variation had a space in SKU (remaining 23 pass) |
 
+### veeqo_items — 161 → 154 passed, 7 flagged
+
+| Product | Absent SKUs | Note |
+|---|---|---|
+| Verbena Sunglass Readers | 45/45 | Entirely absent from Veeqo |
+| Bypass Bifocal | 36/36 | Entirely absent from Veeqo |
+| Gullwing Bifocal | 44/44 | Entirely absent from Veeqo |
+| Brooklyn Reader | 18/18 | Entirely absent from Veeqo |
+| Iris Bifocal | 12/12 | Entirely absent from Veeqo |
+| Cooper Polarized Bifocal | 8/8 | Entirely absent from Veeqo |
+| Sharkbait Polarized Bifocal | 7/16 | Low powers present, high powers (1.25+) absent |
+
 ---
 
 ## Monster
@@ -84,6 +96,16 @@ All 7 flagged are variable products with no valid variations remaining:
 | Kumatage Bifocal | All variations had SKU base mismatch (BF2X6KT vs BF4X7KT) |
 | Morocco Mirror | All variations had SKU base mismatch + 1 missing price |
 | Professor Multifocal Reader | 1 variation had a space in SKU (remaining 23 pass) |
+
+### veeqo_items — 260 → 255 passed, 5 flagged
+
+| Product | Absent SKUs | Note |
+|---|---|---|
+| Verbena Sun Reader | 1/63 | Single high-power variation absent |
+| Cooper Polarized Bifocal | 4/20 | High powers (2.50+) absent |
+| Sharkbait Polarized Bifocal | 7/16 | High powers (1.25+) absent |
+| Mysto Sunglasses | 4/4 | Entirely absent — likely discontinued, never added to Veeqo |
+| Nautica Polarized Sunglasses | 3/3 | Entirely absent — likely discontinued, never added to Veeqo |
 
 ---
 
@@ -132,6 +154,14 @@ BikerShades has many non-product WooCommerce entries: Rx services, reseller item
 | Try Before You Buy deposits | 7 | Non-product SKU (TRYB4UB- prefix) |
 | Rx frames (BikerArmour, 7eye/Ziena, Wiley X) | 94 | Non-product SKU (-RX token / HIGHRX suffix) |
 | Warranty + Face Masks | 2 | Duplicate SKUs across variations |
+
+### veeqo_items — 461 → 458 passed, 3 flagged
+
+| Product | Absent SKUs | Note |
+|---|---|---|
+| Cabot Photochromic Computer Reader | 8/10 | High powers (2.50+) absent |
+| Edison Photochromic Computer Reader | 8/10 | High powers (2.50+) absent |
+| Hawkeye HD Bifocal | 20/26 | High powers (2.25+) absent |
 
 ---
 
