@@ -7,9 +7,9 @@ Migrates brand product data from WooCommerce to Supabase using the authenticated
 
 | Brand | Slug | Store URL | Status |
 |-------|------|-----------|--------|
-| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | 🔄 Run 2 in progress |
-| Sunglass Monster | `monster` | sunglassmonster.com | 🔄 In Progress |
-| BikerShades | `bikershades` | bikershades.com | 🔄 In Progress |
+| proSPORT Sunglasses | `prosport` | prosportsunglasses.com | 🔄 create-items done, categorize → download → upload → import next |
+| Sunglass Monster | `monster` | sunglassmonster.com | 🔄 create-items done, write monster_categorize_items.py next |
+| BikerShades | `bikershades` | bikershades.com | 🔄 create-items done, write bikershades_categorize_items.py next |
 
 Set `BRAND=prosport`, `BRAND=monster`, or `BRAND=bikershades` in `.env` to select the active brand.
 
@@ -21,19 +21,20 @@ Set `BRAND=prosport`, `BRAND=monster`, or `BRAND=bikershades` in `.env` to selec
 new-migration/
   pipeline/      ← fetch, slim, validate, reshape, create, categorize, download, upload, import
   analysis/      ← per-stage field coverage and stats scripts
-  qa/            ← per-stage audit and verify scripts
+  qa/            ← per-stage audit, verify, and informational check scripts
   config/        ← shared BRAND_CONFIG + load_brand() module
   db/            ← schema SQL (001_initial_schema.sql, drop_schema.sql)
   data/          ← per-brand output (data/{slug}/...)
+  product-funnel.md ← per-stage counts, flagging rationale, open questions
   docs/
     prosport/
       build-run/ ← notes from building the pipeline
       run-1/     ← full ProSport run-1 notes + summary (old pipeline)
       run-2/     ← ProSport run-2 (all pipeline improvements applied)
     monster/
-      build-run/ ← Monster migration run notes (in progress)
+      build-run/ ← Monster migration run notes
     bikershades/
-      build-run/ ← BikerShades migration run notes (in progress)
+      build-run/ ← BikerShades migration run notes
 ```
 
 ---
@@ -64,6 +65,12 @@ python pipeline/bikershades_categorize_items.py   # or prosport_ / monster_
 python pipeline/download_items.py
 python pipeline/upload_items.py
 python pipeline/import_items.py
+
+# QA / analysis (run at each stage)
+python qa/veeqo_items.py        # informational Veeqo SKU check (stdout only)
+python analysis/analyze_items.py
+python qa/audit_create_items.py
+python qa/verify_create_items.py
 ```
 
 ---
@@ -108,60 +115,44 @@ BIKERSHADES_CONSUMER_SECRET=...
 
 All verify scripts: **PASSED**. Full summary: `new-migration/docs/prosport/run-1/migration-complete/summary.md`
 
-## ProSport — Run 2 (in progress, all pipeline improvements)
+---
 
-Re-run with: null weight/dims for variable products, sortOrder on images, weightUnit/dimensionUnit fields, category sortOrder on every node, import as pure insertion.
+## Current pipeline state (full re-run from scratch)
+
+### ProSport
 
 | Stage | Count | Status |
 |-------|-------|--------|
 | validate-products | 169 passed, 2 flagged | ✅ |
-| validate-variations | 1,740 passed, 18 flagged | ✅ |
-| reshape-products | 169 | ✅ |
-| reshape-variations | 1,740 | ✅ |
-| create-items | 166 items, 3 flagged | ✅ |
-| categorize-items | 166 items, 197 assignments | ✅ |
-| download-items | — | ⏳ Next |
+| validate-variations | 1,669 passed, 89 flagged | ✅ |
+| create-items | 161 items, 8 flagged, 1,646 vars | ✅ |
+| categorize-items | — | ⏳ Next |
+| download-items | — | ⏳ |
 | upload-items | — | ⏳ |
 | import | — | ⏳ |
 
-3 products flagged (2145, 2211, 1208) — fix SKU spaces + missing price in WooCommerce, re-run to add them.
-
----
-
-## Monster — In Progress
+### Monster
 
 | Stage | Count | Status |
 |-------|-------|--------|
-| fetch-products | 277 | ✅ |
 | validate-products | 267 passed, 10 flagged | ✅ |
-| fetch-variations | 242 products, 2,673 variations | ✅ |
-| validate-variations | 2,673 passed, 2 flagged | ✅ |
-| reshape-products | 267 | ✅ |
-| reshape-variations | 2,673 | ✅ |
-| create-items | 265 items, 2 flagged | ✅ |
-| categorize-items | — | ⏳ Next |
+| validate-variations | 2,560 passed, 115 flagged | ✅ |
+| create-items | 260 items, 7 flagged, 2,537 vars | ✅ |
+| categorize-items | — | ⏳ Write script next |
 | download-items | — | ⏳ |
 | upload-items | — | ⏳ |
 | import | — | ⏳ |
 
-12 items to fix in WooCommerce before they can be imported (10 flagged products + 2 flagged create-items).
-
----
-
-## BikerShades — In Progress
+### BikerShades
 
 | Stage | Count | Status |
 |-------|-------|--------|
-| fetch-products | 704 | ✅ |
 | validate-products | 611 passed, 93 flagged | ✅ |
-| fetch-variations | ~427 products, 5,993 variations | ✅ |
-| validate-variations | 4,839 passed, 1,154 flagged | ✅ |
-| reshape-products | 611 | ✅ |
-| reshape-variations | 4,839 | ✅ |
-| create-items | 553 items, 58 flagged | ✅ |
-| categorize-items | — | ⏳ Next |
+| validate-variations | 5,299 passed, 694 flagged | ✅ |
+| create-items | 461 items, 150 flagged, 5,239 vars | ✅ |
+| categorize-items | — | ⏳ Write script next |
 | download-items | — | ⏳ |
 | upload-items | — | ⏳ |
 | import | — | ⏳ |
 
-58 flagged create-items — mostly WooCommerce junk or products whose variations were all excluded at validate (base SKU mismatch).
+See `new-migration/product-funnel.md` for full per-stage breakdown and flagging rationale.
