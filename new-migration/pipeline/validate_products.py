@@ -1,3 +1,4 @@
+import csv
 import html
 import json
 import os
@@ -13,6 +14,17 @@ brand_key, config = load_brand()
 slug       = config["slug"]
 brand_name = config["brand_name"]
 data = json.loads((BASE / "data" / slug / "slim-products" / "products.json").read_text())
+
+csv_candidates = sorted((BASE.parent).glob("sellables_export*.csv"))
+if not csv_candidates:
+    raise SystemExit(f"No sellables_export*.csv found in {BASE.parent}")
+
+veeqo_skus = set()
+with open(csv_candidates[0], newline="", encoding="utf-8-sig") as f:
+    for row in csv.DictReader(f):
+        sku = row.get("sku_code", "").strip()
+        if sku:
+            veeqo_skus.add(sku)
 
 out_dir = BASE / "data" / slug / "validate-products"
 out_dir.mkdir(parents=True, exist_ok=True)
@@ -112,6 +124,11 @@ for p in data:
         err(pid, f"duplicate sku {sku!r} already seen on id={seen_skus[sku]}")
     else:
         seen_skus[sku] = pid
+
+    # Veeqo presence: simple products only (variable products checked at variation level)
+    if not is_variable:
+        if not sku or sku not in veeqo_skus:
+            err(pid, "not in Veeqo")
 
     # price: valid number greater than zero
     price = p.get("price")
