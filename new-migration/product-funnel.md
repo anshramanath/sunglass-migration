@@ -1,6 +1,21 @@
 # Product Funnel — WooCommerce → create_items
-_Pipeline: fetch → slim → validate → reshape → create_items_
-_Updated: 2026-06-05. Veeqo gate now integrated into validate steps (no separate veeqo_items step)._
+_Pipeline: fetch → slim → validate_products → fetch_variations → slim_variations → validate_variations → reshape → create_items_
+_Updated: 2026-06-05_
+
+---
+
+## Validation rules
+
+**Simple products** are flagged if:
+1. SKU not in Veeqo
+2. SKU has no NNXnn model number (digits + X + digits)
+
+**Variations** are flagged if:
+1. SKU not in Veeqo
+2. SKU has no NNXnn model number
+3. Has NNXnn but it differs from siblings in the same product (model mismatch)
+
+Variable products pass or fail at validate_products unconditionally — only their variations are gated. A variable product is dropped at create_items if it ends up with no filled variations after gating.
 
 ---
 
@@ -8,186 +23,246 @@ _Updated: 2026-06-05. Veeqo gate now integrated into validate steps (no separate
 
 | Stage | ProSport | Monster | BikerShades |
 |---|---|---|---|
-| Fetched (products) | 171 | 277 | 704 |
-| Validated products | 169 (-2) | 267 (-10) | 611 (-93) |
-| Fetched (variations) | 1,758 | 2,675 | 5,993 |
-| Validated variations | 1,528 (-230) | 2,582 (-93) | 5,585 (-408) |
-| **create_items passed** | **156 (-13)** | **257 (-10)** | **474 (-137)** |
-| **Total lost** | **15 of 171 (9%)** | **20 of 277 (7%)** | **230 of 704 (33%)** |
+| Fetched products | 171 | 277 | 704 |
+| Validated products | 165 (-6) | 268 (-9) | 541 (-163) |
+| Fetched variations | 1,794 | 2,796 | 6,165 |
+| Validated variations | 1,519 (-275) | 2,591 (-205) | 4,425 (-1,740) |
+| **create_items passed** | **148 (-17)** | **243 (-25)** | **401 (-140)** |
+| Variations embedded | 1,505 | 2,499 | 4,383 |
 
 ---
 
 ## ProSport
 
-### validate_products — 171 → 169 passed, 2 flagged
-| Reason | Count |
-|---|---|
-| Draft status + no slug | 1 |
-| No SKU | 1 |
+### validate_products — 171 → 165 passed, 6 flagged
 
-### validate_variations — 1,758 → 1,528 passed, 230 flagged
+| Product | Reasons |
+|---|---|
+| Sunglass String Chum Strap | not in Veeqo + no model |
+| Ruby Extra Large Zipper Case | no model |
+| Diamond Chrome Hard Case | no model |
+| Sunglasses Repair Kit | no model |
+| Sunglasses Repair Screw Driver | no model |
+| Sunglasses Lens Cleaner | no model |
+
+All accessories/non-product simple products.
+
+### validate_variations — 1,794 → 1,519 passed, 275 flagged
+
 | Reason | Count |
 |---|---|
-| Not in Veeqo | 198 |
+| Not in Veeqo | ~240 |
 | Model mismatch: BF2X6KT vs BF4X7KT (Kumatage) | 24 |
-| Model mismatch: CA10X15CP vs CA10X16CP (Chipper) | 4 |
+| No NNXnn model | ~10 |
 | Model mismatch: FLPL7X59SB vs FLPL73X31SB (Sharkbait Float) | 3 |
-| Price missing | 1 |
+| Model mismatch: CA10X15CP vs CA10X16CP (Chipper) | 4 |
 
-The 198 Veeqo drops are variations that exist in WooCommerce but have no Veeqo presence — likely discontinued or never stocked. The 31 model mismatch flags span 3 products where WooCommerce mixed different frame families into one variable product.
+Not-in-Veeqo covers the full variation sets for: Cabriolet Mirror Bifocal (Copy) (36), Verbena (45), Bypass Bifocal (36), Gullwing Bifocal (44), Eliminator Polarized Bifocal (16), Iris Bifocal (12), Brooklyn Reader (18), Cooper Polarized Bifocal (8), Cooper Bifocal (12), and partial sets for Sharkbait Polarized Bifocal (7) and Sharkbait Polarized Float (3).
 
-### create_items — 169 → 156 passed, 13 flagged
-11 variable products lost all their variations at validate_variations:
+### create_items — 165 → 148 passed, 17 flagged
 
-| Product | Reason |
+| Product | Flag |
 |---|---|
-| Sharkbait Polarized Float | All variations: model mismatch (FLPL7X59 vs FLPL73X31) |
-| Chipper Aviator | All variations: model mismatch (CA10X15 vs CA10X16) |
-| Kumatage Bifocal | All variations: model mismatch (BF2X6KT vs BF4X7KT) |
-| Verbena Sunglass Readers | All variations: not in Veeqo |
-| Bypass Bifocal | All variations: not in Veeqo |
-| Gullwing Bifocal | All variations: not in Veeqo |
-| Brooklyn Reader | All variations: not in Veeqo |
-| Iris Bifocal | All variations: not in Veeqo |
-| Cooper Polarized Bifocal | All variations: not in Veeqo |
-| Eliminator Polarized Bifocal | All variations: not in Veeqo |
-| Morocco Mirror | All variations: not in Veeqo |
-
-2 additional products have partial variation loss but still pass:
-
-| Product | Reason |
-|---|---|
-| Sharkbait Polarized Bifocal | Some high-power variations not in Veeqo; lower powers pass |
-| Professor Multifocal Reader | 1 variation missing price; remaining 23 pass |
+| Cabriolet Mirror Bifocal (Copy) | no filled variations (all not in Veeqo) |
+| Verbena Sunglass Readers | no filled variations (all not in Veeqo) |
+| Bypass Bifocal | no filled variations (all not in Veeqo) |
+| Gullwing Bifocal | no filled variations (all not in Veeqo) |
+| Eliminator Polarized Bifocal | no filled variations (all not in Veeqo) |
+| Iris Bifocal | no filled variations (all not in Veeqo) |
+| Brooklyn Reader | no filled variations (all not in Veeqo) |
+| Cooper Polarized Bifocal | no filled variations (all not in Veeqo) |
+| Cooper Bifocal | no filled variations (all not in Veeqo) |
+| Sharkbait Polarized Float Sunglasses | no filled variations (model mismatch) |
+| Chipper Aviator Sunglasses | no filled variations (model mismatch) |
+| Kumatage Bifocal | no filled variations (model mismatch) |
+| Altitude Polarized Leather Shield | no filled variations (no NNXnn) |
+| Leopard Print Hard Case | no filled variations (no NNXnn) |
+| Jade Deep Fabric Case | no filled variations (no NNXnn) |
+| Morocco Mirror | duplicate SKU |
+| Sharkbait Polarized Bifocal | unreplaced IDs (7 Veeqo-absent; 9 pass through) |
 
 ---
 
 ## Monster
 
-### validate_products — 277 → 267 passed, 10 flagged
+### validate_products — 277 → 268 passed, 9 flagged
+
+| Product | Reasons |
+|---|---|
+| Locs Kong 9054 | no model |
+| Socket Goggle | not in Veeqo + no model |
+| Sunglass String Chum Strap | not in Veeqo + no model |
+| proSPORT 30 PACK PM 2.5 Face Masks | no model |
+| Ruby Extra Large Zipper Case | no model |
+| Diamond Chrome Hard Case | no model |
+| Sunglasses Repair Kit | no model |
+| Sunglasses Repair Screw Driver | no model |
+| Sunglasses Lens Cleaner | no model |
+
+### validate_variations — 2,796 → 2,591 passed, 205 flagged
+
 | Reason | Count |
 |---|---|
-| No SKU | 5 |
-| Attribute name collision after cleaning | 3 |
-| Not in Veeqo | 2 |
-| No images | 2 |
-| Private status | 1 |
-| SKU contains spaces | 1 |
-
-_(Some products flagged for multiple reasons; issue counts exceed product counts. The 2 not-in-Veeqo flags both co-occur with other failures — no new catches from the Veeqo check alone.)_
-
-### validate_variations — 2,675 → 2,582 passed, 93 flagged
-| Reason | Count |
-|---|---|
-| Model mismatch: 25X65 vs 29X34 | 42 |
+| No NNXnn model | ~112 |
+| Not in Veeqo | ~85 |
+| Model mismatch: 25X65 vs 29X34 (Harvard) | 42 |
 | Model mismatch: BF2X6KT vs BF4X7KT (Kumatage) | 24 |
-| Not in Veeqo | 19 |
 | Model mismatch: CA10X15CP vs CA10X16CP (Chipper) | 4 |
 | Model mismatch: FLPL7X59SB vs FLPL73X31SB (Sharkbait Float) | 3 |
-| Price missing | 1 |
 
-### create_items — 267 → 257 passed, 10 flagged
-6 variable products lost all their variations:
+No-model flags cover: X-Loop (3322, 3304), Locs (Cruiser, Tuner, DeVille, Impala, Monte Carlo), VShield Face Shield, Bandannas, Face Masks, Mysto, Nautica, Ohana, Altitude Shield, Leopard Print Hard Case, Jade Deep Fabric Case, and others without NNXnn in their SKUs.
 
-| Product | Reason |
-|---|---|
-| Sharkbait Polarized Float | All variations: model mismatch (FLPL7X59 vs FLPL73X31) |
-| Chipper Aviator | All variations: model mismatch (CA10X15 vs CA10X16) |
-| Kumatage Bifocal | All variations: model mismatch (BF2X6KT vs BF4X7KT) |
-| Harvard Multifocal Reader | All variations: model mismatch (multiple bases) |
-| Morocco Mirror | All variations: model mismatch + missing price |
-| First Lady Bifocal | All variations: model mismatch (BF4X33FL vs BF4X33FLCT) |
+### create_items — 268 → 243 passed, 25 flagged
 
-4 additional products have partial variation loss but still pass (some variations not in Veeqo or missing price; product survives with remaining variations).
+**No filled variations (variation gate cascaded):**
+- Verbena Sun Reader (1 Veeqo-absent variation)
+- Harvard Multifocal Reader (all model mismatch: 25X65 vs 29X34)
+- Kumatage Bifocal (all model mismatch)
+- Sharkbait Polarized Float (all model mismatch)
+- Chipper Aviator (all model mismatch)
+- Cooper Polarized Bifocal (4 Veeqo-absent)
+- Mysto Sunglasses (all Veeqo-absent)
+- Nautica Polarized (all Veeqo-absent)
+- Ohana (all no model)
+- Altitude Polarized Leather Shield (no model)
+- Leopard Print Hard Case (no model)
+- Jade Deep Fabric Case (no model)
+- X-Loop 3322, X-Loop 3304 (no model)
+- Locs Cruiser, Tuner, DeVille, Impala, Monte Carlo (no model)
+- VShield Flip Up Face Shield (no model)
+- VShield Vibrant Bandannas (no model)
+- Black Reusable Stretch Face Mask (no model)
+- Childrens Flip UP Shield (Veeqo-absent)
+
+**Other:**
+- Morocco Mirror — duplicate SKU
+- Sharkbait Polarized Bifocal — unreplaced IDs (partial Veeqo absence; product survives with 9 passing variations)
 
 ---
 
 ## BikerShades
 
-### validate_products — 704 → 611 passed, 93 flagged
+### validate_products — 704 → 541 passed, 163 flagged
+
+BikerShades has a large tail of non-product WooCommerce listings. All 163 flagged products fail the no-NNXnn check; a subset also fail the Veeqo check.
+
+**Categories of flagged products:**
+
+| Category | Count (approx) |
+|---|---|
+| Rx service options (single vision, progressive, A/R, transitions, prism, etc.) | ~35 |
+| Wiley X frames for Rx (per-model Rx frame listings) | ~25 |
+| 7eye frames for Rx (per-model Rx frame listings) | ~18 |
+| Ziena Rx frames | 6 |
+| BikerArmour frames for Rx | ~4 |
+| Try Before You Buy deposits (BikerArmour, WileyX, 7eye, combos) | ~8 |
+| Accessories (cases, cleaning kits, repair kits, straps, foam seals) | ~10 |
+| Service / operational (shipping labels, misc frame, custom product, invoice, warranty) | ~15 |
+| Locs Kong 9054 (no NNXnn) | 1 |
+| Other non-product (Return USPS label, misc shipping, space shield, medical goggle) | ~10 |
+| Wiley X accessories (leash cord, t-peg strap, clamshell case, cleaning cloth) | 4 |
+
+### validate_variations — 6,165 → 4,425 passed, 1,740 flagged
+
 | Reason | Count |
 |---|---|
-| No SKU | 60 |
-| Not in Veeqo | 59 |
-| No images | 57 |
-| Private status | 51 |
-| Price missing or zero | 10 |
-| SKU contains spaces | 13 |
-| Draft status | 4 |
-| No slug | 4 |
-| Variable with no variation IDs | 3 |
-| Pending status | 2 |
-| Attribute name collision | 2 |
-| Wrong type (prescription) | 1 |
-
-_(The 59 not-in-Veeqo flags all co-occur with other failures — no SKU, private status, no images, etc. No new catches from the Veeqo check alone.)_
-
-BikerShades has many non-product WooCommerce entries: Rx services, reseller items, accessory listings, phone-order products — these drive the high no-SKU and no-image counts.
-
-### validate_variations — 5,993 → 5,585 passed, 408 flagged
-| Reason | Count |
-|---|---|
-| Not in Veeqo | 84 |
-| Model mismatch: 79X76 + 90X23 + 90X32 (Socket/Magnum/Evolution goggle lines) | 68 |
-| Model mismatch: 25X88 vs 85X11 | 48 |
-| Model mismatch: 25X65 vs 29X34 | 42 |
-| Model mismatch: 48X78 vs 54X600 (goggle mix) | 41 |
-| Model mismatch: 0X47 vs 47X28 | 36 |
+| No NNXnn model | ~1,336 |
+| Not in Veeqo | ~170 |
+| Model mismatch: 25X65 vs 29X34 (Harvard) | 42 |
 | Model mismatch: BF2X6KT vs BF4X7KT (Kumatage) | 26 |
-| Name invalid | 22 |
-| Model mismatch: 20X08 vs 20X8 | 21 |
-| Private status | 14 |
-| Model mismatch: 10X15 + 10X16 + 20X22 | 5 |
-| Model mismatch: CLOTHMASKS vs PM2.5 masks (non-sunglass) | 4 |
-| Model mismatch: 210X91 vs 290X91 | 4 |
-| Price missing | 3 |
-| Model mismatch: 73X31 vs 7X59 (Sharkbait Float) | 3 |
-| Model mismatch: 60X03 vs 60X13 (Brooklyn) | 2 |
+| Model mismatch: other bifocal/reader conflicts | ~166 |
 
-### create_items — 611 → 474 passed, 137 flagged
-25 variable products lost all their variations. Key groups:
+**No-model SKU patterns (the 1,336):**
 
-| Group | Products | Reason |
-|---|---|---|
-| Mixed goggle/lens lines (Socket, Magnum, Evolution, Cayman, Anaconda, Angel) | ~15 | All variations: model mismatch |
-| Bifocals (First Lady, Kumatage, Bypass, Finish Line, Puma) | ~6 | All variations: model mismatch |
-| Regular sunglasses (Sharkbait Float, Chipper, Brooklyn, Aruba, etc.) | ~4 | All variations: model mismatch |
-| USPS return shipping labels | 3 | Non-product SKU (LABEL- prefix) |
-| Try Before You Buy deposits | 6 | Non-product SKU (TRYB4UB- prefix) |
-| Rx frames (7eye, Wiley X, BikerArmour, foam-pad) | ~65 | Non-product SKU (-RX / -HIGHRX token) |
+- All 7eye base models (Aspen, Bali, Bora, Briza, Cape, Chubasco, Churada, Cyclone, Derby, Diablo, Raptor, Sedona, Sierra, Taku Plus, Ventus, Viento, Whirlwind) — 150+ variations
+- All 7eye Eclipse XT photochromic models (same 15+ frames) — 300+ variations
+- All Wiley X base models (Airrage, Boss, Brick, Enzo, Gravity, Sleek, Tide) — 20+ variations
+- All Wiley X Eclipse XT models (12+ frames: Airrage, Boss, Brick, Censor, Enzo, Gravity, Hudson, Ignite, Kingpin, Nash, Omega, Ovation, Ozone, Grid, P17, Peak, Rebel, Romer3, Saint, Slay, Twisted, Valor, XL-1) — 250+ variations
+- BikerArmour base models (Angel Rhinestones, Anaconda, Camber, Evolution, Magnum, Magnum Chrome, Socket, Vanguard, Tomahawk) — 100+ variations
+- Locs (Cruiser, DeVille, Impala, Monte Carlo, Tuner) + X-Loop (3303, 3304, 3319, 3320, 3322) + Chopper 901 — 30+ variations
+- Non-sunglasses (Face Masks, Bandannas, Face Shields) — 50+ variations
+- Service/accessory items (Expedited Shipping, Warranty, Replacement Foam, Microfiber Cases) — 20+ variations
 
-Additional products with partial variation loss still pass (unreplaced variation IDs where some but not all variations were filtered).
+### create_items — 541 → 401 passed, 140 flagged
+
+**7eye base models (17 flagged):**
+7Eye Aspen, Bali, Bora, Briza, Cape, Chubasco, Churada, Cyclone, Derby, Diablo, Panhead, Raptor, Sedona, Sierra, Taku Plus, Ventus, Viento, Whirlwind — all variations have no NNXnn model, all removed.
+
+**7eye Eclipse XT models (15 flagged):**
+7eye Aspen, Bali, Bora, Briza, Cape, Chubasco, Churada, Derby, Diablo, Panhead, Raptor, Sedona, Sierra, Taku Plus, Ventus, Viento, Whirlwind, Warrior, Notus for Eclipse XT — all removed.
+
+**Wiley X base models (7 flagged):**
+Wiley X Airrage, Boss, Brick, Enzo, Gravity, Kingpin, Nash, Omega, P-17, Peak, Rebel, Rebel Alt Fit, Slay, Sleek, Tide, Twisted — all removed.
+
+**Wiley X Eclipse XT models (12+ flagged):**
+Wiley X Airrage, Boss, Brick, Censor, Enzo, Gravity, Hudson, Ignite, Kingpin, Nash, Omega, Ovation, Ozone, Grid, P17, Peak, Rebel, Rebel Alt Fit, Romer3, Saint, Slay, Sleek, Tide, Twisted, Valor, XL-1 for Eclipse XT — all removed.
+
+**BikerArmour variants (5 flagged):**
+BikerArmour Angel with Rhinestone [MED-LG], Socket Goggle [One Size], Vanguard [SM-MED], Camber [LG-XL], Tomahawk Eclipse Photochromic — all removed.
+
+**Duplicate lens-type BikerArmour listings (7 flagged):**
+Evolution Clear/HD/Yellow Lens (3 products), Anaconda Clear/HD/Yellow Lens (3 products), Socket Clear/HD/Yellow Lens (3 products), Angel Rhinestones Clear/Yellow Lens (2 products) — these are separate WC products per lens type that have no NNXnn in their variations.
+
+**Locs / X-Loop / Chopper (9 flagged):**
+Locs Cruiser, DeVille, Impala, Monte Carlo, Tuner; X-Loop 3304 Fender, 3322 Infield, 3319 Club, 3320 Sprint, 3303 Bogey; Chopper 901 — all removed.
+
+**Bifocals/readers (6 flagged):**
+Harvard Multifocal Reader (model mismatch 25X65 vs 29X34), Bypass Bifocal (Veeqo-absent + mismatch), Kumatage Bifocal (model mismatch), Finish Line Bifocal (Veeqo-absent), Starlet Bifocal (Veeqo-absent), Hawkeye HD Bifocal (partial Veeqo absence).
+
+**Non-sunglasses (5 flagged):**
+PM 2.5 Face Masks Pack of 3, 2 PACK Bandannas, VShield Flip Up Face Shield, Cabot Photochromic Reader (8/10 Veeqo-absent), Edison Photochromic Reader (8/10 Veeqo-absent).
+
+**Service / accessory (9 flagged):**
+1 Year NON Prescription Warranty, 7 Eye Replacement Foam, Expedited Shipping, Leopard Print Hard Case, Jade Deep Fabric Case, Blank Microfiber Cleaning Case, Biker Armour Microfiber Cleaning Case, Dynamo Combos [LG-XL], 7Eye Oasis [MED-LG].
+
+**Other:**
+Alpine Polarized Leather Shield, Altitude Polarized Leather Shield, Brooklyn, Aruba Polarized, Seaway (dup SKU + no filled), Sharkbait Polarized Float, Chipper, Camber Yellow Lens — all removed.
+
+**Duplicate SKU flags:**
+- Seaway — `CAPL14X64SW-0`
+- Taxi Polarized Bifocal — `BFPL58X852TX-0`
 
 ---
 
 ## Cross-brand patterns
 
-**Model number mismatch** is the dominant cause of variation loss across all brands — variations with different model numbers (after decoding the NNXnn encoding) that WooCommerce incorrectly grouped under one variable product. Three root causes:
+### Veeqo absence
+Primarily affects high-power reader/bifocal variations (powers above +3.00) across all three brands — these SKUs exist in WooCommerce but were never stocked in Veeqo. Products with full Veeqo absence are dropped entirely; products with partial absence lose those variations but survive.
 
-- **Polarized vs non-polarized mixed into one WC product** — same frame, different lens treatment, inconsistent SKU prefix. The C-prefix rule (CPR... vs PR... = combo vs single) correctly passes those through; only genuine model differences are flagged.
-- **SKU revision coexisting with original** — product was re-SKU'd but old and new variations both live in the same WC listing (Brooklyn: 60X03 vs 60X13; First Lady: BF4X33FL vs BF4X33FLCT; Morocco Mirror: CA25X095MR vs CA25X095MRMIRROR).
-- **Multiple distinct models consolidated under one WC product** — most visible in BikerShades' goggle lines (Socket, Magnum, Evolution sold separately by lens type then also in a consolidated listing mixing all three) and Harvard Multifocal Reader (multiple frame styles with different bases).
+### Model number mismatch
+Three recurring cross-brand cases:
+- **Kumatage Bifocal** — BF2X6KT vs BF4X7KT (different frame models mixed into one WC product)
+- **Sharkbait Polarized Float** — FLPL7X59SB vs FLPL73X31SB (same)
+- **Chipper Aviator** — CA10X15CP vs CA10X16CP (same)
+- **Harvard Multifocal Reader** — 25X65 vs 29X34 (multiple frame bases in one listing)
 
-**Veeqo absence.** The 198 ProSport, 19 Monster, and 84 BikerShades variations not in Veeqo are almost certainly discontinued SKUs or high-power reader/bifocal variations never stocked in Veeqo. At the product level, the same bifocal/reader pattern holds: ProSport lost 7+ products entirely (Verbena, Bypass, Gullwing, Brooklyn, Iris, Cooper, Eliminator, Morocco) because every variation was absent from Veeqo.
+### BikerShades NNXnn gap
+7eye, Wiley X, and BikerArmour frame SKUs do not follow the NNXnn model number convention used by proSPORT-originated frames. This causes 1,336 variation flags and cascades into 100+ product drops at create_items. These are real products but their SKU structure is opaque to the NNXnn check.
 
-**BikerShades non-product tail.** A large share of BikerShades' 230-product loss comes from WooCommerce entries that are not actual products: Rx frame services (65+ listings), USPS return labels (3), Try Before You Buy deposits (6+), warranty/accessory/phone-order placeholders. These are excluded by the non-product SKU filter in create_items and drive the high flagged count at both validate_products and create_items.
+Two paths forward:
+1. **Accept the loss** — BikerShades 401 items covers the BikerArmour original line, most polarized/bifocal products, readers, and Locs/X-Loop. 7eye and Wiley X are excluded.
+2. **Extend the check** — add brand-keyed SKU pattern recognition for 7eye/WileyX/BikerArmour to validate_variations, allowing those frames through.
 
----
+### Non-product WooCommerce tail (BikerShades only)
+163 products flagged at validate_products are not sunglasses: Rx service add-ons, per-frame Rx listings, Try Before You Buy deposits, accessories, and operational entries. These require reimplementation as site features, not product migrations.
 
-## Veeqo gate — integration note
+### Accessory products (all brands)
+Cases, cleaning kits, repair kits, and similar accessories have no NNXnn SKU and are correctly filtered out across all three brands.
 
-The Veeqo check was moved from a separate `veeqo_items.py` pipeline step into `validate_variations.py` and `validate_products.py`. All checks now run on every product/variation before anything is dropped:
+### Rx frame products slipping through (BikerShades)
+Ten BikerShades Rx frame service listings made it into create-items because the `-RX` / `-HIGH-RX` suffix appears after the first hyphen segment, so `extract_model()` finds the valid NNXnn in the frame prefix and passes them:
 
-- **validate_products** — simple products: `not in Veeqo` is a flag reason alongside structural checks. (Currently catches no new cases — all failing simples also fail other checks.)
-- **validate_variations** — all variations: `not in Veeqo` is a flag reason. Variations flagged for any reason (including Veeqo absence) are excluded from what moves to reshape.
+| SKU | Name |
+|---|---|
+| `FM10X30CS-RX` | BikerArmour Camshaft for Rx |
+| `GO47X11RB-RX` | Robin Goggle for Rx |
+| `FM270X20TX-RX` | BikerArmour T-Rex for Rx |
+| `FM5X1MR-RX` | BikerArmour Marauder for Rx |
+| `FM85X11MNA-RX` | BikerArmour Angel for Rx |
+| `FM11X81DM-BK-RX` | BikerArmour Dymo for High Rx |
+| `FM540X548SH-BK-RX` | BikerArmour Shocker for High Rx |
+| `FM5X14TR-BK-RX` | BikerArmour Trooper for Rx |
+| `FM5X14TR-BK-HIGH-RX` | BikerArmour Trooper for High Power Rx |
+| `FM0X76AB-HIGH-RX` | BikerArmour Air Boss for High Rx |
 
-This means downstream stages (reshape → create_items) only process Veeqo-confirmed data and the separate veeqo_items gating step is no longer needed.
-
----
-
-## BikerShades — features to build
-
-**Try Before You Buy and Rx frame submission** are currently handled as individual WooCommerce product listings (70+ products across both programs), each manually created per frame model. These are flagged and excluded from migration. When building BikerShades, both flows should be reimplemented as first-class features:
-
-- **Try Before You Buy** — a single configurable program page where customers select frame models and pay a deposit, rather than separate deposit products per bundle combination.
-- **Send your frame for Rx** — a single submission flow where customers select their frame model and lens prescription, rather than individual `-RX` and `-HIGHRX` SKU listings per frame.
+These are "send your frame for Rx glazing" service listings, not sellable products. They were previously caught by a `JUNK_SKU_CONTAINS` `-RX` hardcode in `create_items.py` that was removed. Fix: restore a BikerShades-keyed `-RX` suffix filter in `JUNK_SKU_CONTAINS` (or check any hyphen segment for the token, not just the first).

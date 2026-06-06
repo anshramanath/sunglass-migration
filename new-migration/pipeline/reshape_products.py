@@ -29,19 +29,7 @@ IMG_TAG_RE = re.compile(r'<img[^>]*>', re.IGNORECASE)
 LI_RE  = re.compile(r'<li>(.*?)</li>', re.DOTALL | re.IGNORECASE)
 TAG_RE = re.compile(r'<[^>]+>')
 
-ATTR_OVERRIDES = {
-    "monster": {
-        "Cleaner Spray Bottle QTY":  "Quantity",
-        "Qty":                       "Quantity",
-        "Frame Styles for Filter":   "Style",
-        "Special Size for Filter":   "Size",
-    },
-}
-
 def clean_attr_name(raw):
-    override = ATTR_OVERRIDES.get(brand_key, {}).get(raw)
-    if override:
-        return override
     name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
     name = re.sub(r'(?i)^choose\s+', '', name).strip()
     name = re.sub(r'(?i)^filter\s+by\s+', '', name).strip()

@@ -17,7 +17,7 @@ data_dir = BASE / "data" / slug
 
 in_path = data_dir / "categorize-items" / "items.json"
 if not in_path.exists():
-    raise SystemExit(f"Run prosport_categorize_items.py first. Not found: {in_path}")
+    raise SystemExit(f"Run {slug}_categorize_items.py first. Not found: {in_path}")
 
 items = json.loads(in_path.read_text())
 
