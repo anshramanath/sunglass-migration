@@ -44,9 +44,9 @@ for item in items:
     is_simple   = not is_variable
 
     # name / slug — text not null
-    if not item.get("name"):
+    if not (item.get("name") or "").strip():
         reasons.append("name is null or empty")
-    if not item.get("slug"):
+    if not (item.get("slug") or "").strip():
         reasons.append("slug is null or empty")
 
     # price — int not null (description/summary/categories deferred)
