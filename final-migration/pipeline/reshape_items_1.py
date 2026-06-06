@@ -1,3 +1,4 @@
+import html
 import json
 import re
 import sys
@@ -28,6 +29,16 @@ def max_price_cents(*vals) -> int | None:
     candidates = [to_cents(v) for v in vals if to_cents(v) is not None]
     return max(candidates) if candidates else None
 
+def extract_description_images(html: str) -> list:
+    srcs = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', html or "")
+    return [{"src": src, "name": src.rstrip("/").split("/")[-1], "sortOrder": i + 1} for i, src in enumerate(srcs)]
+
+def clean_description(raw: str) -> str | None:
+    text = re.sub(r'<[^>]+>', "", raw or "")
+    text = html.unescape(text)
+    text = re.sub(r'\s+', " ", text).strip()
+    return text or None
+
 def slugify(text: str) -> str:
     text = text.lower().strip()
     text = re.sub(r"[^\w\s-]", "", text)
@@ -43,8 +54,8 @@ for item in items:
         "sku":               None if is_variable else item.get("sku"),
         "name":              item["name"],
         "slug":              slugify(item["name"]),
-        "description":       item.get("description"),
-        "descriptionImages": [],
+        "description":       clean_description(item.get("description")),
+        "descriptionImages": extract_description_images(item.get("description")),
         "summary":           [item["short_description"]] if item.get("short_description") else [],
         "featured":          False,
         "stock":             None if is_variable else 0,
