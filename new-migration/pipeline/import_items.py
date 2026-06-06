@@ -89,7 +89,7 @@ for i, p in enumerate(items):
             p.get("description"),
             p["summary"],
             Json(p.get("attributes", [])),
-            p.get("featured", False),
+            p["featured"],
             p["totalSales"],
             p["sale"],
             p["minPriceCents"],

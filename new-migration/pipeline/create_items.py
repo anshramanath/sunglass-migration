@@ -1,6 +1,5 @@
 import copy
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -41,8 +40,7 @@ for entry in variations_raw:
 
 # ── Phase 2: Per-item checks ──────────────────────────────────────────────────
 
-item_errors  = {}
-sale_warnings = []
+item_errors = {}
 
 def flag(pid, msg):
     item_errors.setdefault(pid, []).append(msg)
@@ -100,10 +98,7 @@ for item in items:
     item["minPriceCents"] = min(reg_prices) if reg_prices else None
     item["maxPriceCents"] = max(reg_prices) if reg_prices else None
 
-    computed_sale = any(v.get("sale") for v in filled)
-    if computed_sale != item.get("sale"):
-        sale_warnings.append(f"id={pid}: WC sale={item.get('sale')} computed={computed_sale}")
-    item["sale"] = computed_sale
+    item["sale"] = any(v.get("sale") for v in filled)
 
     item["inStock"] = any(v.get("stock", 0) > 0 for v in filled)
 
@@ -149,11 +144,6 @@ print(f"Combined {len(products_raw)} products\n")
 print(f"  Passed:  {len(valid)}  ({total_vars} variations embedded)")
 print(f"  Flagged: {len(flagged)}  ({total_issues} issues)\n")
 
-if sale_warnings:
-    print(f"── Sale cross-check warnings ({len(sale_warnings)}) ──")
-    for w in sale_warnings:
-        print(f"  [WARN] {w}")
-    print()
 
 for item in items:
     pid = item["id"]
