@@ -121,7 +121,7 @@ for i, p in enumerate(items):
         if src:
             cur.execute(
                 "INSERT INTO product_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                (product_id, src, img.get("name", ""), img["sortOrder"]),
+                (product_id, src, img["name"], img["sortOrder"]),
             )
 
     # description_images
@@ -130,7 +130,7 @@ for i, p in enumerate(items):
         if src:
             cur.execute(
                 "INSERT INTO description_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                (product_id, src, img.get("name", ""), img["sortOrder"]),
+                (product_id, src, img["name"], img["sortOrder"]),
             )
 
     # variations
@@ -176,7 +176,7 @@ for i, p in enumerate(items):
             if src:
                 cur.execute(
                     "INSERT INTO variation_images (variation_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-                    (variation_id, src, img.get("name", ""), img["sortOrder"]),
+                    (variation_id, src, img["name"], img["sortOrder"]),
                 )
 
     if (i + 1) % 50 == 0:
