@@ -5,6 +5,8 @@ import os
 BASE = Path(__file__).parent.parent  # final-migration/
 load_dotenv(dotenv_path=BASE.parent / ".env")
 
+VEEQO_KEY = os.getenv("VEEQO_KEY")
+
 BRAND_CONFIG = {
     "prosport": {
         "slug": "prosport",

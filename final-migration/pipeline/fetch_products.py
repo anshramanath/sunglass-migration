@@ -8,6 +8,8 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import BASE, load_brand
+from veeqo import check_veeqo
+from sku_structure import check_sku
 
 brand_key, config = load_brand()
 slug       = config["slug"]
@@ -52,7 +54,27 @@ while True:
     page += 1
     time.sleep(0.1)
 
-out = out_dir / "products.json"
-out.write_text(json.dumps(all_products, indent=2, ensure_ascii=False))
+print("\nRunning checks...")
 
-print(f"\nSaved {len(all_products)} products → {out}")
+products = []
+flagged  = []
+
+for p in all_products:
+    sku     = (p.get("sku") or "").strip()
+    reasons = []
+
+    if not check_sku(sku):
+        reasons.append("SKU does not match NNXnn structure")
+    if not check_veeqo(sku):
+        reasons.append("SKU not found in Veeqo")
+
+    if reasons:
+        flagged.append({"reasons": reasons, "product": p})
+    else:
+        products.append(p)
+
+(out_dir / "products.json").write_text(json.dumps(products, indent=2, ensure_ascii=False))
+(out_dir / "flagged.json").write_text(json.dumps(flagged, indent=2, ensure_ascii=False))
+
+print(f"\nSaved {len(products)} products → {out_dir / 'products.json'}")
+print(f"Saved {len(flagged)} flagged  → {out_dir / 'flagged.json'}")
