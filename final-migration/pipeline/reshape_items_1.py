@@ -79,7 +79,7 @@ for item in items:
         "sale":              False,
         "categories":        [],
         "productImages":     [{"src": img["src"], "name": img["name"], "sortOrder": i + 1} for i, img in enumerate(item.get("images", []))],
-        "attribute":         [],
+        "attributes":        [],
         "variations":        [
             {
                 "sku":              v.get("sku"),

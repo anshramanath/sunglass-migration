@@ -75,12 +75,25 @@ for item in items:
             updated_variations.append(v)
         prices = [v["regularPriceCents"] for v in updated_variations if v.get("regularPriceCents") is not None]
         in_stock = any(v.get("stock", 0) > 0 for v in updated_variations)
+
+        attr_map = {}
+        for v in updated_variations:
+            for a in v.get("attribute", []):
+                name   = a.get("name", "")
+                option = a.get("option", "")
+                if name not in attr_map:
+                    attr_map[name] = []
+                if option not in attr_map[name]:
+                    attr_map[name].append(option)
+        attributes = [{"name": name, "options": options} for name, options in attr_map.items()]
+
         item = {
             **item,
             "variations":    updated_variations,
             "minPriceCents": min(prices) if prices else item.get("minPriceCents"),
             "maxPriceCents": max(prices) if prices else item.get("maxPriceCents"),
             "inStock":       in_stock,
+            "attributes":    attributes,
         }
 
     reshaped.append(item)
