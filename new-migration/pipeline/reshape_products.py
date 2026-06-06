@@ -128,7 +128,7 @@ def reshape(p):
         'salePriceCents':    sale_price,
         'sale':              sale,
         'featured':          p.get('featured'),
-        'totalSales':        p.get('total_sales') or 0,
+        'totalSales':        p['total_sales'],
         'stock':             stock,
         'inStock':           in_stock,
         'weight':            weight,

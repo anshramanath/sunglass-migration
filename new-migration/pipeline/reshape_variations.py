@@ -80,7 +80,6 @@ def reshape(v):
         'name':             v.get('name'),
         'type':             v.get('type'),
         'oldUrl':          v.get('permalink'),
-        'description':      strip_html(v.get('description')),
         'sku':              v['sku'],
         'regularPriceCents': to_cents(v.get('regular_price')),
         'salePriceCents':   to_cents(v.get('sale_price')),
@@ -91,7 +90,7 @@ def reshape(v):
         'dimensions':       dimensions,
         'dimensionUnit':    None,
         'images':           [{'src': v['image']['src'], 'name': v['image'].get('name', ''), 'sortOrder': 1}] if v.get('image') and v['image'].get('src') else [],
-        'attributes':       [
+        'attribute':        [
             {'name': clean_attr_name(a['name']), 'option': normalize_power(a['option']) if clean_attr_name(a['name']) == 'Power' else a['option']}
             for a in v.get('attributes', [])
         ],

@@ -26,7 +26,6 @@ def slim(v):
         "name": v.get("name"),
         "type": v.get("type"),
         "status": v.get("status"),
-        "description": v.get("description"),
         "permalink": v.get("permalink"),
         "sku": v.get("sku"),
         "price": v.get("price"),

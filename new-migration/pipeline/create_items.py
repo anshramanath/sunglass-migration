@@ -68,7 +68,7 @@ for item in items:
     # add the option if missing. if name doesn't match any parent attribute, flag.
     parent_attr_map = {a["name"]: a for a in item.get("attributes", [])}
     for v in filled:
-        for a in v.get("attributes", []):
+        for a in v.get("attribute", []):
             if a["name"] in parent_attr_map:
                 if a["option"] not in parent_attr_map[a["name"]]["options"]:
                     parent_attr_map[a["name"]]["options"].append(a["option"])
@@ -79,7 +79,7 @@ for item in items:
     # prune: remove options no variation uses, drop empty attributes
     used_options = {}
     for v in filled:
-        for a in v.get("attributes", []):
+        for a in v.get("attribute", []):
             used_options.setdefault(a["name"], set()).add(a["option"])
 
     item["attributes"] = [

@@ -88,7 +88,7 @@ for i, p in enumerate(items):
             p.get("oldUrl"),
             p.get("description"),
             p["summary"],
-            Json(p.get("attributes", [])),
+            Json(p["attributes"]),
             p["featured"],
             p["totalSales"],
             p["sale"],
@@ -140,12 +140,12 @@ for i, p in enumerate(items):
         cur.execute(
             """
             INSERT INTO variations (
-                product_id, sku, old_url, description, attributes,
+                product_id, sku, old_url, attribute,
                 sale, regular_price_cents, sale_price_cents,
                 stock, weight, weight_unit,
                 length, width, height, dimension_unit
             ) VALUES (
-                %s, %s, %s, %s, %s,
+                %s, %s, %s, %s,
                 %s, %s, %s,
                 %s, %s, %s,
                 %s, %s, %s, %s
@@ -155,8 +155,7 @@ for i, p in enumerate(items):
                 product_id,
                 v["sku"],
                 v.get("oldUrl"),
-                v.get("description"),
-                Json(v.get("attributes", [])),
+                Json(v["attribute"]),
                 v["sale"],
                 v["regularPriceCents"],
                 v.get("salePriceCents"),
