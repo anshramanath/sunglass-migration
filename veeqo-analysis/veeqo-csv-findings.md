@@ -1,5 +1,5 @@
 # Veeqo CSV Findings
-_Source: `sellables_export_2715027799-...-btj8ab_original.csv` — exported Jun 5, 2026_
+_Source: `sellables_export_2715106881-522cca85784aae20260606-23-66wn2d_original.csv` — analyzed Jun 5, 2026_
 
 ---
 
@@ -12,47 +12,35 @@ _Source: `sellables_export_2715027799-...-btj8ab_original.csv` — exported Jun 
 | Rows without SKU | 111 |
 | Unique SKUs | 24,396 |
 
-The 111 "without SKU" rows have other fields populated (title, price, etc.) but the `sku_code` field is empty. Breaking all rows into mutually exclusive buckets by SKU quality:
+---
 
-| SKU quality | Rows |
-|---|---|
-| Clean | 22,695 |
-| Contains spaces | 2,156 |
-| `none` / `none1`–`none30` placeholders | 42 |
-| Empty (blank `sku_code`) | 111 |
-| All digits (e.g. `204150`, `204200`) | 4 |
-| **Total** | **25,008** |
+## SKU Quality
 
-2,313 rows have some kind of SKU quality issue. The categories are mutually exclusive — "all lowercase" is not a separate bucket, it's a subset of the spaces group.
+| SKU quality | Count | Flagged? |
+|---|---|---|
+| Clean | 22,332 | No |
+| Contains spaces | 2,029 | No — acknowledged, they connect and work |
+| Placeholders (`none*` / all-digit) | 35 | Yes |
 
-**SKUs with spaces** — two sub-types:
+**Contains spaces** — two sub-types:
 - Informal descriptive names with no structure: `"cobra smoke"`, `"clutch full reader 1.0blk"`, `"Bandanna - Black"` — products entered with human-readable names instead of proper codes
 - Typo'd real SKUs: e.g. `"CRE59X22DE- BKXBK-CL-100-MFS"` — a space entered after the hyphen
 
-**`none*` placeholders** — Amazon listings created without a real SKU. The same placeholder (e.g. `none1`) is reused across different products, causing SKU collisions.
-
-**All-digit SKUs** — `204150`, `204200`, `204250`, `204300` — likely vendor/supplier reference codes, not product SKUs.
+**Placeholders:**
+- `none` / `none1`–`none30` — Amazon listings created without a real SKU. The same placeholder is reused across different products, causing collisions and price conflicts.
+- `204150`, `204200`, `204250`, `204300` — all-digit codes, likely vendor/supplier reference numbers, not product SKUs.
 
 ---
 
-## SKU Collisions
+## Duplicates
 
-431 SKUs appear more than once, accounting for 501 extra rows:
+| | Count |
+|---|---|
+| SKUs appearing 2+ times | 431 |
+| Of which, price differs | 162 — flagged |
+| Same-price duplicates | 269 — not flagged |
 
-| Duplicates per SKU | SKUs | Rows affected |
-|---|---|---|
-| 3 duplicates (appears 4x) | 22 | 88 |
-| 2 duplicates (appears 3x) | 26 | 78 |
-| 1 duplicate (appears 2x) | 383 | 766 |
-| **Total** | **431** | **932** |
-
-After cleanup, 431 SKUs remain — each appearing exactly once. The 501 extra rows (932 − 431) are removed.
-
-Two root causes:
-
-**1. Same SKU listed multiple times on a channel** — a SKU can be listed under different listing names on the same channel (e.g. two separate eBay listings for the same SKU). Veeqo creates a separate entry per listing, so the same SKU appears multiple times in the export. This is the dominant cause of the 431 duplicates and explains the conflicting prices (different listings may be priced differently).
-
-**2. `none*` placeholder SKUs** — Amazon listings that were created without real SKUs have been given placeholder values (`none`, `none1`, `none2`, ..., `none30`). These placeholders are reused across different products, causing collision. 40+ rows share these SKU values across unrelated products.
+A SKU can be listed under multiple channel listings (e.g. two separate eBay listings for the same SKU). Veeqo creates a separate row per listing — same-price duplicates are expected and not a problem. Only duplicates where the price differs across rows are flagged, as they indicate the same product is being sold at different prices on different channels.
 
 ---
 
@@ -61,12 +49,11 @@ Two root causes:
 | | Rows | % |
 |---|---|---|
 | Non-zero price | 24,839 | 99.8% |
-| Zero price | 58 | 0.2% |
-| No price | 0 | 0.0% |
+| Zero price | 56 SKUs | — flagged |
+| No price | 0 | — |
 
 - Range: $2.84 – $399.00
 - Mean: $40.01
-- **162 of the 431 colliding SKUs have conflicting prices** — the same SKU has a different `sales_price` value across its rows, meaning the same product is listed at different prices on different channel listings. When deduplicating, a decision is needed on which price to keep.
 
 ---
 
@@ -74,82 +61,26 @@ Two root causes:
 
 | | Rows | % |
 |---|---|---|
-| Zero stock | 10,046 | 40.4% |
-| Positive stock | 14,749 | 59.2% |
-| **Total units on hand** | **111,805** | |
+| Zero stock | 10,056 | 40.4% |
+| Positive stock | 14,738 | 59.2% |
+| **Total qty on hand** | **111,777** | |
 
-40% of rows have zero stock. This makes stock unreliable as a migration data source — many valid active products will show 0.
-
----
-
-## Images
-
-Each row has at most one `image_url` field — Veeqo stores one image per variant, no gallery.
-
-| | Rows | % |
-|---|---|---|
-| Has image | 21,243 | 85.3% |
-| No image | 3,654 | 14.7% |
+40% of rows have zero stock. Stock is unreliable as a migration signal — many valid active products show 0.
 
 ---
 
-## Field Coverage
+## Rows Without SKU (111)
 
-| Field | Present | % |
-|---|---|---|
-| Description | 20,045 | 80.5% |
-| Image | 21,243 | 85.3% |
-| Brand | 9,129 | 36.7% |
-| UPC | 5,017 | 20.2% |
+These rows have other fields populated (title, price, etc.) but `sku_code` is empty. They should either be assigned a real SKU or deleted.
 
-Description and image coverage are reasonable. Brand and UPC are sparse — not reliable fields to depend on.
+Heavy on Rx option add-ons (~30 rows: single vision, progressive, A/R, mirror coatings, transitions, prism, lens remake fees). The rest are a mix of operational and miscellaneous eBay/Amazon listings:
 
-The `brand` field is free-text. Of the 9,129 rows that have it, values are inconsistent — the same brand entered multiple ways:
-
-| Value | Count |
+| Category | Examples |
 |---|---|
-| proSPORT | 6,927 |
-| Bikershades | 1,607 |
-| proSPORTsunglasses | 264 |
-| Biker Armour | 105 |
-| bikershades | 65 |
-| proSPORT sunglasses | 52 |
-| Locs | 41 |
-| BikerArmour | 37 |
-| frame&optic | 9 |
-| proSport | 8 |
-| proSPORT Sunglasses | 4 |
-| Loc | 3 |
-| MODA | 3 |
-| Locs Eyewear | 1 |
-| SA106 | 1 |
-| X LOOP | 1 |
-| X LOOP Eyewear | 1 |
-
-`proSPORT`, `proSPORTsunglasses`, `proSPORT sunglasses`, and `proSport` are all the same brand. Same with `Bikershades`, `bikershades`, `Biker Armour`, and `BikerArmour`. Not usable as a structured field without normalization.
-
----
-
-## Variant Options
-
-| | Rows |
-|---|---|
-| Has options | 22,223 |
-| Empty / no options | 2,785 |
-| All values null | 27 |
-
-Keys are not normalized — `color`, `Choose Color (REQUIRED)`, `Choose Color`, `Frame Color`, `Choose Frame Color` are all the same concept entered differently depending on how the WooCommerce attribute was named. Same issue with power: `magnification_strength`, `Choose Power`, `Bifocal Power`.
-
-Top option keys:
-
-| Key | Rows |
-|---|---|
-| color | 12,550 |
-| magnification_strength | 8,061 |
-| Choose Color (REQUIRED) | 5,729 |
-| Choose Power | 4,058 |
-| Choose Transition Type | 1,369 |
-| size | 1,281 |
-| Choose Color | 975 |
-
-**Non-null values are reliable.** Channel listings (Amazon, eBay, Walmart) require variant options to distinguish products — a non-null value was enforced by the channel, so it's genuine attribute data. A null value means the field wasn't required or wasn't set. A row with at least one non-null option value is likely a true variable product variant.
+| Rx option add-ons | Rx Option: Single Vision Digital Lens, Rx Option: Progressive Digital Lens, Rx Option: Classic A/R, Rx OptionM: Flash Mirror - Pink/Red/Green/Gold/Silver/Rose Gold, Rx Option: Transitions Gen 8, etc. |
+| 7eye Replacement Foam | 7 Eye Replacement Foam (3 rows), 7eye Replacement Foam |
+| Bulk sunglass lots | 28 pairs motorcycle riding sunglasses, Sunglass Mens 3 Pairs Square Black Frame, Women SUNGLASSES Wholesale Lot 26 pairs, etc. |
+| Operational / service | Custom Product for Phone Orders, Distributor Invoice, Expedited Shipping, Misc Frame, Misc Shipping Cost, Prism Custom Fee, Product Upgrade, Quick product, Try Before You Buy Rx Order, Try Before You Buy: WileyX 7eye BikerArmou |
+| Nike / sporting goods | 2 PAIRS Nike Dri Fit Shorts, 3 Nike Men's Dri Fit Shorts, Nike Sportswear STORM-FIT ADV Shell Parka, Nike Pants Womens Medium, etc. |
+| Face masks / shields | 10 pcs Kids Face Mask, 12 SHIELDS FOR KIDS!, 13/15/38/5 Face Mask packs, Space Shield Clear Face Mask, Childrens Boys Girls Flip UP Shield |
+| Misc | Playing cards, baseball hat, toner cartridges, refrigerator part, Spyder tail lights, Steph Curry poster, Medical Laboratory Goggle, Reseller: POP 36 Display Stand, Reseller: BikerArmour Sunglasses |
