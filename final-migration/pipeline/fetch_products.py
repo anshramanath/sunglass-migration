@@ -60,6 +60,10 @@ products = []
 flagged  = []
 
 for p in all_products:
+    if p.get("type") != "simple":
+        products.append(p)
+        continue
+
     sku     = (p.get("sku") or "").strip()
     reasons = []
 
