@@ -79,6 +79,11 @@ This repo migrates WooCommerce product catalogues into a Supabase-backed multi-b
 - Variable products: SKU is null at product level; checks (Veeqo, SKU structure) apply at variation level only.
 - Simple products: SKU, Veeqo presence, SKU structure, and non-empty variations array are all checked at fetch time.
 - Bad variations (not in Veeqo or not an object) are dropped silently. A variable product needs at least 2 surviving variations to proceed.
+- Reshape is split into two scripts: `reshape_items_1.py` (shape + WC values) and `reshape_items_2.py` (Veeqo enrichment + variable product derivation).
+- Variable product `minPriceCents`, `maxPriceCents`, `inStock`, and `attributes` are all derived from surviving child variations in reshape_items_2.
+- `description`, `summary`, and `categories` are deferred fields — left as null/empty in reshape and filled in a later step.
+- Null price (minPriceCents / maxPriceCents) is intentional when neither WC nor Veeqo has a price — used to flag products that need attention before import.
+- `validate_items.py` checks all non-deferred fields against DB constraints and outputs clean + flagged JSON.
 
 ### DB
 Schema is in `final-migration/db/001_initial_schema.sql`. Field names in the pipeline use camelCase; DB columns use snake_case — the import step handles the mapping.
