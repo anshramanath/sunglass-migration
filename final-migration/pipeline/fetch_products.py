@@ -68,6 +68,8 @@ for p in all_products:
     sku     = (p.get("sku") or "").strip()
     reasons = []
 
+    if p.get("variations"):
+        reasons.append("simple product has non-empty variations array")
     if not check_sku(sku):
         reasons.append("SKU does not match NNXnn structure")
     if not check_veeqo(sku):

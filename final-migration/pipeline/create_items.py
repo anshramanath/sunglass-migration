@@ -87,34 +87,37 @@ for item in items:
     reasons    = []
     variations = item.get("variations", [])
 
-    structures = set()
-    seen_skus  = set()
-    for v in variations:
-        if not isinstance(v, dict):
-            reasons.append(f"variation {v} is not an object")
-            continue
+    if not variations:
+        clean.append(item)
+        continue
 
-        sku = (v.get("sku") or "").strip()
+    # drop non-objects and variations not in Veeqo
+    valid = [v for v in variations if isinstance(v, dict) and check_veeqo((v.get("sku") or "").strip())]
 
-        if not check_veeqo(sku):
-            reasons.append(f"variation {v['id']} SKU {sku!r} not in Veeqo")
+    if len(valid) < 2:
+        reasons.append(f"fewer than 2 valid variations ({len(valid)} remaining)")
+    else:
+        seen_skus  = set()
+        structures = set()
+        for v in valid:
+            sku = (v.get("sku") or "").strip()
 
-        if sku in seen_skus:
-            reasons.append(f"variation {v['id']} has duplicate SKU {sku!r}")
-        else:
-            seen_skus.add(sku)
+            if sku in seen_skus:
+                reasons.append(f"variation {v['id']} has duplicate SKU {sku!r}")
+            else:
+                seen_skus.add(sku)
 
-        s = get_structure(sku)
-        if s:
-            structures.add(s)
+            s = get_structure(sku)
+            if s:
+                structures.add(s)
 
-    if len(structures) > 1:
-        reasons.append(f"mixed SKU structures across variations: {sorted(structures)}")
+        if len(structures) > 1:
+            reasons.append(f"mixed SKU structures across variations: {sorted(structures)}")
 
     if reasons:
         flagged.append({"reasons": reasons, "product": item})
     else:
-        clean.append(item)
+        clean.append({**item, "variations": valid})
 
 (out_dir / "items.json").write_text(json.dumps(clean, indent=2, ensure_ascii=False))
 (out_dir / "flagged.json").write_text(json.dumps(flagged, indent=2, ensure_ascii=False))
