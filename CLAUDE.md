@@ -63,3 +63,22 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+---
+
+## Project Context: final-migration
+
+This repo migrates WooCommerce product catalogues into a Supabase-backed multi-brand platform. Active work lives in `final-migration/`. Ignore `old-migration/` and `new-migration/` — they are abandoned.
+
+### Key conventions
+- Brand is set via the `BRAND` env var (e.g. `BRAND=prosport`). All scripts read this at runtime via `config/`.
+- Pipeline scripts live in `final-migration/pipeline/`. Run them from the repo root.
+- Output data lands in `final-migration/data/{brand}/` and is gitignored.
+- Veeqo inventory is sourced from a local CSV (`pipeline/sellables_export*.csv`), not the API.
+- Checks accumulate per entity — a product collects all failures before being flagged. One failure is enough to flag it.
+- Variable products: SKU is null at product level; checks (Veeqo, SKU structure) apply at variation level only.
+- Simple products: SKU, Veeqo presence, SKU structure, and non-empty variations array are all checked at fetch time.
+- Bad variations (not in Veeqo or not an object) are dropped silently. A variable product needs at least 2 surviving variations to proceed.
+
+### DB
+Schema is in `final-migration/db/001_initial_schema.sql`. Field names in the pipeline use camelCase; DB columns use snake_case — the import step handles the mapping.
