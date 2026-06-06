@@ -164,34 +164,27 @@ print(f"  Variation totalSales != 0:    {len(var_ts_wrong)}")
 # ── Pricing ───────────────────────────────────────────────────
 section("PRICING")
 simple_prices = [i["minPriceCents"] for i in simple if isinstance(i.get("minPriceCents"), int) and not isinstance(i.get("minPriceCents"), bool)]
-print(f"  Simple ({len(simple_prices)} with price):  {price_stats(simple_prices)}")
-print(f"  Price distribution:")
-bucket_dist(simple_prices,
-    [500, 1000, 2000, 5000, 10000, 999999],
-    ["$0-$5", "$5-$10", "$10-$20", "$20-$50", "$50-$100", "$100+"])
-
-var_min = [i["minPriceCents"] for i in variable if isinstance(i.get("minPriceCents"), int) and not isinstance(i.get("minPriceCents"), bool)]
-var_max = [i["maxPriceCents"] for i in variable if isinstance(i.get("maxPriceCents"), int) and not isinstance(i.get("maxPriceCents"), bool)]
-print(f"\n  Variable minPriceCents ({len(var_min)}):  {price_stats(var_min)}")
-print(f"  Variable maxPriceCents ({len(var_max)}):  {price_stats(var_max)}")
-
-spread = [(i["name"], i["maxPriceCents"] - i["minPriceCents"])
-          for i in variable
-          if isinstance(i.get("minPriceCents"), int) and isinstance(i.get("maxPriceCents"), int)
-          and i["maxPriceCents"] != i["minPriceCents"]]
-spread.sort(key=lambda x: -x[1])
-print(f"  Variable products with price spread: {len(spread)}")
-for name, diff in spread[:5]:
-    print(f"    {dollars(diff):>10} spread  —  {name}")
-if len(spread) > 5:
-    print(f"    ... and {len(spread) - 5} more")
-
-var_prices = [v["regularPriceCents"] for v in all_variations if isinstance(v.get("regularPriceCents"), int) and not isinstance(v.get("regularPriceCents"), bool)]
-print(f"\n  All variation regularPriceCents ({len(var_prices)}):  {price_stats(var_prices)}")
+var_prices    = [v["regularPriceCents"] for v in all_variations if isinstance(v.get("regularPriceCents"), int) and not isinstance(v.get("regularPriceCents"), bool)]
+all_prices    = simple_prices + var_prices
+print(f"  Total priced entries: {len(all_prices)}  (simple: {len(simple_prices)}, variations: {len(var_prices)})")
+print(f"  {price_stats(all_prices)}")
 print(f"  Distribution:")
-bucket_dist(var_prices,
+bucket_dist(all_prices,
     [500, 1000, 2000, 5000, 10000, 999999],
     ["$0-$5", "$5-$10", "$10-$20", "$20-$50", "$50-$100", "$100+"])
+
+# variable product price ranges
+var_mins   = [i["minPriceCents"] for i in variable if isinstance(i.get("minPriceCents"), int) and not isinstance(i.get("minPriceCents"), bool)]
+var_maxes  = [i["maxPriceCents"] for i in variable if isinstance(i.get("maxPriceCents"), int) and not isinstance(i.get("maxPriceCents"), bool)]
+spreads    = [i["maxPriceCents"] - i["minPriceCents"]
+              for i in variable
+              if isinstance(i.get("minPriceCents"), int) and isinstance(i.get("maxPriceCents"), int)]
+with_spread = sum(1 for s in spreads if s > 0)
+print(f"\n  Variable products ({len(variable)}):")
+print(f"  {price_stats(var_mins, 'avg min  ')}")
+print(f"  {price_stats(var_maxes, 'avg max  ')}")
+print(f"  Spread  min={dollars(min(spreads))}  max={dollars(max(spreads))}  avg={dollars(round(sum(spreads)/len(spreads)))}") if spreads else None
+print(f"  Products with spread > 0: {with_spread}")
 
 # ── Product Images ────────────────────────────────────────────
 section("PRODUCT IMAGES")
