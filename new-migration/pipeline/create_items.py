@@ -105,6 +105,8 @@ for item in items:
         sale_warnings.append(f"id={pid}: WC sale={item.get('sale')} computed={computed_sale}")
     item["sale"] = computed_sale
 
+    item["inStock"] = any(v.get("stock", 0) > 0 for v in filled)
+
     item["variations"] = filled
 
 # ── Phase 3: Global SKU uniqueness ───────────────────────────────────────────

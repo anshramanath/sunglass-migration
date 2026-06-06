@@ -83,7 +83,7 @@ def reshape(p):
     if is_variable:
         # min/max and salePriceCents deferred to combine step
         min_price = max_price = sale_price = None
-        sale = p.get('on_sale')
+        sale      = None  # derived in create_items from embedded variations
     else:
         rp = to_cents(p.get('regular_price'))
         base = rp if rp is not None else to_cents(p.get('price'))
@@ -93,10 +93,12 @@ def reshape(p):
 
     # stock: variable products defer to variation-level stock; simple products use quantity or status fallback
     if is_variable:
-        stock = None
+        stock    = None
+        in_stock = None  # derived in create_items from embedded variations
     else:
-        sq = p.get('stock_quantity')
-        stock = sq if sq is not None else (1 if p.get('stock_status') == 'instock' else 0)
+        sq       = p.get('stock_quantity')
+        stock    = sq if sq is not None else (1 if p.get('stock_status') == 'instock' else 0)
+        in_stock = stock > 0
 
     # weight + dimensions: variable products defer to variation-level; simple products use product-level
     if is_variable:
@@ -120,7 +122,7 @@ def reshape(p):
         'description':       desc_text,
         'descriptionImages': desc_imgs,
         'summary':  short_desc or [],
-        'sku':               p['sku'],
+        'sku':               None if is_variable else p['sku'],
         'minPriceCents':     min_price,
         'maxPriceCents':     max_price,
         'salePriceCents':    sale_price,
@@ -128,6 +130,7 @@ def reshape(p):
         'featured':          p.get('featured'),
         'totalSales':        p.get('total_sales') or 0,
         'stock':             stock,
+        'inStock':           in_stock,
         'weight':            weight,
         'weightUnit':        None,
         'dimensions':        dimensions,

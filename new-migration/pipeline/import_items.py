@@ -69,14 +69,14 @@ for i, p in enumerate(items):
             description, summary, attributes,
             featured, total_sales,
             sale, min_price_cents, max_price_cents, sale_price_cents,
-            stock, weight, weight_unit,
+            stock, in_stock, weight, weight_unit,
             length, width, height, dimension_unit
         ) VALUES (
             %s, %s, %s, %s, %s,
             %s, %s, %s,
             %s, %s,
             %s, %s, %s, %s,
-            %s, %s, %s,
+            %s, %s, %s, %s,
             %s, %s, %s, %s
         ) RETURNING id;
         """,
@@ -96,6 +96,7 @@ for i, p in enumerate(items):
             p["maxPriceCents"],
             p.get("salePriceCents"),
             p["stock"],
+            p["inStock"],
             p["weight"],
             p["weightUnit"],
             dims.get("length"),
