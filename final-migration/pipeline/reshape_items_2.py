@@ -15,7 +15,7 @@ if not in_path.exists():
 
 items = json.loads(in_path.read_text())
 
-# load veeqo prices: sku -> highest of sales_price and cost_price in cents
+# load veeqo prices: sku -> highest sales_price in cents; stock: sku -> lowest qty_on_hand
 _csv = sorted(Path(__file__).parent.glob("sellables_export*.csv"))
 if not _csv:
     raise SystemExit("No sellables_export*.csv found in pipeline/")
@@ -73,6 +73,10 @@ for item in items:
             if updates:
                 v = {**v, **updates}
             updated_variations.append(v)
+        updated_variations = [
+            v for v in updated_variations
+            if v.get("regularPriceCents") is not None and v.get("attribute")
+        ]
         prices = [v["regularPriceCents"] for v in updated_variations if v.get("regularPriceCents") is not None]
         in_stock = any(v.get("stock", 0) > 0 for v in updated_variations)
 
