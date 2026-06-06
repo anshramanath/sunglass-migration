@@ -94,11 +94,11 @@
       "menu_order": 0,
       "price_html": "<span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>3.99</bdi></span>",
       "related_ids": [
-        1230,
+        1299,
         1170,
-        1261,
         1219,
-        1334
+        1208,
+        1317
       ],
       "meta_data": [
         {
@@ -394,11 +394,11 @@
       "menu_order": 0,
       "price_html": "<del aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>7.95</bdi></span></del> <span class=\"screen-reader-text\">Original price was: &#036;7.95.</span><ins aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>3.95</bdi></span></ins><span class=\"screen-reader-text\">Current price is: &#036;3.95.</span>",
       "related_ids": [
+        1271,
         1230,
-        1179,
-        1213,
-        1175,
-        1261
+        1170,
+        1247,
+        1219
       ],
       "meta_data": [
         {
@@ -591,11 +591,11 @@
       "menu_order": 0,
       "price_html": "<del aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>5.95</bdi></span></del> <span class=\"screen-reader-text\">Original price was: &#036;5.95.</span><ins aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>4.95</bdi></span></ins><span class=\"screen-reader-text\">Current price is: &#036;4.95.</span>",
       "related_ids": [
+        1179,
+        1247,
+        1299,
         1252,
-        1271,
-        1184,
-        1219,
-        1294
+        1271
       ],
       "meta_data": [
         {
@@ -748,11 +748,11 @@
       "menu_order": 0,
       "price_html": "<del aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>9.95</bdi></span></del> <span class=\"screen-reader-text\">Original price was: &#036;9.95.</span><ins aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>6.95</bdi></span></ins><span class=\"screen-reader-text\">Current price is: &#036;6.95.</span>",
       "related_ids": [
-        1219,
-        1213,
-        1275,
         1179,
-        1230
+        1317,
+        1313,
+        1213,
+        1275
       ],
       "meta_data": [
         {
@@ -905,11 +905,11 @@
       "menu_order": 0,
       "price_html": "<del aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>7.95</bdi></span></del> <span class=\"screen-reader-text\">Original price was: &#036;7.95.</span><ins aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>5.95</bdi></span></ins><span class=\"screen-reader-text\">Current price is: &#036;5.95.</span>",
       "related_ids": [
-        1261,
-        1230,
-        1313,
-        1308,
-        1219
+        1317,
+        1165,
+        1179,
+        1271,
+        1189
       ],
       "meta_data": [
         {
@@ -1049,11 +1049,11 @@
       "menu_order": 0,
       "price_html": "<del aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>7.95</bdi></span></del> <span class=\"screen-reader-text\">Original price was: &#036;7.95.</span><ins aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>5.95</bdi></span></ins><span class=\"screen-reader-text\">Current price is: &#036;5.95.</span>",
       "related_ids": [
-        1299,
-        1213,
         1160,
-        1230,
-        1271
+        1275,
+        1313,
+        1165,
+        1299
       ],
       "meta_data": [
         {

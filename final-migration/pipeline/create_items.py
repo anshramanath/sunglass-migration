@@ -8,6 +8,8 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import BASE, load_brand
+from veeqo import check_veeqo
+from sku_structure import get_structure
 
 brand_key, config = load_brand()
 slug     = config["slug"]
@@ -78,8 +80,44 @@ for p in products:
     else:
         items.append({**p, "variations": fetched})
 
-(out_dir / "items.json").write_text(json.dumps(items, indent=2, ensure_ascii=False))
+print("\nRunning checks...")
+
+clean = []
+for item in items:
+    reasons    = []
+    variations = item.get("variations", [])
+
+    structures = set()
+    seen_skus  = set()
+    for v in variations:
+        if not isinstance(v, dict):
+            reasons.append(f"variation {v} is not an object")
+            continue
+
+        sku = (v.get("sku") or "").strip()
+
+        if not check_veeqo(sku):
+            reasons.append(f"variation {v['id']} SKU {sku!r} not in Veeqo")
+
+        if sku in seen_skus:
+            reasons.append(f"variation {v['id']} has duplicate SKU {sku!r}")
+        else:
+            seen_skus.add(sku)
+
+        s = get_structure(sku)
+        if s:
+            structures.add(s)
+
+    if len(structures) > 1:
+        reasons.append(f"mixed SKU structures across variations: {sorted(structures)}")
+
+    if reasons:
+        flagged.append({"reasons": reasons, "product": item})
+    else:
+        clean.append(item)
+
+(out_dir / "items.json").write_text(json.dumps(clean, indent=2, ensure_ascii=False))
 (out_dir / "flagged.json").write_text(json.dumps(flagged, indent=2, ensure_ascii=False))
 
-print(f"\nSaved {len(items)} items   → {out_dir / 'items.json'}")
+print(f"\nSaved {len(clean)} items   → {out_dir / 'items.json'}")
 print(f"Saved {len(flagged)} flagged → {out_dir / 'flagged.json'}")

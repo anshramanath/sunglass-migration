@@ -56,8 +56,9 @@ while True:
 
 print("\nRunning checks...")
 
-products = []
-flagged  = []
+products  = []
+flagged   = []
+seen_skus = set()
 
 for p in all_products:
     if p.get("type") != "simple":
@@ -71,6 +72,10 @@ for p in all_products:
         reasons.append("SKU does not match NNXnn structure")
     if not check_veeqo(sku):
         reasons.append("SKU not found in Veeqo")
+    if sku in seen_skus:
+        reasons.append(f"duplicate SKU: {sku!r}")
+    else:
+        seen_skus.add(sku)
 
     if reasons:
         flagged.append({"reasons": reasons, "product": p})
