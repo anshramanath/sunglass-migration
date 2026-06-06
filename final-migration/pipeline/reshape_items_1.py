@@ -33,11 +33,23 @@ def extract_description_images(html: str) -> list:
     srcs = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', html or "")
     return [{"src": src, "name": src.rstrip("/").split("/")[-1], "sortOrder": i + 1} for i, src in enumerate(srcs)]
 
-def clean_description(raw: str) -> str | None:
+def clean_text(raw: str) -> str | None:
     text = re.sub(r'<[^>]+>', "", raw or "")
     text = html.unescape(text)
-    text = re.sub(r'\s+', " ", text).strip()
+    text = re.sub(r'\s+', " ", text).strip().strip("‘’“”")
     return text or None
+
+def clean_description(raw: str) -> str | None:
+    return clean_text(raw)
+
+def parse_summary(raw: str) -> list:
+    if not raw:
+        return []
+    items = re.findall(r'<li[^>]*>(.*?)</li>', raw, re.DOTALL)
+    if items:
+        return [t for t in (clean_text(i) for i in items) if t]
+    text = clean_text(raw)
+    return [text] if text else []
 
 def slugify(text: str) -> str:
     text = text.lower().strip()
@@ -56,7 +68,7 @@ for item in items:
         "slug":              slugify(item["name"]),
         "description":       clean_description(item.get("description")),
         "descriptionImages": extract_description_images(item.get("description")),
-        "summary":           [item["short_description"]] if item.get("short_description") else [],
+        "summary":           parse_summary(item.get("short_description")),
         "featured":          False,
         "stock":             None if is_variable else 0,
         "inStock":           False,
