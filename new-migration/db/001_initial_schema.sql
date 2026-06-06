@@ -15,7 +15,7 @@ create table categories (
   parent_id uuid references categories(id),
   name text not null,
   slug text not null,
-  sort_order int not null default 1
+  sort_order int not null
 );
 
 create table products (
@@ -28,14 +28,14 @@ create table products (
   description text,
   summary text[],
   attributes jsonb,
-  featured boolean not null default false,
-  total_sales int not null default 0,
-  sale boolean not null default false,
+  featured boolean not null,
+  total_sales int not null,
+  sale boolean not null,
   min_price_cents int not null,
   max_price_cents int not null,
   sale_price_cents int,
   stock int,
-  in_stock boolean not null default false,
+  in_stock boolean not null,
   weight float,
   weight_unit text,
   length float,
@@ -56,11 +56,11 @@ create table variations (
   sku text not null unique,
   old_url text,
   description text,
-  attributes jsonb not null default '[]',
-  sale boolean not null default false,
+  attributes jsonb not null,
+  sale boolean not null,
   regular_price_cents int not null,
   sale_price_cents int,
-  stock int not null default 1,
+  stock int not null,
   weight float,
   weight_unit text,
   length float,
@@ -74,7 +74,7 @@ create table product_images (
   product_id uuid not null references products(id),
   src text not null,
   name text not null,
-  sort_order int not null default 0
+  sort_order int not null
 );
 
 create table variation_images (
@@ -82,7 +82,7 @@ create table variation_images (
   variation_id uuid not null references variations(id),
   src text not null,
   name text not null,
-  sort_order int not null default 0
+  sort_order int not null
 );
 
 create table description_images (
@@ -90,7 +90,7 @@ create table description_images (
   product_id uuid not null references products(id),
   src text not null,
   name text not null,
-  sort_order int not null default 0
+  sort_order int not null
 );
 
 create table admins (
