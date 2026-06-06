@@ -23,25 +23,18 @@ create table products (
   brand_id uuid not null references brands(id),
   name text not null,
   slug text not null,
-  sku text unique,
-  old_url text,
-  description text,
-  summary text[],
+  sku text,
+  description text not null,
+  summary text[] not null,
   attributes jsonb not null,
   featured boolean not null,
-  total_sales int not null,
+  total_sales int,
   sale boolean not null,
   min_price_cents int not null,
   max_price_cents int not null,
   sale_price_cents int,
   stock int,
-  in_stock boolean not null,
-  weight float,
-  weight_unit text,
-  length float,
-  width float,
-  height float,
-  dimension_unit text
+  in_stock boolean not null
 );
 
 create table product_categories (
@@ -53,19 +46,13 @@ create table product_categories (
 create table variations (
   id uuid primary key default gen_random_uuid(),
   product_id uuid not null references products(id),
-  sku text not null unique,
-  old_url text,
+  sku text not null,
   attribute jsonb not null,
   sale boolean not null,
   regular_price_cents int not null,
   sale_price_cents int,
   stock int not null,
-  weight float,
-  weight_unit text,
-  length float,
-  width float,
-  height float,
-  dimension_unit text
+  total_sales int not null
 );
 
 create table product_images (

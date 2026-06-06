@@ -40,6 +40,18 @@ known_product_ids = {p["id"] for p in products}
 out_dir = BASE / "data" / slug / "validate-variations"
 out_dir.mkdir(parents=True, exist_ok=True)
 
+variation_errors = {}
+seen_ids         = set()
+
+def err(vid, msg):
+    variation_errors.setdefault(vid, []).append(msg)
+
+def is_num(v):
+    try:
+        float(v)
+        return True
+    except (TypeError, ValueError):
+        return False
 
 def clean_attr_name(raw):
     name = re.sub(r'(?i)\s+for\s+filter$', '', raw).strip()
@@ -49,53 +61,128 @@ def clean_attr_name(raw):
     return name
 
 def extract_model(sku: str):
-    """Return the digits-X-digits model number from the first SKU segment, or None."""
     chunk      = sku.split("-")[0]
-    normalized = re.sub(r'^C(?=[A-Z])', '', chunk)  # strip leading C combo prefix
+    normalized = re.sub(r'^C(?=[A-Z])', '', chunk)
     m = re.search(r'\d+[Xx]\d+', normalized)
     return m.group(0).upper() if m else None
 
 
-variation_errors = {}
-seen_ids         = set()
-
-
-def err(vid, msg):
-    variation_errors.setdefault(vid, []).append(msg)
-
-
-# ── Pass 1: Veeqo ─────────────────────────────────────────────────────────────
+# ── Pass 1: per-variation field checks + Veeqo ────────────────────────────────
 
 for entry in raw:
     product_id = entry.get("product_id")
+
+    if not isinstance(product_id, (int, float)):
+        continue
     if product_id not in known_product_ids:
+        for v in entry.get("variations", []):
+            err(v.get("id"), f"product_id={product_id} not in validate-products")
         continue
 
     for v in entry.get("variations", []):
         vid = v.get("id")
 
+        if not isinstance(vid, (int, float)):
+            err(vid, "id is not a number")
+            continue
         if vid in seen_ids:
             err(vid, "id is not unique")
             continue
         seen_ids.add(vid)
 
+        if not isinstance(v.get("parent_id"), (int, float)):
+            err(vid, "parent_id is not a number")
+        elif v["parent_id"] != product_id:
+            err(vid, f"parent_id={v['parent_id']} does not match product_id={product_id}")
+
+        if v.get("status") != "publish":
+            err(vid, f"status must be 'publish', got {v.get('status')!r}")
+
+        # sku: non-empty, in Veeqo
         sku = v.get("sku", "").strip()
         if not sku or sku not in veeqo_skus:
             err(vid, "not in Veeqo")
 
+        # price: valid number > 0
+        price = v.get("price")
+        if not isinstance(price, str) or not price.strip():
+            err(vid, "price is missing or empty")
+        elif not is_num(price):
+            err(vid, f"price is not a valid number: {price!r}")
+        elif float(price) <= 0:
+            err(vid, f"price must be greater than zero, got {price}")
+
+        # regular_price / sale_price
+        rp = v.get("regular_price")
+        sp = v.get("sale_price")
+        if rp not in (None, "") and not is_num(rp):
+            err(vid, f"regular_price is not a valid number: {rp!r}")
+        if sp not in (None, "") and not is_num(sp):
+            err(vid, f"sale_price is not a valid number: {sp!r}")
+        if rp not in (None, "") and sp not in (None, "") and is_num(rp) and is_num(sp):
+            if float(sp) >= float(rp):
+                err(vid, f"sale_price ({sp}) >= regular_price ({rp})")
+
+        # on_sale consistency
+        if not isinstance(v.get("on_sale"), bool):
+            err(vid, f"on_sale must be a boolean, got {v.get('on_sale')!r}")
+        else:
+            if v["on_sale"] and sp in (None, ""):
+                err(vid, "on_sale=True but no sale_price")
+            if sp not in (None, "") and not v["on_sale"]:
+                err(vid, "sale_price set but on_sale=False")
+        if sp in (None, "") and rp not in (None, "") and is_num(rp):
+            if isinstance(price, str) and is_num(price) and price != rp:
+                err(vid, f"no sale_price but price ({price}) != regular_price ({rp})")
+
+        # stock
+        sq = v.get("stock_quantity")
+        if sq is not None and not isinstance(sq, (int, float)):
+            err(vid, f"stock_quantity must be a number or null, got {sq!r}")
+        ss = v.get("stock_status")
+        if not ss:
+            err(vid, "stock_status is missing")
+        elif ss not in ("instock", "outofstock"):
+            err(vid, f"stock_status must be 'instock' or 'outofstock', got {ss!r}")
+
+        # weight + dimensions
+        w = v.get("weight")
+        if w not in (None, "") and not is_num(w):
+            err(vid, f"weight is not a valid number: {w!r}")
+        dims = v.get("dimensions") or {}
+        for dim in ("length", "width", "height"):
+            dv = dims.get(dim)
+            if dv not in (None, "") and not is_num(dv):
+                err(vid, f"dimensions.{dim} is not a valid number: {dv!r}")
+
+        # image: null allowed; if present must be valid
+        img = v.get("image")
+        if img is not None:
+            if not isinstance(img, dict) or not img.get("src"):
+                err(vid, "image present but has no src")
+            elif not img["src"].startswith("http"):
+                err(vid, f"image.src is not a valid URL: {img['src']!r}")
+
+        # attributes: name and option non-empty; no name collisions
+        for a in v.get("attributes", []):
+            if not isinstance(a.get("name"), str) or not a["name"].strip():
+                err(vid, f"attribute name is not a valid non-empty string: {a}")
+            if not isinstance(a.get("option"), str) or not a["option"].strip():
+                err(vid, f"attribute '{a.get('name')}' has empty option")
+
         seen_attr_names = {}
         for a in v.get("attributes", []):
-            raw     = a.get("name", "")
-            cleaned = clean_attr_name(raw)
+            raw_name = a.get("name", "")
+            cleaned  = clean_attr_name(raw_name)
             if cleaned in seen_attr_names:
-                err(vid, f"attribute name collision: '{seen_attr_names[cleaned]}' and '{raw}' both clean to '{cleaned}'")
+                err(vid, f"attribute name collision: '{seen_attr_names[cleaned]}' and '{raw_name}' both clean to '{cleaned}'")
             else:
-                seen_attr_names[cleaned] = raw
+                seen_attr_names[cleaned] = raw_name
 
 
-# ── Pass 2: model presence + consistency ──────────────────────────────────────
+# ── Pass 2: model number presence + consistency ───────────────────────────────
 
-model_groups = defaultdict(list)  # pid -> [(vid, sku, model), ...]
+model_groups = defaultdict(list)  # pid -> [(vid, sku, model)]
 
 for entry in raw:
     pid = entry.get("product_id")
