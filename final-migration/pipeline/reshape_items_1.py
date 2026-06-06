@@ -61,11 +61,12 @@ def slugify(text: str) -> str:
 reshaped = []
 for item in items:
     is_variable = bool(item.get("variations"))
+    name = clean_text(item["name"]) or item["name"]
 
     p = {
         "sku":               None if is_variable else item.get("sku"),
-        "name":              item["name"],
-        "slug":              slugify(item["name"]),
+        "name":              name,
+        "slug":              slugify(name),
         "description":       clean_description(item.get("description")),
         "descriptionImages": extract_description_images(item.get("description")),
         "summary":           parse_summary(item.get("short_description")),

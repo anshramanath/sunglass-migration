@@ -26,12 +26,14 @@ def is_bool(x):
 
 def check_image(img, label):
     errs = []
-    if not img.get("src"):
+    if not (img.get("src") or "").strip():
         errs.append(f"{label}: missing src")
-    if not img.get("name"):
+    if not (img.get("name") or "").strip():
         errs.append(f"{label}: missing name")
     if not is_int(img.get("sortOrder")):
         errs.append(f"{label}: sortOrder must be int, got {type(img.get('sortOrder')).__name__}")
+    elif img["sortOrder"] <= 0:
+        errs.append(f"{label}: sortOrder must be > 0, got {img['sortOrder']}")
     return errs
 
 
@@ -43,55 +45,68 @@ for item in items:
     is_variable = item.get("sku") is None
     is_simple   = not is_variable
 
-    # name / slug — text not null
+    # name / slug
     if not (item.get("name") or "").strip():
         reasons.append("name is null or empty")
     if not (item.get("slug") or "").strip():
         reasons.append("slug is null or empty")
 
-    # price — int not null (description/summary/categories deferred)
+    # featured must be false
+    if item.get("featured") is not False:
+        reasons.append(f"featured must be false, got {item.get('featured')!r}")
+
+    # sale must be false
+    if item.get("sale") is not False:
+        reasons.append(f"sale must be false, got {item.get('sale')!r}")
+
+    # salePriceCents must be null
+    if item.get("salePriceCents") is not None:
+        reasons.append(f"salePriceCents must be null, got {item.get('salePriceCents')!r}")
+
+    # inStock — boolean
+    if not is_bool(item.get("inStock")):
+        reasons.append(f"inStock must be bool, got {item.get('inStock')!r}")
+
+    # categories must be empty array
+    if item.get("categories") != []:
+        reasons.append(f"categories must be empty array, got {item.get('categories')!r}")
+
+    # min/max price — non-null int > 0, min <= max
     if not is_int(item.get("minPriceCents")):
         reasons.append(f"minPriceCents must be int, got {item.get('minPriceCents')!r}")
+    elif item["minPriceCents"] <= 0:
+        reasons.append(f"minPriceCents must be > 0, got {item['minPriceCents']}")
+
     if not is_int(item.get("maxPriceCents")):
         reasons.append(f"maxPriceCents must be int, got {item.get('maxPriceCents')!r}")
+    elif item["maxPriceCents"] <= 0:
+        reasons.append(f"maxPriceCents must be > 0, got {item['maxPriceCents']}")
+
     if is_int(item.get("minPriceCents")) and is_int(item.get("maxPriceCents")):
         if item["minPriceCents"] > item["maxPriceCents"]:
             reasons.append(f"minPriceCents ({item['minPriceCents']}) > maxPriceCents ({item['maxPriceCents']})")
 
-    # sale_price_cents — int or null
-    if item.get("salePriceCents") is not None and not is_int(item.get("salePriceCents")):
-        reasons.append(f"salePriceCents must be int or null, got {item.get('salePriceCents')!r}")
+    # productImages — must be non-empty; each entry valid
+    if not item.get("productImages"):
+        reasons.append("productImages must be non-empty")
+    else:
+        for i, img in enumerate(item["productImages"]):
+            reasons.extend(check_image(img, f"productImages[{i}]"))
 
-    # featured, sale, inStock — boolean not null
-    if not is_bool(item.get("featured")):
-        reasons.append(f"featured must be bool, got {item.get('featured')!r}")
-    if not is_bool(item.get("sale")):
-        reasons.append(f"sale must be bool, got {item.get('sale')!r}")
-    if not is_bool(item.get("inStock")):
-        reasons.append(f"inStock must be bool, got {item.get('inStock')!r}")
-
-    # attributes — jsonb not null (list)
-    if not isinstance(item.get("attributes"), list):
-        reasons.append(f"attributes must be a list, got {type(item.get('attributes')).__name__}")
-
-    # productImages — product_images table: src/name/sort_order all not null
-    for i, img in enumerate(item.get("productImages", [])):
-        reasons.extend(check_image(img, f"productImages[{i}]"))
-
-    # descriptionImages — description_images table
+    # descriptionImages — each entry valid if present
     for i, img in enumerate(item.get("descriptionImages", [])):
         reasons.extend(check_image(img, f"descriptionImages[{i}]"))
 
     # simple-specific
     if is_simple:
-        if not item.get("sku"):
+        if not (item.get("sku") or "").strip():
             reasons.append("simple product sku is null or empty")
         if item.get("variations"):
             reasons.append("simple product has non-empty variations array")
         if not is_int(item.get("stock")):
             reasons.append(f"simple product stock must be int, got {item.get('stock')!r}")
-        if not is_int(item.get("totalSales")):
-            reasons.append(f"simple product totalSales must be int, got {item.get('totalSales')!r}")
+        if item.get("totalSales") != 0:
+            reasons.append(f"simple product totalSales must be 0, got {item.get('totalSales')!r}")
 
     # variable-specific
     if is_variable:
@@ -100,27 +115,52 @@ for item in items:
         if item.get("totalSales") is not None:
             reasons.append(f"variable product totalSales must be null, got {item['totalSales']!r}")
 
+        # attributes — non-empty; each entry has non-empty name and at least one non-empty option
+        attrs = item.get("attributes", [])
+        if not attrs:
+            reasons.append("variable product attributes must be non-empty")
+        else:
+            for j, a in enumerate(attrs):
+                if not (a.get("name") or "").strip():
+                    reasons.append(f"attributes[{j}]: name is null or empty")
+                options = a.get("options", [])
+                if not options:
+                    reasons.append(f"attributes[{j}] '{a.get('name')}': options must be non-empty")
+                else:
+                    for k, opt in enumerate(options):
+                        if not (opt or "").strip():
+                            reasons.append(f"attributes[{j}] '{a.get('name')}' options[{k}]: must be non-empty string")
+
         variations = item.get("variations", [])
         if len(variations) < 2:
             reasons.append(f"variable product has fewer than 2 variations ({len(variations)})")
 
         for v in variations:
-            v_sku = v.get("sku") or ""
+            v_sku = (v.get("sku") or "").strip()
             label = f"variation {v_sku!r}" if v_sku else "variation (no sku)"
             if not v_sku:
                 reasons.append(f"{label}: sku is null or empty")
             if not is_int(v.get("regularPriceCents")):
                 reasons.append(f"{label}: regularPriceCents must be int, got {v.get('regularPriceCents')!r}")
-            if v.get("salePriceCents") is not None and not is_int(v.get("salePriceCents")):
-                reasons.append(f"{label}: salePriceCents must be int or null")
+            elif v["regularPriceCents"] <= 0:
+                reasons.append(f"{label}: regularPriceCents must be > 0, got {v['regularPriceCents']}")
+            if v.get("salePriceCents") is not None:
+                reasons.append(f"{label}: salePriceCents must be null, got {v.get('salePriceCents')!r}")
             if not is_int(v.get("stock")):
                 reasons.append(f"{label}: stock must be int, got {v.get('stock')!r}")
-            if not is_int(v.get("totalSales")):
-                reasons.append(f"{label}: totalSales must be int, got {v.get('totalSales')!r}")
-            if not is_bool(v.get("sale")):
-                reasons.append(f"{label}: sale must be bool, got {v.get('sale')!r}")
-            if not isinstance(v.get("attribute"), list) or not v.get("attribute"):
-                reasons.append(f"{label}: attribute must be a non-empty list")
+            if v.get("totalSales") != 0:
+                reasons.append(f"{label}: totalSales must be 0, got {v.get('totalSales')!r}")
+            if v.get("sale") is not False:
+                reasons.append(f"{label}: sale must be false, got {v.get('sale')!r}")
+            attribute = v.get("attribute", [])
+            if not attribute:
+                reasons.append(f"{label}: attribute must be non-empty")
+            else:
+                for j, a in enumerate(attribute):
+                    if not (a.get("name") or "").strip():
+                        reasons.append(f"{label} attribute[{j}]: name is null or empty")
+                    if not (a.get("option") or "").strip():
+                        reasons.append(f"{label} attribute[{j}]: option is null or empty")
             for i, img in enumerate(v.get("variationImages", [])):
                 reasons.extend(check_image(img, f"{label} variationImages[{i}]"))
 
