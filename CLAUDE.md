@@ -1,5 +1,5 @@
 # Sunglass Monster Migration — Claude Context
-_Last updated: 2026-06-04_
+_Last updated: 2026-06-05_
 
 ## What this is
 Multi-brand WooCommerce → Supabase migration pipeline. Uses the authenticated WooCommerce admin REST API (`/wp-json/wc/v3/`) for complete product data. The active brand is selected via `BRAND` in `.env`.
@@ -69,9 +69,8 @@ from config import BASE, load_brand
 
 ## Pipeline robustness improvements (added during Monster run + ProSport run-2)
 
-- **Attribute name collision detection** — `validate_products.py` and `validate_variations.py` simulate `clean_attr_name` at validate time and flag any product/variation where two raw attribute names would map to the same cleaned name. Catches reshape-time collisions early.
-- **`ATTR_OVERRIDES` dict** — in `reshape_products.py` and `reshape_variations.py`, a brand-keyed dict that maps raw WooCommerce attribute names to canonical cleaned names before the generic prefix/postfix rules run. Add a new entry for each brand that needs it.
-- **`clean_attr_name` rules** — strips `for Filter` suffix, `Choose ` prefix, `Filter by ` prefix, and parentheticals like `(REQUIRED)`. Overrides checked first.
+- **Attribute name collision detection** — `validate_products.py` and `validate_variations.py` apply `clean_attr_name` to each attribute name in a product/variation and flag any case where two raw names collapse to the same cleaned name. Catches reshape-time collisions early. `clean_attr_name` is replicated verbatim in both validate scripts so they stay in sync with reshape.
+- **`clean_attr_name` rules** — strips `for Filter` suffix, `Choose ` prefix, `Filter by ` prefix, and parentheticals like `(REQUIRED)`. No `ATTR_OVERRIDES` — the collision check was previously coupled to an overrides dict that mapped raw names to canonical ones before the generic rules ran; both were removed together when overrides were dropped. The check was re-added standalone.
 - **Variable product stock = null** — `reshape_products.py` sets `stock=null` for all variable products. Variation-level stock is the source of truth; the WooCommerce aggregate is misleading.
 - **Variable product weight/dimensions = null** — `reshape_products.py` also nullifies `weight` and all three dimension fields for variable products. Same reasoning: variation-level is the source of truth.
 - **All-or-nothing dimensions** — if only some of length/width/height are present in reshape, all three are nullified and an `[INFO]` line is printed. Applies to both products (simple only) and variations.
@@ -81,7 +80,7 @@ from config import BASE, load_brand
 - **Import as pure insertion** — no field generation or inline defaults in `import_items.py`. All values come from categorize-items output. Dead fallbacks (`.get("stock", 1)`, enumerate for sort_order, hardcoded `None` for units) removed.
 - **WooCommerce slug validation** — removed `slugify(name) == slug` check; WooCommerce slugs diverge from names (apostrophes, truncation, etc.). Just check non-empty string.
 - **Empty attribute options OK** — `validate_products.py` no longer flags empty `options[]` arrays; `create_items.py` fills them from variation data.
-- **Base SKU consistency check** — `validate_variations.py` checks that all variations within a product share the same pre-dash SKU base. A leading `C` difference is allowed (`CPR...` vs `PR...` = combo vs single of same product). Other mismatches flag the product's variations — catches polarized/non-polarized mixed in one WC product, SKU revisions coexisting with originals, and multiple distinct models consolidated under one WC listing.
+- **Base SKU consistency check** — intentionally removed; superseded by the NNXnn model consistency check, which catches the same real-world cases (mixed frame models, SKU revisions coexisting) by comparing the extracted model number across siblings rather than the full first SKU segment.
 - **Null variation image allowed** — `validate_variations.py` allows `image: null`; only flags if an image is present but malformed. BikerShades has photochromic variations with no image set in WooCommerce.
 - **Variable product SKU kept as-is** — WooCommerce appends `-0` (or similar) to variable product SKUs to prevent duplicates when two products share the same variation base. Deriving from common variation segments strips this and causes false duplicate flags in `create_items.py`.
 - **Non-product SKU filtering in create_items** — `JUNK_SKU_PREFIXES`, `JUNK_SKU_SUFFIXES`, and `JUNK_SKU_CONTAINS` dicts in `create_items.py` flag non-product WooCommerce entries per brand before they embed. BikerShades: `LABEL-` prefix (shipping labels), `TRYB4UB-` prefix (Try Before You Buy deposits), `-RX` token anywhere in SKU (Rx frame listings). These are service/operational WC entries that should be reimplemented as features, not migrated as products.
