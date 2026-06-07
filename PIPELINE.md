@@ -2,36 +2,46 @@
 
 All scripts live in `final-migration/pipeline/` and are run from the repo root with `BRAND=<brand>` set.
 
+```bash
+BRAND=prosport python final-migration/pipeline/fetch_products.py
+```
+
+Valid brand values: `prosport`, `monster`, `bikershades`
+
+---
+
 ## Steps
 
 ### 1. `fetch_products.py`
-Fetches all products from WooCommerce. Runs checks on simple products only; variable products pass through unchecked.
 
-**Checks (simple products only):**
+Fetches all products from the WooCommerce REST API, paginating at 100 per page. Variable products pass through unchecked. Simple products are validated before being included.
+
+**Simple product checks:**
+- `variations` array must be empty — a simple product must not have variation IDs
 - SKU matches `NNXnn` structure (digits, X, digits in the first hyphen-segment)
-- SKU exists in Veeqo CSV
-- SKU is globally unique across all simple products
-- `variations` array is empty (a simple product must not have variation IDs)
+- SKU exists in the Veeqo CSV
+- SKU is globally unique across all simple products in this brand
 
 **Output:**
-- `data/{brand}/fetch-products/products.json` — clean products (simple + variable)
+- `data/{brand}/fetch-products/products.json` — all passing products (simple + variable)
 - `data/{brand}/fetch-products/flagged.json` — failed simple products with reasons
 
 ---
 
 ### 2. `create_items.py`
-Reads `fetch-products/products.json`. For each variable product, fetches all variations from the WooCommerce API and embeds them as full objects. Simple products pass through as-is with an empty variations array.
+
+Reads `fetch-products/products.json`. For each variable product, fetches all variations from the WooCommerce variations endpoint and embeds them as full objects. Simple products pass through with an empty variations array.
 
 **Phase 1 — fetch (variable products only):**
-- Variations are fetched page by page from the WooCommerce variations endpoint
+- Variations are fetched page by page from `/products/{id}/variations`
 - Any variation whose `parent_id` does not match the product ID is rejected
-- If the API returns a non-200 or any variation fails the parent_id check, the product is flagged immediately and skipped — validity checks do not run
+- A non-200 response or any `parent_id` mismatch flags the product immediately — validity checks do not run
 
 **Phase 2 — validity checks (variable products that passed phase 1):**
-- Bad variations (not a dict, or SKU not in Veeqo) are silently dropped
-- At least 2 valid variations must remain after dropping
+- Variations that are not a dict or whose SKU is not in Veeqo are silently dropped
+- At least 2 valid variations must survive
 - No duplicate SKUs within a product's surviving variations
-- All surviving variation SKUs share the same `NNXnn` structure
+- All surviving variation SKUs must share the same `NNXnn` structure
 
 **Output:**
 - `data/{brand}/create-items/items.json` — clean items with embedded variation objects
@@ -40,7 +50,8 @@ Reads `fetch-products/products.json`. For each variable product, fetches all var
 ---
 
 ### 3. `slim_items.py`
-Strips each item down to the fields needed for migration.
+
+Strips each item down to only the fields needed for migration. All other WooCommerce fields are discarded here.
 
 **Product fields kept:** `name`, `description`, `short_description`, `sku`, `price`, `regular_price`, `sale_price`, `images` (src + name only)
 
@@ -52,33 +63,40 @@ Strips each item down to the fields needed for migration.
 ---
 
 ### 4. `reshape_items_1.py`
-Transforms slim items into the DB shape. All field names use camelCase.
+
+Transforms slim items into the DB shape. All field names use camelCase. Prices converted to cents. HTML stripped. Images restructured with `sortOrder`.
 
 **Product-level transformations:**
-- `slug` — slugified from `name`
-- `sku` — null for variable products
-- `description` — HTML stripped to plain text; null if empty (deferred: will be filled in later)
-- `descriptionImages` — img tags extracted from description HTML as `{src, name, sortOrder}`
-- `summary` — `<li>` items become individual array elements; `<p>` becomes single-element array; empty if no short_description (deferred: will be filled in later)
-- `maxPriceCents` / `minPriceCents` — highest of WC price, regular_price, sale_price in cents; null if none
-- `salePriceCents` — null
-- `sale` — false
-- `featured` — false
-- `stock` — null for variable, 0 for simple
-- `inStock` — false
-- `totalSales` — null for variable, 0 for simple
-- `categories` — empty array (deferred: populated in a later step)
-- `productImages` — `{src, name, sortOrder}` (1-indexed)
-- `attributes` — empty array (populated in reshape_items_2)
+
+| Field | Value |
+|---|---|
+| `slug` | Slugified from `name` |
+| `sku` | `null` for variable products |
+| `description` | HTML stripped to plain text; `null` if empty |
+| `descriptionImages` | `img` tags extracted from description HTML as `{src, name, sortOrder}` |
+| `summary` | `<li>` items → individual array elements; `<p>` → single-element array; `[]` if no short_description |
+| `maxPriceCents` / `minPriceCents` | Highest of WC `price`, `regular_price`, `sale_price` in cents; `null` if none |
+| `salePriceCents` | `null` |
+| `sale` | `false` |
+| `featured` | `false` |
+| `stock` | `null` for variable, `0` for simple |
+| `inStock` | `false` |
+| `totalSales` | `null` for variable, `0` for simple |
+| `categories` | `[]` (deferred — populated later) |
+| `productImages` | `{src, name, sortOrder}` (1-indexed) |
+| `attributes` | `[]` (populated in reshape_items_2) |
 
 **Variation-level transformations:**
-- `regularPriceCents` — highest of WC price, regular_price, sale_price in cents; null if none
-- `salePriceCents` — null
-- `sale` — false
-- `stock` — 0
-- `totalSales` — 0
-- `variationImages` — `{src, name, sortOrder}`
-- `attribute` — `[{name, option}]` from WC attributes
+
+| Field | Value |
+|---|---|
+| `regularPriceCents` | Highest of WC `price`, `regular_price`, `sale_price` in cents; `null` if none |
+| `salePriceCents` | `null` |
+| `sale` | `false` |
+| `stock` | `0` |
+| `totalSales` | `0` |
+| `variationImages` | `{src, name, sortOrder}` |
+| `attribute` | `[{name, option}]` from WC attributes |
 
 **Output:**
 - `data/{brand}/reshape-items/items.json`
@@ -86,28 +104,29 @@ Transforms slim items into the DB shape. All field names use camelCase.
 ---
 
 ### 5. `reshape_items_2.py`
-Enriches reshape_items_1 output with Veeqo CSV data, then derives variable product fields from children.
 
-**Veeqo enrichment:**
-- Price source: `sales_price` column; highest value wins if a SKU has duplicate rows; converted to cents
-- Stock source: `qty_on_hand` column; lowest value wins if a SKU has duplicate rows
-- Veeqo always takes priority over WC values; 0 is a valid Veeqo value
+Enriches reshape_items_1 output with Veeqo CSV data, then derives variable product fields from surviving children.
+
+**Veeqo enrichment rules:**
+- Price source: `sales_price` column → cents. Highest value wins if a SKU appears in multiple rows.
+- Stock source: `qty_on_hand` column. Lowest value wins if a SKU appears in multiple rows.
+- Veeqo always takes priority over WooCommerce values. `0` is a valid Veeqo value.
 
 **Simple products:**
-- `maxPriceCents` / `minPriceCents` — overridden with Veeqo price; null if neither Veeqo nor WC has a price
-- `stock` — overridden with Veeqo qty; defaults to 0 if not in Veeqo
-- `inStock` — true if stock > 0
+- `maxPriceCents` / `minPriceCents` — overridden with Veeqo price; `null` if neither Veeqo nor WC has a price
+- `stock` — overridden with Veeqo qty; defaults to `0` if SKU not in Veeqo
+- `inStock` — `true` if stock > 0
 
-**Variations (variable products):**
-- Variations with null `regularPriceCents` or empty `attribute` after enrichment are silently dropped
-- `regularPriceCents` — overridden with Veeqo price; null if neither Veeqo nor WC has a price
-- `stock` — overridden with Veeqo qty; defaults to 0 if not in Veeqo
+**Variable products — variations:**
+- Variations with `null` `regularPriceCents` or empty `attribute` are silently dropped after enrichment
+- `regularPriceCents` — overridden with Veeqo price; `null` if neither source has a price
+- `stock` — overridden with Veeqo qty; defaults to `0` if not in Veeqo
 
-**Variable products (derived from surviving children):**
+**Variable products — derived from surviving children:**
 - `maxPriceCents` — highest child `regularPriceCents` (nulls excluded)
 - `minPriceCents` — lowest child `regularPriceCents` (nulls excluded)
-- `inStock` — true if any child has stock > 0
-- `attributes` — aggregated from child `attribute` arrays: one entry per unique name, options deduplicated and ordered by first appearance
+- `inStock` — `true` if any child has stock > 0
+- `attributes` — aggregated from child `attribute` arrays; one entry per unique name; options deduplicated and ordered by first appearance
 
 **Output:**
 - `data/{brand}/reshape-items-2/items.json`
@@ -115,26 +134,29 @@ Enriches reshape_items_1 output with Veeqo CSV data, then derives variable produ
 ---
 
 ### 6. `validate_items.py`
-Validates all items against DB constraints. Skips description, summary, and categories (deferred fields).
+
+Validates all items against DB constraints. Description, summary, and categories are deferred fields and are not checked here.
 
 **Checks (all products):**
 - `name`, `slug` — non-empty string
-- `minPriceCents`, `maxPriceCents` — non-null int; min ≤ max
-- `salePriceCents` — int or null
-- `featured`, `sale`, `inStock` — boolean
-- `attributes` — list
-- All image entries (productImages, descriptionImages) — src/name non-empty, sortOrder int
+- `minPriceCents`, `maxPriceCents` — non-null int > 0; min ≤ max
+- `salePriceCents` — must be `null`
+- `featured`, `sale` — must be `false`
+- `inStock` — must be boolean
+- `categories` — must be `[]`
+- `productImages` — non-empty; each entry has non-empty `src`, non-empty `name`, `sortOrder` int > 0
+- `descriptionImages` — each entry valid if present
 
 **Additional checks (simple products):**
 - `sku` — non-null, non-empty
-- `stock`, `totalSales` — int
+- `stock`, `totalSales` — must be int
 - `variations` — must be empty
 
 **Additional checks (variable products):**
-- `sku` — must be null
-- `stock`, `totalSales` — must be null
-- At least 2 variations
-- Each variation: `sku` non-empty, `regularPriceCents` int, `stock` int, `totalSales` int, `sale` bool, `attribute` non-empty list; variation image entries valid
+- `sku` — must be `null`
+- `stock`, `totalSales` — must be `null`
+- `attributes` — non-empty; each entry has non-empty `name` and at least one non-empty option
+- At least 2 variations; each variation: `sku` non-empty, `regularPriceCents` int > 0, `stock` int, `totalSales` int `0`, `sale` `false`, `attribute` non-empty list with valid name/option entries; variation image entries valid
 
 **Output:**
 - `data/{brand}/validate-items/items.json` — items that pass all checks
@@ -143,12 +165,18 @@ Validates all items against DB constraints. Skips description, summary, and cate
 ---
 
 ### 7. `remove_items.py`
-Reads `docs/remove_items.md` and filters out items that should not be imported.
+
+Reads `docs/remove_items.md` and filters out items that should not be imported. The markdown table is parsed at runtime — brand column must match the current brand.
 
 **Match rules:**
-- Simple: matched by `sku`
-- Variable product: matched by `slug`
-- Variation: matched by variation `sku`; if fewer than 2 variations survive, the parent product is dropped entirely
+
+| Type | Matched by |
+|---|---|
+| `Simple` | Product `sku` |
+| `Variable product` | Product `slug` |
+| `Variation` | Variation `sku` |
+
+If a variable product loses variations such that fewer than 2 survive, the entire product is dropped.
 
 **Output:**
 - `data/{brand}/remove-items/items.json`
@@ -156,11 +184,27 @@ Reads `docs/remove_items.md` and filters out items that should not be imported.
 ---
 
 ### 8. `merge_attributes.py`
-Consolidates WooCommerce attribute names into canonical names and rewrites options where needed.
 
-**Merge map:** multiple color/qty/power/transition/size variants → `color`, `quantity`, `power`, `transition`, `size`
+Consolidates inconsistent WooCommerce attribute names into canonical lowercase names and rewrites options where needed. Applied to both product-level `attributes` and variation-level `attribute`. Options are deduplicated within merged names.
 
-**Option rewrite:** "Qty (packs of 3)" options rewritten to "3 masks", "6 masks", "15 masks", "30 masks"
+**Merge map:**
+
+| Original name | Canonical name |
+|---|---|
+| Choose Color (REQUIRED), Choose Color, Color, Choose Frame Color (Required), Choose Bandana Color | `color` |
+| Choose Power | `power` |
+| Qty, Choose Quantity, Cleaner Spray Bottle QTY, Qty (packs of 3) | `quantity` |
+| Choose Transition Type | `transition` |
+| Choose Size | `size` |
+
+**Option rewrite (Qty (packs of 3) only):**
+
+| Original | Rewritten |
+|---|---|
+| 1 pack (3 masks total) | 3 masks |
+| 2 packs (6 masks total) | 6 masks |
+| 5 packs (15 masks total) | 15 masks |
+| 10 packs (30 masks total) | 30 masks |
 
 **Output:**
 - `data/{brand}/merge-attributes/items.json`
@@ -168,10 +212,12 @@ Consolidates WooCommerce attribute names into canonical names and rewrites optio
 ---
 
 ### 9. `dedup_images.py`
-Removes duplicate product images and variation images that duplicate the parent's product images.
 
-- Product images deduped by `src` URL (keep first)
-- Variation images whose `src` appears in the parent's `productImages` are removed entirely (empty `variationImages` = inherit from parent)
+Removes duplicate product images and variation images that repeat the parent's product images.
+
+- `productImages` deduped by `src` URL — first occurrence kept, duplicates dropped
+- Any `variationImages` entry whose `src` appears in the parent's `productImages` is removed entirely
+- Empty `variationImages` on a variation means the frontend inherits the parent's product images — intentional
 
 **Output:**
 - `data/{brand}/dedup-images/items.json`
@@ -179,7 +225,17 @@ Removes duplicate product images and variation images that duplicate the parent'
 ---
 
 ### 10. `generate_content.py`
-Initializes the generate-content stage. Sets `wasMissingDescription` and `wasMissingSummary` flags based on source data, then nulls all `description` and `summary` fields so everything is regenerated fresh by the MCP server.
+
+Initializes the generate-content stage. Records what was originally missing from WooCommerce, then nulls everything so the MCP server regenerates all descriptions and summaries from scratch.
+
+**Fields added:**
+
+| Field | Value |
+|---|---|
+| `wasMissingDescription` | `true` if `description` was `null` in source |
+| `wasMissingSummary` | `true` if `summary` was empty in source |
+| `description` | Always set to `null` |
+| `summary` | Always set to `[]` |
 
 **Output:**
 - `data/{brand}/generate-content/items.json`
@@ -187,14 +243,25 @@ Initializes the generate-content stage. Sets `wasMissingDescription` and `wasMis
 ---
 
 ### 11. MCP server (`mcp/server.py`)
-AI-generates descriptions and summaries using Claude Desktop + product images. Run via Claude Desktop — not a pipeline script.
 
-**Tools:**
-- `get_next_product(brand)` — returns next item needing content + product image
-- `save_content(brand, slug, description, summary)` — validates and saves generated content
-- `get_progress(brand)` — returns done/total/remaining
+AI-generates descriptions and summaries for all products using Claude Desktop and product images. This is not run as a pipeline script — Claude Desktop spawns it as a local process and communicates over stdio.
 
-**Claude Desktop prompt:**
+**Tools exposed:**
+
+| Tool | Description |
+|---|---|
+| `get_next_product(brand)` | Returns next item needing content + fetches and attaches the product image |
+| `save_content(brand, slug, description, summary)` | Validates content against format rules and writes to `generate-content/items.json` |
+| `get_progress(brand)` | Returns `done/total, remaining` as a plain string |
+
+**Validation rules enforced by `save_content`:**
+- Description: max 80 words, no measurements, no banned phrases (`available in`, `choose from`, `comes in`)
+- Summary: 4–6 bullets, each 5–12 words, capitalized first word, no trailing period, no banned phrases
+- Returns `VALIDATION FAILED` with reasons if any rule is broken — Claude Desktop must fix and retry
+
+**Claude Desktop config:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+**Prompt to use in Claude Desktop:**
 ```
 Process {brand}. For each product:
 1. Call get_next_product with brand="{brand}"
@@ -206,12 +273,16 @@ Process {brand}. For each product:
 Do not stop for status updates. Keep going until done.
 ```
 
+**Known issue — duplicate slugs:** If two products share the same slug, `save_content` always saves the first match. The second item gets stuck in an infinite loop. Fix: manually copy the saved content from the first duplicate to the second in the JSON file.
+
 ---
 
 ## Shared modules
 
 - `veeqo.py` — loads `sellables_export*.csv` once at import; exposes `check_veeqo(sku) -> bool`
 - `sku_structure.py` — `check_sku(sku) -> bool` and `get_structure(sku) -> str | None` for the `NNXnn` pattern
+
+---
 
 ## Data flow
 
