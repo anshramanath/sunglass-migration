@@ -54,6 +54,7 @@ BRAND_CONTEXT = {
             "Bold or oversized frames for fashion impact",
             "Lightweight frames for all-day wear",
             "Bifocal lenses have a built-in magnification segment",
+            "Computer readers have plain clear lenses — do not call them blue-light blocking",
             "Includes microfiber cleaning case",
         ],
         "examples": [
@@ -81,7 +82,7 @@ BRAND_CONTEXT = {
             "Photochromic (Eclipse) lenses auto-darken outdoors and clear indoors",
             "Bifocal lenses have a built-in magnification segment for near vision",
             "Size ranges like [SM-MED], [MED-LG], [LG-XLG] refer to head circumference fit",
-            "Z87.1 means ANSI-rated impact resistance",
+            "Z87.1 means ANSI-rated impact resistance — only mention it if it appears in the product name",
             "Includes BikerShades hard case and microfiber cleaning case",
         ],
         "examples": [
