@@ -22,6 +22,7 @@ BRAND_CONTEXT = {
             "Yellow lenses improve visibility in low light, overcast, and night driving",
             "Clear lenses ideal for night use or full eye protection",
             "Bifocal lenses have a built-in magnification segment for near vision",
+            "Computer readers have plain clear lenses — do not call them blue-light blocking",
             "Polycarbonate lenses are shatter-resistant and lightweight",
             "Spring hinges flex outward for a comfortable, adjustable fit",
             "Includes free microfiber drawstring case",
@@ -256,6 +257,8 @@ DESCRIPTION:
 • {ctx['description_style']}
 • No measurements (no mm, no "Lens Width", etc.)
 • Plain text only — no markdown, no HTML
+• Only state features you can clearly see in the image or that are stated in the product name
+• Do not infer coatings, certifications, or materials from appearance — if you cannot confirm it, do not claim it
 
 SUMMARY BULLETS:
 • {ctx['summary_style']}
