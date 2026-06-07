@@ -77,9 +77,6 @@ Removal drops `Choose Quantity` and `Cleaner Spray Bottle QTY` (both were only o
 | **color** | — | — | 449 |
 | **power** | — | — | 91 |
 | **transition** | — | — | 74 |
-| **color** | — | — | 449 |
-| **power** | — | — | 91 |
-| **transition** | — | — | 74 |
 | **quantity** | — | — | 1 |
 | **size** | — | — | 1 |
 
