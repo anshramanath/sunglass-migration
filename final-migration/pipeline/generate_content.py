@@ -23,6 +23,8 @@ for item in items:
         **item,
         "wasMissingDescription": item.get("description") is None,
         "wasMissingSummary":     not item.get("summary"),
+        "description":           None,
+        "summary":               [],
     })
 
 missing_desc = sum(1 for i in output if i["wasMissingDescription"])
