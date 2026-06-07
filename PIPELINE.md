@@ -142,6 +142,72 @@ Validates all items against DB constraints. Skips description, summary, and cate
 
 ---
 
+### 7. `remove_items.py`
+Reads `docs/remove_items.md` and filters out items that should not be imported.
+
+**Match rules:**
+- Simple: matched by `sku`
+- Variable product: matched by `slug`
+- Variation: matched by variation `sku`; if fewer than 2 variations survive, the parent product is dropped entirely
+
+**Output:**
+- `data/{brand}/remove-items/items.json`
+
+---
+
+### 8. `merge_attributes.py`
+Consolidates WooCommerce attribute names into canonical names and rewrites options where needed.
+
+**Merge map:** multiple color/qty/power/transition/size variants → `color`, `quantity`, `power`, `transition`, `size`
+
+**Option rewrite:** "Qty (packs of 3)" options rewritten to "3 masks", "6 masks", "15 masks", "30 masks"
+
+**Output:**
+- `data/{brand}/merge-attributes/items.json`
+
+---
+
+### 9. `dedup_images.py`
+Removes duplicate product images and variation images that duplicate the parent's product images.
+
+- Product images deduped by `src` URL (keep first)
+- Variation images whose `src` appears in the parent's `productImages` are removed entirely (empty `variationImages` = inherit from parent)
+
+**Output:**
+- `data/{brand}/dedup-images/items.json`
+
+---
+
+### 10. `generate_content.py`
+Initializes the generate-content stage. Sets `wasMissingDescription` and `wasMissingSummary` flags based on source data, then nulls all `description` and `summary` fields so everything is regenerated fresh by the MCP server.
+
+**Output:**
+- `data/{brand}/generate-content/items.json`
+
+---
+
+### 11. MCP server (`mcp/server.py`)
+AI-generates descriptions and summaries using Claude Desktop + product images. Run via Claude Desktop — not a pipeline script.
+
+**Tools:**
+- `get_next_product(brand)` — returns next item needing content + product image
+- `save_content(brand, slug, description, summary)` — validates and saves generated content
+- `get_progress(brand)` — returns done/total/remaining
+
+**Claude Desktop prompt:**
+```
+Process {brand}. For each product:
+1. Call get_next_product with brand="{brand}"
+2. Study the image carefully
+3. Generate the description and summary following the rules exactly
+4. Call save_content — if it returns VALIDATION FAILED, fix and retry
+5. Repeat until get_progress shows 0 remaining
+
+Do not stop for status updates. Keep going until done.
+```
+
+---
+
 ## Shared modules
 
 - `veeqo.py` — loads `sellables_export*.csv` once at import; exposes `check_veeqo(sku) -> bool`
@@ -164,5 +230,13 @@ reshape_items_2.py   →  reshape-items-2/items.json
         │
 validate_items.py    →  validate-items/items.json
         │
-    (next: fill description/summary, categorize, download images, import to Supabase)
+remove_items.py      →  remove-items/items.json
+        │
+merge_attributes.py  →  merge-attributes/items.json
+        │
+dedup_images.py      →  dedup-images/items.json
+        │
+generate_content.py  →  generate-content/items.json  ←  mcp/server.py writes here
+        │
+    (next: categorize, download images, import to Supabase)
 ```
