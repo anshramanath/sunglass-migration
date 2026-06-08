@@ -24,16 +24,16 @@ for item in items:
     ]
     case_stripped += before - len(item["summary"])
 
-# Deduplicate by name — keep first occurrence
-seen_names = set()
+# Deduplicate by slug — keep first occurrence
+seen_slugs = set()
 deduped = []
 dropped_names = []
 for item in items:
-    name = item["name"]
-    if name in seen_names:
-        dropped_names.append(name)
+    s = item["slug"]
+    if s in seen_slugs:
+        dropped_names.append(item["name"])
     else:
-        seen_names.add(name)
+        seen_slugs.add(s)
         deduped.append(item)
 
 out_dir = BASE / "data" / slug / "clean-content"
