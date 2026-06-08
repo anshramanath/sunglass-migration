@@ -271,6 +271,7 @@ Process {brand}. For each product:
 5. Repeat until get_progress shows 0 remaining
 
 Do not stop for status updates. Keep going until done.
+If get_next_product returns the same slug twice in a row, stop immediately and report the slug — do not attempt to save again.
 ```
 
 **Known issue — duplicate slugs:** If two products share the same slug, `save_content` always saves the first match. The second item gets stuck in an infinite loop. Fix: manually copy the saved content from the first duplicate to the second in the JSON file.
