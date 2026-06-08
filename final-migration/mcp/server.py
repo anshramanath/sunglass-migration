@@ -14,7 +14,7 @@ BRAND_CONTEXT = {
         "customer": "active adults, outdoor enthusiasts, and drivers",
         "tone": "Practical and feature-focused. Conversational but informative. Highlight the specific lens technology and what it does for the wearer.",
         "description_style": "2–3 sentences, 40–80 words. Name the product, describe its look and key feature, then mention its best use case.",
-        "summary_style": "4–6 bullets, 5–12 words each. Cover UV protection, lens technology, frame type, comfort features, included accessories.",
+        "summary_style": "4–6 bullets, 5–12 words each. Cover UV protection, lens technology, frame type, and comfort features.",
         "key_concepts": [
             "100% UV400 protection blocks harmful rays",
             "Polarized lenses eliminate glare from water, roads, and reflective surfaces",
@@ -25,7 +25,6 @@ BRAND_CONTEXT = {
             "Computer readers have plain clear lenses — do not call them blue-light blocking",
             "Polycarbonate lenses are shatter-resistant and lightweight",
             "Spring hinges flex outward for a comfortable, adjustable fit",
-            "Includes free microfiber drawstring case",
         ],
         "examples": [
             {
@@ -36,7 +35,7 @@ BRAND_CONTEXT = {
             {
                 "name": "proSPORT Mercury Polarized Mirror Sunglasses",
                 "description": "The Mercury features retro square mirrored lenses that seem to float in the frame — a bold, military-inspired look with serious polarized protection. Perfect for bright outdoor days when glare is a real issue.",
-                "summary": ["100% UV400 protection", "Polarized polycarbonate lenses cut glare", "Floating nosepieces for enhanced comfort", "Flexible spring hinge temples", "Durable nickel silver frames", "Includes free microfiber drawstring case"],
+                "summary": ["100% UV400 protection", "Polarized polycarbonate lenses cut glare", "Floating nosepieces for enhanced comfort", "Flexible spring hinge temples", "Durable nickel silver frames"],
             },
         ],
     },
@@ -46,7 +45,7 @@ BRAND_CONTEXT = {
         "customer": "style-conscious shoppers looking for trendy, affordable eyewear",
         "tone": "Stylish and accessible. Lead with the product's personality and look, then back it up with practical specs. Warmer tone than proSPORT.",
         "description_style": "2–3 sentences, 40–80 words. Introduce the product by name, describe its style and standout visual feature, then mention its practical benefit or who it suits best.",
-        "summary_style": "4–6 bullets, 5–12 words each. Cover style, lens type, UV protection, frame feature, and accessories.",
+        "summary_style": "4–6 bullets, 5–12 words each. Cover style, lens type, UV protection, and frame feature.",
         "key_concepts": [
             "100% UV400 protection",
             "Polarized lenses reduce glare on water and roads",
@@ -55,13 +54,12 @@ BRAND_CONTEXT = {
             "Lightweight frames for all-day wear",
             "Bifocal lenses have a built-in magnification segment",
             "Computer readers have plain clear lenses — do not call them blue-light blocking",
-            "Includes microfiber cleaning case",
         ],
         "examples": [
             {
                 "name": "Locs Camino 91185",
                 "description": "The Camino brings authentic Locs streetwear attitude in a wrap-around frame built for medium to XLarge heads. Super dark lenses keep eyes concealed while the bold silhouette demands attention.",
-                "summary": ["Authentic Locs sunglasses with bold streetwear style", "Super dark lenses for maximum eye concealment", "Full wraparound frame for sun and wind protection", "100% UV protection", "Includes a microfiber cleaning case"],
+                "summary": ["Authentic Locs sunglasses with bold streetwear style", "Super dark lenses for maximum eye concealment", "Full wraparound frame for sun and wind protection", "100% UV protection"],
             },
         ],
     },
@@ -71,7 +69,7 @@ BRAND_CONTEXT = {
         "customer": "motorcyclists and bikers who need reliable, protective eye coverage while riding",
         "tone": "Practical and safety-focused, written for riders. Lead with protection and fit, then lens options. Mention riding conditions where relevant (night, fog, bright sun, all-day).",
         "description_style": "2–3 sentences, 40–80 words. State the product name and fit range, describe the protection it offers (foam seal, wrap, cover-over), then mention lens options and riding conditions it suits.",
-        "summary_style": "4–6 bullets, 5–12 words each. Cover foam seal or frame type, lens technology and purpose, UV/safety rating, head size fit range, and included case.",
+        "summary_style": "4–6 bullets, 5–12 words each. Cover foam seal or frame type, lens technology and purpose, UV/safety rating, and head size fit range.",
         "key_concepts": [
             "Foam seal blocks wind, debris, dust, and pollen — critical for open-face riding",
             "Cover-over styles fit over prescription glasses",
@@ -83,18 +81,17 @@ BRAND_CONTEXT = {
             "Bifocal lenses have a built-in magnification segment for near vision",
             "Size ranges like [SM-MED], [MED-LG], [LG-XLG] refer to head circumference fit",
             "Z87.1 means ANSI-rated impact resistance — only mention it if it appears in the product name",
-            "Includes BikerShades hard case and microfiber cleaning case",
         ],
         "examples": [
             {
                 "name": "BikerArmour Enduro [MED - LG]",
                 "description": "The BikerArmour Enduro is a foam-sealed motorcycle goggle built for medium to large heads. The foam cushion blocks wind, dust, and debris, making it a solid choice for long rides in all conditions.",
-                "summary": ["Foam seal blocks wind, dust, and debris", "Multiple lens options for any lighting condition", "100% UV protection", "Fits medium to large heads", "Includes BikerShades hard case and microfiber cleaning case"],
+                "summary": ["Foam seal blocks wind, dust, and debris", "Multiple lens options for any lighting condition", "100% UV protection", "Fits medium to large heads"],
             },
             {
                 "name": "Wiley X Hudson for Eclipse XT [MED - LG]",
                 "description": "The Wiley X Hudson with Eclipse XT features genuine Transitions XtrActive photochromic lenses that darken automatically outdoors and return to clear inside — no swapping lenses mid-ride. Built to ANSI Z87.1 safety standards and sized for medium to large heads.",
-                "summary": ["Genuine Transitions XtrActive photochromic lenses", "Shatter-resistant polycarbonate lenses", "100% UVA/UVB protection", "Meets ANSI Z87.1 safety standards", "Fits medium to large heads", "Includes Wiley X hard case and microfiber cleaning case"],
+                "summary": ["Genuine Transitions XtrActive photochromic lenses", "Shatter-resistant polycarbonate lenses", "100% UVA/UVB protection", "Meets ANSI Z87.1 safety standards", "Fits medium to large heads"],
             },
         ],
     },
