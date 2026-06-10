@@ -9,9 +9,9 @@ from config import BASE, load_brand
 brand_key, config = load_brand()
 slug = config["slug"]
 
-in_path = BASE / "data" / slug / "categorize-items" / "items.json"
+in_path = BASE / "data" / slug / "normalize-images" / "items.json"
 if not in_path.exists():
-    raise SystemExit(f"Run the categorize script first. Not found: {in_path}")
+    raise SystemExit(f"Run normalize_image_names.py first. Not found: {in_path}")
 
 items = json.loads(in_path.read_text())
 
@@ -162,12 +162,16 @@ for item in items:
 
     # --- images ---
     prod_imgs = item.get("productImages") or []
+    prod_srcs: set[str] = set()
     if not prod_imgs:
         reasons.append("productImages must be non-empty")
     else:
         for i, img in enumerate(prod_imgs):
             reasons.extend(check_image(img, f"productImages[{i}]"))
         reasons.extend(check_image_sort_unique(prod_imgs, "productImages"))
+        prod_srcs = {img["src"] for img in prod_imgs if img.get("src")}
+        if len(prod_srcs) < len(prod_imgs):
+            reasons.append("productImages contains duplicate srcs")
 
     desc_imgs = item.get("descriptionImages") or []
     for i, img in enumerate(desc_imgs):
@@ -269,6 +273,8 @@ for item in items:
 
             for i, img in enumerate(v.get("variationImages") or []):
                 reasons.extend(check_image(img, f"{vlabel} variationImages[{i}]"))
+                if img.get("src") in prod_srcs:
+                    reasons.append(f"{vlabel} variationImages[{i}]: src duplicates a productImage")
 
         # variation prices must agree with product-level min/max
         if var_prices and is_int(min_p) and is_int(max_p):

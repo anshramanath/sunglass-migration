@@ -10,6 +10,7 @@ VEEQO_KEY = os.getenv("VEEQO_KEY")
 BRAND_CONFIG = {
     "prosport": {
         "slug": "prosport",
+        "brand_slug": "prosport-sunglasses",
         "brand_name": "proSPORT Sunglasses",
         "base_url": "https://prosportsunglasses.com",
         "consumer_key": "PROSPORT_CONSUMER_KEY",
@@ -17,6 +18,7 @@ BRAND_CONFIG = {
     },
     "monster": {
         "slug": "monster",
+        "brand_slug": "sunglass-monster",
         "brand_name": "Sunglass Monster",
         "base_url": "https://www.sunglassmonster.com",
         "consumer_key": "MONSTER_CONSUMER_KEY",
@@ -24,6 +26,7 @@ BRAND_CONFIG = {
     },
     "bikershades": {
         "slug": "bikershades",
+        "brand_slug": "bikershades",
         "brand_name": "BikerShades",
         "base_url": "https://bikershades.com",
         "consumer_key": "BIKERSHADES_CONSUMER_KEY",
