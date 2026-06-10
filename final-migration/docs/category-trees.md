@@ -3,35 +3,32 @@
 ## proSPORT
 
 ```
-Sunglasses  [1]
-├── Sport & Wrap               [1]  21
-├── Polarized                  [2]  35
-├── HD Copper                  [3]  11
-├── Night Vision & Yellow Lens [4]  15
-├── Mirror                     [5]  16
-├── Aviator                    [6]  9
-└── Fashion                    [7]  7
+1 Sunglasses
+├── 1 Sport (21)
+├── 2 Polarized (35)
+├── 3 HD Lens (11)
+├── 4 Night (15)
+├── 5 Mirror (16)
+├── 6 Aviator (9)
+└── 7 Fashion (7)
 
-Foam Seal Goggles  [2]  2
+2 Bifocals
+├── 1 Standard (22)
+├── 2 Polarized (10)
+└── 3 Foam (5)
 
-Bifocals  [3]
-├── Standard Bifocals   [1]  22
-├── Polarized Bifocals  [2]  10
-└── Foam Bifocals       [3]  5
+3 Readers
+├── 1 Sunglass (5)
+├── 2 Clear (9)
+├── 3 Computer (2)
+└── 4 Multifocal (5)
 
-Sunglass Readers  [4]  5
-
-Readers  [5]
-├── Clear Readers       [1]  9
-├── Computer Readers    [2]  2
-└── Multifocal Readers  [3]  5
-
-Cases & Accessories  [6]  7
+4 Cases & Accessories (7)
 ```
 
 ### Products
 
-#### Sunglasses > Sport & Wrap
+#### Sunglasses > Sport
 
 | slug |
 |---|
@@ -99,7 +96,7 @@ Cases & Accessories  [6]  7
 | prosport-turk-half-rim-polarized-sunglasses |
 
 
-#### Sunglasses > HD Copper
+#### Sunglasses > HD Lens
 
 | slug |
 |---|
@@ -116,7 +113,7 @@ Cases & Accessories  [6]  7
 | prosport-spinner-rimless-hd-copper-sunglasses |
 
 
-#### Sunglasses > Night Vision & Yellow Lens
+#### Sunglasses > Night
 
 | slug |
 |---|
@@ -187,15 +184,7 @@ Cases & Accessories  [6]  7
 | zulu-metal-fashion-sunglasses |
 
 
-#### Foam Seal Goggles
-
-| slug |
-|---|
-| prosport-altitude-polarized-leather-shield-sunglasses |
-| prosport-apollo-safety-wrap-sunglasses |
-
-
-#### Bifocals > Standard Bifocals
+#### Bifocals > Standard
 
 | slug |
 |---|
@@ -223,7 +212,7 @@ Cases & Accessories  [6]  7
 | prosport-wallstreet-bifocal |
 
 
-#### Bifocals > Polarized Bifocals
+#### Bifocals > Polarized
 
 | slug |
 |---|
@@ -239,7 +228,7 @@ Cases & Accessories  [6]  7
 | prosport-taxi-polarized-bifocal |
 
 
-#### Bifocals > Foam Bifocals
+#### Bifocals > Foam
 
 | slug |
 |---|
@@ -250,7 +239,7 @@ Cases & Accessories  [6]  7
 | prosport-zorst-foam-bifocal |
 
 
-#### Sunglass Readers
+#### Readers > Sunglass
 
 | slug |
 |---|
@@ -261,7 +250,7 @@ Cases & Accessories  [6]  7
 | prosport-runway-aviator-sunglass-readers |
 
 
-#### Readers > Clear Readers
+#### Readers > Clear
 
 | slug |
 |---|
@@ -276,7 +265,7 @@ Cases & Accessories  [6]  7
 | prosport-studebaker-reader |
 
 
-#### Readers > Computer Readers
+#### Readers > Computer
 
 | slug |
 |---|
@@ -284,7 +273,7 @@ Cases & Accessories  [6]  7
 | prosport-magellan-computer-reader |
 
 
-#### Readers > Multifocal Readers
+#### Readers > Multifocal
 
 | slug |
 |---|
@@ -312,70 +301,34 @@ Cases & Accessories  [6]  7
 ## Monster (Sunglass Monster)
 
 ```
-Locs Sunglasses    [1]  16
-X-Loop Sunglasses  [2]  2
-Fashion Sunglasses [3]  56
+1 Fashion (75)
 
-proSPORT Sunglasses  [4]
-├── Sport & Wrap               [1]  22
-├── Polarized                  [2]  41
-├── HD Copper                  [3]  12
-├── Night Vision & Yellow Lens [4]  16
-├── Mirror                     [5]  18
-├── Aviator                    [6]  10
-└── Wide Fit                   [7]  4
+2 Sunglasses
+├── 1 Sport (23)
+├── 2 Polarized (41)
+├── 3 HD Lens (12)
+├── 4 Night (16)
+├── 5 Mirror (18)
+├── 6 Aviator (10)
+└── 7 Wide Fit (4)
 
-Foam Seal Goggles  [5]  2
+3 Bifocals
+├── 1 Standard (31)
+├── 2 Polarized (13)
+└── 3 Foam (5)
 
-Bifocals  [6]
-├── Standard Bifocals   [1]  31
-├── Polarized Bifocals  [2]  13
-└── Foam Bifocals       [3]  5
+4 Readers
+├── 1 Sunglass (7)
+├── 2 Clear (14)
+├── 3 Computer (2)
+└── 4 Multifocal (8)
 
-Sunglass Readers  [7]  7
-
-Readers  [8]
-├── Clear Readers       [1]  14
-├── Computer Readers    [2]  2
-└── Multifocal Readers  [3]  8
-
-Kids Eyewear         [9]  1
-Cases & Accessories  [10]  8
+5 Cases & Accessories (8)
 ```
 
 ### Products
 
-#### Locs Sunglasses
-
-| slug |
-|---|
-| locs-amigo-9003 |
-| locs-bario-9083 |
-| locs-bel-air-91149 |
-| locs-camino-91185 |
-| locs-cruiser-91055 |
-| locs-del-ray-91102 |
-| locs-deville-91026 |
-| locs-fleetwood-91182 |
-| locs-hombre-9035 |
-| locs-impala-91025 |
-| locs-mark-v-91180 |
-| locs-monte-carlo-9058 |
-| locs-san-diego-91111 |
-| locs-showtime-91148 |
-| locs-tuner-91045 |
-| locs-voodoo-91160 |
-
-
-#### X-Loop Sunglasses
-
-| slug |
-|---|
-| x-loop-3304 |
-| x-loop-3322 |
-
-
-#### Fashion Sunglasses
+#### Fashion
 
 | slug |
 |---|
@@ -393,6 +346,7 @@ Cases & Accessories  [10]  8
 | cappuchino |
 | carina-polarized |
 | carmen-fashion-sunglasses |
+| childrens-boys-girls-flip-up-shield |
 | chloe-polarized-lady-sunglasses |
 | convair |
 | coral-ii-polarized-sunglasses |
@@ -408,6 +362,22 @@ Cases & Accessories  [10]  8
 | kiki-retro-fashion-sunglasses |
 | lennon-sunglasses |
 | lexi-cat-eye-sunglasses |
+| locs-amigo-9003 |
+| locs-bario-9083 |
+| locs-bel-air-91149 |
+| locs-camino-91185 |
+| locs-cruiser-91055 |
+| locs-del-ray-91102 |
+| locs-deville-91026 |
+| locs-fleetwood-91182 |
+| locs-hombre-9035 |
+| locs-impala-91025 |
+| locs-mark-v-91180 |
+| locs-monte-carlo-9058 |
+| locs-san-diego-91111 |
+| locs-showtime-91148 |
+| locs-tuner-91045 |
+| locs-voodoo-91160 |
 | madeline |
 | mahi-polarized-sunglasses |
 | maverick-polarized |
@@ -434,13 +404,16 @@ Cases & Accessories  [10]  8
 | torpedo |
 | traffic |
 | vato |
+| x-loop-3304 |
+| x-loop-3322 |
 | zulu-metal-fashion-sunglasses |
 
 
-#### proSPORT Sunglasses > Sport & Wrap
+#### Sunglasses > Sport
 
 | slug |
 |---|
+| prosport-altitude-polarized-leather-shield-sunglasses |
 | prosport-apollo-safety-wrap-sunglasses |
 | prosport-aruba-sport-sunglasses |
 | prosport-axle-polarized-wrap-sunglasses |
@@ -465,7 +438,7 @@ Cases & Accessories  [10]  8
 | prosport-x-ray-mirror-sport-sunglasses |
 
 
-#### proSPORT Sunglasses > Polarized
+#### Sunglasses > Polarized
 
 | slug |
 |---|
@@ -512,7 +485,7 @@ Cases & Accessories  [10]  8
 | prosport-waikiki-polarized-sunglasses |
 
 
-#### proSPORT Sunglasses > HD Copper
+#### Sunglasses > HD Lens
 
 | slug |
 |---|
@@ -530,7 +503,7 @@ Cases & Accessories  [10]  8
 | prosport-spinner-rimless-hd-copper-sunglasses |
 
 
-#### proSPORT Sunglasses > Night Vision & Yellow Lens
+#### Sunglasses > Night
 
 | slug |
 |---|
@@ -552,7 +525,7 @@ Cases & Accessories  [10]  8
 | prosport-vortex-night-vision-sunglasses |
 
 
-#### proSPORT Sunglasses > Mirror
+#### Sunglasses > Mirror
 
 | slug |
 |---|
@@ -576,7 +549,7 @@ Cases & Accessories  [10]  8
 | prosport-yogi-mirror-aviator-sunglasses |
 
 
-#### proSPORT Sunglasses > Aviator
+#### Sunglasses > Aviator
 
 | slug |
 |---|
@@ -592,7 +565,7 @@ Cases & Accessories  [10]  8
 | prosport-yogi-mirror-aviator-sunglasses |
 
 
-#### proSPORT Sunglasses > Wide Fit
+#### Sunglasses > Wide Fit
 
 | slug |
 |---|
@@ -602,15 +575,7 @@ Cases & Accessories  [10]  8
 | prosport-everest-wide-sunglasses |
 
 
-#### Foam Seal Goggles
-
-| slug |
-|---|
-| prosport-altitude-polarized-leather-shield-sunglasses |
-| prosport-apollo-safety-wrap-sunglasses |
-
-
-#### Bifocals > Standard Bifocals
+#### Bifocals > Standard
 
 | slug |
 |---|
@@ -647,7 +612,7 @@ Cases & Accessories  [10]  8
 | prosport-wallstreet-bifocal |
 
 
-#### Bifocals > Polarized Bifocals
+#### Bifocals > Polarized
 
 | slug |
 |---|
@@ -666,7 +631,7 @@ Cases & Accessories  [10]  8
 | prosport-taxi-polarized-bifocal |
 
 
-#### Bifocals > Foam Bifocals
+#### Bifocals > Foam
 
 | slug |
 |---|
@@ -677,7 +642,7 @@ Cases & Accessories  [10]  8
 | prosport-zorst-foam-bifocal |
 
 
-#### Sunglass Readers
+#### Readers > Sunglass
 
 | slug |
 |---|
@@ -690,7 +655,7 @@ Cases & Accessories  [10]  8
 | voyager-reading-sunglasses |
 
 
-#### Readers > Clear Readers
+#### Readers > Clear
 
 | slug |
 |---|
@@ -710,7 +675,7 @@ Cases & Accessories  [10]  8
 | trek-cover-over-full-lens-reader |
 
 
-#### Readers > Computer Readers
+#### Readers > Computer
 
 | slug |
 |---|
@@ -718,7 +683,7 @@ Cases & Accessories  [10]  8
 | prosport-magellan-computer-reader |
 
 
-#### Readers > Multifocal Readers
+#### Readers > Multifocal
 
 | slug |
 |---|
@@ -730,13 +695,6 @@ Cases & Accessories  [10]  8
 | prosport-professor-multifocal-reader |
 | prosport-studio-multifocal-reader |
 | spy-multifocal-reader |
-
-
-#### Kids Eyewear
-
-| slug |
-|---|
-| childrens-boys-girls-flip-up-shield |
 
 
 #### Cases & Accessories
@@ -757,40 +715,38 @@ Cases & Accessories  [10]  8
 ## BikerShades
 
 ```
-BikerArmour Foam Goggles         [1]  118
-BikerArmour Cover Overs          [2]  12
-BikerArmour Eclipse Photochromic [3]  40
-BikerArmour Combos               [4]  13
-Wiley X                          [5]  42
-7Eye                             [6]  38
-Locs Sunglasses                  [7]  15
-X-Loop Sunglasses                [8]  5
+1 Brands
+├── 1 BikerArmour
+│   ├── 1 Foam Goggles (118)
+│   ├── 2 Cover Overs (12)
+│   ├── 3 Photochromic (40)
+│   └── 4 Combos (13)
+├── 2 Wiley X (42)
+└── 3 7Eye (38)
 
-Riding Sunglasses  [9]
-├── Sport & Wrap               [1]  43
-├── Polarized                  [2]  28
-├── HD Copper                  [3]  6
-├── Night Vision & Yellow Lens [4]  40
-└── Mirror                     [5]  1
+2 Sunglasses
+├── 1 Sport (64)
+├── 2 Polarized (28)
+├── 3 HD Lens (6)
+└── 4 Night (40)
 
-Bifocal Riding Glasses  [10]
-├── Standard Bifocals   [1]  31
-├── Polarized Bifocals  [2]  14
-└── Foam Bifocals       [3]  7
+3 Bifocals
+├── 1 Standard (31)
+├── 2 Polarized (14)
+└── 3 Foam (7)
 
-Sunglass Readers  [11]  9
+4 Readers
+├── 1 Sunglass (9)
+├── 2 Clear (16)
+├── 3 Computer (11)
+└── 4 Multifocal (8)
 
-Readers  [12]
-├── Clear Readers       [1]  16
-├── Computer Readers    [2]  11
-└── Multifocal Readers  [3]  8
-
-Cases & Accessories  [13]  10
+5 Cases & Accessories (10)
 ```
 
 ### Products
 
-#### BikerArmour Foam Goggles
+#### Brands > BikerArmour > Foam Goggles
 
 | slug |
 |---|
@@ -914,7 +870,7 @@ Cases & Accessories  [13]  10
 | transporter-fits-lg-xlarge-heads-yellow-lens |
 
 
-#### BikerArmour Cover Overs
+#### Brands > BikerArmour > Cover Overs
 
 | slug |
 |---|
@@ -932,7 +888,7 @@ Cases & Accessories  [13]  10
 | tiger-cover-over-fits-over-sm-med-glasses-yellow-lens |
 
 
-#### BikerArmour Eclipse Photochromic
+#### Brands > BikerArmour > Photochromic
 
 | slug |
 |---|
@@ -978,7 +934,7 @@ Cases & Accessories  [13]  10
 | bikerarmour-transporter-for-eclipse-xt-lg-xlg |
 
 
-#### BikerArmour Combos
+#### Brands > BikerArmour > Combos
 
 | slug |
 |---|
@@ -997,7 +953,7 @@ Cases & Accessories  [13]  10
 | magnum-combos-fits-med-xlg-heads |
 
 
-#### Wiley X
+#### Brands > Wiley X
 
 | slug |
 |---|
@@ -1045,7 +1001,7 @@ Cases & Accessories  [13]  10
 | wiley-x-xl-1-advanced-for-eclipse-xt-sm-med |
 
 
-#### 7Eye
+#### Brands > 7Eye
 
 | slug |
 |---|
@@ -1089,39 +1045,7 @@ Cases & Accessories  [13]  10
 | 7eye-whirlwind-med-lg |
 
 
-#### Locs Sunglasses
-
-| slug |
-|---|
-| locs-amigo-9003 |
-| locs-bario-9083 |
-| locs-bel-air-91149 |
-| locs-camino-91185 |
-| locs-cruiser-91055 |
-| locs-del-ray-91102 |
-| locs-deville-91026 |
-| locs-fleetwood-91182 |
-| locs-hombre-9035 |
-| locs-mark-v-91180 |
-| locs-monte-carlo-9058 |
-| locs-san-diego-91111 |
-| locs-showtime-91148 |
-| locs-tuner-91045 |
-| locs-voodoo-91160 |
-
-
-#### X-Loop Sunglasses
-
-| slug |
-|---|
-| x-loop-3303-bogey |
-| x-loop-3304-fender |
-| x-loop-3319-club |
-| x-loop-3320-sprint |
-| x-loop-3322-infield |
-
-
-#### Riding Sunglasses > Sport & Wrap
+#### Sunglasses > Sport
 
 | slug |
 |---|
@@ -1145,6 +1069,21 @@ Cases & Accessories  [13]  10
 | hollywood |
 | horizon |
 | jupiter |
+| locs-amigo-9003 |
+| locs-bario-9083 |
+| locs-bel-air-91149 |
+| locs-camino-91185 |
+| locs-cruiser-91055 |
+| locs-del-ray-91102 |
+| locs-deville-91026 |
+| locs-fleetwood-91182 |
+| locs-hombre-9035 |
+| locs-mark-v-91180 |
+| locs-monte-carlo-9058 |
+| locs-san-diego-91111 |
+| locs-showtime-91148 |
+| locs-tuner-91045 |
+| locs-voodoo-91160 |
 | madeline |
 | nitrous |
 | omega |
@@ -1155,6 +1094,7 @@ Cases & Accessories  [13]  10
 | reflex |
 | road-gator |
 | rusty-big-tall-sunglasses |
+| samurai-sport-mirror-sunglasses |
 | savannah-med-lg |
 | sly |
 | sonic |
@@ -1168,9 +1108,14 @@ Cases & Accessories  [13]  10
 | trans-am |
 | us-route-40 |
 | vato |
+| x-loop-3303-bogey |
+| x-loop-3304-fender |
+| x-loop-3319-club |
+| x-loop-3320-sprint |
+| x-loop-3322-infield |
 
 
-#### Riding Sunglasses > Polarized
+#### Sunglasses > Polarized
 
 | slug |
 |---|
@@ -1204,7 +1149,7 @@ Cases & Accessories  [13]  10
 | turk-polarized |
 
 
-#### Riding Sunglasses > HD Copper
+#### Sunglasses > HD Lens
 
 | slug |
 |---|
@@ -1216,7 +1161,7 @@ Cases & Accessories  [13]  10
 | navigator |
 
 
-#### Riding Sunglasses > Night Vision & Yellow Lens
+#### Sunglasses > Night
 
 | slug |
 |---|
@@ -1262,14 +1207,7 @@ Cases & Accessories  [13]  10
 | vortex |
 
 
-#### Riding Sunglasses > Mirror
-
-| slug |
-|---|
-| samurai-sport-mirror-sunglasses |
-
-
-#### Bifocal Riding Glasses > Standard Bifocals
+#### Bifocals > Standard
 
 | slug |
 |---|
@@ -1306,7 +1244,7 @@ Cases & Accessories  [13]  10
 | wallstreet-bifocal-sunglasses-fits-medium-xlarge-heads |
 
 
-#### Bifocal Riding Glasses > Polarized Bifocals
+#### Bifocals > Polarized
 
 | slug |
 |---|
@@ -1326,7 +1264,7 @@ Cases & Accessories  [13]  10
 | talon-polarized-bifocal-fits-medium-xlarge-heads |
 
 
-#### Bifocal Riding Glasses > Foam Bifocals
+#### Bifocals > Foam
 
 | slug |
 |---|
@@ -1339,7 +1277,7 @@ Cases & Accessories  [13]  10
 | zorst-bifocal-with-non-slip-rubber-seal-fits-large-xlarge-heads |
 
 
-#### Sunglass Readers
+#### Readers > Sunglass
 
 | slug |
 |---|
@@ -1354,7 +1292,7 @@ Cases & Accessories  [13]  10
 | wave-mirror-reader |
 
 
-#### Readers > Clear Readers
+#### Readers > Clear
 
 | slug |
 |---|
@@ -1376,7 +1314,7 @@ Cases & Accessories  [13]  10
 | trek-goggle-full-lens-reader |
 
 
-#### Readers > Computer Readers
+#### Readers > Computer
 
 | slug |
 |---|
@@ -1393,7 +1331,7 @@ Cases & Accessories  [13]  10
 | zane-computer-reading-glasses |
 
 
-#### Readers > Multifocal Readers
+#### Readers > Multifocal
 
 | slug |
 |---|
