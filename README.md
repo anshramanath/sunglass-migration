@@ -20,7 +20,13 @@ final-migration/
 
 ## Brands
 
-Brands are configured in `final-migration/config/__init__.py`. Set the active brand at runtime:
+| Brand key | DB slug | Display name |
+|---|---|---|
+| `prosport` | `prosport-sunglasses` | proSPORT Sunglasses |
+| `monster` | `sunglass-monster` | Sunglass Monster |
+| `bikershades` | `bikershades` | BikerShades |
+
+Set the active brand at runtime:
 
 ```bash
 BRAND=prosport python final-migration/pipeline/fetch_products.py
@@ -28,11 +34,16 @@ BRAND=prosport python final-migration/pipeline/fetch_products.py
 
 ## Setup
 
-- Python dependencies: `requests`, `python-dotenv`, `mcp`
-- `.env` at repo root with WooCommerce credentials per brand and `VEEQO_KEY`
+- Python dependencies: `requests`, `python-dotenv`, `mcp`, `supabase`, `psycopg2`
+- `.env` at repo root with:
+  - WooCommerce credentials per brand (`WC_URL`, `WC_KEY`, `WC_SECRET`)
+  - `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`
+  - `DATABASE_URL` (use Supabase session pooler URL — direct connection uses IPv6 and may fail on some networks)
 - Veeqo CSV export (`sellables_export*.csv`) placed in `final-migration/pipeline/`
 - Claude Desktop config at `~/Library/Application Support/Claude/claude_desktop_config.json` — points to `final-migration/mcp/server.py`
 
 ## Pipeline
 
-See `PIPELINE.md` for the full step-by-step pipeline.
+See `PIPELINE.md` for the full step-by-step pipeline. The pipeline runs per brand through step 16 (upload), then import can be run for all brands independently.
+
+Current status: all three brands are through upload. Import pending.

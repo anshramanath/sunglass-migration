@@ -276,6 +276,90 @@ If get_next_product returns the same slug twice in a row, stop immediately and r
 
 **Known issue — duplicate slugs:** If two products share the same slug, `save_content` always saves the first match. The second item gets stuck in an infinite loop. Fix: manually copy the saved content from the first duplicate to the second in the JSON file.
 
+### 12. `{brand}_categorize_items.py`
+
+Brand-specific scripts (`prosport_categorize_items.py`, `monster_categorize_items.py`, `bikershades_categorize_items.py`). Reads `generate-content/items.json` and assigns each item a category path based on a hardcoded tree. Sets the `categories` deferred field.
+
+**Output:**
+- `data/{brand}/categorize-items/items.json`
+
+---
+
+### 13. `normalize_image_names.py`
+
+Reads `categorize-items/items.json`. Normalizes the `name` field on every image (product, description, variation) by deriving it from the image's `src` URL: takes the URL path basename stem and replaces dashes and underscores with spaces.
+
+e.g. `https://example.com/uploads/2018/01/Black-Angle-3.jpg` → name becomes `Black Angle 3`
+
+**Output:**
+- `data/{brand}/normalize-images/items.json`
+
+---
+
+### 14. `validate_items_final.py`
+
+Thorough pre-import validation. Stricter than `validate_items.py` — checks all fields including deferred ones now that they're populated.
+
+**Checks beyond validate_items.py:**
+- `description` and `summary` are populated (non-empty)
+- `categories` structure: non-empty, levels sequential, sortOrders > 0, no duplicate leaf slugs
+- `slug` format matches `^[a-z0-9]+(-[a-z0-9]+)*$`
+- No duplicate slugs across the entire catalogue
+- Image `src` values are valid `http(s)://` URLs
+- `sortOrder` values are unique within each image array
+- Product image `src` values are unique within a product
+- Variation images do not duplicate any product-level image `src`
+- Variation price consistency: `minPriceCents`/`maxPriceCents` match actual min/max across variations
+- No duplicate attribute combinations across a product's variations
+
+**Output:**
+- `data/{brand}/validate-items-final/items.json` — import-ready items
+- `data/{brand}/validate-items-final/flagged.json` — items with reasons
+
+---
+
+### 15. `download_items.py`
+
+Downloads all images referenced in `validate-items-final/items.json` to local disk. Sources: `productImages`, `descriptionImages`, and variation `variationImages`.
+
+- Each unique URL is downloaded exactly once
+- Filename is derived from everything after `/uploads/` or `/gallery/` in the URL path, with `/` replaced by `_` (guarantees uniqueness within a brand)
+- Crash-safe: already-downloaded URLs skipped via `download_map.json`
+- Post-download check: verifies every item has at least one product image successfully downloaded
+
+**Output:**
+- `data/{brand}/download-items/images/` — downloaded files
+- `data/{brand}/download-items/download_map.json` — URL → local path
+- `data/{brand}/download-items/flagged.json` — failed downloads with SKU and URL
+
+---
+
+### 16. `upload_items.py`
+
+Uploads all unique downloaded images to a Supabase storage bucket. Bucket is named after `brand_slug` (e.g. `prosport-sunglasses`, `sunglass-monster`, `bikershades`).
+
+- Crash-safe: already-uploaded files skipped via `upload_map.json`
+- Recovers gracefully from duplicate errors (re-fetches public URL instead of failing)
+- Requires env vars: `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`
+
+**Output:**
+- `data/{brand}/upload-items/upload_map.json` — local path → Supabase public URL
+
+---
+
+### 17. `import_items.py`
+
+Imports clean items into the Supabase Postgres database. Per-brand: deletes only the current brand's data before inserting (other brands unaffected).
+
+- No fallbacks — all field accesses are direct; a crash means a validation gap upstream
+- Image URLs resolved via chain: original src → `download_map` → `upload_map` → Supabase URL; unresolved images are warned and skipped (not crash)
+- Categories upserted lazily by path as products are processed
+- Requires env vars: `DATABASE_URL`
+
+**Note:** Direct connection host (`db.xxx.supabase.co`) uses IPv6 — may fail on corporate/office networks. Use the Supabase session pooler URL if DNS resolution fails.
+
+**Output:** Products, variations, images, and categories written to Supabase DB.
+
 ---
 
 ## Shared modules
@@ -310,5 +394,15 @@ dedup_images.py      →  dedup-images/items.json
         │
 generate_content.py  →  generate-content/items.json  ←  mcp/server.py writes here
         │
-    (next: categorize, download images, import to Supabase)
+categorize_items.py  →  categorize-items/items.json
+        │
+normalize_image_names.py  →  normalize-images/items.json
+        │
+validate_items_final.py  →  validate-items-final/items.json
+        │
+download_items.py    →  download-items/images/ + download_map.json
+        │
+upload_items.py      →  upload-items/upload_map.json  (Supabase storage)
+        │
+import_items.py      →  Supabase DB
 ```

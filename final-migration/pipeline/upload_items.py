@@ -12,11 +12,12 @@ from config import BASE, load_brand
 
 brand_key, config = load_brand()
 slug       = config["slug"]
+brand_slug = config["brand_slug"]
 brand_name = config["brand_name"]
 
 SUPABASE_URL         = os.environ["SUPABASE_URL"]
 SUPABASE_SERVICE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
-BUCKET               = slug
+BUCKET               = brand_slug
 
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 

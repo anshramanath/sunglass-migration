@@ -84,6 +84,12 @@ This repo migrates WooCommerce product catalogues into a Supabase-backed multi-b
 - `description`, `summary`, and `categories` are deferred fields — left as null/empty in reshape and filled in a later step.
 - Null price (minPriceCents / maxPriceCents) is intentional when neither WC nor Veeqo has a price — used to flag products that need attention before import.
 - `validate_items.py` checks all non-deferred fields against DB constraints and outputs clean + flagged JSON.
+- `validate_items_final.py` is the thorough pre-import validator (runs after categorize + normalize); reads from `normalize-images/` and checks all fields including deferred ones, slug format, duplicate combos, image uniqueness, and price consistency.
+- Brand config has two slug fields: `slug` (pipeline key, data directories, storage bucket path — `prosport`/`monster`/`bikershades`) and `brand_slug` (DB slug, Supabase bucket name — `prosport-sunglasses`/`sunglass-monster`/`bikershades`). Never conflate them.
+- Image `name` field is normalized from the URL basename stem with `-` and `_` replaced by spaces (done in `normalize_image_names.py`).
+- Downloaded image filenames use everything after `/uploads/` or `/gallery/` in the URL path with `/` replaced by `_` — this guarantees uniqueness within a brand without date-prefix ambiguity.
+- Import has no fallbacks — all product/variation fields are accessed directly. A KeyError means a validation gap upstream, not a case to handle in import.
+- Import is per-brand: `DELETE FROM brands WHERE slug = %s` cascades to all related rows. Never `TRUNCATE` — that wipes all brands.
 
 ### DB
 Schema is in `final-migration/db/001_initial_schema.sql`. Field names in the pipeline use camelCase; DB columns use snake_case — the import step handles the mapping.

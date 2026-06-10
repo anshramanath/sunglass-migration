@@ -122,3 +122,18 @@ for url in pending:
     time.sleep(0.05)
 
 print(f"Done. {downloaded} downloaded, {failed} failed, {len(url_map)} total in map")
+
+# Post-download check: every item must have at least one product image in the map
+missing_cover = []
+for item in items:
+    ident = item.get("sku") or item.get("slug")
+    prod_srcs = [img["src"] for img in (item.get("productImages") or []) if img.get("src")]
+    if not any(src in url_map for src in prod_srcs):
+        missing_cover.append(ident)
+
+if missing_cover:
+    print(f"\nWARNING: {len(missing_cover)} item(s) have no downloaded product image:")
+    for ident in missing_cover:
+        print(f"  {ident}")
+else:
+    print(f"OK: all {len(items)} items have at least one downloaded product image")
