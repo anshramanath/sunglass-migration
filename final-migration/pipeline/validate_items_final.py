@@ -1,0 +1,294 @@
+import json
+import re
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import BASE, load_brand
+
+brand_key, config = load_brand()
+slug = config["slug"]
+
+in_path = BASE / "data" / slug / "categorize-items" / "items.json"
+if not in_path.exists():
+    raise SystemExit(f"Run the categorize script first. Not found: {in_path}")
+
+items = json.loads(in_path.read_text())
+
+out_dir = BASE / "data" / slug / "validate-items-final"
+out_dir.mkdir(parents=True, exist_ok=True)
+
+
+def is_int(x):
+    return isinstance(x, int) and not isinstance(x, bool)
+
+def is_bool(x):
+    return isinstance(x, bool)
+
+SLUG_RE = re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$')
+URL_RE  = re.compile(r'^https?://')
+
+
+def check_image(img, label):
+    errs = []
+    src = (img.get("src") or "").strip()
+    if not src:
+        errs.append(f"{label}: missing src")
+    elif not URL_RE.match(src):
+        errs.append(f"{label}: src must be http(s) URL, got {src!r}")
+    if not (img.get("name") or "").strip():
+        errs.append(f"{label}: missing name")
+    so = img.get("sortOrder")
+    if not is_int(so):
+        errs.append(f"{label}: sortOrder must be int, got {type(so).__name__}")
+    elif so <= 0:
+        errs.append(f"{label}: sortOrder must be > 0, got {so}")
+    return errs
+
+
+def check_image_sort_unique(imgs, label):
+    orders = [img["sortOrder"] for img in imgs if is_int(img.get("sortOrder"))]
+    if len(orders) != len(set(orders)):
+        return [f"{label}: duplicate sortOrder values {sorted(orders)}"]
+    return []
+
+
+def check_categories(cats):
+    errs = []
+    if not isinstance(cats, list) or not cats:
+        errs.append("categories must be non-empty array")
+        return errs
+    seen_leaves = set()
+    for pi, path in enumerate(cats):
+        plabel = f"categories[{pi}]"
+        if not isinstance(path, list) or not path:
+            errs.append(f"{plabel}: must be non-empty array of nodes")
+            continue
+        for ni, node in enumerate(path):
+            nlabel = f"{plabel}[{ni}]"
+            if not isinstance(node, dict):
+                errs.append(f"{nlabel}: must be object")
+                continue
+            if not (node.get("name") or "").strip():
+                errs.append(f"{nlabel}: name is null or empty")
+            nslug = (node.get("slug") or "").strip()
+            if not nslug:
+                errs.append(f"{nlabel}: slug is null or empty")
+            level = node.get("level")
+            if not is_int(level):
+                errs.append(f"{nlabel}: level must be int")
+            elif level != ni + 1:
+                errs.append(f"{nlabel}: level must be {ni + 1}, got {level}")
+            so = node.get("sortOrder")
+            if not is_int(so):
+                errs.append(f"{nlabel}: sortOrder must be int")
+            elif so <= 0:
+                errs.append(f"{nlabel}: sortOrder must be > 0")
+        leaf_slug = (path[-1].get("slug") or "").strip() if path else ""
+        if leaf_slug:
+            if leaf_slug in seen_leaves:
+                errs.append(f"duplicate leaf category slug: {leaf_slug!r}")
+            seen_leaves.add(leaf_slug)
+    return errs
+
+
+# Pre-scan for duplicate slugs across all items
+slug_counts: dict[str, int] = {}
+for item in items:
+    s = (item.get("slug") or "").strip()
+    if s:
+        slug_counts[s] = slug_counts.get(s, 0) + 1
+
+
+clean   = []
+flagged = []
+
+for item in items:
+    reasons = []
+    is_variable = item.get("sku") is None
+    is_simple   = not is_variable
+
+    # --- name / slug ---
+    if not (item.get("name") or "").strip():
+        reasons.append("name is null or empty")
+
+    item_slug = (item.get("slug") or "").strip()
+    if not item_slug:
+        reasons.append("slug is null or empty")
+    else:
+        if not SLUG_RE.match(item_slug):
+            reasons.append(f"slug invalid format: {item_slug!r}")
+        if slug_counts.get(item_slug, 0) > 1:
+            reasons.append(f"slug {item_slug!r} is duplicated in the catalogue")
+
+    # --- content fields ---
+    if not (item.get("description") or "").strip():
+        reasons.append("description is null or empty")
+
+    summary = item.get("summary")
+    if not isinstance(summary, list) or not summary:
+        reasons.append("summary must be non-empty array")
+    else:
+        for i, bullet in enumerate(summary):
+            if not (bullet or "").strip():
+                reasons.append(f"summary[{i}]: must be non-empty string")
+
+    # --- fixed fields ---
+    if item.get("featured") is not False:
+        reasons.append(f"featured must be false, got {item.get('featured')!r}")
+    if item.get("sale") is not False:
+        reasons.append(f"sale must be false, got {item.get('sale')!r}")
+    if item.get("salePriceCents") is not None:
+        reasons.append(f"salePriceCents must be null, got {item.get('salePriceCents')!r}")
+    if not is_bool(item.get("inStock")):
+        reasons.append(f"inStock must be bool, got {item.get('inStock')!r}")
+
+    # --- prices ---
+    min_p = item.get("minPriceCents")
+    max_p = item.get("maxPriceCents")
+    if not is_int(min_p):
+        reasons.append(f"minPriceCents must be int, got {min_p!r}")
+    elif min_p <= 0:
+        reasons.append(f"minPriceCents must be > 0, got {min_p}")
+    if not is_int(max_p):
+        reasons.append(f"maxPriceCents must be int, got {max_p!r}")
+    elif max_p <= 0:
+        reasons.append(f"maxPriceCents must be > 0, got {max_p}")
+    if is_int(min_p) and is_int(max_p) and min_p > max_p:
+        reasons.append(f"minPriceCents ({min_p}) > maxPriceCents ({max_p})")
+
+    # --- categories ---
+    reasons.extend(check_categories(item.get("categories", [])))
+
+    # --- images ---
+    prod_imgs = item.get("productImages") or []
+    if not prod_imgs:
+        reasons.append("productImages must be non-empty")
+    else:
+        for i, img in enumerate(prod_imgs):
+            reasons.extend(check_image(img, f"productImages[{i}]"))
+        reasons.extend(check_image_sort_unique(prod_imgs, "productImages"))
+
+    desc_imgs = item.get("descriptionImages") or []
+    for i, img in enumerate(desc_imgs):
+        reasons.extend(check_image(img, f"descriptionImages[{i}]"))
+    if desc_imgs:
+        reasons.extend(check_image_sort_unique(desc_imgs, "descriptionImages"))
+
+    # --- simple-specific ---
+    if is_simple:
+        if not (item.get("sku") or "").strip():
+            reasons.append("simple product sku is null or empty")
+        if item.get("variations"):
+            reasons.append("simple product has non-empty variations array")
+        if not is_int(item.get("stock")):
+            reasons.append(f"simple product stock must be int, got {item.get('stock')!r}")
+        if item.get("totalSales") != 0:
+            reasons.append(f"simple product totalSales must be 0, got {item.get('totalSales')!r}")
+
+    # --- variable-specific ---
+    if is_variable:
+        if item.get("stock") is not None:
+            reasons.append(f"variable product stock must be null, got {item['stock']!r}")
+        if item.get("totalSales") is not None:
+            reasons.append(f"variable product totalSales must be null, got {item['totalSales']!r}")
+
+        attrs = item.get("attributes") or []
+        attr_names: list[str] = []
+        attr_option_sets: dict[str, set] = {}
+
+        if not attrs:
+            reasons.append("variable product attributes must be non-empty")
+        else:
+            for j, a in enumerate(attrs):
+                aname = (a.get("name") or "").strip()
+                if not aname:
+                    reasons.append(f"attributes[{j}]: name is null or empty")
+                else:
+                    attr_names.append(aname)
+                options = a.get("options") or []
+                if not options:
+                    reasons.append(f"attributes[{j}] '{aname}': options must be non-empty")
+                else:
+                    for k, opt in enumerate(options):
+                        if not (opt or "").strip():
+                            reasons.append(f"attributes[{j}] '{aname}' options[{k}]: must be non-empty string")
+                    attr_option_sets[aname] = set(options)
+
+        variations = item.get("variations") or []
+        if len(variations) < 2:
+            reasons.append(f"variable product has fewer than 2 variations ({len(variations)})")
+
+        var_combos: set[tuple] = set()
+        var_prices: list[int] = []
+
+        for v in variations:
+            v_sku = (v.get("sku") or "").strip()
+            vlabel = f"variation {v_sku!r}" if v_sku else "variation (no sku)"
+
+            if not v_sku:
+                reasons.append(f"{vlabel}: sku is null or empty")
+            reg_p = v.get("regularPriceCents")
+            if not is_int(reg_p):
+                reasons.append(f"{vlabel}: regularPriceCents must be int, got {reg_p!r}")
+            elif reg_p <= 0:
+                reasons.append(f"{vlabel}: regularPriceCents must be > 0, got {reg_p}")
+            else:
+                var_prices.append(reg_p)
+            if v.get("salePriceCents") is not None:
+                reasons.append(f"{vlabel}: salePriceCents must be null, got {v.get('salePriceCents')!r}")
+            if not is_int(v.get("stock")):
+                reasons.append(f"{vlabel}: stock must be int, got {v.get('stock')!r}")
+            if v.get("totalSales") != 0:
+                reasons.append(f"{vlabel}: totalSales must be 0, got {v.get('totalSales')!r}")
+            if v.get("sale") is not False:
+                reasons.append(f"{vlabel}: sale must be false, got {v.get('sale')!r}")
+
+            vattrs = v.get("attribute") or []
+            if not vattrs:
+                reasons.append(f"{vlabel}: attribute must be non-empty")
+            else:
+                combo_parts = []
+                for j, a in enumerate(vattrs):
+                    aname = (a.get("name") or "").strip()
+                    aopt  = (a.get("option") or "").strip()
+                    if not aname:
+                        reasons.append(f"{vlabel} attribute[{j}]: name is null or empty")
+                    if not aopt:
+                        reasons.append(f"{vlabel} attribute[{j}]: option is null or empty")
+                    if aname and aname not in attr_option_sets:
+                        reasons.append(f"{vlabel}: attribute name {aname!r} not declared in product attributes")
+                    elif aname and aopt and aopt not in attr_option_sets.get(aname, set()):
+                        reasons.append(f"{vlabel}: option {aopt!r} not in product attributes['{aname}']")
+                    combo_parts.append(f"{aname}={aopt}")
+
+                combo = tuple(sorted(combo_parts))
+                if combo in var_combos:
+                    reasons.append(f"{vlabel}: duplicate attribute combination")
+                var_combos.add(combo)
+
+            for i, img in enumerate(v.get("variationImages") or []):
+                reasons.extend(check_image(img, f"{vlabel} variationImages[{i}]"))
+
+        # variation prices must agree with product-level min/max
+        if var_prices and is_int(min_p) and is_int(max_p):
+            if min(var_prices) != min_p:
+                reasons.append(
+                    f"minPriceCents {min_p} does not match min variation price {min(var_prices)}"
+                )
+            if max(var_prices) != max_p:
+                reasons.append(
+                    f"maxPriceCents {max_p} does not match max variation price {max(var_prices)}"
+                )
+
+    if reasons:
+        flagged.append({"reasons": reasons, "item": item})
+    else:
+        clean.append(item)
+
+(out_dir / "items.json").write_text(json.dumps(clean,   indent=2, ensure_ascii=False))
+(out_dir / "flagged.json").write_text(json.dumps(flagged, indent=2, ensure_ascii=False))
+
+print(f"Clean: {len(clean)}  Flagged: {len(flagged)}")
+for f in flagged:
+    print(f"  {f['item'].get('name')}: {f['reasons']}")

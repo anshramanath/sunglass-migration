@@ -135,6 +135,7 @@ for item in items:
         if len(variations) < 2:
             reasons.append(f"variable product has fewer than 2 variations ({len(variations)})")
 
+        var_combos: set[tuple] = set()
         for v in variations:
             v_sku = (v.get("sku") or "").strip()
             label = f"variation {v_sku!r}" if v_sku else "variation (no sku)"
@@ -161,6 +162,10 @@ for item in items:
                         reasons.append(f"{label} attribute[{j}]: name is null or empty")
                     if not (a.get("option") or "").strip():
                         reasons.append(f"{label} attribute[{j}]: option is null or empty")
+                combo = tuple(sorted(f"{a.get('name')}={a.get('option')}" for a in attribute))
+                if combo in var_combos:
+                    reasons.append(f"{label}: duplicate attribute combination")
+                var_combos.add(combo)
             for i, img in enumerate(v.get("variationImages", [])):
                 reasons.extend(check_image(img, f"{label} variationImages[{i}]"))
 
