@@ -46,6 +46,7 @@ conn.commit()
 
 # (parent_id, slug) → category uuid — built lazily as products are processed
 category_id_map: dict[tuple, str] = {}
+desc_image_id_map: dict[str, str] = {}  # src → description_images.id
 
 
 def ensure_category(path):
@@ -127,9 +128,16 @@ for i, p in enumerate(items):
             print(f"  WARN unresolved descriptionImage: {img['src']}")
             unresolved_images += 1
             continue
+        if src not in desc_image_id_map:
+            cur.execute(
+                "INSERT INTO description_images (brand_id, src, name) VALUES (%s, %s, %s) "
+                "ON CONFLICT (brand_id, src) DO UPDATE SET name = EXCLUDED.name RETURNING id;",
+                (brand_id, src, img["name"]),
+            )
+            desc_image_id_map[src] = cur.fetchone()[0]
         cur.execute(
-            "INSERT INTO description_images (product_id, src, name, sort_order) VALUES (%s, %s, %s, %s);",
-            (product_id, src, img["name"], img["sortOrder"]),
+            "INSERT INTO product_description_images (product_id, image_id) VALUES (%s, %s);",
+            (product_id, desc_image_id_map[src]),
         )
 
     for v in p["variations"]:

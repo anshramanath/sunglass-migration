@@ -73,10 +73,16 @@ create table variation_images (
 
 create table description_images (
   id uuid primary key default gen_random_uuid(),
-  product_id uuid not null references products(id),
+  brand_id uuid not null references brands(id),
   src text not null,
   name text not null,
-  sort_order int not null
+  unique (brand_id, src)
+);
+
+create table product_description_images (
+  product_id uuid not null references products(id),
+  image_id uuid not null references description_images(id),
+  primary key (product_id, image_id)
 );
 
 create table admins (

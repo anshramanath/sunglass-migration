@@ -5,6 +5,7 @@
 -- ============================================================
 
 drop table if exists admins cascade;
+drop table if exists product_description_images cascade;
 drop table if exists description_images cascade;
 drop table if exists variation_images cascade;
 drop table if exists product_images cascade;
