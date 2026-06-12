@@ -12,36 +12,46 @@ in_path = BASE / "data" / slug / "validate-items" / "items.json"
 if not in_path.exists():
     raise SystemExit(f"Run validate_items.py first. Not found: {in_path}")
 
-# parse remove_items.md — map brand name to slug
-brand_slug_map = {
-    "BikerShades": "bikershades",
-    "Monster":     "monster",
-    "proSPORT":    "prosport",
+REMOVE = {
+    "bikershades": {
+        "simple": {
+            "FM10X30CS-RX", "7EYE-KAI-RX", "WX-CENSOR-RX", "FM0X76AB-HIGH-RX",
+            "FM270X20TX-RX", "FM5X1MR-RX", "FM11X81DM-BK-RX", "FM540X548SH-BK-RX",
+            "FM5X14TR-BK-RX", "FM5X14TR-BK-HIGH-RX", "FM85X11MNA-RX", "GO84X75BL-RX",
+            "BFF2X3AF-BK-RX", "FM87X28OC-BK-RX", "FM87X24LN-RX", "FM0X25TP-RX",
+            "GO47X57TK-BK-RX", "GO48X78SK-RX", "FM0X75PB-RX", "FM72X60MS-RX",
+            "FM20X08EV-RX", "FM10X01ED-RX", "FM65X07DN-RX", "FM20X14DF-RX",
+            "FM270X19DT-RX", "FM0X76AB-RX", "FM87X27SP-RX", "G081X24MT-RX",
+            "GO00X47BB-RX",
+        },
+        "variable": {
+            "vshield-flip-up-face-shield-w-25-mm-pet-transparent-visor",
+            "7-eye-replacement-foam",
+            "wiley-x-saint-for-rx-sm-lg",
+        },
+        "variation": {
+            "LABEL-FEDEX2DAYS",
+            "LABEL-UPSOVERNIGHT",
+        },
+    },
+    "monster": {
+        "simple": set(),
+        "variable": {
+            "prosport-vshield-flip-up-face-shield-w-25-mm-pet-transparent-visor",
+        },
+        "variation": set(),
+    },
+    "prosport": {
+        "simple": set(),
+        "variable": set(),
+        "variation": set(),
+    },
 }
 
-remove_md = BASE.parent / "final-migration" / "docs" / "remove_items.md"
-if not remove_md.exists():
-    remove_md = BASE / "docs" / "remove_items.md"
-
-remove_simple   = set()  # SKUs of simple products to drop
-remove_variable = set()  # slugs of variable products to drop
-remove_variation = set() # SKUs of variations to drop
-
-for line in remove_md.read_text().splitlines():
-    if not line.startswith("|") or "---|" in line or "Identifier" in line:
-        continue
-    parts = [p.strip() for p in line.strip("|").split("|")]
-    if len(parts) < 3:
-        continue
-    identifier, type_, brand = parts[0], parts[1], parts[2]
-    if brand_slug_map.get(brand) != slug:
-        continue
-    if type_ == "Simple":
-        remove_simple.add(identifier)
-    elif type_ == "Variable product":
-        remove_variable.add(identifier)
-    elif type_ == "Variation":
-        remove_variation.add(identifier)
+brand_removes = REMOVE.get(slug, {"simple": set(), "variable": set(), "variation": set()})
+remove_simple    = brand_removes["simple"]
+remove_variable  = brand_removes["variable"]
+remove_variation = brand_removes["variation"]
 
 items = json.loads(in_path.read_text())
 
