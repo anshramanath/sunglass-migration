@@ -11,8 +11,8 @@ create table brands (
 
 create table categories (
   id uuid primary key default gen_random_uuid(),
-  brand_id uuid not null references brands(id),
-  parent_id uuid references categories(id),
+  brand_id uuid not null references brands(id) on delete cascade,
+  parent_id uuid references categories(id) on delete cascade,
   name text not null,
   slug text not null,
   sort_order int not null
@@ -20,7 +20,7 @@ create table categories (
 
 create table products (
   id uuid primary key default gen_random_uuid(),
-  brand_id uuid not null references brands(id),
+  brand_id uuid not null references brands(id) on delete cascade,
   name text not null,
   slug text not null,
   sku text,
@@ -38,14 +38,14 @@ create table products (
 );
 
 create table product_categories (
-  product_id uuid not null references products(id),
-  category_id uuid not null references categories(id),
+  product_id uuid not null references products(id) on delete cascade,
+  category_id uuid not null references categories(id) on delete cascade,
   primary key (product_id, category_id)
 );
 
 create table variations (
   id uuid primary key default gen_random_uuid(),
-  product_id uuid not null references products(id),
+  product_id uuid not null references products(id) on delete cascade,
   sku text not null,
   attribute jsonb not null,
   sale boolean not null,
@@ -57,7 +57,7 @@ create table variations (
 
 create table product_images (
   id uuid primary key default gen_random_uuid(),
-  product_id uuid not null references products(id),
+  product_id uuid not null references products(id) on delete cascade,
   src text not null,
   name text not null,
   sort_order int not null
@@ -65,7 +65,7 @@ create table product_images (
 
 create table variation_images (
   id uuid primary key default gen_random_uuid(),
-  variation_id uuid not null references variations(id),
+  variation_id uuid not null references variations(id) on delete cascade,
   src text not null,
   name text not null,
   sort_order int not null
@@ -73,15 +73,15 @@ create table variation_images (
 
 create table description_images (
   id uuid primary key default gen_random_uuid(),
-  brand_id uuid not null references brands(id),
+  brand_id uuid not null references brands(id) on delete cascade,
   src text not null,
   name text not null,
   unique (brand_id, src)
 );
 
 create table product_description_images (
-  product_id uuid not null references products(id),
-  image_id uuid not null references description_images(id),
+  product_id uuid not null references products(id) on delete cascade,
+  image_id uuid not null references description_images(id) on delete cascade,
   primary key (product_id, image_id)
 );
 

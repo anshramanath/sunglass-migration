@@ -33,8 +33,20 @@ conn = psycopg2.connect(os.environ["DATABASE_URL"])
 cur  = conn.cursor()
 
 print(f"Wiping existing data for brand '{brand_slug}'...")
-cur.execute("DELETE FROM brands WHERE slug = %s;", (brand_slug,))
-conn.commit()
+cur.execute("SELECT id FROM brands WHERE slug = %s;", (brand_slug,))
+row = cur.fetchone()
+if row:
+    old_id = row[0]
+    cur.execute("DELETE FROM variation_images WHERE variation_id IN (SELECT id FROM variations WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s));", (old_id,))
+    cur.execute("DELETE FROM product_description_images WHERE image_id IN (SELECT id FROM description_images WHERE brand_id = %s);", (old_id,))
+    cur.execute("DELETE FROM product_categories WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s);", (old_id,))
+    cur.execute("DELETE FROM product_images WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s);", (old_id,))
+    cur.execute("DELETE FROM variations WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s);", (old_id,))
+    cur.execute("DELETE FROM products WHERE brand_id = %s;", (old_id,))
+    cur.execute("DELETE FROM description_images WHERE brand_id = %s;", (old_id,))
+    cur.execute("DELETE FROM categories WHERE brand_id = %s;", (old_id,))
+    cur.execute("DELETE FROM brands WHERE id = %s;", (old_id,))
+    conn.commit()
 
 print(f"Inserting brand: {brand_name}...")
 cur.execute(

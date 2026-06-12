@@ -46,4 +46,10 @@ BRAND=prosport python final-migration/pipeline/fetch_products.py
 
 See `PIPELINE.md` for the full step-by-step pipeline. The pipeline runs per brand through step 16 (upload), then import can be run for all brands independently.
 
-Current status: all three brands are through upload. Import pending.
+Current status: all three brands fully imported into Supabase. Pipeline complete.
+
+| Brand | Products | Notes |
+|---|---|---|
+| prosport-sunglasses | 150 | 0 images skipped |
+| sunglass-monster | 256 | 1 image skipped (confirmed 404) |
+| bikershades | 464 | 78 images skipped (confirmed 404s) |

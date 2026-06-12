@@ -89,7 +89,10 @@ This repo migrates WooCommerce product catalogues into a Supabase-backed multi-b
 - Image `name` field is normalized from the URL basename stem with `-` and `_` replaced by spaces (done in `normalize_image_names.py`).
 - Downloaded image filenames use everything after `/uploads/` or `/gallery/` in the URL path with `/` replaced by `_` — this guarantees uniqueness within a brand without date-prefix ambiguity.
 - Import has no fallbacks — all product/variation fields are accessed directly. A KeyError means a validation gap upstream, not a case to handle in import.
-- Import is per-brand: `DELETE FROM brands WHERE slug = %s` cascades to all related rows. Never `TRUNCATE` — that wipes all brands.
+- Import is per-brand: deletes in reverse dependency order (variation_images → product_description_images → product_categories → product_images → variations → products → description_images → categories → brand), then re-inserts. Never `TRUNCATE` — that wipes all brands.
+- The schema has `ON DELETE CASCADE` on all FKs for correctness on fresh deploys, but the import script does explicit ordered deletes regardless — do not rely solely on CASCADE for re-imports.
+- `description_images` is a brand-scoped image bank (`brand_id, src` unique). Products link to it via `product_description_images` join table. Same image URL used by multiple products is stored once per brand.
+- Product and slug uniqueness within a brand is enforced at the application layer, not via DB constraints.
 
 ### DB
 Schema is in `final-migration/db/001_initial_schema.sql`. Field names in the pipeline use camelCase; DB columns use snake_case — the import step handles the mapping.

@@ -354,6 +354,8 @@ Imports clean items into the Supabase Postgres database. Per-brand: deletes only
 - No fallbacks — all field accesses are direct; a crash means a validation gap upstream
 - Image URLs resolved via chain: original src → `download_map` → `upload_map` → Supabase URL; unresolved images are warned and skipped (not crash)
 - Categories upserted lazily by path as products are processed
+- Delete order (leaf to root): `variation_images` → `product_description_images` → `product_categories` → `product_images` → `variations` → `products` → `description_images` → `categories` → `brands` — explicit ordering required; FK cascade alone is insufficient for re-imports
+- `description_images` are stored once per brand (`brand_id, src` unique); linked to products via `product_description_images` join table
 - Requires env vars: `DATABASE_URL`
 
 **Note:** Direct connection host (`db.xxx.supabase.co`) uses IPv6 — may fail on corporate/office networks. Use the Supabase session pooler URL if DNS resolution fails.
