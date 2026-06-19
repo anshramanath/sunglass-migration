@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(BRAND=monster python final-migration/pipeline/decode_entities.py)",
+      "Bash(BRAND=prosport python final-migration/pipeline/decode_entities.py)",
+      "Bash(BRAND=bikershades python final-migration/pipeline/decode_entities.py)"
     ]
   }
 }

@@ -29,31 +29,25 @@ def resolve_src(src):
     return upload_map.get(local)
 
 
-conn = psycopg2.connect(os.environ["DATABASE_URL"])
+conn = psycopg2.connect(os.environ["OFFICE_DATABASE_URL"])
 cur  = conn.cursor()
 
 print(f"Wiping existing data for brand '{brand_slug}'...")
 cur.execute("SELECT id FROM brands WHERE slug = %s;", (brand_slug,))
-row = cur.fetchone()
-if row:
-    old_id = row[0]
-    cur.execute("DELETE FROM variation_images WHERE variation_id IN (SELECT id FROM variations WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s));", (old_id,))
-    cur.execute("DELETE FROM product_description_images WHERE image_id IN (SELECT id FROM description_images WHERE brand_id = %s);", (old_id,))
-    cur.execute("DELETE FROM product_categories WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s);", (old_id,))
-    cur.execute("DELETE FROM product_images WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s);", (old_id,))
-    cur.execute("DELETE FROM variations WHERE product_id IN (SELECT id FROM products WHERE brand_id = %s);", (old_id,))
-    cur.execute("DELETE FROM products WHERE brand_id = %s;", (old_id,))
-    cur.execute("DELETE FROM description_images WHERE brand_id = %s;", (old_id,))
-    cur.execute("DELETE FROM categories WHERE brand_id = %s;", (old_id,))
-    cur.execute("DELETE FROM brands WHERE id = %s;", (old_id,))
+if cur.fetchone():
+    cur.execute("DELETE FROM variation_images WHERE variation_id IN (SELECT id FROM variations WHERE product_id IN (SELECT id FROM products WHERE brand_slug = %s));", (brand_slug,))
+    cur.execute("DELETE FROM product_description_images WHERE image_id IN (SELECT id FROM description_images WHERE brand_slug = %s);", (brand_slug,))
+    cur.execute("DELETE FROM product_categories WHERE product_id IN (SELECT id FROM products WHERE brand_slug = %s);", (brand_slug,))
+    cur.execute("DELETE FROM product_images WHERE product_id IN (SELECT id FROM products WHERE brand_slug = %s);", (brand_slug,))
+    cur.execute("DELETE FROM variations WHERE product_id IN (SELECT id FROM products WHERE brand_slug = %s);", (brand_slug,))
+    cur.execute("DELETE FROM products WHERE brand_slug = %s;", (brand_slug,))
+    cur.execute("DELETE FROM description_images WHERE brand_slug = %s;", (brand_slug,))
+    cur.execute("DELETE FROM categories WHERE brand_slug = %s;", (brand_slug,))
+    cur.execute("DELETE FROM brands WHERE slug = %s;", (brand_slug,))
     conn.commit()
 
 print(f"Inserting brand: {brand_name}...")
-cur.execute(
-    "INSERT INTO brands (name, slug) VALUES (%s, %s) RETURNING id;",
-    (brand_name, brand_slug),
-)
-brand_id = cur.fetchone()[0]
+cur.execute("INSERT INTO brands (name, slug) VALUES (%s, %s);", (brand_name, brand_slug))
 conn.commit()
 
 # (parent_id, slug) → category uuid — built lazily as products are processed
@@ -67,9 +61,9 @@ def ensure_category(path):
         key = (parent_id, node["slug"])
         if key not in category_id_map:
             cur.execute(
-                "INSERT INTO categories (brand_id, parent_id, name, slug, sort_order) "
+                "INSERT INTO categories (brand_slug, parent_id, name, slug, sort_order) "
                 "VALUES (%s, %s, %s, %s, %s) RETURNING id;",
-                (brand_id, parent_id, node["name"], node["slug"], node["sortOrder"]),
+                (brand_slug, parent_id, node["name"], node["slug"], node["sortOrder"]),
             )
             category_id_map[key] = cur.fetchone()[0]
         parent_id = category_id_map[key]
@@ -83,21 +77,19 @@ for i, p in enumerate(items):
     cur.execute(
         """
         INSERT INTO products (
-            brand_id, name, slug, sku,
+            brand_slug, name, slug, sku,
             description, summary, attributes,
             featured, total_sales,
-            sale, min_price_cents, max_price_cents, sale_price_cents,
-            stock, in_stock
+            sale, min_price_cents, max_price_cents, sale_price_cents
         ) VALUES (
             %s, %s, %s, %s,
             %s, %s, %s,
             %s, %s,
-            %s, %s, %s, %s,
-            %s, %s
+            %s, %s, %s, %s
         ) RETURNING id;
         """,
         (
-            brand_id,
+            brand_slug,
             p["name"],
             p["slug"],
             p["sku"],
@@ -110,8 +102,6 @@ for i, p in enumerate(items):
             p["minPriceCents"],
             p["maxPriceCents"],
             p["salePriceCents"],
-            p["stock"],
-            p["inStock"],
         ),
     )
     product_id = cur.fetchone()[0]
@@ -142,9 +132,9 @@ for i, p in enumerate(items):
             continue
         if src not in desc_image_id_map:
             cur.execute(
-                "INSERT INTO description_images (brand_id, src, name) VALUES (%s, %s, %s) "
-                "ON CONFLICT (brand_id, src) DO UPDATE SET name = EXCLUDED.name RETURNING id;",
-                (brand_id, src, img["name"]),
+                "INSERT INTO description_images (brand_slug, src, name) VALUES (%s, %s, %s) "
+                "ON CONFLICT (brand_slug, src) DO UPDATE SET name = EXCLUDED.name RETURNING id;",
+                (brand_slug, src, img["name"]),
             )
             desc_image_id_map[src] = cur.fetchone()[0]
         cur.execute(
@@ -158,11 +148,11 @@ for i, p in enumerate(items):
             INSERT INTO variations (
                 product_id, sku, attribute,
                 sale, regular_price_cents, sale_price_cents,
-                stock, total_sales
+                total_sales
             ) VALUES (
                 %s, %s, %s,
                 %s, %s, %s,
-                %s, %s
+                %s
             ) RETURNING id;
             """,
             (
@@ -172,7 +162,6 @@ for i, p in enumerate(items):
                 v["sale"],
                 v["regularPriceCents"],
                 v["salePriceCents"],
-                v["stock"],
                 v["totalSales"],
             ),
         )

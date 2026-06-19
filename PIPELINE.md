@@ -296,7 +296,16 @@ e.g. `https://example.com/uploads/2018/01/Black-Angle-3.jpg` → name becomes `B
 
 ---
 
-### 14. `validate_items_final.py`
+### 14. `decode_entities.py`
+
+Decodes HTML entities left over from the WooCommerce API in text fields that weren't cleaned during reshape. Runs `html.unescape()` on product names, product attribute names and options, and variation attribute names and options (e.g. `&amp;` → `&`).
+
+**Output:**
+- `data/{brand}/decode-entities/items.json`
+
+---
+
+### 15. `validate_items_final.py`
 
 Thorough pre-import validation. Stricter than `validate_items.py` — checks all fields including deferred ones now that they're populated.
 
@@ -318,7 +327,7 @@ Thorough pre-import validation. Stricter than `validate_items.py` — checks all
 
 ---
 
-### 15. `download_items.py`
+### 16. `download_items.py`
 
 Downloads all images referenced in `validate-items-final/items.json` to local disk. Sources: `productImages`, `descriptionImages`, and variation `variationImages`.
 
@@ -334,7 +343,7 @@ Downloads all images referenced in `validate-items-final/items.json` to local di
 
 ---
 
-### 16. `upload_items.py`
+### 17. `upload_items.py`
 
 Uploads all unique downloaded images to a Supabase storage bucket. Bucket is named after `brand_slug` (e.g. `prosport-sunglasses`, `sunglass-monster`, `bikershades`).
 
@@ -347,7 +356,7 @@ Uploads all unique downloaded images to a Supabase storage bucket. Bucket is nam
 
 ---
 
-### 17. `import_items.py`
+### 18. `import_items.py`
 
 Imports clean items into the Supabase Postgres database. Per-brand: deletes only the current brand's data before inserting (other brands unaffected).
 
@@ -399,6 +408,8 @@ generate_content.py  →  generate-content/items.json  ←  mcp/server.py writes
 categorize_items.py  →  categorize-items/items.json
         │
 normalize_image_names.py  →  normalize-images/items.json
+        │
+decode_entities.py       →  decode-entities/items.json
         │
 validate_items_final.py  →  validate-items-final/items.json
         │

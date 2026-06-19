@@ -9,9 +9,9 @@ from config import BASE, load_brand
 brand_key, config = load_brand()
 slug = config["slug"]
 
-in_path = BASE / "data" / slug / "normalize-images" / "items.json"
+in_path = BASE / "data" / slug / "remove-stock" / "items.json"
 if not in_path.exists():
-    raise SystemExit(f"Run normalize_image_names.py first. Not found: {in_path}")
+    raise SystemExit(f"Run remove_stock.py first. Not found: {in_path}")
 
 items = json.loads(in_path.read_text())
 
@@ -25,8 +25,15 @@ def is_int(x):
 def is_bool(x):
     return isinstance(x, bool)
 
-SLUG_RE = re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$')
-URL_RE  = re.compile(r'^https?://')
+SLUG_RE   = re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$')
+URL_RE    = re.compile(r'^https?://')
+ENTITY_RE = re.compile(r'&[a-zA-Z]+;|&#\d+;')
+
+
+def check_no_entities(value, label):
+    if isinstance(value, str) and ENTITY_RE.search(value):
+        return [f"{label}: contains unescaped HTML entity: {value!r}"]
+    return []
 
 
 def check_image(img, label):
@@ -108,6 +115,16 @@ for item in items:
     is_variable = item.get("sku") is None
     is_simple   = not is_variable
 
+    # --- HTML entities ---
+    reasons.extend(check_no_entities(item.get("name"), "name"))
+    for ai, attr in enumerate(item.get("attributes") or []):
+        reasons.extend(check_no_entities(attr.get("name"), f"attributes[{ai}].name"))
+        for oi, opt in enumerate(attr.get("options") or []):
+            reasons.extend(check_no_entities(opt.get("option") if isinstance(opt, dict) else opt, f"attributes[{ai}].options[{oi}].name"))
+    for vi, v in enumerate(item.get("variations") or []):
+        for ai, a in enumerate(v.get("attribute") or []):
+            reasons.extend(check_no_entities(a.get("option"), f"variations[{vi}].attribute[{ai}].option"))
+
     # --- name / slug ---
     if not (item.get("name") or "").strip():
         reasons.append("name is null or empty")
@@ -140,9 +157,6 @@ for item in items:
         reasons.append(f"sale must be false, got {item.get('sale')!r}")
     if item.get("salePriceCents") is not None:
         reasons.append(f"salePriceCents must be null, got {item.get('salePriceCents')!r}")
-    if not is_bool(item.get("inStock")):
-        reasons.append(f"inStock must be bool, got {item.get('inStock')!r}")
-
     # --- prices ---
     min_p = item.get("minPriceCents")
     max_p = item.get("maxPriceCents")
@@ -185,21 +199,17 @@ for item in items:
             reasons.append("simple product sku is null or empty")
         if item.get("variations"):
             reasons.append("simple product has non-empty variations array")
-        if not is_int(item.get("stock")):
-            reasons.append(f"simple product stock must be int, got {item.get('stock')!r}")
         if item.get("totalSales") != 0:
             reasons.append(f"simple product totalSales must be 0, got {item.get('totalSales')!r}")
 
     # --- variable-specific ---
     if is_variable:
-        if item.get("stock") is not None:
-            reasons.append(f"variable product stock must be null, got {item['stock']!r}")
         if item.get("totalSales") is not None:
             reasons.append(f"variable product totalSales must be null, got {item['totalSales']!r}")
 
         attrs = item.get("attributes") or []
         attr_names: list[str] = []
-        attr_option_sets: dict[str, set] = {}
+        attr_options: dict[str, list] = {}
 
         if not attrs:
             reasons.append("variable product attributes must be non-empty")
@@ -215,9 +225,18 @@ for item in items:
                     reasons.append(f"attributes[{j}] '{aname}': options must be non-empty")
                 else:
                     for k, opt in enumerate(options):
-                        if not (opt or "").strip():
-                            reasons.append(f"attributes[{j}] '{aname}' options[{k}]: must be non-empty string")
-                    attr_option_sets[aname] = set(options)
+                        oname = opt.get("option") if isinstance(opt, dict) else opt
+                        if not (oname or "").strip():
+                            reasons.append(f"attributes[{j}] '{aname}' options[{k}]: option must be non-empty string")
+                        if isinstance(opt, dict):
+                            for field in ("option", "slug"):
+                                if not isinstance(opt.get(field), str):
+                                    reasons.append(f"attributes[{j}] '{aname}' options[{k}].{field} must be str, got {type(opt.get(field)).__name__}")
+                            if "value" in opt and not isinstance(opt["value"], str):
+                                reasons.append(f"attributes[{j}] '{aname}' options[{k}].value must be str, got {type(opt['value']).__name__}")
+                        if not isinstance(aname, str):
+                            reasons.append(f"attributes[{j}].name must be str, got {type(aname).__name__}")
+                    attr_options[aname] = options
 
         variations = item.get("variations") or []
         if len(variations) < 2:
@@ -241,8 +260,6 @@ for item in items:
                 var_prices.append(reg_p)
             if v.get("salePriceCents") is not None:
                 reasons.append(f"{vlabel}: salePriceCents must be null, got {v.get('salePriceCents')!r}")
-            if not is_int(v.get("stock")):
-                reasons.append(f"{vlabel}: stock must be int, got {v.get('stock')!r}")
             if v.get("totalSales") != 0:
                 reasons.append(f"{vlabel}: totalSales must be 0, got {v.get('totalSales')!r}")
             if v.get("sale") is not False:
@@ -256,14 +273,24 @@ for item in items:
                 for j, a in enumerate(vattrs):
                     aname = (a.get("name") or "").strip()
                     aopt  = (a.get("option") or "").strip()
+                    if not isinstance(a.get("name"), str):
+                        reasons.append(f"{vlabel} attribute[{j}].name must be str, got {type(a.get('name')).__name__}")
+                    if not isinstance(a.get("option"), str):
+                        reasons.append(f"{vlabel} attribute[{j}].option must be str, got {type(a.get('option')).__name__}")
+                    if not isinstance(a.get("slug"), str):
+                        reasons.append(f"{vlabel} attribute[{j}].slug must be str, got {type(a.get('slug')).__name__}")
+                    if "value" in a and not isinstance(a["value"], str):
+                        reasons.append(f"{vlabel} attribute[{j}].value must be str, got {type(a['value']).__name__}")
                     if not aname:
                         reasons.append(f"{vlabel} attribute[{j}]: name is null or empty")
                     if not aopt:
                         reasons.append(f"{vlabel} attribute[{j}]: option is null or empty")
-                    if aname and aname not in attr_option_sets:
+                    if aname and aname not in attr_options:
                         reasons.append(f"{vlabel}: attribute name {aname!r} not declared in product attributes")
-                    elif aname and aopt and aopt not in attr_option_sets.get(aname, set()):
-                        reasons.append(f"{vlabel}: option {aopt!r} not in product attributes['{aname}']")
+                    elif aname and aopt:
+                        var_obj = {k: v for k, v in a.items() if k != "name"}
+                        if var_obj not in attr_options.get(aname, []):
+                            reasons.append(f"{vlabel}: option {aopt!r} not in product attributes['{aname}']")
                     combo_parts.append(f"{aname}={aopt}")
 
                 combo = tuple(sorted(combo_parts))
