@@ -77,7 +77,10 @@ for item in items:
             v for v in updated_variations
             if v.get("regularPriceCents") is not None and v.get("attribute")
         ]
-        prices = [v["regularPriceCents"] for v in updated_variations if v.get("regularPriceCents") is not None]
+        prices = [
+            v["salePriceCents"] if v.get("sale") and v.get("salePriceCents") is not None else v["regularPriceCents"]
+            for v in updated_variations if v.get("regularPriceCents") is not None
+        ]
         in_stock = any(v.get("stock", 0) > 0 for v in updated_variations)
 
         attr_map = {}
