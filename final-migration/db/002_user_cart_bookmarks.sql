@@ -7,13 +7,14 @@ create table cart_items (
   id            uuid        primary key default gen_random_uuid(),
   user_id       uuid        not null references auth.users(id) on delete cascade,
   brand_slug    text        not null references brands(slug) on delete cascade,
+  product_id    uuid        not null references products(id) on delete cascade,
   product_slug  text        not null,
   sku           text        not null,
-  attribute     jsonb       not null default '[]',
+  attribute     jsonb       not null,
   name          text        not null,
   image_src     text        not null,
   price_cents   int         not null,
-  quantity      int         not null default 1 check (quantity > 0),
+  quantity      int         not null,
   updated_at    timestamptz not null default now()
 );
 
@@ -30,6 +31,7 @@ create table bookmarks (
   id            uuid        primary key default gen_random_uuid(),
   user_id       uuid        not null references auth.users(id) on delete cascade,
   brand_slug    text        not null references brands(slug) on delete cascade,
+  product_id    uuid        not null references products(id) on delete cascade,
   product_slug  text        not null,
   name          text        not null,
   image_src     text        not null,
