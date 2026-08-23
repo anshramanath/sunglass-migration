@@ -99,12 +99,16 @@ def check_categories(cats):
     return errs
 
 
-# Pre-scan for duplicate slugs across all items
+# Pre-scan for duplicate slugs/names across all items
 slug_counts: dict[str, int] = {}
+name_counts: dict[str, int] = {}
 for item in items:
     s = (item.get("slug") or "").strip()
     if s:
         slug_counts[s] = slug_counts.get(s, 0) + 1
+    n = (item.get("name") or "").strip()
+    if n:
+        name_counts[n] = name_counts.get(n, 0) + 1
 
 
 clean   = []
@@ -126,8 +130,11 @@ for item in items:
             reasons.extend(check_no_entities(a.get("option"), f"variations[{vi}].attribute[{ai}].option"))
 
     # --- name / slug ---
-    if not (item.get("name") or "").strip():
+    item_name = (item.get("name") or "").strip()
+    if not item_name:
         reasons.append("name is null or empty")
+    elif name_counts.get(item_name, 0) > 1:
+        reasons.append(f"name {item_name!r} is duplicated in the catalogue")
 
     item_slug = (item.get("slug") or "").strip()
     if not item_slug:
@@ -201,6 +208,8 @@ for item in items:
             reasons.append("simple product has non-empty variations array")
         if item.get("totalSales") != 0:
             reasons.append(f"simple product totalSales must be 0, got {item.get('totalSales')!r}")
+        if is_int(min_p) and is_int(max_p) and min_p != max_p:
+            reasons.append(f"simple product minPriceCents ({min_p}) != maxPriceCents ({max_p})")
 
     # --- variable-specific ---
     if is_variable:
@@ -236,7 +245,15 @@ for item in items:
                                 reasons.append(f"attributes[{j}] '{aname}' options[{k}].value must be str, got {type(opt['value']).__name__}")
                         if not isinstance(aname, str):
                             reasons.append(f"attributes[{j}].name must be str, got {type(aname).__name__}")
+                    slugs = [opt.get("slug") for opt in options if isinstance(opt, dict) and isinstance(opt.get("slug"), str)]
+                    if len(slugs) != len(set(slugs)):
+                        dupes = sorted({s for s in slugs if slugs.count(s) > 1})
+                        reasons.append(f"attributes[{j}] '{aname}': duplicate option slugs {dupes}")
                     attr_options[aname] = options
+
+            if len(attr_names) != len(set(attr_names)):
+                dupes = sorted({n for n in attr_names if attr_names.count(n) > 1})
+                reasons.append(f"duplicate attribute names {dupes}")
 
         variations = item.get("variations") or []
         if len(variations) < 2:
@@ -298,10 +315,16 @@ for item in items:
                     reasons.append(f"{vlabel}: duplicate attribute combination")
                 var_combos.add(combo)
 
-            for i, img in enumerate(v.get("variationImages") or []):
+            var_imgs = v.get("variationImages") or []
+            for i, img in enumerate(var_imgs):
                 reasons.extend(check_image(img, f"{vlabel} variationImages[{i}]"))
                 if img.get("src") in prod_srcs:
                     reasons.append(f"{vlabel} variationImages[{i}]: src duplicates a productImage")
+            if var_imgs:
+                reasons.extend(check_image_sort_unique(var_imgs, f"{vlabel} variationImages"))
+                var_img_srcs = {img["src"] for img in var_imgs if img.get("src")}
+                if len(var_img_srcs) < len(var_imgs):
+                    reasons.append(f"{vlabel}: variationImages contains duplicate srcs")
 
         # variation prices must agree with product-level min/max
         if var_prices and is_int(min_p) and is_int(max_p):
