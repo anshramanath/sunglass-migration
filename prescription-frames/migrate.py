@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from supabase import create_client
 
-ENV_FILE = Path(__file__).parent.parent / ".env.local"
+ENV_FILE = Path(__file__).parent.parent / ".env"
 JSON_FILE = Path(__file__).parent / "prescription-frames.json"
 IMAGES_DIR = Path(__file__).parent / "images"
 
@@ -25,7 +25,7 @@ def load_env():
     return env
 
 env = load_env()
-supabase = create_client(env["SUPABASE_URL"], env["SUPABASE_SERVICE_ROLE_KEY"])
+supabase = create_client(env["SUPABASE_URL"], env["SUPABASE_SERVICE_KEY"])
 
 with open(JSON_FILE) as f:
     frames = json.load(f)
