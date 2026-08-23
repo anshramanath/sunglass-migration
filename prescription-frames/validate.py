@@ -94,6 +94,7 @@ for frame in frames:
         print(f"{tag} missing or empty colors")
         errors += 1
     else:
+        seen_color_slugs = set()
         for color in colors:
             expected_color_slug = slugify(color.get("option", ""))
             if color.get("slug") != expected_color_slug:
@@ -106,6 +107,13 @@ for frame in frames:
             elif not re.fullmatch(r"#[0-9a-f]{6}", value):
                 print(f"{tag} color '{color.get('slug')}' has invalid hex value '{value}'")
                 errors += 1
+
+            color_slug = color.get("slug")
+            if color_slug in seen_color_slugs:
+                print(f"{tag} duplicate color slug '{color_slug}'")
+                errors += 1
+            else:
+                seen_color_slugs.add(color_slug)
 
 if errors == 0:
     print(f"✓ All {len(frames)} frames passed.")
